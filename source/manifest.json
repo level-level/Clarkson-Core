@@ -1,0 +1,25 @@
+{
+  "version": "0.0.7",
+  "paths": {
+    "source": "../source/",
+    "dist": "../dist/"
+  },
+  "dependencies": {
+    "main.js": {
+      "files": [],
+      "main": true
+    },
+    "main.css": {
+      "files": [
+        "../development/bower_components/normalize.css/normalize.css"
+      ],
+      "main": true
+    },
+    "editor-style.css": {
+      "files": []
+    }
+  },
+  "config": {
+    "browsersyncUrl": "http://example.dev"
+  }
+}
