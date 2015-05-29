@@ -25,6 +25,6 @@
         }
     },
     "config": {
-        "browsersyncUrl": "http://droomgarage.dev"
+        "browsersyncUrl": "http://example.dev"
     }
 }
