@@ -4,3 +4,4 @@
 /Core/composer.lock
 /Core/vendor/
 /source/styles/normalize.css
+/dist/
