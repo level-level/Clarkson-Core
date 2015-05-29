@@ -23,18 +23,58 @@ class Template
 		return $instance;
 	}
 
+	public function default_template_vars($vars){
+		
+		if( is_user_logged_in() && class_exists('User') ){
+			$wp_user = wp_get_current_user();
+			$vars['user'] = new \User($wp_user->ID);
+		}
+
+		return $vars;
+	}
+
+	public function add_endpoints(){
+		add_rewrite_endpoint( 'json', EP_PERMALINK | EP_PAGES );
+	}
+
 	// Display a template
 	public function render()
 	{
 		global $wp_query;
-		global $yalla_template_vars;
 
+		$template_vars = array();
+
+		// TEMPLATE VARS
+		$loader = Loader::get_instance();
+
+		if( $wp_query->have_posts() ){
+			$template_vars['objects'] = $loader->get_objects($wp_query->posts);
+		}
+
+		$template_vars = apply_filters( 'yalla_template_vars', $template_vars);
+		
+		if( !isset($wp_query->query_vars['json']) ){
+			// Return Twig
+			$this->render_twig($template_vars);
+		}else{
+			// Return Json
+			$this->render_json($template_vars);
+		}
+
+	}
+
+	private function render_json($vars){
+		header('Content-Type: application/json');
+
+		echo json_encode($vars, JSON_PRETTY_PRINT);
+
+		exit();
+	}
+
+	private function render_twig($vars){
+		// TWIG ARGS
 		$template_dir  = $this->template_dir;
 		$template_file = $this->get_template_file();
-		$template_vars = array();
-		
-
-		// TWIG ARGS
 		$debug 		= ( defined('WP_DEBUG') ? WP_DEBUG : false);
 		$twig_args 	= array(
 			'debug' => $debug
@@ -50,17 +90,7 @@ class Template
 			$twig->addExtension(new \Twig_Extension_Debug());
 		}
 
-		// TEMPLATE VARS
-		$loader = Loader::get_instance();
-
-		if( $wp_query->have_posts() ){
-			$template_vars['objects'] = $loader->get_objects($wp_query->posts);
-		}
-
-		$yalla_template_vars = apply_filters( 'yalla_template_vars', $template_vars);
-
-		echo $twig->render( $template_file, $yalla_template_vars );
-
+		echo $twig->render( $template_file, $vars );
 	}
 
 	private function get_template_file(){
@@ -184,6 +214,14 @@ class Template
 		return $templates;
 	}
 
+	public function add_json_header(){
+		global $wp_query;
+
+		if( isset($wp_query->query_vars['json']) ){
+			header('Content-Type: application/json');
+		}
+	}
+
 	/**
 	* Protected constructor to prevent creating a new instance of the
 	* *Singleton* via the `new` operator from outside of this class.
@@ -192,9 +230,15 @@ class Template
 	{
 		$this->template_dir = get_template_directory() . '/templates/';
 
+		// Endpoints
+		add_action( 'init', array($this, 'add_endpoints') );
+		//add_action( 'template_redirect', array($this, 'add_json_header' ) );
+
 		// Add a filter to the attributes metabox to inject template into the cache.
 		add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'register_custom_templates' )  );
 		add_filter( 'wp_insert_post_data',  array( $this, 'register_custom_templates' )  );
+
+		add_filter( 'yalla_template_vars',  array( $this, 'default_template_vars' )  );
 	}
 
 	/**

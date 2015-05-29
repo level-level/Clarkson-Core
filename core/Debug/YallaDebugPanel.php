@@ -1,14 +1,20 @@
 <?php
-if( !class_exists('Debug_Bar_Panel') )
-	return;
 
 class YallaDebugPanel  extends Debug_Bar_Panel {
+
+	protected $template_vars;
 
 	/**
 	 * Give the panel a title and set the enqueues.
 	 */
 	public function init() {
 		$this->title( __( 'Template Vars', 'yalla-debug-bar-twig' ) );
+	}
+
+	public function set_template_vars($vars){
+		$this->template_vars = $vars;
+
+		return $vars;
 	}
 
 	/**
@@ -22,14 +28,13 @@ class YallaDebugPanel  extends Debug_Bar_Panel {
 	 * Show the contents of the page.
 	 */
 	public function render() {
-		global $yalla_template_vars;
 
-		if( empty($yalla_template_vars) ){
+		if( empty($this->template_vars) ){
 			echo "No vars found";
 			return;
 		}
 
-		$this->prettyOutput($yalla_template_vars);
+		$this->prettyOutput($this->template_vars);
 		
 	}
 

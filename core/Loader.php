@@ -57,7 +57,9 @@ class Loader
 		$object_paths = $extended_classes + $default_classes ;
 		$object_paths = apply_filters( 'yalla_available_objects_paths', $object_paths);
 
-		$objects = array();
+		// Make shure defaults are loaded first (for extending)
+		$object_paths = array_reverse($object_paths);
+
 		// Load classes
 		foreach( $object_paths as $object_name=>$object_path){
 			include_once($object_path);
