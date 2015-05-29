@@ -1,0 +1,33 @@
+{
+    "name": "levellevel/yallayalla",
+    "description": "Our own starter theme",
+    "authors": [
+        {
+            "name": "Robin Aldenhoven",
+            "email": "robin@level-level.com"
+        }
+    ],
+    "repositories":
+        {
+            "humanmade-unofficial":{
+                "type": "package",
+                "package": {
+                    "name": "humanmade/wordpress-objects",
+                    "version": "1.0.0",
+                    "source": {
+                        "url": "https://github.com/humanmade/WordPress-Objects.git",
+                        "type": "git",
+                        "reference": "master"
+                    }
+                }
+            }
+        }
+    ,
+    "require" : {
+		"twig/twig":"~1.5",
+        "humanmade/wordpress-objects":"1.0.0"
+	},
+	"autoload" : {
+		"psr-4": {"YallaYalla\\": "."}
+	}
+}

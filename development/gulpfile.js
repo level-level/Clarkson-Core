@@ -2,7 +2,7 @@
 var argv         = require('minimist')(process.argv.slice(2));
 var autoprefixer = require('gulp-autoprefixer');
 var browserSync  = require('browser-sync').create();
-var bump 		 = require('gulp-bump');
+var bump 		     = require('gulp-bump');
 var changed      = require('gulp-changed');
 var concat       = require('gulp-concat');
 var flatten      = require('gulp-flatten');
@@ -231,6 +231,12 @@ gulp.task('jshint', function() {
 gulp.task('bump', function(){
   gulp.src('../source/manifest.json')
   .pipe(bump())
+  .pipe(gulp.dest('../source/'));
+});
+
+gulp.task('bump-major', function(){
+  gulp.src('../source/manifest.json')
+  .pipe(bump({type:'minor'}))
   .pipe(gulp.dest('../source/'));
 });
 
