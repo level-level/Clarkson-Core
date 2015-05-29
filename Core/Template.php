@@ -59,7 +59,6 @@ class Template
 
 		$yalla_template_vars = apply_filters( 'yalla_template_vars', $template_vars);
 
-
 		echo $twig->render( $template_file, $yalla_template_vars );
 
 	}
@@ -145,23 +144,44 @@ class Template
 		// Retrieve the cache list. 
 		// If it doesn't exist, or it's empty prepare an array
 		$theme = wp_get_theme();
-		$templates = $theme->get_page_templates();
-		if ( empty( $templates ) ) {
+
+		if ( !method_exists($theme, 'get_page_templates') || empty( $theme->get_page_templates() ) ) {
 			$templates = array();
-		} 
+		}else{
+			$templates = $theme->get_page_templates();
+		}
+
+		// New templates
+		$twig_templates = $this->get_page_templates();
 
 		// New cache, therefore remove the old one
 		wp_cache_delete( $cache_key , 'themes');
 
 		// Now add our template to the list of templates by merging our templates
 		// with the existing templates array from the cache.
-		$templates = array_merge( $templates, $this->templates );
+		$templates = array_merge( $templates, $twig_templates );
 
 		// Add the modified cache to allow WordPress to pick it up for listing
 		// available templates
 		wp_cache_add( $cache_key, $templates, 'themes', 1800 );
 
 		return $atts;
+	}
+
+	private function get_page_templates(){
+		$templates = array();
+
+		$files = glob("{$this->template_dir}/page-*.twig");
+
+		foreach($files as $file){
+			$template_name = basename($file, '.twig');
+			$name = str_replace('page-', '', $template_name);
+			$name = ucfirst($name);
+
+			$templates[$template_name] = $name;
+		}
+
+		return $templates;
 	}
 
 	/**

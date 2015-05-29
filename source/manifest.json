@@ -1,26 +1,30 @@
 {
-  "version": "1.1.5",
-  "paths": {
-    "source": "../source/",
-    "dist": "../dist/"
-  },
-  "dependencies": {
-    "main.js": {
-      "files": [],
-      "main": true
+    "version": "0.0.0",
+    "paths": {
+        "source": "../source/",
+        "dist": "../dist/"
     },
-    "main.css": {
-      "files": [
-        "../development/bower_components/normalize.css/normalize.css",
-        "styles/main.less"
-      ],
-      "main": true
+    "dependencies": {
+        "main.js": {
+            "files": [
+                "scripts/main.js"
+            ],
+            "main": true
+        },
+        "main.css": {
+            "files": [
+                "../development/bower_components/normalize.css/normalize.css",
+                "styles/main.less"
+            ],
+            "main": true
+        },
+        "editor-style.css": {
+            "files": [
+                "styles/editor.less"
+            ]
+        }
     },
-    "editor-style.css": {
-      "files": []
+    "config": {
+        "browsersyncUrl": "http://droomgarage.dev"
     }
-  },
-  "config": {
-    "browsersyncUrl": "http://example.dev"
-  }
 }

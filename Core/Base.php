@@ -4,6 +4,8 @@ namespace YallaYalla;
 use YallaYalla\Utils\Helper;
 use YallaYalla\Loader;
 use YallaYalla\Debug;
+use YallaYalla\Template;
+use WP_Filesystem;
 
 /**
  *	The Base Class
@@ -42,15 +44,28 @@ class Base
 		}
 	}
 
+	public function setup_theme(){
+		$helper = Helper::get_instance();
+		$config = $helper->get_manifest();
+
+		$config->config->browsersyncUrl = get_bloginfo('url');
+		
+		$helper->set_manifest($config);	
+	}
+
 	/**
 	* Protected constructor to prevent creating a new instance of the
 	* *Singleton* via the `new` operator from outside of this class.
 	*/
 	protected function __construct()
 	{
-		Loader::get_instance(); // Register Objects
-		Debug::get_instance();
+		Loader::get_instance();   // Register Objects
+		Template::get_instance(); // Register Templates
+		Debug::get_instance();    // Register Debug Bar
+		
 		$this->autoload();
+
+		add_action("after_switch_theme", array($this,"setup_theme") );
 	}
 
 	/**
