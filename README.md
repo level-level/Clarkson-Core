@@ -5,10 +5,11 @@
 ## Whats does What?
 
 ## Installation
+
 ### Default
-Clone repository.
-run 'composer install' in the Core directory
-run 'npm install' in the development directory
+1. Clone repository or download zip.
+2. Run `composer install` in the `Core` directory.
+3. Run `npm install` in the `development` directory.
 
 ### Yeoman
 
