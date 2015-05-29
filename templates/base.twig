@@ -1,5 +1,7 @@
 {% include "defaults/header.twig" %}
 
-<h1>Hello World</h1>
+	{% for object in objects %}
+		{{ object.get_id() }}
+	{% endfor %}
 
 {% include "defaults/footer.twig" %}
