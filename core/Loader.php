@@ -36,7 +36,11 @@ class Loader
 		$object_name = $this->camel_case($post->post_type);
 
 		if( !in_array($object_name, $this->post_objects) ){
-			return $post;
+			if( in_array('Post', $this->post_objects) ){
+				return new Post($post);
+			}else{
+				return $post;
+			}
 		}
 
 		return new $object_name($post->ID);
