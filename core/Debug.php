@@ -25,6 +25,13 @@ class Debug{
 		add_filter( 'debug_bar_panels', array($this, 'add_debug_panel') );
 	}
 
+	/* Are we on the wp-login.php page?
+	 * We can get here while logged in and break the page as the admin bar isn't shown and otherthings the js relies on aren't available.
+	 */
+	function is_wp_login() {
+		return 'wp-login.php' == basename( $_SERVER['SCRIPT_NAME'] );
+	}
+
 	public function get_template_vars($vars){
 		$this->panel->set_template_vars($vars);
 		return $vars;

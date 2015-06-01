@@ -37,7 +37,7 @@ class Loader
 
 		if( !in_array($object_name, $this->post_objects) ){
 			if( in_array('Post', $this->post_objects) ){
-				return new Post($post);
+				return new \Post($post);
 			}else{
 				return $post;
 			}

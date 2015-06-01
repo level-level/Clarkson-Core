@@ -10,5 +10,6 @@ if ( file_exists( $composer_autoload = __DIR__ . '/core/vendor/autoload.php' ) |
 
 }else{
 	echo "Theme will not work, try running composer install first";
+	exit();
 }
 
