@@ -924,7 +924,9 @@ class WordpressExtension extends Twig_Extension
     {
         $twigFunctions = array();
 
-        foreach ($this->functions as $function) {
+        $allowed_functions = apply_filters( 'yalla_twig_functions', $this->functions);
+
+        foreach ($allowed_functions  as $function) {
             $twigFunctions[] = new Twig_SimpleFunction($function,$function);
         }
 
