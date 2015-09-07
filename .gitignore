@@ -1,7 +1,2 @@
-/development/node_modules
-/development/bower_components
-/development/npm-*
-/core/composer.lock
-/core/vendor/
-/dist/
-/source/styles/normalize.css
+composer.lock
+vendor/

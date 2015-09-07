@@ -1,11 +1,6 @@
 <?php
 
-namespace YallaYalla\Twig;
-
-use Twig_Extension;
-use Twig_SimpleFunction;
-
-class WordpressExtension extends Twig_Extension
+class Clarkson_Core_Twig_Extension extends Twig_Extension
 {
 	/*
 		var functions = [];

@@ -1,0 +1,13 @@
+{
+    "name": "Clarkson Core",
+    "description": "Render Twig Templates",
+    "authors": [
+        {
+            "name": "Robin Aldenhoven",
+            "email": "robin@level-level.com"
+        }
+    ],
+    "require" : {
+		"twig/twig":"~1.0"
+	}
+}
