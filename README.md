@@ -1,4 +1,4 @@
-# YallaYalla
+# Clarkson Core
 
 ## Requirements
 
