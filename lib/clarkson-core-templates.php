@@ -13,6 +13,10 @@ class Clarkson_Core_Templates {
 
 		if( isset( $wp_query->query_vars['json'] ) )
 		{
+			if( count($objects) === 1 && isset( $objects[0]) ){
+				$objects = $objects[0];
+			}
+			
 			$this->render_json($objects);
 		}
 		else
@@ -39,21 +43,21 @@ class Clarkson_Core_Templates {
 		$twig_fs = new Twig_Loader_Filesystem($template_dir);
 		$twig 	 = new Twig_Environment($twig_fs, $twig_args);
 
-		$twig->addExtension( new Clarkson_Core_Twig_Extension() );
+		$twig->addExtension( new Clarkson_Core_Twig_Extension()    );
+		$twig->addExtension( new Twig_Extensions_Extension_I18n()  );
+		$twig->addExtension( new Twig_Extensions_Extension_Text()  );
+		$twig->addExtension( new Twig_Extensions_Extension_Array() );
+		$twig->addExtension( new Twig_Extensions_Extension_Date()  );
 
 		if( $debug){
 			$twig->addExtension(new Twig_Extension_Debug());
 		}
 
-		echo $twig->render( $template_file, $objects );
+		echo $twig->render( $template_file, array('objects' => $objects) );
 	}
 
 	private function render_json($objects){
 		header('Content-Type: application/json');
-
-		if( count($objects) === 1 && isset( $objects[0]) ){
-			$objects = $objects[0];
-		}
 
 		echo json_encode($objects, JSON_PRETTY_PRINT);
 	}
