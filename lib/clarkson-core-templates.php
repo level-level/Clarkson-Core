@@ -32,7 +32,7 @@ class Clarkson_Core_Templates {
 		$template_dir  = dirname($path);
 		$template_file = basename($path);
 		
-		$debug 		= ( defined('WP_DEBUG') ? WP_DEBUG : false);
+		$debug 		= ( defined('WP_DEBUG') ? WP_DEBUG : false );
 
 		$twig_args 	= array(
 			'debug' => $debug
@@ -87,7 +87,7 @@ class Clarkson_Core_Templates {
 			}
 			
 			// Render it
-			$this->render($template, $objects);
+			$this->render($template, array( 'objects' => $objects ) );
 		}
 
 		return $template;
