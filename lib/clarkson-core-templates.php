@@ -53,7 +53,10 @@ class Clarkson_Core_Templates {
 			$twig->addExtension(new Twig_Extension_Debug());
 		}
 
-		echo $twig->render( $template_file, array('objects' => $objects) );
+		$context_args = array( 'objects' => $objects );
+        	$context_args = apply_filters('clarkson_context_args', $context_args );
+
+        	return $twig->render( $template_file, $context_args );
 	}
 
 	private function render_json($objects){
