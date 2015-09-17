@@ -54,8 +54,9 @@ class Clarkson_Core_Templates {
 			$twig->addExtension(new Twig_Extension_Debug());
 		}
 
-		$context_args = array( 'objects' => $objects );
-		$context_args = apply_filters('clarkson_context_args', $context_args );
+
+		$context_args = apply_filters('clarkson_context_args', $objects );
+
 
 		echo $twig->render( $template_file, $context_args );
 	}
