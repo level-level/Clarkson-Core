@@ -28,6 +28,7 @@ class Clarkson_Core_Templates {
 	}
 
 	private function render_twig($path, $objects){
+
 		// TWIG ARGS
 		$template_dir  = dirname($path);
 		$template_file = basename($path);
@@ -54,9 +55,9 @@ class Clarkson_Core_Templates {
 		}
 
 		$context_args = array( 'objects' => $objects );
-        	$context_args = apply_filters('clarkson_context_args', $context_args );
+		$context_args = apply_filters('clarkson_context_args', $context_args );
 
-        	return $twig->render( $template_file, $context_args );
+		echo $twig->render( $template_file, $context_args );
 	}
 
 	private function render_json($objects){
