@@ -36,7 +36,7 @@ class Clarkson_Object {
 			'title' 	=> $this->get_title(),
 			'date'  	=> $this->get_date('Y-m-d H:i:s'),
 			'content' 	=> $this->get_content(),
-			'permalink' => $this->get_permalink(),
+			'permalink'	=> $this->get_permalink(),
 		);
 	}
 
