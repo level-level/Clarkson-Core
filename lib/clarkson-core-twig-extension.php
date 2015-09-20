@@ -905,7 +905,29 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension
 		"is_subdomain_install",
 		"ms_not_installed",
 		"ms_site_check",
-		"wpmu_current_site"
+		"wpmu_current_site",
+		"has_nav_menu",
+		"is_home",
+		"is_front_page",
+		"comments_open",
+		"is_404",
+		"is_admin",
+		"is_archive",
+		"is_author",
+		"is_paged",
+		"is_date",
+		"is_day",
+		"is_month",
+		"is_page_template",
+		"is_feed",
+		"is_preview",
+		"is_customize_preview",
+		"is_search",
+		"is_singular",
+		"is_tax",
+		"is_time",
+		"is_year",
+		"pings_open"
     );
 
     public function __construct(array $functions = array())
