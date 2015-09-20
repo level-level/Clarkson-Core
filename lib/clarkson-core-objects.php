@@ -123,13 +123,13 @@ class Clarkson_Core_Objects {
 		if (null === $instance) {
 			$instance = new Clarkson_Core_Objects();
 		}
-		
+
 		return $instance;
 	}
 
 	protected function __construct()
 	{
-		$this->register_objects();	
+		$this->register_objects();
 	}
 
 	private function __clone()

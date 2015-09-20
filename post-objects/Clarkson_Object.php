@@ -4,9 +4,9 @@ class Clarkson_Object {
 
 	public $type = 'post';
 	public $data = array();
-	
+
 	private $_post;
-	
+
 	protected static $posts;
 
 	/**
@@ -27,7 +27,6 @@ class Clarkson_Object {
 
 		$this->set_data();
 
-		
 	}
 
 	private function set_data(){

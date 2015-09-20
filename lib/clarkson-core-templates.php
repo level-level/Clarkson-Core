@@ -16,7 +16,7 @@ class Clarkson_Core_Templates {
 			if( count($objects) === 1 && isset( $objects[0]) ){
 				$objects = $objects[0];
 			}
-			
+
 			$this->render_json($objects);
 		}
 		else
@@ -32,7 +32,7 @@ class Clarkson_Core_Templates {
 		// TWIG ARGS
 		$template_dir  = dirname($path);
 		$template_file = basename($path);
-		
+
 		$debug 		= ( defined('WP_DEBUG') ? WP_DEBUG : false );
 
 		$twig_args 	= array(
@@ -69,7 +69,7 @@ class Clarkson_Core_Templates {
 
 	public function template_include($template){
 		$extension = pathinfo($template, PATHINFO_EXTENSION);
-		
+
 		$type = basename($template);
 		$type = str_replace(".{$extension}", '', $type);
 
@@ -90,7 +90,7 @@ class Clarkson_Core_Templates {
 			}else{
 				$objects = $object_loader->get_objects($posts);	
 			}
-			
+
 			// Render it
 			$this->render($template, array( 'objects' => $objects ) );
 		}
@@ -205,7 +205,7 @@ class Clarkson_Core_Templates {
 		if (null === $instance) {
 			$instance = new Clarkson_Core_Templates();
 		}
-		
+
 		return $instance;
 	}
 

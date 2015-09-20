@@ -51,7 +51,7 @@ class Clarkson_Core {
 		foreach($dirs as $dir){
 			$this->load_php_files_from_path( $theme_dir . "/{$dir}" );
 		}
-		
+
 	}
 
 	private function load_php_files_from_path($path = false){
@@ -80,7 +80,7 @@ class Clarkson_Core {
 		if (null === $instance) {
 			$instance = new Clarkson_Core();
 		}
-		
+
 		return $instance;
 	}
 
@@ -88,7 +88,7 @@ class Clarkson_Core {
 	{
 		// Load vendor files
 		$autoload_file = __DIR__ . '/vendor/autoload.php';
-		
+
 		if( file_exists($autoload_file) ){
 			require_once($autoload_file);
 		}
