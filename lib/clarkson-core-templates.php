@@ -179,14 +179,15 @@ class Clarkson_Core_Templates {
 	private function get_templates_from_path($path){
 		$templates = array();
 
-		if( !$path || !is_string($path) || !file_exists($path) )
+		if( !$path || !is_string($path) || !file_exists($path) ) {
 			return $templates;
+		}
 
 		$files = glob("{$path}/*.twig");
 
-		if( empty($files) )
+		if( empty($files) ) {
 			return $templates;
-		
+		}
 
 		foreach ($files as $file_path) {
 			$templates[] = $file_path;
