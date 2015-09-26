@@ -13,6 +13,12 @@ Uses the internal [Template Hierarchy](https://developer.wordpress.org/themes/ba
 It autoloads a default [Object](https://github.com/level-level/Clarkson-Core/blob/master/post-objects/Clarkson_Object.php) just like `WP_Post` but with some more handy stuff.
 When you register a Custom Post Type `Company` your custom class `Clarkson_Company` gets loaded in the `objects` variable within `archive-company.twig`
 
+#### Adding your own objects
+[Loading](https://github.com/level-level/Clarkson-Core/blob/master/lib/clarkson-core-objects.php#L67) your own objects can be done in two ways
+
+1. Per complete directory by adding it via the filter `clarkson_available_objects_paths`.
+2. Per single `object` / `class` file via `clarkson_available_objects`.
+
 
 ## Installation
 
