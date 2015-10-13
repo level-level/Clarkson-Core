@@ -30,8 +30,8 @@ class Clarkson_Core_Templates {
 	private function render_twig($path, $objects){
 
 		// TWIG ARGS
-		$template_dir  = dirname($path);
-		$template_file = basename($path);
+		$template_dir  = apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' );
+		$template_file = str_replace( $template_dir, '', $path );
 
 		$debug 		= ( defined('WP_DEBUG') ? WP_DEBUG : false );
 
