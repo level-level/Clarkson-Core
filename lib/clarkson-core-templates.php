@@ -17,11 +17,11 @@ class Clarkson_Core_Templates {
 				$objects = $objects[0];
 			}
 
-			$this->render_json($objects);
+			$this->echo_json($objects);
 		}
 		else
 		{
-			$this->render_twig($path, $objects);
+			$this->echo_twig($path, $objects);
 		}
 
 		exit();
@@ -58,13 +58,21 @@ class Clarkson_Core_Templates {
 		$context_args = apply_filters('clarkson_context_args', $objects );
 
 
-		echo $twig->render( $template_file, $context_args );
+		return $twig->render( $template_file, $context_args );
+	}
+
+	private function echo_twig( $template_file, $objects ){
+		echo $this->render_twig( $template_file, $objects );
 	}
 
 	private function render_json($objects){
 		header('Content-Type: application/json');
 
-		echo json_encode($objects, JSON_PRETTY_PRINT);
+		return json_encode($objects, JSON_PRETTY_PRINT);
+	}
+
+	private function echo_json( $objects ){
+		echo $this->render_json( $objects );
 	}
 
 	public function template_include($template){
