@@ -32,10 +32,11 @@ class Clarkson_Object {
 	private function set_data(){
 		$this->type = $this->get_post_type();
 		$this->data = array(
-			'ID' 	=> $this->get_id(),
-			'title' => $this->get_title(),
-			'date'  => $this->get_date('Y-m-d H:i:s'),
-			'content' => $this->get_content()
+			'ID' 		=> $this->get_id(),
+			'title' 	=> $this->get_title(),
+			'date'  	=> $this->get_date('Y-m-d H:i:s'),
+			'content' 	=> $this->get_content(),
+			'permalink'	=> $this->get_permalink(),
 		);
 	}
 
