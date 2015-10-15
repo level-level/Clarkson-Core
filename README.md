@@ -11,7 +11,7 @@ Uses the internal [Template Hierarchy](https://developer.wordpress.org/themes/ba
 
 ### Autoloading of Object classes per Custom Post Type.
 It autoloads a default [Object](https://github.com/level-level/Clarkson-Core/blob/master/post-objects/Clarkson_Object.php) just like `WP_Post` but with some more handy stuff.
-When you register a Custom Post Type `Company` your custom class `Clarkson_Company` gets loaded in the `objects` variable within `archive-company.twig`
+When you register a Custom Post Type `ll_company` your custom class `ll_company` gets loaded in the `objects` variable within `archive-company.twig`.
 
 #### Adding your own objects
 [Loading](https://github.com/level-level/Clarkson-Core/blob/master/lib/clarkson-core-objects.php#L67) your own objects can be done in two ways
