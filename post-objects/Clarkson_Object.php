@@ -25,19 +25,6 @@ class Clarkson_Object {
 			throw new Exception( 'Post not found' );
 		}
 
-		$this->set_data();
-
-	}
-
-	private function set_data(){
-		$this->type = $this->get_post_type();
-		$this->data = array(
-			'ID' 		=> $this->get_id(),
-			'title' 	=> $this->get_title(),
-			'date'  	=> $this->get_date('Y-m-d H:i:s'),
-			'content' 	=> $this->get_content(),
-			'permalink'	=> $this->get_permalink(),
-		);
 	}
 
 	public function __get( $name ) {
