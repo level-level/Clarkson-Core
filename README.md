@@ -14,11 +14,12 @@ It autoloads a default [Object](https://github.com/level-level/Clarkson-Core/blo
 When you register a Custom Post Type `ll_company` your custom class `ll_company` gets loaded in the `objects` variable within `archive-company.twig`.
 
 #### Adding your own objects
-[Loading](https://github.com/level-level/Clarkson-Core/blob/master/lib/clarkson-core-objects.php#L67) your own objects can be done in two ways
+[Loading](https://github.com/level-level/Clarkson-Core/blob/master/lib/clarkson-core-objects.php#L67) your own objects can be done in two ways:
 
 1. Per complete directory by adding it via the filter `clarkson_available_objects_paths`.
 2. Per single `object` / `class` file via `clarkson_available_objects`.
 
+Our advice is you extend your new class with `Clarkson_Object`.
 
 ## Installation
 
