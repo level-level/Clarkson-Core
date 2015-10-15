@@ -125,7 +125,7 @@ class Clarkson_Object {
 	public function get_parent() {
 
 		if ( $this->_post->post_parent ) {
-			return new Post( $this->_post->post_parent );
+			return new self( $this->_post->post_parent );
 		}
 
 		return null;
