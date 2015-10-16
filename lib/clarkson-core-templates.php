@@ -107,8 +107,35 @@ class Clarkson_Core_Templates {
 	}
 
 	public function add_template($template){
+
 		$filter = current_filter();
 		$type   = str_replace('_template', '', $filter);
+
+		if( $filter === 'taxonomy_template' ) {
+			$queried_object = get_queried_object();
+
+			if( !isset( $queried_object->taxonomy) ){
+				continue;
+			}
+
+			$tax_type = $queried_object->taxonomy;
+			$tax_template = "{$type}-{$tax_type}";
+
+			if( isset( $this->templates[$tax_template] ) ){
+				return $this->templates[$tax_template];
+			}
+
+
+		}elseif( $filter === 'archive_template' ){
+			$post_type = get_post_type();
+
+			$archive_template = "{$type}-{$post_type}";
+
+			if( isset( $this->templates[$archive_template] ) ){
+				return $this->templates[$archive_template];
+			}
+		}
+
 
 		if( isset( $this->templates[$type] ) ){
 			return $this->templates[$type];
@@ -178,10 +205,20 @@ class Clarkson_Core_Templates {
 			$base = str_replace( '.twig', '', $base );
 			$type = preg_replace( '|[^a-z0-9-]+|', '', $base );
 
+
+			if( strpos($type,'archive') !== false  && !isset( $this->templates['archive_template'] )){
+				$type = 'archive';
+			}
+			if( strpos($type,'taxonomy') !== false && !isset( $this->templates['taxonomy_template'] )){
+				$type = 'taxonomy';
+			}
+
 			add_filter("{$type}_template", array($this, 'add_template'));
+
 
 			$this->templates[$base] = $template;
 		}
+
 	}
 
 	private function get_templates_from_path($path){
