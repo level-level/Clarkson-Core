@@ -5,7 +5,7 @@ class Clarkson_Object {
 	public $type = 'post';
 	public $data = array();
 
-	private $_post;
+	protected $_post;
 
 	protected static $posts;
 
