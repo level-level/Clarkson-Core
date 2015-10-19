@@ -3,7 +3,6 @@
 class Clarkson_Object {
 
 	public $type = 'post';
-	public $data = array();
 
 	protected $_post;
 
