@@ -927,7 +927,8 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension
 		"is_tax",
 		"is_time",
 		"is_year",
-		"pings_open"
+		"pings_open",
+	    "gravity_form"
     );
 
     public function __construct(array $functions = array())
