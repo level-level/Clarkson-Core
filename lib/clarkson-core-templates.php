@@ -13,27 +13,27 @@ class Clarkson_Core_Templates {
 
 		if( isset( $wp_query->query_vars['json'] ) )
 		{
+
 			if( count($objects) === 1 && isset( $objects[0]) ){
 				$objects = $objects[0];
 			}
 
-			$this->echo_json($objects);
+			$this->print_json($objects);
 		}
 		else
 		{
-			$this->echo_twig($path, $objects);
+			$this->print_twig($path, $objects);
 		}
 
 		exit();
 	}
 
-	private function render_twig($path, $objects){
-
+	public function render_twig($path, $objects){
 		// TWIG ARGS
 		$template_dir  = apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' );
 		$template_file = str_replace( $template_dir, '', $path );
 
-		$debug 		= ( defined('WP_DEBUG') ? WP_DEBUG : false );
+		$debug 		= ( defined('WP_DEBUG') ? WP_DEBUG : false);
 
 		$twig_args 	= array(
 			'debug' => $debug
@@ -44,24 +44,24 @@ class Clarkson_Core_Templates {
 		$twig_fs = new Twig_Loader_Filesystem($template_dir);
 		$twig 	 = new Twig_Environment($twig_fs, $twig_args);
 
+		$twig->addExtension( new Clarkson_Core_Twig_Extension() );
 		$twig->addExtension( new Clarkson_Core_Twig_Extension()    );
 		$twig->addExtension( new Twig_Extensions_Extension_I18n()  );
 		$twig->addExtension( new Twig_Extensions_Extension_Text()  );
 		$twig->addExtension( new Twig_Extensions_Extension_Array() );
 		$twig->addExtension( new Twig_Extensions_Extension_Date()  );
 
-		if( $debug){
+		if( $debug ){
 			$twig->addExtension(new Twig_Extension_Debug());
 		}
 
-
-		$context_args = apply_filters('clarkson_context_args', $objects );
-
+		$context_args = array( 'objects' => $objects );
+		$context_args = apply_filters('clarkson_context_args', $context_args );
 
 		return $twig->render( $template_file, $context_args );
 	}
 
-	private function echo_twig( $template_file, $objects ){
+	private function print_twig( $template_file, $objects ){
 		echo $this->render_twig( $template_file, $objects );
 	}
 
@@ -71,7 +71,7 @@ class Clarkson_Core_Templates {
 		return json_encode($objects, JSON_PRETTY_PRINT);
 	}
 
-	private function echo_json( $objects ){
+	private function print_json( $objects ){
 		echo $this->render_json( $objects );
 	}
 
@@ -100,42 +100,15 @@ class Clarkson_Core_Templates {
 			}
 
 			// Render it
-			$this->render($template, array( 'objects' => $objects ) );
+			$this->render($template, $objects);
 		}
 
 		return $template;
 	}
 
 	public function add_template($template){
-
 		$filter = current_filter();
 		$type   = str_replace('_template', '', $filter);
-
-		if( $filter === 'taxonomy_template' ) {
-			$queried_object = get_queried_object();
-
-			if( !isset( $queried_object->taxonomy) ){
-				continue;
-			}
-
-			$tax_type = $queried_object->taxonomy;
-			$tax_template = "{$type}-{$tax_type}";
-
-			if( isset( $this->templates[$tax_template] ) ){
-				return $this->templates[$tax_template];
-			}
-
-
-		}elseif( $filter === 'archive_template' ){
-			$post_type = get_post_type();
-
-			$archive_template = "{$type}-{$post_type}";
-
-			if( isset( $this->templates[$archive_template] ) ){
-				return $this->templates[$archive_template];
-			}
-		}
-
 
 		if( isset( $this->templates[$type] ) ){
 			return $this->templates[$type];
@@ -144,11 +117,8 @@ class Clarkson_Core_Templates {
 		return $template;
 	}
 
-	public function register_custom_templates($atts){
-		// Create the key used for the themes cache
-		$cache_key = 'page_templates-' . md5( get_theme_root() . '/' . get_stylesheet() );
-
-		// Retrieve the cache list. 
+	public function get_templates( $choices = array() ){
+		// Retrieve the cache list.
 		// If it doesn't exist, or it's empty prepare an array
 		$theme = wp_get_theme();
 
@@ -158,6 +128,8 @@ class Clarkson_Core_Templates {
 			$templates = $theme->get_page_templates();
 		}
 
+		$templates = array_merge( $templates, $choices );
+
 		$page_templates = array();
 
 		foreach($this->templates as $name => $path){
@@ -165,23 +137,52 @@ class Clarkson_Core_Templates {
 				$name = str_replace('page-', '', $name);
 				$name = str_replace('-', ' ', $name);
 				$name = ucwords($name);
-				//var_dump($name, $path);
-				$page_templates[$path] = $name;
+				//		var_dump($name, $path, basename($path) );
+				$page_templates[ basename($path) ] = $name;
 			}
 		}
-
-		// New cache, therefore remove the old one
-		wp_cache_delete( $cache_key , 'themes');
 
 		// Now add our template to the list of templates by merging our templates
 		// with the existing templates array from the cache.
 		$templates = array_merge( $templates, $page_templates );
+
+		return $templates;
+	}
+
+	public function register_custom_templates($atts){
+		// Create the key used for the themes cache
+		$cache_key = 'page_templates-' . md5( get_theme_root() . '/' . get_stylesheet() );
+
+
+		$templates = $this->get_templates();
+
+
+		// New cache, therefore remove the old one
+		wp_cache_delete( $cache_key , 'themes');
+
+
 
 		// Add the modified cache to allow WordPress to pick it up for listing
 		// available templates
 		wp_cache_add( $cache_key, $templates, 'themes', 1800 );
 
 		return $atts;
+	}
+
+	public function register_custom_templates_acf() {
+		$atts = array(
+			'post_type' => 'page',
+			'exclude_tree' => '2',
+			'selected' => '0',
+			'name' => 'parent_id',
+			'show_option_none' => '(no parent)',
+			'sort_column' => 'menu_order, post_title',
+			'echo' => 0
+		);
+
+		$custom_templates = $this->register_custom_templates( $atts );
+
+
 	}
 
 	private function add_template_filters(){
@@ -205,34 +206,23 @@ class Clarkson_Core_Templates {
 			$base = str_replace( '.twig', '', $base );
 			$type = preg_replace( '|[^a-z0-9-]+|', '', $base );
 
-
-			if( strpos($type,'archive') !== false  && !isset( $this->templates['archive_template'] )){
-				$type = 'archive';
-			}
-			if( strpos($type,'taxonomy') !== false && !isset( $this->templates['taxonomy_template'] )){
-				$type = 'taxonomy';
-			}
-
 			add_filter("{$type}_template", array($this, 'add_template'));
-
 
 			$this->templates[$base] = $template;
 		}
-
 	}
 
 	private function get_templates_from_path($path){
 		$templates = array();
 
-		if( !$path || !is_string($path) || !file_exists($path) ) {
+		if( !$path || !is_string($path) || !file_exists($path) )
 			return $templates;
-		}
 
 		$files = glob("{$path}/*.twig");
 
-		if( empty($files) ) {
+		if( empty($files) )
 			return $templates;
-		}
+
 
 		foreach ($files as $file_path) {
 			$templates[] = $file_path;
@@ -264,8 +254,9 @@ class Clarkson_Core_Templates {
 
 		add_action('template_include', array($this, 'template_include') );
 
-		add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'register_custom_templates' )  );
-		add_filter( 'wp_insert_post_data',  array( $this, 'register_custom_templates' )  );
+		add_filter( 'page_attributes_dropdown_pages_args', 		array( $this, 'register_custom_templates' )  );
+		add_filter( 'wp_insert_post_data',  					array( $this, 'register_custom_templates' )  );
+		add_filter( 'acf/location/rule_values/page_template', 	array( $this, 'get_templates' ) );
 	}
 
 	private function __clone()
