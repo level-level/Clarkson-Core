@@ -23,7 +23,7 @@ class Clarkson_Core_Templates {
 	}
 
 
-	private function render_twig($path, $objects){
+	public function render_twig($path, $objects){
 		// TWIG ARGS
 		$template_dir  = apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' );
 		$template_file = str_replace( $template_dir, '', $path );
@@ -52,18 +52,18 @@ class Clarkson_Core_Templates {
 	}
 
 
-	private function echo_twig( $template_file, $objects ){
+	public function echo_twig( $template_file, $objects ){
 		echo $this->render_twig( $template_file, $objects );
 	}
 
 
-	private function render_json($objects){
+	public function render_json($objects){
 		header('Content-Type: application/json');
 		return json_encode($objects, JSON_PRETTY_PRINT);
 	}
 
 
-	private function echo_json( $objects ){
+	public function echo_json( $objects ){
 		echo $this->render_json( $objects );
 	}
 
