@@ -1,5 +1,5 @@
 # Clarkson Core
-Making Twig available the WordPress way.
+A plugin to write Object-Oriented code in combination with the Twig templating enging while keeping the WordPress Way of working in mind.
 
 ## Requirements
 Composer, that's it.
