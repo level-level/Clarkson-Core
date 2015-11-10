@@ -1,7 +1,7 @@
 {
     "name": "level-level/clarkson-core",
-    "description": "Clarkson Core Plugin",
-    "type": "wordpress-plugin",
+    "version": "1.0",
+    "type": "wordpress-muplugin",
     "authors": [
         {
             "name": "Robin Aldenhoven",
