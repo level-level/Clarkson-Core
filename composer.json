@@ -1,5 +1,5 @@
 {
-    "name": "Clarkson Core",
+    "name": "level-level/clarkson-core",
     "description": "Render Twig Templates",
     "authors": [
         {
@@ -8,7 +8,7 @@
         }
     ],
     "require" : {
-		"twig/twig":"~1.2|~2.0",
+	"twig/twig":"~1.2|~2.0",
         "twig/extensions":"~1.3"
-	}
+    }
 }
