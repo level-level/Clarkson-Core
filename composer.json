@@ -1,6 +1,7 @@
 {
     "name": "level-level/clarkson-core",
-    "description": "Render Twig Templates",
+    "description": "Clarkson Core Plugin",
+    "type": "wordpress-plugin",
     "authors": [
         {
             "name": "Robin Aldenhoven",
