@@ -100,6 +100,12 @@ class Clarkson_Core_Templates {
 
 
 	public function add_template($template){
+		// Allow twig based on wp_query
+		global $wp_query;
+		if( isset( $wp_query->twig) && file_exists($wp_query->twig) ){
+			return $wp_query->twig;
+		}
+		// Check filter for current template
 		$filter = current_filter();
 		$type   = str_replace('_template', '', $filter);
 
