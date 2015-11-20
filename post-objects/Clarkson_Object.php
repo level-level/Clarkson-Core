@@ -2,7 +2,7 @@
 
 class Clarkson_Object {
 
-	public $type = 'post';
+	public static $type = 'post';
 
 	protected $_post;
 
@@ -61,7 +61,7 @@ class Clarkson_Object {
 	 * @return Post[]
 	 */
 	public static function get_many( $args ) {
-		$args['post_type']     = static::$post_type;
+		$args['post_type']     = static::$type;
 		$args['no_found_rows'] = true;
 
 		$query = new \WP_Query( $args );
