@@ -319,21 +319,26 @@ class Clarkson_Object {
 	 * @param array  $args     Optional. {@link wp_get_object_terms()} arguments. Default empty array.
 	 * @return array List of post tags.
 	 */
-	public function get_terms( $taxonomy, $args = array() ) {
-		return array_map(
-			function( $term ) use ( $taxonomy ) {
-				try {
-					if ( is_object( $term ) ) {
-						return Term::get_by_id( $term->term_id, $taxonomy );
-					}
-					return $term;
-				} catch ( Exception $e ) {
-					return null;
-				}
-			},
-			wp_get_post_terms( $this->get_id(), $taxonomy, $args )
-		);
-	}
+	 public function get_terms( $taxonomy, $args = array() ) {
+ 		return array_map(
+ 			function( $term ) use ( $taxonomy ) {
+ 				try {
+ 					if ( is_object( $term ) ) {
+ 						// Check if there is a Custom Taxonomy class
+ 						if ( class_exists( $taxonomy ) ){
+ 							return call_user_func( array($taxonomy, 'get_by_id') , $term->term_id, $taxonomy );
+ 						}
+ 						// Else return a default Clarkson Term
+ 						return Clarkson_Term::get_by_id( $term->term_id, $taxonomy );
+ 					}
+ 					return $term;
+ 				} catch ( Exception $e ) {
+ 					return null;
+ 				}
+ 			},
+ 			wp_get_post_terms( $this->get_id(), $taxonomy, $args )
+ 		);
+ 	}
 
 	/**
 	 * Add a single term to a post.
