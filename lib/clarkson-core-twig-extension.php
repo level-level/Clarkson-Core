@@ -188,6 +188,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension
 		"get_term_children",
 		"get_term_link",
 		"get_terms",
+		"is_tax",
 		"is_taxonomy",
 		"is_taxonomy_hierarchical",
 		"is_term",
