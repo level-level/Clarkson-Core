@@ -120,4 +120,8 @@ class Clarkson_Term {
     public function get_term_taxonomy_id() {
         return $this->_term->term_taxonomy_id;
     }
+
+    public function get_permalink(){
+        return get_term_link( $this->get_term(), $this->get_taxonomy() );
+    }
 }
