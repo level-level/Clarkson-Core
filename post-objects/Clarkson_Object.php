@@ -244,7 +244,7 @@ class Clarkson_Object {
 	public function get_author() {
 
 		if ( $this->_post->post_author ) {
-			return User::get( $this->_post->post_author );
+			return Clarkson_User::get( $this->_post->post_author );
 		}
 
 		return null;
