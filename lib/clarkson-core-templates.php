@@ -126,6 +126,11 @@ class Clarkson_Core_Templates {
 		if( isset( $templates["{$type}"] ) ){
 			return $templates["{$type}"];
 		}
+		// Fallback if type is page but there is no page template.
+		// Offcourse only if there is a singular template
+		if( ! isset( $templates["{$type}"], $templates["page"] ) && $templates["singular"] ){
+			return $templates["singular"];
+		}
 		if( isset( $templates['index']) ){
 			return $templates['index'];
 		}
