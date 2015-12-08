@@ -7,7 +7,12 @@ class Clarkson_Core_Templates {
 		global $wp_query;
 
 		if( is_page_template() && isset( $wp_query->post) && isset( $wp_query->post->ID ) ){
-			$path = get_post_meta( $wp_query->post->ID, '_wp_page_template', true );
+			$template_path = get_post_meta( $wp_query->post->ID, '_wp_page_template', true );
+
+			// If this file doesn't exist just fallback on the default WordPress template hierarchy fallback method
+			if( file_exists( $this->get_template_dir() . '/' . $template_path ) ){
+				$path = $template_path;
+			}
 		}
 
 		if( isset( $wp_query->query_vars['json'] ) ) {
