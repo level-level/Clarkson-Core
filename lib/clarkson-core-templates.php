@@ -41,7 +41,7 @@ class Clarkson_Core_Templates {
 		$twig_args = apply_filters( 'clarkson_twig_args', $twig_args);
 		$twig_fs = new Twig_Loader_Filesystem($template_dir);
 		$twig 	 = new Twig_Environment($twig_fs, $twig_args);
-		
+
 		$twig->addExtension( new Clarkson_Core_Twig_Extension()    );
 		$twig->addExtension( new Twig_Extensions_Extension_I18n()  );
 		$twig->addExtension( new Twig_Extensions_Extension_Text()  );
@@ -190,7 +190,7 @@ class Clarkson_Core_Templates {
 		apply_filters('clarkson_core_template_paths', $template_paths);
 		$templates = array();
 		$filters = array();
-		
+
 		foreach( $template_paths as $template_path ){
 			$templates = array_merge($templates, $this->get_templates_from_path($template_path) );
 		}
@@ -201,10 +201,10 @@ class Clarkson_Core_Templates {
 			$base_type = preg_replace('(-.*)', '', $type);
 
 			if( !in_array($base_type, $filters)){
-				add_filter("{$base_type}_template", array($this, 'add_template'));	
+				add_filter("{$base_type}_template", array($this, 'add_template'));
 				$filters[] = $base_type;
 			}
-			
+
 
 			$this->templates[$base] = $template;
 		}
