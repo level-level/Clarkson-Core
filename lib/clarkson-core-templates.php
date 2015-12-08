@@ -126,9 +126,17 @@ class Clarkson_Core_Templates {
 		if( isset( $templates["{$type}"] ) ){
 			return $templates["{$type}"];
 		}
-		// Fallback if type is page but there is no page template.
-		// Offcourse only if there is a singular template
-		if( ! isset( $templates["{$type}"], $templates["page"] ) && $templates["singular"] ){
+
+		/**
+		 * Major exception here:
+		 * Fallback if $type is 'page' but the custom template file in _template
+		 * that isn't present on the disk anymore. Then $type is still 'page'
+		 * but it has could fallback on singular.twig if present.
+		 * This is default WordPress behaviour... so first after commiting, I'm
+		 * going to delete this :)
+		 * Offcourse only if there is a singular template
+		 */
+		if( 'page' == $type && ! isset( $templates["{$type}"] ) && isset( $templates["singular"] ) ){
 			return $templates["singular"];
 		}
 		if( isset( $templates['index']) ){
