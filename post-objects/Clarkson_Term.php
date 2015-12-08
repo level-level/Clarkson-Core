@@ -74,9 +74,11 @@ class Clarkson_Term {
 
     public function get_parent() {
 
-        if ( $this->_term->parent )
-            return new Term( $this->_term->parent, $this->get_taxonomy() );
-
+        if ( $this->_term->parent ) {
+            $class = get_called_class();
+        
+            return new $class( $this->_term->parent, $this->get_taxonomy() );
+        }
         return null;
     }
 
