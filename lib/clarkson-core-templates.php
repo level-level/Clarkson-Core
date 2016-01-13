@@ -62,10 +62,40 @@ class Clarkson_Core_Templates {
 		echo $this->render_twig( $template_file, $objects );
 	}
 
+	private function retrieve_object($objects){
+
+		if( is_object($objects) )
+			return $objects;
+
+		$new_objects = array();
+
+		if( is_array($objects) ){
+			foreach($objects as $object){
+				if( is_object($object) )
+					$new_objects[] = $object;
+				if( is_array($object) ){
+					foreach($object as $sub_object){
+						if( is_object($sub_object) )
+							$new_objects[] = $sub_object;
+					}
+				}
+			}
+		}
+		
+		return $new_objects;
+	}
+
 
 	public function render_json($objects){
 		header('Content-Type: application/json');
-		return json_encode($objects, JSON_PRETTY_PRINT);
+
+		$objects = $this->retrieve_object($objects);
+
+		$json = array_map(function ($object) {
+    		if( method_exists($object, 'get_json') )
+    			return $object->get_json();
+		}, $objects);
+		return json_encode($json, JSON_PRETTY_PRINT);
 	}
 
 
