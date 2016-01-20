@@ -60,6 +60,11 @@ class Clarkson_Core {
 			return;
 
 		$files = glob("{$path}/*.php");
+		$dirs = array_filter(glob("{$path}/*", GLOB_ONLYDIR), 'is_dir');
+
+		foreach($dirs as $dir){
+			$this->load_php_files_from_path($dir);
+		}
 
 		if( empty($files) )
 			return;
