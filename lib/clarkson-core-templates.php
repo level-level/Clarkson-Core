@@ -148,6 +148,13 @@ class Clarkson_Core_Templates {
 		$type   = str_replace('_template', '', $filter);
 
 		$post_type = get_post_type();
+		$term = get_queried_object();
+
+		// Custom Taxonomy Templates per Taxonomy type
+		if( is_a($term, 'WP_Term') && isset( $term->taxonomy) ){
+			$post_type = $term->taxonomy;
+		}
+
 		$templates = $this->templates;
 
 		if( isset( $templates["{$type}-{$post_type}"] ) ){
