@@ -109,6 +109,10 @@ class Clarkson_Term {
     public function get_name() {
         return $this->_term->name;
     }
+    
+    public function get_description() {
+        return $this->_term->description;
+    }
 
     public function set_name( $name ) {
         wp_update_term( $this->get_id(), $this->get_taxonomy(), array( 'name' => $name ) );
