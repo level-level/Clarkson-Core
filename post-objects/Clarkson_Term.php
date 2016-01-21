@@ -39,7 +39,6 @@ class Clarkson_Term {
     }
 
     public function __construct( $term_id, $taxonomy = null ) {
-
         $taxonomy = $taxonomy ? $taxonomy : static::$taxonomy;
 
         if ( empty( $term_id ) || ! $taxonomy )

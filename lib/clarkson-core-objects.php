@@ -8,6 +8,19 @@ class Clarkson_Core_Objects {
 		return $this->objects;
 	}
 
+	public function get_term($term){
+		if( !isset($term->taxonomy) || !isset($term->term_id))
+			return;
+
+		$taxonomy = $term->taxonomy;
+
+		if( in_array($taxonomy, $this->objects) ){
+			return new $taxonomy($term->term_id, $taxonomy);
+		}else{
+			return Clarkson_Term::get_by_id($term->term_id, $taxonomy);
+		}
+	}
+
 	public function get_users($users_ids){
 		$users = array();
 

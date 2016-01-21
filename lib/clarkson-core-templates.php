@@ -123,14 +123,24 @@ class Clarkson_Core_Templates {
 			global $posts;
 			$object_loader = Clarkson_Core_Objects::get_instance();
 
+			$page_vars = array();
+			
 			if( is_author() ){
-				$objects = $object_loader->get_users($posts);
-			}else{
-				$objects = $object_loader->get_objects($posts);
-			}
+				$user = $object_loader->get_users($posts);
+			}elseif( is_tax() ){
+				$term = get_queried_object();
+				// Custom Taxonomy Templates per Taxonomy type
+				if( is_a($term, 'WP_Term') ){
+					 $page_vars['term'] = $object_loader->get_term($term);
+					 $page_vars['objects'] = $object_loader->get_objects($posts);
+				}
 
+			}else{
+				$page_vars['objects'] = $object_loader->get_objects($posts);
+			}
+			
 			// Render it
-			$this->render($template, array( 'objects' => $objects ) );
+			$this->render($template, $page_vars );
 		}
 
 		return $template;
