@@ -226,6 +226,12 @@ class Clarkson_Object {
 
 		if ( ! isset( $this->_content ) ) {
 			setup_postdata( $this->_post );
+			
+			// Post stays empty when wp_query 404 is set, resulting in a warning from the_content
+			global $post;
+			if( $post === null ){
+				$post = $this->_post;
+			}
 
 			ob_start();
 			the_content();
