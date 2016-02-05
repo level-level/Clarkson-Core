@@ -11,6 +11,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension
 		functions.join(',');
 	*/
     private $functions = array(
+    		"get_search_query",
 		"get_adjacent_post",
 		"get_boundary_post",
 		"get_children",
