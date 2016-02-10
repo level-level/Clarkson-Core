@@ -14,6 +14,10 @@ class Clarkson_Core_Templates {
 				$path = $template_path;
 			}
 		}
+		
+		if( is_search() ){
+			$objects['found_posts'] = $wp_query->get('filtered_found_posts') ? $wp_query->get('filtered_found_posts') : $wp_query->found_posts;
+		}
 
 		if( isset( $wp_query->query_vars['json'] ) ) {
 			if( count($objects) === 1 && isset( $objects[0]) ){
