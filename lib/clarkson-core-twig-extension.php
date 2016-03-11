@@ -1,5 +1,8 @@
 <?php
 
+if( ! class_exists('Twig_Extension') )
+	return;
+
 class Clarkson_Core_Twig_Extension extends Twig_Extension
 {
 	/*
