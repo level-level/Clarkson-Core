@@ -79,21 +79,38 @@ class Clarkson_Core_Objects {
 
 	private function register_objects(){
 		$plugin_path = dirname(__DIR__);
-
-		$plugin_objects_path  = $plugin_path. '/post-objects';
-		$theme_objects_path = get_template_directory() . '/post-objects';
-
-		$plugin_objects = $this->get_objects_from_path( $plugin_objects_path  ); 
-		$theme_objects  = $this->get_objects_from_path( $theme_objects_path );
-
-		// Theme overwrites plugins objects
-		$object_paths = array_merge($plugin_objects,$theme_objects);
-		$object_paths = apply_filters( 'clarkson_available_objects_paths', $object_paths);
-
 		$objects = array();
 
+		$core_objects_path  = $plugin_path. '/post-objects';
+		$core_objects = $this->get_objects_from_path( $core_objects_path  );
+
+		foreach( $core_objects as $object_name=>$object_path){
+			include_once($object_path);
+			$objects[] = $object_name;
+		}
+
+		$theme_objects_path = get_template_directory() . '/post-objects';
+		$theme_objects  = $this->get_objects_from_path( $theme_objects_path );
+
+
+		// Theme overwrites plugins objects
+		$theme_objects = apply_filters( 'clarkson_available_objects_paths', $theme_objects);
+
+		if( isset($theme_objects['Page']) ){
+			include_once($theme_objects['Page']);
+			$objects[] = 'Page';
+		}
+
+		if( isset($theme_objects['Post']) ){
+			include_once($theme_objects['Post']);
+			$objects[] = 'Post';
+		}
+
 		// Load classes
-		foreach( $object_paths as $object_name=>$object_path){
+		foreach( $theme_objects as $object_name=>$object_path){
+			if( in_array($object_name, $objects) )
+				continue;
+
 			include_once($object_path);
 			$objects[] = $object_name;
 		}
