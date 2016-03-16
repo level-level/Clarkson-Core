@@ -12,7 +12,7 @@ class Clarkson_Core_Objects {
 		if( !isset($term->taxonomy) || !isset($term->term_id))
 			return;
 
-		$taxonomy = $term->taxonomy;
+		$taxonomy = strtolower($term->taxonomy);
 
 		if( in_array($taxonomy, $this->objects) ){
 			return new $taxonomy($term->term_id, $taxonomy);
@@ -108,6 +108,8 @@ class Clarkson_Core_Objects {
 
 		// Load classes
 		foreach( $theme_objects as $object_name=>$object_path){
+			$object_name = strtolower($object_name);
+			
 			if( in_array($object_name, $objects) )
 				continue;
 
