@@ -108,8 +108,10 @@ class Clarkson_Core_Objects {
 
 		// Load classes
 		foreach( $theme_objects as $object_name=>$object_path){
-			$object_name = strtolower($object_name);
-			
+			if( strpos( $object_name, '_tax_' ) !== false ) {
+				$object_name = strtolower( $object_name );
+			}
+
 			if( in_array($object_name, $objects) )
 				continue;
 
