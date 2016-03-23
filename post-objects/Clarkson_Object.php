@@ -20,10 +20,6 @@ class Clarkson_Object {
 
 		$this->_post = get_post( $post_id );
 
-		if ( ! $this->_post || $this->_post->post_type !==  static::$type  ) {
-			throw new Exception( 'Post not found' );
-		}
-
 	}
 
 	public function __get( $name ) {
