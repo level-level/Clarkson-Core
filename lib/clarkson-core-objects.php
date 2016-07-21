@@ -52,6 +52,8 @@ class Clarkson_Core_Objects {
 
 	public function get_object($post_id){
 		$type = get_post_type( $post_id);
+		$type = apply_filters( 'clarkson_object_type', $type );
+
 		$object_name = $this->camel_case($type);
 
 		if( !in_array($object_name, $this->objects) ){
