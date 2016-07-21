@@ -4,7 +4,7 @@ class Clarkson_Core_Objects {
 
 	protected $objects = array();
 
-	public function availeble_objects(){
+	public function available_objects(){
 		return $this->objects;
 	}
 
