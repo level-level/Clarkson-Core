@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: Clarkson Core
- * Version: 1.0
+ * Version: 0.1.0
  * Plugin URI: Comming Soon!
  * Description: The Core of Clarkson, use Twig templating and Objects to render thingies
  * Author: Level Level
@@ -14,7 +14,7 @@
  *
  * @package WordPress
  * @author Level Level
- * @since 1.0.0
+ * @since 0.1.0
  */
 
 class Clarkson_Core {
