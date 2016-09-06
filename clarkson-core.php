@@ -49,30 +49,25 @@ class Clarkson_Core {
 		$theme_dir = get_template_directory();
 
 		foreach($dirs as $dir){
-			$this->load_php_files_from_path( $theme_dir . "/{$dir}" );
+			if(is_string($theme_dir . "/{$dir}") && file_exists($theme_dir . "/{$dir}") ){
+				$this->load_php_files_from_path( $theme_dir . "/{$dir}" );
+			}
 		}
 
 	}
 
-	private function load_php_files_from_path($path = false){
-
-		if( !$path || !is_string($path) || !file_exists($path) )
-			return;
-
-		$files = glob("{$path}/*.php");
-		$dirs = array_filter(glob("{$path}/*", GLOB_ONLYDIR), 'is_dir');
-
-		foreach($dirs as $dir){
-			$this->load_php_files_from_path($dir);
+	private function load_php_files_from_path($path){
+		$handle = opendir($path);
+		while (false !== ($entry = readdir($handle))) {
+			$fullPath = $path . "/$entry";
+			if(strrchr($entry, '.') == '.php'){
+				require_once($fullPath);
+			}elseif($entry != '.' && $entry != '..'){
+				if(filetype($fullPath) == 'dir'){
+					$this->load_php_files_from_path($fullPath);
+				}
+			}
 		}
-
-		if( empty($files) )
-			return;
-
-		foreach ( $files as $filepath){
-			require_once $filepath;
-		}
-
 	}
 
 	// Singleton
@@ -114,3 +109,4 @@ class Clarkson_Core {
 }
 
 add_action('plugins_loaded', array('Clarkson_Core', 'get_instance'));
+
