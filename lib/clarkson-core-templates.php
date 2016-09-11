@@ -2,9 +2,15 @@
 class Clarkson_Core_Templates {
 
 	protected $templates = array();
+	protected $hasBeenCalled = false;
 
-	public function render($path, $objects){
+	public function render($path, $objects, $ignore_warning = false){
 		global $wp_query;
+
+		if(!$ignore_warning && $this->hasBeenCalled){
+			user_error("Template rendering has already been called. If you are trying to render a partial, include the file from the parent template for performance reasons. If you have a specific reason to render multiple times, set ignore_warning to true.", E_USER_NOTICE);
+		}
+		$this->hasBeenCalled = true;
 
 		if( is_page_template() && isset( $wp_query->post) && isset( $wp_query->post->ID ) ){
 			$template_path = get_post_meta( $wp_query->post->ID, '_wp_page_template', true );
@@ -14,7 +20,7 @@ class Clarkson_Core_Templates {
 				$path = $template_path;
 			}
 		}
-		
+
 		if( is_search() ){
 			$objects['found_posts'] = $wp_query->get('filtered_found_posts') ? $wp_query->get('filtered_found_posts') : $wp_query->found_posts;
 		}
@@ -26,14 +32,18 @@ class Clarkson_Core_Templates {
 			$this->echo_json($objects);
 		}
 		else {
-			$this->echo_twig($path, $objects);
+			$this->echo_twig($path, $objects, $ignore_warning);
 		}
 		exit();
 	}
 
 
-	public function render_twig($path, $objects){
+	public function render_twig($path, $objects, $ignore_warning = false){
 		// TWIG ARGS
+		if(!$ignore_warning && $this->hasBeenCalled){
+			user_error("Template rendering has already been called. If you are trying to render a partial, include the file from the parent template for performance reasons. If you have a specific reason to render multiple times, set ignore_warning to true.", E_USER_NOTICE);
+		}
+		$this->hasBeenCalled = true;
 		$template_dir  = $this->get_template_dir();
 		$template_file = str_replace( $template_dir, '', $path );
 		$debug 		= ( defined('WP_DEBUG') ? WP_DEBUG : false );
@@ -57,13 +67,13 @@ class Clarkson_Core_Templates {
 		}
 
 		$context_args = apply_filters('clarkson_context_args', $objects );
-		
+
 		return $twig->render( $template_file, $context_args );
 	}
 
 
-	public function echo_twig( $template_file, $objects ){
-		echo $this->render_twig( $template_file, $objects );
+	public function echo_twig( $template_file, $objects, $ignore_warning = false ){
+		echo $this->render_twig( $template_file, $objects, $ignore_warning );
 	}
 
 	private function retrieve_object($objects){
@@ -85,7 +95,7 @@ class Clarkson_Core_Templates {
 				}
 			}
 		}
-		
+
 		return $new_objects;
 	}
 
@@ -128,7 +138,7 @@ class Clarkson_Core_Templates {
 			$object_loader = Clarkson_Core_Objects::get_instance();
 
 			$page_vars = array();
-			
+
 			if( is_author() ){
 				$user = $object_loader->get_users($posts);
 			}elseif( is_tax() ){
@@ -142,7 +152,7 @@ class Clarkson_Core_Templates {
 			}else{
 				$page_vars['objects'] = $object_loader->get_objects($posts);
 			}
-			
+
 			// Render it
 			$this->render($template, $page_vars );
 		}
