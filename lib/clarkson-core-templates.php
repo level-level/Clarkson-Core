@@ -14,7 +14,7 @@ class Clarkson_Core_Templates {
 				$path = $template_path;
 			}
 		}
-		
+
 		if( is_search() ){
 			$objects['found_posts'] = $wp_query->get('filtered_found_posts') ? $wp_query->get('filtered_found_posts') : $wp_query->found_posts;
 		}
@@ -57,7 +57,7 @@ class Clarkson_Core_Templates {
 		}
 
 		$context_args = apply_filters('clarkson_context_args', $objects );
-		
+
 		return $twig->render( $template_file, $context_args );
 	}
 
@@ -85,7 +85,7 @@ class Clarkson_Core_Templates {
 				}
 			}
 		}
-		
+
 		return $new_objects;
 	}
 
@@ -128,7 +128,7 @@ class Clarkson_Core_Templates {
 			$object_loader = Clarkson_Core_Objects::get_instance();
 
 			$page_vars = array();
-			
+
 			if( is_author() ){
 				$user = $object_loader->get_users($posts);
 			}elseif( is_tax() ){
@@ -142,7 +142,7 @@ class Clarkson_Core_Templates {
 			}else{
 				$page_vars['objects'] = $object_loader->get_objects($posts);
 			}
-			
+
 			// Render it
 			$this->render($template, $page_vars );
 		}
@@ -203,10 +203,13 @@ class Clarkson_Core_Templates {
 		// If it doesn't exist, or it's empty prepare an array
 		$theme = wp_get_theme();
 
-		if ( !method_exists($theme, 'get_page_templates') || empty( $theme->get_page_templates() ) ) {
-			$templates = array();
-		} else{
+		if ( method_exists($theme, 'get_page_templates') ){
 			$templates = $theme->get_page_templates();
+			if(empty($templates)){
+				$templates = array();
+			}
+		}else{
+			$templates = array();
 		}
 
 		$templates = array_merge( $templates, $choices );
