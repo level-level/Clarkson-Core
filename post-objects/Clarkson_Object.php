@@ -9,17 +9,20 @@ class Clarkson_Object {
 	protected static $posts;
 
 	/**
-	 * @param int $post_id
+	 * @param WP_Post $post
 	 * @throws Exception
 	 */
-	public function __construct( $post_id ) {
+	public function __construct( $post ) {
+		if(is_a($post, 'WP_Post')){
+			$this->_post = $post;
+		}else{
+			trigger_error("Deprecated __construct called with an ID. Use `::get($post)` instead.", E_USER_DEPRECATED);
+			if ( empty( $post ) ) {
+				throw new Exception( '$post empty' );
+			}
 
-		if ( empty( $post_id ) ) {
-			throw new Exception( '$post_id empty' );
+			return self::get($post);
 		}
-
-		$this->_post = get_post( $post_id );
-
 	}
 
 	public function __get( $name ) {
@@ -40,7 +43,7 @@ class Clarkson_Object {
 			$class = get_called_class();
 
 			try {
-				static::$posts[ $id ] = new $class( $id );
+				static::$posts[ $id ] = new $class( get_post($id) );
 			} catch ( Exception $e ) {
 				static::$posts[ $id ] = null;
 			}
@@ -71,7 +74,7 @@ class Clarkson_Object {
 		 */
 		return array_map( function( $post ) use ( $class ) {
 
-			return $class::get( $post->ID );
+			return new $class( $post );
 		}, $query->posts );
 	}
 
@@ -222,7 +225,7 @@ class Clarkson_Object {
 
 		if ( ! isset( $this->_content ) ) {
 			setup_postdata( $this->_post );
-			
+
 			// Post stays empty when wp_query 404 is set, resulting in a warning from the_content
 			global $post;
 			if( $post === null ){
