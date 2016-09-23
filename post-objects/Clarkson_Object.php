@@ -21,7 +21,7 @@ class Clarkson_Object {
 				throw new Exception( '$post empty' );
 			}
 
-			return self::get($post);
+			$this->_post = get_post( $post );
 		}
 	}
 
