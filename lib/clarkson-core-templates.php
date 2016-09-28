@@ -7,11 +7,6 @@ class Clarkson_Core_Templates {
 	public function render($path, $objects, $ignore_warning = false){
 		global $wp_query;
 
-		if(!$ignore_warning && $this->hasBeenCalled){
-			user_error("Template rendering has already been called. If you are trying to render a partial, include the file from the parent template for performance reasons. If you have a specific reason to render multiple times, set ignore_warning to true.", E_USER_NOTICE);
-		}
-		$this->hasBeenCalled = true;
-
 		if( is_page_template() && isset( $wp_query->post) && isset( $wp_query->post->ID ) ){
 			$template_path = get_post_meta( $wp_query->post->ID, '_wp_page_template', true );
 
