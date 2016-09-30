@@ -83,7 +83,7 @@ class Clarkson_Core_Objects {
 		$plugin_path = dirname(__DIR__);
 		$objects = array();
 
-		$core_objects_path  = $plugin_path. '/post-objects';
+		$core_objects_path  = $plugin_path. '/wordpress-objects';
 		$core_objects = $this->get_objects_from_path( $core_objects_path  );
 
 		foreach( $core_objects as $object_name=>$object_path){
@@ -91,9 +91,19 @@ class Clarkson_Core_Objects {
 			$objects[] = $object_name;
 		}
 
-		$theme_objects_path = get_template_directory() . '/post-objects';
-		$theme_objects  = $this->get_objects_from_path( $theme_objects_path );
+		$theme_objects = array();
 
+		$theme_objects_path = get_template_directory() . '/wordpress-objects';
+		if(is_dir($theme_objects_path)){
+			$theme_objects  = $this->get_objects_from_path( $theme_objects_path );
+		}
+
+		// Load deprecated post-objects folder
+		$theme_deprecated_objects_path = get_template_directory() . '/post-objects';
+		if(is_dir($theme_deprecated_objects_path)){
+			user_error("The {$theme_deprecated_objects_path} folder is deprecated. Please use {$theme_objects_path}.", E_USER_DEPRECATED);
+			$theme_objects  = array_merge($this->get_objects_from_path( $theme_deprecated_objects_path ), $theme_objects);
+		}
 
 		// Theme overwrites plugins objects
 		$theme_objects = apply_filters( 'clarkson_available_objects_paths', $theme_objects);
