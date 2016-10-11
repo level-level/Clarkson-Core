@@ -24,6 +24,11 @@ class Clarkson_Core {
 		// Load lib
 		$this->load_php_files_from_path( __DIR__ . '/lib' );
 
+		// Deprecated functions and filters
+		if( class_exists('Clarkson_Core_Deprecated') ){
+			Clarkson_Core_Deprecated::get_instance();
+		}
+
 		// Load post objects
 		if( class_exists('Clarkson_Core_Objects') ){
 			Clarkson_Core_Objects::get_instance();
