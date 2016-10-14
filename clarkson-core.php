@@ -2,8 +2,8 @@
 /*
  * Plugin Name: Clarkson Core
  * Version: 0.1.5
- * Plugin URI: Comming Soon!
- * Description: The Core of Clarkson, use Twig templating and Objects to render thingies
+ * Plugin URI: http://wp-clarkson.com/core
+ * Description: A plugin to write Object-Oriented code in combination with the Twig templating engine while keeping the WordPress Way of working in mind.
  * Author: Level Level
  * Author URI: http://www.level-level.com
  * Requires at least: 4.0
