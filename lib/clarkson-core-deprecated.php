@@ -8,6 +8,7 @@
  * and
  * https://github.com/woocommerce/woocommerce/blob/master/includes/wc-deprecated-functions.php
  *
+ * @since 0.1.6
  */
 
 class Clarkson_Core_Deprecated {
