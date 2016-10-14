@@ -1,5 +1,5 @@
 # Clarkson Core
-A plugin to write Object-Oriented code in combination with the Twig templating enging while keeping the WordPress Way of working in mind.
+A plugin to write Object-Oriented code in combination with the Twig templating engine while keeping the WordPress Way of working in mind.
 
 ## Requirements
 Composer, that's it.
