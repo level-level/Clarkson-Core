@@ -5,16 +5,9 @@ if( ! class_exists('Twig_Extension') )
 
 class Clarkson_Core_Twig_Extension extends Twig_Extension
 {
-	/*
-		var functions = [];
-		jQuery('a[href^="/Function"]').each(function(index, element){
-			var $el = jQuery(element);
-			functions.push( '"' + $el.text() + '"' );
-		});
-		functions.join(',');
-	*/
+
     private $functions = array(
-    		"get_search_query",
+    	"get_search_query",
 		"get_adjacent_post",
 		"get_boundary_post",
 		"get_children",
@@ -933,7 +926,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension
 		"is_time",
 		"is_year",
 		"pings_open",
-	    "gravity_form"
+	    "gravity_form" // shouldn't be here...
     );
 
     public function __construct(array $functions = array())
@@ -947,8 +940,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension
     {
         $twigFunctions = array();
 
-        $allowed_functions = apply_filters( 'clarkson_twig_functions', $this->functions);
-		//$allowed_functions = apply_filters( 'clarkson_twig_functions', $allowed_functions);
+        $allowed_functions = apply_filters('clarkson_twig_functions', $this->functions);
 
         foreach ($allowed_functions  as $function) {
             $twigFunctions[] = new Twig_SimpleFunction($function,$function);
