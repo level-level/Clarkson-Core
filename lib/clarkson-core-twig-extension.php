@@ -947,7 +947,8 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension
     {
         $twigFunctions = array();
 
-        $allowed_functions = apply_filters( 'yalla_twig_functions', $this->functions);
+        $allowed_functions = apply_filters( 'clarkson_twig_functions', $this->functions);
+		//$allowed_functions = apply_filters( 'clarkson_twig_functions', $allowed_functions);
 
         foreach ($allowed_functions  as $function) {
             $twigFunctions[] = new Twig_SimpleFunction($function,$function);
