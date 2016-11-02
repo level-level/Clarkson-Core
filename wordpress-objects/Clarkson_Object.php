@@ -260,19 +260,18 @@ class Clarkson_Object {
 	}
 
 	public function get_excerpt() {
+		if ( !has_excerpt($this->_post) ) {
 
-		if ( ! isset( $this->_excerpt ) ) {
-			setup_postdata( $this->_post );
-
-			ob_start();
-			the_excerpt();
-
-			$this->_excerpt = ob_get_clean();
-			wp_reset_postdata();
+            global $post;
+            $save_post = $post;
+            $post = get_post($this::get_id());
+            setup_postdata( $post ); // hello
+            $output = get_the_excerpt();
+            $post = $save_post;
+            return $output;
 		}
 
-		return $this->_excerpt;
-
+		return $this->_post->post_excerpt;
 	}
 
 	public function get_comment_count() {
