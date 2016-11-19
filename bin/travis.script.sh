@@ -20,9 +20,6 @@ function remove_diff_range {
 function filter_php_files {
 	 grep -E '\.php(:|$)'
 }
-function filter_js_files {
-	grep -E '\.js(:|$)'
-}
 
 # Run PHP syntax check
 for php_file in $( cat /tmp/checked-files | remove_diff_range | filter_php_files ); do
