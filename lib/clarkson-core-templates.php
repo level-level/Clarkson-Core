@@ -121,10 +121,10 @@ class Clarkson_Core_Templates {
 	 * This takes notices of the child / parent hierarchy, so that's why the child theme gets searched first and then the parent theme, just like the regular WordPress templating hierarchy.
 	 */
 	public function get_templates_dirs(){
-		$template_dirs = [
+		$template_dirs = array(
 			$this->get_stylesheet_dir(),
 			$this->get_template_dir(),
-		];
+		);
 
 		// if no child-theme is used, then these two above are the same
 		$template_dirs = array_unique( $template_dirs );
