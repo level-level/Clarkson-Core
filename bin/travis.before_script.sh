@@ -28,9 +28,12 @@ fi
 
 # Install the WordPress Unit Tests
 if [ -e phpunit.xml ] || [ -e phpunit.xml.dist ]; then
-	bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+	echo "Install Unit tests"
+	bash bin/install-wp-tests.sh wordpress_test root root localhost $WP_VERSION true
+echo "move to /tmp"
 	cd ${WP_CORE_DIR}/wp-content/plugins
-	mv $PLUGIN_DIR $PLUGIN_SLUG
+	#check if dir exists
+	mv -r $PLUGIN_DIR $PLUGIN_SLUG
 	cd $PLUGIN_SLUG
 	ln -s $(pwd) $PLUGIN_DIR
 	echo "Plugin location: $(pwd)"
