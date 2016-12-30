@@ -10,8 +10,10 @@ class Clarkson_Core_Templates {
 		if( is_page_template() && isset( $wp_query->post) && isset( $wp_query->post->ID ) ){
 			$template_path = get_post_meta( $wp_query->post->ID, '_wp_page_template', true );
 
-			// If this file doesn't exist just fallback on the default WordPress template hierarchy fallback method
-			if( file_exists( $this->get_template_dir() . '/' . $template_path ) ){
+			// If this file doesn't exist just fallback on the default WordPress template hierarchy fallback method and first checking the child-theme and then the parent theme
+			if( file_exists( $this->get_stylesheet_dir() . '/' . $template_path ) ){
+				$path = $template_path;
+			} elseif ( file_exists( $this->get_template_dir() . '/' . $template_path ) ){
 				$path = $template_path;
 			}
 		}
@@ -39,16 +41,17 @@ class Clarkson_Core_Templates {
 			user_error("Template rendering has already been called. If you are trying to render a partial, include the file from the parent template for performance reasons. If you have a specific reason to render multiple times, set ignore_warning to true.", E_USER_NOTICE);
 		}
 		$this->hasBeenCalled = true;
-		$template_dir  = $this->get_template_dir();
-		$template_file = str_replace( $template_dir, '', $path );
-		$debug 		= ( defined('WP_DEBUG') ? WP_DEBUG : false );
 
+		$template_dirs  = $this->get_templates_dirs();
+		$template_file = str_replace( array( $this->get_template_dir(), $this->get_stylesheet_dir() ), '', $path); // Retreive only the path to the template file, relative from the yourtheme/templates directory
+
+		$debug 		= ( defined('WP_DEBUG') ? WP_DEBUG : false );
 		$twig_args 	= array(
 			'debug' => $debug
 		);
 
 		$twig_args = apply_filters( 'clarkson_twig_args', $twig_args);
-		$twig_fs = new Twig_Loader_Filesystem($template_dir);
+		$twig_fs = new Twig_Loader_Filesystem($template_dirs);
 		$twig 	 = new Twig_Environment($twig_fs, $twig_args);
 
 		$twig->addExtension( new Clarkson_Core_Twig_Extension()    );
@@ -101,8 +104,8 @@ class Clarkson_Core_Templates {
 		$objects = $this->retrieve_object($objects);
 
 		$json = array_map(function ($object) {
-    		if( method_exists($object, 'get_json') )
-    			return $object->get_json();
+			if( method_exists($object, 'get_json') )
+				return $object->get_json();
 		}, $objects);
 		return json_encode($json, JSON_PRETTY_PRINT);
 	}
@@ -112,8 +115,34 @@ class Clarkson_Core_Templates {
 		echo $this->render_json( $objects );
 	}
 
+	/**
+	 * Get the template directories where the Twig files are located in.
+	 *
+	 * This takes notices of the child / parent hierarchy, so that's why the child theme gets searched first and then the parent theme, just like the regular WordPress templating hierarchy.
+	 */
+	public function get_templates_dirs(){
+		$template_dirs = [
+			$this->get_stylesheet_dir(),
+			$this->get_template_dir(),
+		];
+
+		// if no child-theme is used, then these two above are the same
+		$template_dirs = array_unique( $template_dirs );
+		return apply_filters( 'clarkson_twig_template_dirs', $template_dirs );
+	}
+
+	/**
+	 * Filter the main or parent theme directory
+	 */
 	public function get_template_dir(){
 		return apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' );
+	}
+
+	/**
+	 * Filter the child theme directory
+	 */
+	public function get_stylesheet_dir(){
+		return apply_filters( 'clarkson_twig_stylesheet_dir', get_stylesheet_directory() . '/templates' );
 	}
 
 	public function template_include($template){
@@ -140,8 +169,8 @@ class Clarkson_Core_Templates {
 				$term = get_queried_object();
 				// Custom Taxonomy Templates per Taxonomy type
 				if( is_a($term, 'WP_Term') ){
-					 $page_vars['term'] = $object_loader->get_term($term);
-					 $page_vars['objects'] = $object_loader->get_objects($posts);
+					$page_vars['term'] = $object_loader->get_term($term);
+					$page_vars['objects'] = $object_loader->get_objects($posts);
 				}
 
 			}else{
@@ -252,12 +281,12 @@ class Clarkson_Core_Templates {
 	}
 
 	/**
-	* Adds our template to the page dropdown for v4.7+
-    */
- 	public function add_new_template( $posts_templates ) {
+	 * Adds our template to the page dropdown for v4.7+
+	 */
+	public function add_new_template( $posts_templates ) {
 		$posts_templates = $this->get_templates();
 		return $posts_templates;
-   	}
+	}
 
 	private function add_template_filters(){
 		// Get template files
