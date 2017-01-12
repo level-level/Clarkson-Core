@@ -170,6 +170,18 @@ class Clarkson_Object {
 		return date( $format, strtotime( $this->_post->post_date_gmt ) );
 	}
 
+    /**
+     * Get the date localized from the wordpress .mo file.
+     *
+     * @param string $format
+     * @param bool $gmt
+     * @return string
+     */
+    public function get_localized_date( $format = 'U', $gmt = false ) {
+
+        return date_i18n( $format, strtotime( $this->_post->post_date_gmt, $gmt ) );
+    }
+
 	/**
 	 * Set the post date of the post
 	 *
