@@ -15,6 +15,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension
 		"get_next_post",
 		"get_next_posts_link",
 		"next_posts_link",
+	    	"posts_nav_link",
 		"get_permalink",
 		"the_permalink",
 		"get_the_excerpt",
@@ -926,7 +927,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension
 		"is_time",
 		"is_year",
 		"pings_open",
-	    "gravity_form" // shouldn't be here...
+	    	"gravity_form" // shouldn't be here...
     );
 
     public function __construct(array $functions = array())
