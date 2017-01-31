@@ -171,6 +171,18 @@ class Clarkson_Object {
 	}
 
 	/**
+	 * Get the date in localized format
+	 *
+	 * @param string $format
+	 * @param bool $gmt
+	 * @return string
+	 */
+	public function get_date_i18n( $format = 'U', $gmt = false ) {
+
+		return date_i18n( $format, strtotime( $this->_post->post_date_gmt, $gmt ) );
+	}
+
+	/**
 	 * Set the post date of the post
 	 *
 	 * @param int $time PHP timestamp
