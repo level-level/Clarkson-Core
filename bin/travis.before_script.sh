@@ -33,7 +33,7 @@ if [ -e phpunit.xml ] || [ -e phpunit.xml.dist ]; then
 echo "move to /tmp"
 	cd ${WP_CORE_DIR}/wp-content/plugins
 	#check if dir exists
-	mv -r $PLUGIN_DIR $PLUGIN_SLUG
+	mv $PLUGIN_DIR $PLUGIN_SLUG
 	cd $PLUGIN_SLUG
 	ln -s $(pwd) $PLUGIN_DIR
 	echo "Plugin location: $(pwd)"
