@@ -29,7 +29,7 @@ fi
 # Install the WordPress Unit Tests
 if [ -e phpunit.xml ] || [ -e phpunit.xml.dist ]; then
 	echo "Install Unit tests"
-	bash bin/install-wp-tests.sh wordpress_test root root localhost $WP_VERSION true
+	bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION true
 echo "move to /tmp"
 	cd ${WP_CORE_DIR}/wp-content/plugins
 	#check if dir exists
