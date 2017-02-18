@@ -28,14 +28,21 @@ fi
 
 # Install the WordPress Unit Tests
 if [ -e phpunit.xml ] || [ -e phpunit.xml.dist ]; then
+
 	echo "Install Unit tests"
 	bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-echo "move to /tmp"
+
+    echo "move to ${WP_CORE_DIR}/wp-content/plugins"
 	cd ${WP_CORE_DIR}/wp-content/plugins
 	#check if dir exists
+	echo "move $PLUGIN_DIR"
+	echo "move $PLUGIN_DIR to $PLUGIN_SLUG"
 	mv $PLUGIN_DIR $PLUGIN_SLUG
+	echo "cd $PLUGIN_SLUG"
 	cd $PLUGIN_SLUG
+
 	ln -s $(pwd) $PLUGIN_DIR
+	ls -alh $(pwd)
 	echo "Plugin location: $(pwd)"
 
 	if ! command -v phpunit >/dev/null 2>&1; then
@@ -46,6 +53,7 @@ echo "move to /tmp"
 fi
 
 # Install PHP_CodeSniffer and the WordPress Coding Standards
+echo "Install PHP_CodeSniffer and the WordPress Coding Standards"
 mkdir -p $PHPCS_DIR && curl -L https://github.com/$PHPCS_GITHUB_SRC/archive/$PHPCS_GIT_TREE.tar.gz | tar xz --strip-components=1 -C $PHPCS_DIR
 mkdir -p $WPCS_DIR && curl -L https://github.com/$WPCS_GITHUB_SRC/archive/$WPCS_GIT_TREE.tar.gz | tar xz --strip-components=1 -C $WPCS_DIR
 $PHPCS_DIR/scripts/phpcs --config-set installed_paths $WPCS_DIR
