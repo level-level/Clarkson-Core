@@ -35,7 +35,6 @@ if [ -e phpunit.xml ] || [ -e phpunit.xml.dist ]; then
     echo "move to ${WP_CORE_DIR}/wp-content/plugins"
 	cd ${WP_CORE_DIR}/wp-content/plugins
 	#check if dir exists
-	echo "move $PLUGIN_DIR"
 	echo "move $PLUGIN_DIR to $PLUGIN_SLUG"
 	mv $PLUGIN_DIR $PLUGIN_SLUG
 	echo "cd $PLUGIN_SLUG"
