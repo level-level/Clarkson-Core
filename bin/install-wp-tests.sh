@@ -44,6 +44,7 @@ set -ex
 install_wp() {
 
 	if [ -d $WP_CORE_DIR ]; then
+	    echo 'WordPress already exists';
 		return;
 	fi
 
@@ -60,11 +61,29 @@ install_wp() {
 		else
 			local ARCHIVE_NAME="wordpress-$WP_VERSION"
 		fi
-		download https://wordpress.org/${ARCHIVE_NAME}.tar.gz  /tmp/wordpress.tar.gz
-		tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
+
+		# Original: Always download
+        # download https://wordpress.org/${ARCHIVE_NAME}.tar.gz  /tmp/wordpress.tar.gz
+        # tar --strip-components=1 -zxmf /tmp/wordpress.tar.gz -C $WP_CORE_DIR
+
+        # Modified: Only do download if it hasn't been downloaded before
+        CURR_DIR=$(pwd)
+        cd /tmp
+        wget --timestamping -nv http://wordpress.org/${ARCHIVE_NAME}.tar.gz
+
+        cd ${CURR_DIR}
+        tar --strip-components=1 -zxmf /tmp/${ARCHIVE_NAME}.tar.gz -C $WP_CORE_DIR
 	fi
 
-	download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_CORE_DIR/wp-content/db.php
+	# Original: Always download
+	# download https://raw.github.com/markoheijnen/wp-mysqli/master/db.php $WP_CORE_DIR/wp-content/db.php
+
+	# Modified: Only do download if it hasn't been downloaded before
+	CURR_DIR=$(pwd)
+	cd /tmp
+	wget --timestamping -nv https://raw.github.com/markoheijnen/wp-mysqli/master/db.php
+	cd ${CURR_DIR}
+	mv /tmp/db.php $WP_CORE_DIR/wp-content/db.php
 }
 
 install_test_suite() {
