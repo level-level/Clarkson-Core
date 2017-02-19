@@ -4,7 +4,7 @@ class Clarkson_Core_Templates {
 	protected $templates = array();
 	protected $hasBeenCalled = false;
 
-	public function render($path, $objects, $ignore_warning = false){
+	public function render( $path, $objects, $ignore_warning = false ){
 		global $wp_query;
 
 		if( is_page_template() && isset( $wp_query->post) && isset( $wp_query->post->ID ) ){
@@ -35,9 +35,9 @@ class Clarkson_Core_Templates {
 	}
 
 
-	public function render_twig($path, $objects, $ignore_warning = false){
+	public function render_twig( $path, $objects, $ignore_warning = false ){
 		// TWIG ARGS
-		if(!$ignore_warning && $this->hasBeenCalled){
+		if( !$ignore_warning && $this->hasBeenCalled ){
 			user_error("Template rendering has already been called. If you are trying to render a partial, include the file from the parent template for performance reasons. If you have a specific reason to render multiple times, set ignore_warning to true.", E_USER_NOTICE);
 		}
 		$this->hasBeenCalled = true;
@@ -135,7 +135,14 @@ class Clarkson_Core_Templates {
 	 * Filter the main or parent theme directory
 	 */
 	public function get_template_dir(){
-		return apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' );
+		$dir = apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' );
+		if( defined('CLARKSON_CORE_DIR') ){
+			echo CLARKSON_CORE_DIR . "\n";
+		}
+		echo $dir . "\n";
+
+		return $dir;
+
 	}
 
 	/**

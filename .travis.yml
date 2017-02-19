@@ -1,0 +1,29 @@
+sudo: false
+
+language: php
+
+notifications:
+  email:
+    on_success: never
+    on_failure: change
+
+branches:
+  only:
+    - master
+
+php:
+  - 7.0
+
+env:
+    - WP_VERSION=latest WP_MULTISITE=0
+
+install:
+  - composer self-update --no-interaction
+  - composer install --no-interaction --prefer-dist
+
+before_script:
+    - source bin/travis.before_script.sh
+
+script:
+    - bin/travis.script.sh
+    - phpunit

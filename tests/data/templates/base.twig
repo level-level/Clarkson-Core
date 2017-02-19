@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <title>{% block title %}Base{% endblock title %}</title>
+    {% endblock head %}
+</head>
+<body>
+{% block header %}
+    <header>
+        <h1>{{ header_h1|default('Example Site') }}</h1>
+    </header>
+{% endblock header %}
+
+{% block main %}
+    <main>
+        <p>Default template.</p>
+    </main>
+{% endblock main %}
+
+{% block footer %}
+    <footer>
+        Copyright &copy; 2017
+    </footer>
+{% endblock footer %}
+</body>
+</html>
