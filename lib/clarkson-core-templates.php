@@ -113,7 +113,14 @@ class Clarkson_Core_Templates {
 	}
 
 	public function get_template_dir(){
-		return apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' );
+		$dir = apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' );
+		if( defined('CLARKSON_CORE_THEME_ROOT') ){
+			echo CLARKSON_CORE_THEME_ROOT;
+			echo $dir;
+		}
+
+		return $dir;
+
 	}
 
 	public function template_include($template){
