@@ -47,8 +47,14 @@ class Clarkson_Core_Templates {
 			'debug' => $debug
 		);
 
+		$open_basedir = ini_get('open_basedir');
+		$root_path = '/';
+		if ( $open_basedir ) {
+			$root_path = null;
+		}
+		$twig_fs = new Twig_Loader_Filesystem( $template_dir, $root_path );
+
 		$twig_args = apply_filters( 'clarkson_twig_args', $twig_args);
-		$twig_fs = new Twig_Loader_Filesystem($template_dir);
 		$twig 	 = new Twig_Environment($twig_fs, $twig_args);
 
 		$twig->addExtension( new Clarkson_Core_Twig_Extension()    );
