@@ -9,12 +9,6 @@ if ( false !== getenv( 'WP_PLUGIN_DIR' ) ) {
   define( 'WP_PLUGIN_DIR', getenv( 'WP_PLUGIN_DIR' ) );
 }
 
-if ( false !== getenv( 'PLUGIN_DIR' ) ) {
-	define( 'CLARKSON_CORE_DIR', getenv( 'PLUGIN_DIR' ) );
-}
-
-
-
 require_once $_tests_dir . '/includes/functions.php';
 
 function _manually_load_plugin() {
