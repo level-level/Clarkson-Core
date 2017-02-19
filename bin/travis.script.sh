@@ -28,11 +28,11 @@ done
 
 
 # Run PHP_CodeSniffer
-echo "## PHP_CodeSniffer"
-if ! cat /tmp/checked-files | remove_diff_range | filter_php_files | xargs --no-run-if-empty $PHPCS_DIR/scripts/phpcs -s --report-emacs=/tmp/phpcs-report --standard=$WPCS_STANDARD $(if [ -n "$PHPCS_IGNORE" ]; then echo --ignore=$PHPCS_IGNORE; fi); then
-    cat /tmp/phpcs-report
-    exit 1
-fi
+#echo "## PHP_CodeSniffer"
+#if ! cat /tmp/checked-files | remove_diff_range | filter_php_files | xargs --no-run-if-empty $PHPCS_DIR/scripts/phpcs -s --report-emacs=/tmp/phpcs-report --standard=$WPCS_STANDARD $(if [ -n "$PHPCS_IGNORE" ]; then echo --ignore=$PHPCS_IGNORE; fi); then
+#    cat /tmp/phpcs-report
+#    exit 1
+#fi
 
 # Run PHPUnit tests
 if [ -e phpunit.xml ] || [ -e phpunit.xml.dist ]; then
