@@ -52,6 +52,9 @@ class Clarkson_Core_Templates {
 		if ( $open_basedir ) {
 			$root_path = null;
 		}
+		if( defined('WP_CORE_DIR') ){
+			$root_path = WP_CORE_DIR;
+		}
 		$twig_fs = new Twig_Loader_Filesystem( $template_dir, $root_path );
 
 		$twig_args = apply_filters( 'clarkson_twig_args', $twig_args);
