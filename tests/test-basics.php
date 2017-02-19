@@ -12,7 +12,7 @@ class BasicsTest extends WP_UnitTestCase {
 
 	function init(){
 		// Register a dir where to search for Twig templates
-		add_filter('clarkson_twig_template_dir', function(){
+		tests_add_filter('clarkson_twig_template_dir', function(){
 			return [ plugin_dir_path( __FILE__ ) . 'data/templates' ];
 		});
 	}
