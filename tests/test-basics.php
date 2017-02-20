@@ -15,6 +15,9 @@ class BasicsTest extends WP_UnitTestCase {
 		tests_add_filter('clarkson_twig_template_dir', function(){
 			return plugin_dir_path( __FILE__ ) . 'data/templates';
 		});
+		add_filter('clarkson_twig_template_dir', function(){
+			return plugin_dir_path( __FILE__ ) . 'data/templates';
+		});
 	}
 
 	function test_sample() {
