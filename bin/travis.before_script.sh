@@ -31,9 +31,9 @@ if [ -e phpunit.xml ] || [ -e phpunit.xml.dist ]; then
 
 	echo "Install Unit tests"
 	bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-
-    echo "move to ${WP_CORE_DIR}/wp-content/plugins"
-	cd ${WP_CORE_DIR}/wp-content/plugins
+	mkdir -p "${WP_CORE_DIR}/wp-content/mu-plugins"
+    	echo "move to ${WP_CORE_DIR}/wp-content/mu-plugins"
+	cd ${WP_CORE_DIR}/wp-content/mu-plugins
 	#check if dir exists
 	echo "move $PLUGIN_DIR to $PLUGIN_SLUG"
 	mv $PLUGIN_DIR $PLUGIN_SLUG
