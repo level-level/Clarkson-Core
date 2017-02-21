@@ -7,7 +7,7 @@
 	convertWarningsToExceptions="true"
 	>
 	<php>
-		<const name="CLARKSON_CORE_THEME_ROOT" value="tests/data" />
+		<const name="CLARKSON_CORE_UNIT_TEST" value="true" />
 	</php>
 	<testsuites>
 		<testsuite>
