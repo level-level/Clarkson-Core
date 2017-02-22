@@ -123,11 +123,7 @@ class Clarkson_Core_Templates {
 
 	public function get_template_dir(){
 		$dir = apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' );
-		if( defined('CLARKSON_CORE_DIR') ){
-			echo CLARKSON_CORE_DIR . "\n";
-		}
-		echo $dir . "\n";
-
+		echo "Current theme directory:" . $dir . "\n";
 		return $dir;
 
 	}
@@ -255,6 +251,7 @@ class Clarkson_Core_Templates {
 		// Create the key used for the themes cache
 		$cache_key = 'page_templates-' . md5( get_theme_root() . '/' . get_stylesheet() );
 		$templates = $this->get_templates();
+		var_dump($templates);
 		// New cache, therefore remove the old one
 		wp_cache_delete( $cache_key , 'themes');
 		// Add the modified cache to allow WordPress to pick it up for listing
