@@ -7,7 +7,7 @@
  * Author: Level Level
  * Author URI: http://www.level-level.com
  * Requires at least: 4.0
- * Tested up to: 4.0
+ * Tested up to: 4.7.2
  *
  * Text Domain: wordpress-plugin-template
  * Domain Path: /lang/
