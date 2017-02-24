@@ -287,7 +287,7 @@ class Clarkson_Core_Templates {
 	 * Adds our templates to the page dropdown for v4.7+
 	 */
 	public function add_new_template( $posts_templates ) {
-		$posts_templates = $this->get_templates();
+		$posts_templates = $this->get_templates( $posts_templates );
 		return $posts_templates;
 	}
 
