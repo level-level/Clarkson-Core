@@ -241,7 +241,7 @@ class Clarkson_Core_Templates {
 			if ( version_compare( floatval( get_bloginfo( 'version' ) ), '4.7', '<' ) ) { // 4.6 and older
 				$templates = $theme->get_page_templates();
 			} else { // 4.7+
-				$templates = '';
+				$templates = array();
 			}
 			if(empty($templates)){
 				$templates = array();
