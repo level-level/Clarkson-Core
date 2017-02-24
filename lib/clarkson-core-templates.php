@@ -293,10 +293,7 @@ class Clarkson_Core_Templates {
 
 	private function add_template_filters(){
 		// Get template files
-		$theme_dir = get_template_directory();
-		$template_paths = array(
-			$theme_dir . '/templates'
-		);
+		$template_paths = $this->get_templates_dirs();
 
 		apply_filters('clarkson_core_template_paths', $template_paths);
 		$templates = array();
