@@ -3,7 +3,7 @@ Contributors: level level, jmslbam
 Tags: twig, templating, template engine, templates, oop, wordpress objects
 Requires at least: 4.0
 Tested up to: 4.7.2
-Stable tag: 0.1.9
+Stable tag: 0.1.10
 License: GPL v2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -22,7 +22,13 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 
 == Changelog ==
 
-= 0.1.9 - Feb 1, 2016 =
+= 0.1.10 - Feb 27, 2017 =
+
+* Search for custom page templates in both child and parent theme when child theme is active #72
+* Fill page template drop down in WP 4.7 and up while using a regular PHP theme #72
+* Added readme.txt
+
+= 0.1.9 - Feb 1, 2017 =
 
 * Add support for localized date translation. #68
 * Downgraded twig version to 1.2 due to version 7.0 requirement of twig 2.0. #69
