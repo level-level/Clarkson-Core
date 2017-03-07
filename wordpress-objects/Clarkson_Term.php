@@ -63,7 +63,29 @@ class Clarkson_Term {
      */
     public function is_queried_object() {
 
-        return hm_is_queried_object( $this->_term );
+      global $wp_query;
+      // tax
+      if ( is_string( $term_or_taxonomy ) ) {
+        if ( $wp_query->tax_query ) {
+          foreach ( $wp_query->tax_query->queries as $query ) {
+            if ( $query['taxonomy'] == $term_or_taxonomy )
+            return true;
+          }
+        }
+        if ( ! empty( $wp_query->_post_parent_query ) ) {
+          foreach ( $wp_query->_post_parent_query->tax_query->queries as $query ) {
+            if ( $query['taxonomy'] == $term_or_taxonomy )
+            return true;
+          }
+        }
+      } else if ( is_object( $term_or_taxonomy ) ) {
+        foreach ( $wp_query->tax_query->queries as $query ) {
+          if ( $query['field'] == 'slug' && in_array( $term_or_taxonomy->slug, $query['terms'] ) )
+          return true;
+          if ( in_array( $term_or_taxonomy->term_id, $query['terms'] ) )
+          return true;
+        }
+      }
 
     }
 
@@ -75,7 +97,7 @@ class Clarkson_Term {
 
         if ( $this->_term->parent ) {
             $class = get_called_class();
-        
+
             return new $class( $this->_term->parent, $this->get_taxonomy() );
         }
         return null;
@@ -109,7 +131,7 @@ class Clarkson_Term {
     public function get_name() {
         return $this->_term->name;
     }
-    
+
     public function get_description() {
         return $this->_term->description;
     }
