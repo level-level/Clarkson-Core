@@ -28,7 +28,7 @@ class Clarkson_User {
 		}
 
 		return static::$users[$id];
-	} 
+	}
 
 	/**
 	 * @param int $user_id
@@ -129,32 +129,6 @@ class Clarkson_User {
 	 */
 	public function get_login() {
 		return $this->get_user()->user_login;
-	}
-
-	/**
-	 * Get the profile URL of the user
-	 *
-	 * @return string
-	 */
-	public function get_profile_url() {
-
-		return hma_get_user_url( $this->get_id() );
-	}
-
-	/**
-	 * Get the avatar URL for the user, at a given size
-	 *
-	 * @param string|array $size
-	 * @return string
-	 */
-	public function get_avatar_url( $size ) {
-
-		if ( ! isset( $this->_avatar_urls[serialize($size)] ) ) {
-			$size = wp_parse_args( $size );
-			$this->_avatar_urls[serialize($size)] = hma_get_avatar( $this->_id, $size['width'], $size['height'], $size['crop'] );
-		}
-
-		return $this->_avatar_urls[serialize($size)];
 	}
 
 	/**
