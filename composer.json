@@ -16,6 +16,9 @@
             "name": "Robin Aldenhoven"
         }
     ],
+    "autoload": {
+      "classmap": ["wordpress-objects/", "lib/"]
+    },
     "require" : {
         "twig/twig":"^1.2",
         "twig/extensions":"^1.3",

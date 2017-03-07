@@ -18,9 +18,8 @@ class Clarkson_Core_Objects {
 		if( in_array($taxonomy, $cc->autoloader->taxonomies) ){
 			$object_name = $this->camel_case($taxonomy);
 			return new $object_name($term->term_id, $term->taxonomy);
-		}else{
-			return Clarkson_Term::get_by_id($term->term_id, $taxonomy);
 		}
+		return Clarkson_Term::get_by_id($term->term_id, $taxonomy);
 	}
 
 	public function get_users($users_ids){
@@ -37,9 +36,8 @@ class Clarkson_Core_Objects {
 		$cc = Clarkson_Core::get_instance();
 		if( in_array('user', $cc->autoloader->user_types) ){
 			return new User($users_id);
-		}elseif( in_array('Clarkson_User', $this->objects) ){
-			return new Clarkson_User($users_id);
 		}
+		return new Clarkson_User($users_id);
 	}
 
 	public function get_objects( $posts_ids )
@@ -59,11 +57,7 @@ class Clarkson_Core_Objects {
 		$object_name = $this->camel_case($type);
 		$cc = Clarkson_Core::get_instance();
 		if( !in_array($type, $cc->autoloader->post_types) ){
-			if( in_array('Clarkson_Object', $this->objects) ){
-				return new Clarkson_Object($post_id);
-			}else{
-				return $post_id;
-			}
+			return new Clarkson_Object($post_id);
 		}
 
 		return new $object_name($post_id);
@@ -83,15 +77,7 @@ class Clarkson_Core_Objects {
 
 	private function register_objects(){
 		$plugin_path = dirname(__DIR__);
-		$objects = array();
-
-		$core_objects_path  = $plugin_path. '/wordpress-objects';
-		$core_objects = $this->get_objects_from_path( $core_objects_path  );
-
-		foreach( $core_objects as $object_name=>$object_path){
-			include_once($object_path);
-			$objects[] = $object_name;
-		}
+		$objects = array("Clarkson_Object"=>"", "Clarkson_Term"=>"", "Clarkson_User"=>"");
 
 		$theme_objects = array();
 
