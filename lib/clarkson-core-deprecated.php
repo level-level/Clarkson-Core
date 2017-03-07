@@ -48,6 +48,45 @@ class Clarkson_Core_Deprecated {
         return $data;
     }
 
+    public function auto_load_theme(){
+  		$dirs = array(
+  			'functions',
+  			'post-types', // Default location of WP-CLI export
+  			'taxonomies'  // Default location of WP-CLI export
+  		);
+
+  		$dirs = apply_filters('clarkson_core_autoload_dirs', $dirs);
+
+  		// Current Theme Dir
+  		$theme_dir = get_template_directory();
+
+  		foreach($dirs as $dir){
+  			$this->load_php_files_from_path( $theme_dir . "/{$dir}" );
+  		}
+
+  	}
+
+    private function load_php_files_from_path($path = false){
+
+  		if( !$path || !is_string($path) || !file_exists($path) )
+  			return;
+
+  		$files = glob("{$path}/*.php");
+  		$dirs = array_filter(glob("{$path}/*", GLOB_ONLYDIR), 'is_dir');
+
+  		foreach($dirs as $dir){
+  			$this->load_php_files_from_path($dir);
+  		}
+
+  		if( empty($files) )
+  			return;
+
+  		foreach ( $files as $filepath){
+  			require_once $filepath;
+  		}
+
+  	}
+
     // Singleton
     protected $instance = null;
 

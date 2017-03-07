@@ -20,7 +20,6 @@
 class Clarkson_Core {
 
 	public function init(){
-		$this->autoloader = new Clarkson_Core_Autoloader();
 		// Deprecated functions and filters
 		if( class_exists('Clarkson_Core_Deprecated') ){
 			Clarkson_Core_Deprecated::get_instance();
@@ -34,45 +33,6 @@ class Clarkson_Core {
 		// Load template routing
 		if( class_exists('Clarkson_Core_Templates') ){
 			Clarkson_Core_Templates::get_instance();
-		}
-
-	}
-
-	public function auto_load_theme(){
-		$dirs = array(
-			'functions',
-			'post-types', // Default location of WP-CLI export
-			'taxonomies'  // Default location of WP-CLI export
-		);
-
-		$dirs = apply_filters('clarkson_core_autoload_dirs', $dirs);
-
-		// Current Theme Dir
-		$theme_dir = get_template_directory();
-
-		foreach($dirs as $dir){
-			$this->load_php_files_from_path( $theme_dir . "/{$dir}" );
-		}
-
-	}
-
-	private function load_php_files_from_path($path = false){
-
-		if( !$path || !is_string($path) || !file_exists($path) )
-			return;
-
-		$files = glob("{$path}/*.php");
-		$dirs = array_filter(glob("{$path}/*", GLOB_ONLYDIR), 'is_dir');
-
-		foreach($dirs as $dir){
-			$this->load_php_files_from_path($dir);
-		}
-
-		if( empty($files) )
-			return;
-
-		foreach ( $files as $filepath){
-			require_once $filepath;
 		}
 
 	}
@@ -100,11 +60,16 @@ class Clarkson_Core {
 			require_once($autoload_file);
 		}
 
+		$this->autoloader = new Clarkson_Core_Autoloader();
+
+		$deprecated = Clarkson_Core_Deprecated::get_instance();
+		if( $autoload_theme = apply_filters('clarkson_core_autoload_theme', false ) ){
+		  // trigger deprecated warning
+		  // Auto load theme files
+		  $deprecated->auto_load_theme();
+		}
+
 		add_action('init', array($this, 'init') );
-
-		// Auto load theme files
-		$this->auto_load_theme();
-
 	}
 
 	private function __clone()
