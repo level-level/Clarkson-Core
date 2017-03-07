@@ -12,10 +12,12 @@ class Clarkson_Core_Objects {
 		if( !isset($term->taxonomy) || !isset($term->term_id))
 			return;
 
-		$taxonomy = strtolower($term->taxonomy);
+		$cc = Clarkson_Core::get_instance();
+		$taxonomy = $cc->autoloader->clean_name($term->taxonomy);
 
-		if( in_array($taxonomy, $this->objects) ){
-			return new $taxonomy($term->term_id, $taxonomy);
+		if( in_array($taxonomy, $cc->autoloader->taxonomies) ){
+			$object_name = $this->camel_case($taxonomy);
+			return new $object_name($term->term_id, $term->taxonomy);
 		}else{
 			return Clarkson_Term::get_by_id($term->term_id, $taxonomy);
 		}
@@ -32,7 +34,8 @@ class Clarkson_Core_Objects {
 	}
 
 	public function get_user($users_id){
-		if( in_array('User', $this->objects) ){
+		$cc = Clarkson_Core::get_instance();
+		if( in_array('user', $cc->autoloader->user_types) ){
 			return new User($users_id);
 		}elseif( in_array('Clarkson_User', $this->objects) ){
 			return new Clarkson_User($users_id);
@@ -92,11 +95,6 @@ class Clarkson_Core_Objects {
 
 		$theme_objects = array();
 
-		//$theme_objects_path = get_template_directory() . '/wordpress-objects';
-		//if(is_dir($theme_objects_path)){
-		//	$theme_objects  = $this->get_objects_from_path( $theme_objects_path );
-		//}
-
 		// Load deprecated post-objects folder
 		$theme_deprecated_objects_path = get_template_directory() . '/post-objects';
 		if(is_dir($theme_deprecated_objects_path)){
@@ -105,20 +103,9 @@ class Clarkson_Core_Objects {
 		}
 
 		// Theme overwrites plugins objects
-		//$theme_objects = apply_filters( 'clarkson_available_objects_paths', $theme_objects);
-
-		//if( isset($theme_objects['Page']) ){
-			//include_once($theme_objects['Page']);
-			//$objects[] = 'Page';
-		//}
-
-		//if( isset($theme_objects['Post']) ){
-			//include_once($theme_objects['Post']);
-			//$objects[] = 'Post';
-		//}
+		$theme_objects = apply_filters( 'clarkson_available_objects_paths', $theme_objects);
 
 		// Load classes
-		/*
 		foreach( $theme_objects as $object_name=>$object_path){
 			if( strpos( $object_name, '_tax_' ) !== false ) {
 				$object_name = strtolower( $object_name );
@@ -134,7 +121,6 @@ class Clarkson_Core_Objects {
 		$objects = apply_filters( 'clarkson_available_objects', $objects);
 
 		$this->objects = $objects;
-		*/
 	}
 
 	private function get_objects_from_path( $path )
