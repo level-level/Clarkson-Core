@@ -53,10 +53,9 @@ class Clarkson_Core_Objects {
 	public function get_object($post_id){
 		$type = get_post_type( $post_id);
 		$type = apply_filters( 'clarkson_object_type', $type );
-
 		$object_name = $this->camel_case($type);
-
-		if( !in_array($object_name, $this->objects) ){
+		$cc = Clarkson_Core::get_instance();
+		if( !in_array($type, $cc->autoloader->post_types) ){
 			if( in_array('Clarkson_Object', $this->objects) ){
 				return new Clarkson_Object($post_id);
 			}else{
@@ -93,10 +92,10 @@ class Clarkson_Core_Objects {
 
 		$theme_objects = array();
 
-		$theme_objects_path = get_template_directory() . '/wordpress-objects';
-		if(is_dir($theme_objects_path)){
-			$theme_objects  = $this->get_objects_from_path( $theme_objects_path );
-		}
+		//$theme_objects_path = get_template_directory() . '/wordpress-objects';
+		//if(is_dir($theme_objects_path)){
+		//	$theme_objects  = $this->get_objects_from_path( $theme_objects_path );
+		//}
 
 		// Load deprecated post-objects folder
 		$theme_deprecated_objects_path = get_template_directory() . '/post-objects';
@@ -106,19 +105,20 @@ class Clarkson_Core_Objects {
 		}
 
 		// Theme overwrites plugins objects
-		$theme_objects = apply_filters( 'clarkson_available_objects_paths', $theme_objects);
+		//$theme_objects = apply_filters( 'clarkson_available_objects_paths', $theme_objects);
 
-		if( isset($theme_objects['Page']) ){
-			include_once($theme_objects['Page']);
-			$objects[] = 'Page';
-		}
+		//if( isset($theme_objects['Page']) ){
+			//include_once($theme_objects['Page']);
+			//$objects[] = 'Page';
+		//}
 
-		if( isset($theme_objects['Post']) ){
-			include_once($theme_objects['Post']);
-			$objects[] = 'Post';
-		}
+		//if( isset($theme_objects['Post']) ){
+			//include_once($theme_objects['Post']);
+			//$objects[] = 'Post';
+		//}
 
 		// Load classes
+		/*
 		foreach( $theme_objects as $object_name=>$object_path){
 			if( strpos( $object_name, '_tax_' ) !== false ) {
 				$object_name = strtolower( $object_name );
@@ -134,6 +134,7 @@ class Clarkson_Core_Objects {
 		$objects = apply_filters( 'clarkson_available_objects', $objects);
 
 		$this->objects = $objects;
+		*/
 	}
 
 	private function get_objects_from_path( $path )

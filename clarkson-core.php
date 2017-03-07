@@ -23,7 +23,7 @@ class Clarkson_Core {
 
 		// Load lib
 		$this->load_php_files_from_path( __DIR__ . '/lib' );
-
+		$this->autoloader = new Clarkson_Core_Autoloader();
 		// Deprecated functions and filters
 		if( class_exists('Clarkson_Core_Deprecated') ){
 			Clarkson_Core_Deprecated::get_instance();
