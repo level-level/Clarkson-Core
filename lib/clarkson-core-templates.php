@@ -241,7 +241,7 @@ class Clarkson_Core_Templates {
 			if ( version_compare( floatval( get_bloginfo( 'version' ) ), '4.7', '<' ) ) { // 4.6 and older
 				$templates = $theme->get_page_templates();
 			} else { // 4.7+
-				$templates = '';
+				$templates = array();
 			}
 			if(empty($templates)){
 				$templates = array();
@@ -268,6 +268,9 @@ class Clarkson_Core_Templates {
 		return $templates;
 	}
 
+	/**
+	 * Adds our templates to the page dropdown for v4.6 and older
+	 */
 	public function register_custom_templates($atts){
 		// Create the key used for the themes cache
 		$cache_key = 'page_templates-' . md5( get_theme_root() . '/' . get_stylesheet() );
@@ -281,19 +284,16 @@ class Clarkson_Core_Templates {
 	}
 
 	/**
-	 * Adds our template to the page dropdown for v4.7+
+	 * Adds our templates to the page dropdown for v4.7+
 	 */
 	public function add_new_template( $posts_templates ) {
-		$posts_templates = $this->get_templates();
+		$posts_templates = $this->get_templates( $posts_templates );
 		return $posts_templates;
 	}
 
 	private function add_template_filters(){
 		// Get template files
-		$theme_dir = get_template_directory();
-		$template_paths = array(
-			$theme_dir . '/templates'
-		);
+		$template_paths = $this->get_templates_dirs();
 
 		apply_filters('clarkson_core_template_paths', $template_paths);
 		$templates = array();
