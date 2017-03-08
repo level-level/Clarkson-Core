@@ -64,9 +64,9 @@ class Clarkson_Core {
 
 		$deprecated = Clarkson_Core_Deprecated::get_instance();
 		if( $autoload_theme = apply_filters('clarkson_core_autoload_theme', false ) ){
-		  // trigger deprecated warning
-		  // Auto load theme files
-		  $deprecated->auto_load_theme();
+			// trigger deprecated warning
+			// Auto load theme files
+			$deprecated->auto_load_theme();
 		}
 
 		add_action('init', array($this, 'init') );

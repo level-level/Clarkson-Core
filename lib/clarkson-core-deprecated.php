@@ -22,32 +22,32 @@ class Clarkson_Core_Deprecated {
     }
 
     public function get_theme_objects(){
-      $objects = array();
-      $theme_objects = array();
+        $objects = array();
+        $theme_objects = array();
 
-  		// Load deprecated post-objects folder
-  		$theme_deprecated_objects_path = get_template_directory() . '/post-objects';
-  		if(is_dir($theme_deprecated_objects_path)){
-  			user_error("The {$theme_deprecated_objects_path} folder is deprecated. Please use {$theme_objects_path}.", E_USER_DEPRECATED);
-  			$theme_objects  = array_merge($this->get_objects_from_path( $theme_deprecated_objects_path ), $theme_objects);
-  		}
+        // Load deprecated post-objects folder
+        $theme_deprecated_objects_path = get_template_directory() . '/post-objects';
+        if(is_dir($theme_deprecated_objects_path)){
+            user_error("The {$theme_deprecated_objects_path} folder is deprecated. Please use {$theme_objects_path}.", E_USER_DEPRECATED);
+            $theme_objects  = array_merge($this->get_objects_from_path( $theme_deprecated_objects_path ), $theme_objects);
+        }
 
-  		// Theme overwrites plugins objects
-  		$theme_objects = apply_filters( 'clarkson_available_objects_paths', $theme_objects);
+        // Theme overwrites plugins objects
+        $theme_objects = apply_filters( 'clarkson_available_objects_paths', $theme_objects);
 
-  		// Load classes
-  		foreach( $theme_objects as $object_name=>$object_path){
-  			if( strpos( $object_name, '_tax_' ) !== false ) {
-  				$object_name = strtolower( $object_name );
-  			}
+        // Load classes
+        foreach( $theme_objects as $object_name=>$object_path){
+            if( strpos( $object_name, '_tax_' ) !== false ) {
+                $object_name = strtolower( $object_name );
+            }
 
-  			if( in_array($object_name, $objects) )
-  				continue;
+            if( in_array($object_name, $objects) )
+            continue;
 
-  			include_once($object_path);
-  			$objects[] = $object_name;
-  		}
-      return $objects;
+            include_once($object_path);
+            $objects[] = $object_name;
+        }
+        return $objects;
     }
 
     public function get_map_deprecated_filters(){
@@ -78,45 +78,45 @@ class Clarkson_Core_Deprecated {
     }
 
     public function auto_load_theme(){
-      trigger_error("This method of loading theme dependencies is deprecated.
-      Use a composer file or define loading methods in your theme.", E_USER_DEPRECATED);
-  		$dirs = array(
-  			'functions',
-  			'post-types', // Default location of WP-CLI export
-  			'taxonomies'  // Default location of WP-CLI export
-  		);
+        trigger_error("This method of loading theme dependencies is deprecated.
+        Use a composer file or define loading methods in your theme.", E_USER_DEPRECATED);
+        $dirs = array(
+            'functions',
+            'post-types', // Default location of WP-CLI export
+            'taxonomies'  // Default location of WP-CLI export
+        );
 
-  		$dirs = apply_filters('clarkson_core_autoload_dirs', $dirs);
+        $dirs = apply_filters('clarkson_core_autoload_dirs', $dirs);
 
-  		// Current Theme Dir
-  		$theme_dir = get_template_directory();
+        // Current Theme Dir
+        $theme_dir = get_template_directory();
 
-  		foreach($dirs as $dir){
-  			$this->load_php_files_from_path( $theme_dir . "/{$dir}" );
-  		}
+        foreach($dirs as $dir){
+            $this->load_php_files_from_path( $theme_dir . "/{$dir}" );
+        }
 
-  	}
+    }
 
     private function load_php_files_from_path($path = false){
 
-  		if( !$path || !is_string($path) || !file_exists($path) )
-  			return;
+        if( !$path || !is_string($path) || !file_exists($path) )
+        return;
 
-  		$files = glob("{$path}/*.php");
-  		$dirs = array_filter(glob("{$path}/*", GLOB_ONLYDIR), 'is_dir');
+        $files = glob("{$path}/*.php");
+        $dirs = array_filter(glob("{$path}/*", GLOB_ONLYDIR), 'is_dir');
 
-  		foreach($dirs as $dir){
-  			$this->load_php_files_from_path($dir);
-  		}
+        foreach($dirs as $dir){
+            $this->load_php_files_from_path($dir);
+        }
 
-  		if( empty($files) )
-  			return;
+        if( empty($files) )
+        return;
 
-  		foreach ( $files as $filepath){
-  			require_once $filepath;
-  		}
+        foreach ( $files as $filepath){
+            require_once $filepath;
+        }
 
-  	}
+    }
 
     // Singleton
     protected $instance = null;

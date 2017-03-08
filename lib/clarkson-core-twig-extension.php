@@ -2,8 +2,8 @@
 class Clarkson_Core_Twig_Extension extends Twig_Extension
 {
 
-    private $functions = array(
-    	"get_search_query",
+	private $functions = array(
+		"get_search_query",
 		"get_adjacent_post",
 		"get_boundary_post",
 		"get_children",
@@ -11,7 +11,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension
 		"get_next_post",
 		"get_next_posts_link",
 		"next_posts_link",
-	    	"posts_nav_link",
+		"posts_nav_link",
 		"get_permalink",
 		"the_permalink",
 		"get_the_excerpt",
@@ -923,41 +923,41 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension
 		"is_time",
 		"is_year",
 		"pings_open",
-	    	"gravity_form" // shouldn't be here...
-    );
+		"gravity_form" // shouldn't be here...
+	);
 
-    public function __construct(array $functions = array())
-    {
-        if ($functions) {
-            $this->allowFunctions($functions);
-        }
-    }
+	public function __construct(array $functions = array())
+	{
+		if ($functions) {
+			$this->allowFunctions($functions);
+		}
+	}
 
-    public function getFunctions()
-    {
-        $twigFunctions = array();
+	public function getFunctions()
+	{
+		$twigFunctions = array();
 
-        $allowed_functions = apply_filters('clarkson_twig_functions', $this->functions);
+		$allowed_functions = apply_filters('clarkson_twig_functions', $this->functions);
 
-        foreach ($allowed_functions  as $function) {
-            $twigFunctions[] = new Twig_SimpleFunction($function,$function);
-        }
+		foreach ($allowed_functions  as $function) {
+			$twigFunctions[] = new Twig_SimpleFunction($function,$function);
+		}
 
-        return $twigFunctions;
-    }
+		return $twigFunctions;
+	}
 
-    public function allowFunction($function)
-    {
-        $this->functions[] = $function;
-    }
+	public function allowFunction($function)
+	{
+		$this->functions[] = $function;
+	}
 
-    public function allowFunctions(array $functions)
-    {
-        $this->functions = $functions;
-    }
+	public function allowFunctions(array $functions)
+	{
+		$this->functions = $functions;
+	}
 
-    public function getName()
-    {
-        return 'php_function';
-    }
+	public function getName()
+	{
+		return 'php_function';
+	}
 }
