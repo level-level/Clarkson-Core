@@ -59,6 +59,7 @@ class Clarkson_Core_Objects {
 		$type = apply_filters( 'clarkson_object_type', $type );
 
 
+		if( !in_array($type, $cc->autoloader->post_types) || !class_exists( $type ) ){
 			return new Clarkson_Object($post_id);
 		}
 
