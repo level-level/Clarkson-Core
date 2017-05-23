@@ -16,12 +16,19 @@ class Clarkson_Core_Autoloader{
 		}
 	}
 
-	protected function clean_name($name){
 	/**
 	 * Prepares names that are registered with dash.
 	 * We can't run `new ll-events()` because that's an invalid classname.
 	 */
-		return str_replace('-', '_', strtolower($name));
+	public function sanitize_object_name($str){
+		// non-alpha and non-numeric characters become underscores
+		$str = trim($str);
+		$str = preg_replace('/[^a-z0-9]+/i', '_', $str);
+
+		$str = strtolower( $str );
+		$str = str_replace("-", "_", $str);
+
+		return $str;
 	}
 
 	/**
@@ -31,18 +38,19 @@ class Clarkson_Core_Autoloader{
 	 * custom_css and customize_changeset.
 	 */
 	public function registered_post_type($post_type){
-		$this->post_types[$this->clean_name($post_type)] = $this->clean_name($post_type);
+		$this->post_types[$this->sanitize_object_name($post_type)] = $this->sanitize_object_name($post_type);
 	}
 
 	/**
 	 * Fill $taxonomies variable with all registered Taxonomies
 	 */
 	public function registered_taxonomy($taxonomy){
-		$this->taxonomies[$this->clean_name($taxonomy)] = $this->clean_name($taxonomy);
+		$this->taxonomies[$this->sanitize_object_name($taxonomy)] = $this->sanitize_object_name($taxonomy);
 	}
 
 	protected function load_wordpress_object($classname){
-		$type = $this->clean_name($classname);
+		$type = $this->sanitize_object_name($classname);
+
 		if(!in_array($type, $this->post_types) && !in_array($type, $this->taxonomies)){
 			return;
 		}
