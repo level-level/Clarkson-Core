@@ -88,28 +88,6 @@ class Clarkson_Core_Objects {
 		$this->objects = $objects;
 	}
 
-	private function get_objects_from_path( $path )
-	{
-		$objects = array();
-
-		if( !file_exists($path) )
-			return $objects;
-
-		$files = glob("{$path}/*.php");
-		if( empty($files) )
-			return $objects;
-
-		foreach ( $files as $filepath){
-			$path_parts = pathinfo($filepath);
-			$class_name = $path_parts['filename'];
-			$class_name = ucfirst($class_name);
-
-			$objects[$class_name] = $filepath;
-		}
-
-		return $objects;
-	}
-
 
 	// Singleton
 	protected $instance = null;
