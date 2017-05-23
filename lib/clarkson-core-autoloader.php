@@ -17,13 +17,26 @@ class Clarkson_Core_Autoloader{
 	}
 
 	protected function clean_name($name){
+	/**
+	 * Prepares names that are registered with dash.
+	 * We can't run `new ll-events()` because that's an invalid classname.
+	 */
 		return str_replace('-', '_', strtolower($name));
 	}
 
+	/**
+	 * Fill $post_type variable with all registered CPT's
+	 *
+	 * This also means reserved ones like page, post, attachment, revision, nav_menu_item,
+	 * custom_css and customize_changeset.
+	 */
 	public function registered_post_type($post_type){
 		$this->post_types[$this->clean_name($post_type)] = $this->clean_name($post_type);
 	}
 
+	/**
+	 * Fill $taxonomies variable with all registered Taxonomies
+	 */
 	public function registered_taxonomy($taxonomy){
 		$this->taxonomies[$this->clean_name($taxonomy)] = $this->clean_name($taxonomy);
 	}
