@@ -16,7 +16,7 @@ class Clarkson_Core_Objects {
 		$taxonomy = $cc->autoloader->clean_name($term->taxonomy);
 
 		if( in_array($taxonomy, $cc->autoloader->taxonomies) ){
-			$object_name = $this->camel_case($taxonomy);
+			$object_name = $this->sanitize_class_name($taxonomy);
 			return new $object_name($term->term_id, $term->taxonomy);
 		}
 		return Clarkson_Term::get_by_id($term->term_id, $taxonomy);
@@ -54,7 +54,7 @@ class Clarkson_Core_Objects {
 	public function get_object($post_id){
 		$type = get_post_type( $post_id);
 		$type = apply_filters( 'clarkson_object_type', $type );
-		$object_name = $this->camel_case($type);
+		$object_name = $this->sanitize_object_name( $type );
 		$cc = Clarkson_Core::get_instance();
 		if( !in_array($type, $cc->autoloader->post_types) ){
 			return new Clarkson_Object($post_id);
@@ -63,7 +63,7 @@ class Clarkson_Core_Objects {
 		return new $object_name($post_id);
 	}
 
-	private function camel_case($str)
+	private function sanitize_object_name( $str )
 	{
 		// non-alpha and non-numeric characters become underscores
 		$str = preg_replace('/[^a-z0-9]+/i', '_', $str);
