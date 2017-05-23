@@ -1,7 +1,7 @@
 <?php
 
 class Clarkson_Core_Autoloader{
-	public $post_types = array('post'=>'post', 'page'=>'page');
+	public $post_types = array();
 	public $taxonomies = array();
 	public $user_types = array();
 
