@@ -9,17 +9,17 @@ class Clarkson_Core_Objects {
 	}
 
 	public function get_term($term){
-		if( !isset($term->taxonomy) || !isset($term->term_id))
+		if( !isset($term->taxonomy) || !isset($term->term_id)) {
 			return;
+		}
 
 		$cc = Clarkson_Core::get_instance();
-		$taxonomy = $cc->autoloader->clean_name($term->taxonomy);
+		$class_name = $cc->autoloader->sanitize_object_name($term->taxonomy);
 
-		if( in_array($taxonomy, $cc->autoloader->taxonomies) ){
-			$object_name = $this->sanitize_class_name($taxonomy);
-			return new $object_name($term->term_id, $term->taxonomy);
+		if( in_array($class_name, $cc->autoloader->taxonomies) && class_exists( $class_name ) ){
+			return new $class_name($term->term_id, $term->taxonomy);
 		}
-		return Clarkson_Term::get_by_id($term->term_id, $taxonomy);
+		return Clarkson_Term::get_by_id($term->term_id, $term->taxonomy);
 	}
 
 	public function get_users($users_ids){
