@@ -58,15 +58,14 @@ class Clarkson_Core_Objects {
 		$type = $cc->autoloader->sanitize_object_name( $type );
 		$type = apply_filters( 'clarkson_object_type', $type );
 
-
 		if( in_array($type, $cc->autoloader->post_types) && class_exists( $type ) ){
 			return new $type($post_id);
 		}
+
 		return new Clarkson_Object($post_id);
 	}
 
 	private function register_objects(){
-		$plugin_path = dirname(__DIR__);
 		$objects = array("Clarkson_Object"=>"", "Clarkson_Term"=>"", "Clarkson_User"=>"");
 
 		$deprecated = Clarkson_Core_Deprecated::get_instance();
