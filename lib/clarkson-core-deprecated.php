@@ -79,7 +79,7 @@ class Clarkson_Core_Deprecated {
 
     public function auto_load_theme(){
         trigger_error("This method of loading theme dependencies is deprecated.
-        Use a composer file or define loading methods in your theme.", E_USER_DEPRECATED);
+        Use a autoloading method like a Composer file or define loading methods in your theme.", E_USER_DEPRECATED);
         $dirs = array(
             'functions',
             'post-types', // Default location of WP-CLI export
