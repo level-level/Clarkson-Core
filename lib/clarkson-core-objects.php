@@ -34,7 +34,7 @@ class Clarkson_Core_Objects {
 
 	public function get_user($users_id){
 		$cc = Clarkson_Core::get_instance();
-		if( in_array('user', $cc->autoloader->user_types) ){
+		if( in_array('user', $cc->autoloader->user_types) && class_exists( 'User' ) ){
 			return new User($users_id);
 		}
 		return new Clarkson_User($users_id);
