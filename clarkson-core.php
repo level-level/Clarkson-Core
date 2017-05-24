@@ -19,10 +19,12 @@
 
 class Clarkson_Core {
 
+	private $deprecated;
+
 	public function init(){
 		// Deprecated functions and filters
 		if( class_exists('Clarkson_Core_Deprecated') ){
-			Clarkson_Core_Deprecated::get_instance();
+			$this->deprecated = Clarkson_Core_Deprecated::get_instance();
 		}
 
 		// Load post objects
@@ -62,11 +64,10 @@ class Clarkson_Core {
 
 		$this->autoloader = new Clarkson_Core_Autoloader();
 
-		$deprecated = Clarkson_Core_Deprecated::get_instance();
 		if( $autoload_theme = apply_filters('clarkson_core_autoload_theme', false ) ){
 			// trigger deprecated warning
 			// Auto load theme files
-			$deprecated->auto_load_theme();
+			$this->deprecated->auto_load_theme();
 		}
 
 		add_action('init', array($this, 'init') );
