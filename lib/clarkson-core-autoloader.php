@@ -55,9 +55,19 @@ class Clarkson_Core_Autoloader{
 			return;
 		}
 		$filename = "{$classname}.php";
+
+		// Load child theme first
+		$filepath = realpath(get_stylesheet_directory()). "/wordpress-objects/{$filename}";
+		if(file_exists($filepath)){
+			include_once($filepath);
+			return;
+		}
+
+		// If not exists then load normal / parent theme
 		$filepath = realpath(get_template_directory()). "/wordpress-objects/{$filename}";
 		if(file_exists($filepath)){
 			include_once($filepath);
+			return;
 		}
 	}
 }
