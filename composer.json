@@ -21,7 +21,6 @@
     },
     "require" : {
         "twig/twig":"^1.2",
-        "twig/extensions":"^1.3",
-        "symfony/translation": "^3.2"
+        "twig/extensions":"^1.3"
     }
 }
