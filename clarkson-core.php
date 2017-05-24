@@ -64,9 +64,8 @@ class Clarkson_Core {
 
 		$this->autoloader = new Clarkson_Core_Autoloader();
 
-		if( $autoload_theme = apply_filters('clarkson_core_autoload_theme', false ) ){
-			// trigger deprecated warning
-			// Auto load theme files
+		if( $autoload_theme = apply_filters('clarkson_core_autoload_theme_pre_020', false ) ){
+			// Autoload theme files the way CC ^0.1.0 did (Triggers deprecated warning)
 			$this->deprecated->auto_load_theme();
 		}
 
