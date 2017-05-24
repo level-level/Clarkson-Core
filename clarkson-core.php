@@ -19,12 +19,10 @@
 
 class Clarkson_Core {
 
-	private $deprecated;
-
 	public function init(){
 		// Deprecated functions and filters
 		if( class_exists('Clarkson_Core_Deprecated') ){
-			$this->deprecated = Clarkson_Core_Deprecated::get_instance();
+			Clarkson_Core_Deprecated::get_instance();
 		}
 
 		// Load post objects
@@ -62,14 +60,17 @@ class Clarkson_Core {
 			require_once($autoload_file);
 		}
 
+		add_action('init', array($this, 'init') );
+
 		$this->autoloader = new Clarkson_Core_Autoloader();
 
 		if( $autoload_theme = apply_filters('clarkson_core_autoload_theme_pre_020', false ) ){
-			// Autoload theme files the way CC ^0.1.0 did (Triggers deprecated warning)
-			$this->deprecated->auto_load_theme();
+			// Autoload theme files the way CC ^0.1.0 did (triggers deprecated warning).
+			$deprecated = Clarkson_Core_Deprecated::get_instance();
+			$deprecated->auto_load_theme();
 		}
 
-		add_action('init', array($this, 'init') );
+		
 	}
 
 	private function __clone()

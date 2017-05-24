@@ -9,17 +9,17 @@ class Clarkson_Core_Objects {
 	}
 
 	public function get_term($term){
-		if( !isset($term->taxonomy) || !isset($term->term_id))
+		if( !isset($term->taxonomy) || !isset($term->term_id)) {
 			return;
+		}
 
 		$cc = Clarkson_Core::get_instance();
-		$taxonomy = $cc->autoloader->clean_name($term->taxonomy);
+		$class_name = $cc->autoloader->sanitize_object_name($term->taxonomy);
 
-		if( in_array($taxonomy, $cc->autoloader->taxonomies) ){
-			$object_name = $this->sanitize_class_name($taxonomy);
-			return new $object_name($term->term_id, $term->taxonomy);
+		if( in_array($class_name, $cc->autoloader->taxonomies) && class_exists( $class_name ) ){
+			return new $class_name($term->term_id, $term->taxonomy);
 		}
-		return Clarkson_Term::get_by_id($term->term_id, $taxonomy);
+		return Clarkson_Term::get_by_id($term->term_id, $term->taxonomy);
 	}
 
 	public function get_users($users_ids){
@@ -34,7 +34,7 @@ class Clarkson_Core_Objects {
 
 	public function get_user($users_id){
 		$cc = Clarkson_Core::get_instance();
-		if( in_array('user', $cc->autoloader->user_types) ){
+		if( in_array('user', $cc->autoloader->user_types) && class_exists( 'User' ) ){
 			return new User($users_id);
 		}
 		return new Clarkson_User($users_id);
@@ -54,20 +54,18 @@ class Clarkson_Core_Objects {
 	public function get_object($post_id){
 		$cc = Clarkson_Core::get_instance();
 
-		$type = get_post_type( $post_id);
+		$type = get_post_type( $post_id );
 		$type = $cc->autoloader->sanitize_object_name( $type );
 		$type = apply_filters( 'clarkson_object_type', $type );
 
-
-		if( !in_array($type, $cc->autoloader->post_types) || !class_exists( $type ) ){
-			return new Clarkson_Object($post_id);
+		if( in_array($type, $cc->autoloader->post_types) && class_exists( $type ) ){
+			return new $type($post_id);
 		}
 
-		return new $type($post_id);
+		return new Clarkson_Object($post_id);
 	}
 
 	private function register_objects(){
-		$plugin_path = dirname(__DIR__);
 		$objects = array("Clarkson_Object"=>"", "Clarkson_Term"=>"", "Clarkson_User"=>"");
 
 		$deprecated = Clarkson_Core_Deprecated::get_instance();
