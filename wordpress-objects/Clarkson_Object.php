@@ -434,4 +434,31 @@ class Clarkson_Object {
 		return has_term( $term->get_slug(), $term->get_taxonomy(), $this->get_id() );
 	}
 
+	/**
+	 * Return a set of data when calling the /json endpoint
+	 * If you want something else, then just overwrite it in your own WordPress object
+	 *
+	 * We can't just return $this->_post, because these values will only return raw unfilter data.
+	 */
+	public function get_json(){
+
+		$public_methods = array( 'id', 'post_name', 'title', 'content', 'excerpt', 'author', 'post_type', 'status', 'thumbnail', 'date' );
+
+		$data = array_map(function ( $method ) {
+			$class = get_called_class();
+
+			if( method_exists( $class, 'get_' . $method ) ) {
+
+				// 'author' gets an exception because this will otherwise return the whole User with user_pass and everything else...
+				if( 'author' == $method ){
+					return array( $method => $this->get_author()->get_display_name() );
+				}
+
+				return array($method => call_user_func( array( $class , 'get_' .$method ) ) );
+			}
+		}, $public_methods );
+
+		return $data;
+	}
+
 }
