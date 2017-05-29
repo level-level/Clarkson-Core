@@ -23,8 +23,8 @@ class Clarkson_Core_Templates {
 		}
 
 		if( isset( $wp_query->query_vars['json'] ) ) {
-			if( count($objects) === 1 && isset( $objects[0]) ){
-				$objects = $objects[0];
+			if( count($objects) === 1 && isset( $objects['objects'][0]) ){
+				$objects = reset( $objects['objects'][0] );
 			}
 			$this->echo_json($objects);
 		}
