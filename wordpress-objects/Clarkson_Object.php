@@ -150,7 +150,7 @@ class Clarkson_Object {
 	 * @param array|string $size
 	 * @return string
 	 */
-	public function get_thumbnail( $size, $attr = '' ) {
+	public function get_thumbnail( $size = 'thumbnail', $attr = '' ) {
 
 		return get_the_post_thumbnail( $this->get_id(), $size, $attr );
 	}
