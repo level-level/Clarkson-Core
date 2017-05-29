@@ -1,6 +1,6 @@
 <?php
 
-class Clarkson_Object {
+class Clarkson_Object implements \JsonSerializable {
 
 	public static $type = 'post';
 
@@ -448,25 +448,28 @@ class Clarkson_Object {
 	 *
 	 * We can't just return $this->_post, because these values will only return raw unfilter data.
 	 */
-	public function get_json(){
+	public function jsonSerialize(){
 
-		$public_methods = array( 'id', 'post_name', 'title', 'content', 'excerpt', 'author', 'post_type', 'status', 'thumbnail', 'date' );
-
-		$data = array_map(function ( $method ) {
-			$class = get_called_class();
-
-			if( method_exists( $class, 'get_' . $method ) ) {
-
-				// 'author' gets an exception because this will otherwise return the whole User with user_pass and everything else...
-				if( 'author' == $method ){
-					return array( $method => $this->get_author()->get_display_name() );
-				}
-
-				return array($method => call_user_func( array( $class , 'get_' .$method ) ) );
-			}
-		}, $public_methods );
+		$data['id'] 		= $this->get_id();
+		$data['link'] 		= $this->get_permalink();
+		$data['slug'] 		= $this->get_post_name();
+		$data['date']		= $this->get_date('c');
+		$data['title'] 		= $this->get_title();
+		$data['content'] 	= $this->get_content();
+		$data['excerpt'] 	= $this->get_excerpt();
+		$data['post_type'] 	= $this->get_post_type();
+		$data['status'] 	= $this->get_status();
+		$data['thumbnail'] 	= $this->get_thumbnail();
+		$data['author'] 	= array(
+			'id' => $this->get_author_id(),
+			'display_name' => $this->get_author()->get_display_name()
+		);
 
 		return $data;
+	}
+
+	public function get_json(){
+		return $this->jsonSerialize();
 	}
 
 }

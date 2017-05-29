@@ -81,7 +81,7 @@ class Clarkson_Core_Templates {
 
 		if( ! is_array( $objects ) ){
 			$object = $cc_objects->get_object( $objects );
-			return json_encode($object->get_json(), JSON_PRETTY_PRINT);
+			return json_encode($object, JSON_PRETTY_PRINT);
 		}
 
 		// if $objects returns multiple items
