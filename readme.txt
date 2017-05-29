@@ -3,7 +3,7 @@ Contributors: level level, jmslbam
 Tags: twig, templating, template engine, templates, oop, wordpress objects
 Requires at least: 4.0
 Tested up to: 4.7.2
-Stable tag: 0.1.10
+Stable tag: 0.2.0
 License: GPL v2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,14 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 
 
 == Changelog ==
+
+= 0.2.0 - Mar 24, 2017 =
+
+* Removal of loading theme specific directory via `glob`.
+* Autoloading Core and Theme `wordpress-objects`.
+* Remove `symfony/translations` dependency.
+* Commit `composer.json` file.
+
 
 = 0.1.10 - Feb 27, 2017 =
 
