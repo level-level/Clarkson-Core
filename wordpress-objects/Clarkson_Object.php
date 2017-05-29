@@ -258,6 +258,14 @@ class Clarkson_Object {
 		return $this->_post->post_content;
 	}
 
+	public function get_author_id(){
+		if ( $this->_post->post_author ) {
+			return $this->_post->post_author;
+		}
+
+		return null;
+	}
+
 	public function get_author() {
 
 		if ( $this->_post->post_author ) {
