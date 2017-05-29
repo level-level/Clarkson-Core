@@ -469,6 +469,7 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	public function get_json(){
+		trigger_error("Deprecated directly calling get_json. Just json_encode the object itself, because the Clarkson_Object implements JsonSerializable.", E_USER_DEPRECATED);
 		return $this->jsonSerialize();
 	}
 
