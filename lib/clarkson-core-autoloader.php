@@ -28,10 +28,6 @@ class Clarkson_Core_Autoloader{
 		// https://codex.wordpress.org/Function_Reference/register_post_type#post_type
 		$str = strtolower( $str );
 
-		// Replace - with _
-		// We can't run `new ll-events()` because that's an invalid classname.
-		$str = str_replace("-", "_", $str);
-
 		return $str;
 	}
 
