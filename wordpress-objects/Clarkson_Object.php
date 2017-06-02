@@ -17,6 +17,7 @@ class Clarkson_Object implements \JsonSerializable {
 			$this->_post = $post;
 		}else{
 			trigger_error("Deprecated __construct called with an ID. Use `::get($post)` instead.", E_USER_DEPRECATED);
+            Clarkson_Debug::callStack();
 			if ( empty( $post ) ) {
 				throw new Exception( '$post empty' );
 			}
