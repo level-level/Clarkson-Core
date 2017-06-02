@@ -18,10 +18,6 @@ class Clarkson_Core_Templates {
 			}
 		}
 
-		if( is_search() ){
-			$objects['found_posts'] = $wp_query->get('filtered_found_posts') ? $wp_query->get('filtered_found_posts') : $wp_query->found_posts;
-		}
-
 		if( isset( $wp_query->query_vars['json'] ) ) {
 			if( count($objects) === 1 && isset( $objects['objects'][0]) ){
 				$objects = reset( $objects['objects'][0] );
@@ -154,6 +150,9 @@ class Clarkson_Core_Templates {
 
 			}else{
 				$page_vars['objects'] = $object_loader->get_objects($posts);
+			} elseif( is_search() ){
+				global $wp_query;
+				$objects['found_posts'] = $wp_query->get('filtered_found_posts') ? $wp_query->get('filtered_found_posts') : $wp_query->found_posts;
 			}
 
 			// Render it
