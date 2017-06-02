@@ -74,25 +74,19 @@ class Clarkson_Core_Templates {
 		echo $this->render_twig( $template_file, $objects, $ignore_warning );
 	}
 
-	public function render_json($objects){
+	public function render_json( $posts ){
 		header('Content-Type: application/json');
 
-		$cc_objects = Clarkson_Core_Objects::get_instance();
-
-		if( ! is_array( $objects ) ){
-			$object = $cc_objects->get_object( $objects );
-			return json_encode($object, JSON_PRETTY_PRINT);
+		// If single post then create new array
+		if( ! is_array( $posts ) ){
+			$objects[] = $posts;
+		} else {
+			$objects = $posts;
 		}
 
-		// if $objects returns multiple items
+		$cc_objects = Clarkson_Core_Objects::get_instance();
 		$objects = $cc_objects->get_objects( $objects );
-		$json = array_map(function ($object) {
-			if( method_exists($object, 'get_json') ) {
-				return $object->get_json();
-			}
-		}, $objects);
-
-		return json_encode($json, JSON_PRETTY_PRINT);
+		return json_encode($objects, JSON_PRETTY_PRINT);;
 	}
 
 
