@@ -25,7 +25,7 @@ class Clarkson_Core_Autoloader{
 		// Replace - with _
 		// non-alpha and non-numeric characters become underscores
  		// We can't run `new ll-events()` because that's an invalid classname.
-		$str = preg_replace('/[^a-z0-9]+/ig', '_', $str);
+		$str = preg_replace('/[^a-z0-9]+/i', '_', $str);
 
 		// String to lowercase is require by post-type namingconvention :
 		// https://codex.wordpress.org/Function_Reference/register_post_type#post_type
