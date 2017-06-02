@@ -460,10 +460,15 @@ class Clarkson_Object implements \JsonSerializable {
 		$data['post_type'] 	= $this->get_post_type();
 		$data['status'] 	= $this->get_status();
 		$data['thumbnail'] 	= $this->get_thumbnail();
-		$data['author'] 	= array(
-			'id' => $this->get_author_id(),
-			'display_name' => $this->get_author()->get_display_name()
-		);
+
+		$data['author']		= null;
+		$author_id = $this->get_author_id();
+		if( !empty( $author_id ) ){
+		 	$data['author'] = array(
+				'id' => $author_id,
+				'display_name' => $this->get_author()->get_display_name()
+			);
+		}
 
 		return $data;
 	}
