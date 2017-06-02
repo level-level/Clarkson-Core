@@ -145,15 +145,12 @@ class Clarkson_Core_Templates {
 				// Custom Taxonomy Templates per Taxonomy type
 				if( is_a($term, 'WP_Term') ){
 					$page_vars['term'] = $object_loader->get_term($term);
-					$page_vars['objects'] = $object_loader->get_objects($posts);
 				}
-
-			}else{
-				$page_vars['objects'] = $object_loader->get_objects($posts);
 			} elseif( is_search() ){
 				global $wp_query;
 				$objects['found_posts'] = $wp_query->get('filtered_found_posts') ? $wp_query->get('filtered_found_posts') : $wp_query->found_posts;
 			}
+			$page_vars['objects'] = $object_loader->get_objects($posts);
 
 			// Render it
 			$this->render($template, $page_vars );
