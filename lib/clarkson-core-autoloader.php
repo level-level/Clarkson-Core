@@ -20,8 +20,11 @@ class Clarkson_Core_Autoloader{
 	 * Prepares object names
 	 */
 	public function sanitize_object_name( $str ){
-		// non-alpha and non-numeric characters become underscores
 		$str = trim($str);
+
+		// Replace - with _
+		// non-alpha and non-numeric characters become underscores
+ 		// We can't run `new ll-events()` because that's an invalid classname.
 		$str = preg_replace('/[^a-z0-9]+/ig', '_', $str);
 
 		// String to lowercase is require by post-type namingconvention :
