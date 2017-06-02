@@ -1,6 +1,6 @@
 <?php
 
-class Clarkson_Object {
+class Clarkson_Object implements \JsonSerializable {
 
 	public static $type = 'post';
 
@@ -150,7 +150,7 @@ class Clarkson_Object {
 	 * @param array|string $size
 	 * @return string
 	 */
-	public function get_thumbnail( $size, $attr = '' ) {
+	public function get_thumbnail( $size = 'thumbnail', $attr = '' ) {
 
 		return get_the_post_thumbnail( $this->get_id(), $size, $attr );
 	}
@@ -256,6 +256,14 @@ class Clarkson_Object {
 
 	public function get_raw_content() {
 		return $this->_post->post_content;
+	}
+
+	public function get_author_id(){
+		if ( $this->_post->post_author ) {
+			return $this->_post->post_author;
+		}
+
+		return null;
 	}
 
 	public function get_author() {
@@ -432,6 +440,37 @@ class Clarkson_Object {
 	 */
 	public function has_term( $term ) {
 		return has_term( $term->get_slug(), $term->get_taxonomy(), $this->get_id() );
+	}
+
+	/**
+	 * Return a set of data when calling the /json endpoint
+	 * If you want something else, then just overwrite it in your own WordPress object
+	 *
+	 * We can't just return $this->_post, because these values will only return raw unfilter data.
+	 */
+	public function jsonSerialize(){
+
+		$data['id'] 		= $this->get_id();
+		$data['link'] 		= $this->get_permalink();
+		$data['slug'] 		= $this->get_post_name();
+		$data['date']		= $this->get_date('c');
+		$data['title'] 		= $this->get_title();
+		$data['content'] 	= $this->get_content();
+		$data['excerpt'] 	= $this->get_excerpt();
+		$data['post_type'] 	= $this->get_post_type();
+		$data['status'] 	= $this->get_status();
+		$data['thumbnail'] 	= $this->get_thumbnail();
+		$data['author'] 	= array(
+			'id' => $this->get_author_id(),
+			'display_name' => $this->get_author()->get_display_name()
+		);
+
+		return $data;
+	}
+
+	public function get_json(){
+		trigger_error("Deprecated directly calling get_json. Just json_encode the object itself, because the Clarkson_Object implements JsonSerializable.", E_USER_DEPRECATED);
+		return $this->jsonSerialize();
 	}
 
 }

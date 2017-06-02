@@ -28,7 +28,7 @@ class Clarkson_Core_Objects {
 			$users[] = $this->get_user($users_id);
 		}
 
-		return $users ;
+		return $users;
 	}
 
 	public function get_user($users_id){

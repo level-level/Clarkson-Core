@@ -23,8 +23,8 @@ class Clarkson_Core_Templates {
 		}
 
 		if( isset( $wp_query->query_vars['json'] ) ) {
-			if( count($objects) === 1 && isset( $objects[0]) ){
-				$objects = $objects[0];
+			if( count($objects) === 1 && isset( $objects['objects'][0]) ){
+				$objects = reset( $objects['objects'][0] );
 			}
 			$this->echo_json($objects);
 		}
@@ -74,40 +74,19 @@ class Clarkson_Core_Templates {
 		echo $this->render_twig( $template_file, $objects, $ignore_warning );
 	}
 
-	private function retrieve_object($objects){
-
-		if( is_object($objects) )
-			return $objects;
-
-		$new_objects = array();
-
-		if( is_array($objects) ){
-			foreach($objects as $object){
-				if( is_object($object) )
-					$new_objects[] = $object;
-				if( is_array($object) ){
-					foreach($object as $sub_object){
-						if( is_object($sub_object) )
-							$new_objects[] = $sub_object;
-					}
-				}
-			}
-		}
-
-		return $new_objects;
-	}
-
-
-	public function render_json($objects){
+	public function render_json( $posts ){
 		header('Content-Type: application/json');
 
-		$objects = $this->retrieve_object($objects);
+		// If single post then create new array
+		if( ! is_array( $posts ) ){
+			$objects[] = $posts;
+		} else {
+			$objects = $posts;
+		}
 
-		$json = array_map(function ($object) {
-			if( method_exists($object, 'get_json') )
-				return $object->get_json();
-		}, $objects);
-		return json_encode($json, JSON_PRETTY_PRINT);
+		$cc_objects = Clarkson_Core_Objects::get_instance();
+		$objects = $cc_objects->get_objects( $objects );
+		return json_encode($objects, JSON_PRETTY_PRINT);;
 	}
 
 
