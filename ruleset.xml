@@ -6,7 +6,7 @@
  <file>./wordpress-objects</file>
  <file>./clarkson-core.php</file>
 
- <arg name="report" value="summary"/>
+ <!--<arg name="report" value="summary"/>-->
  <arg name="colors"/>
  <arg value="sp"/>
 
@@ -19,21 +19,8 @@
  	<rule ref="WordPress-Core">
  		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing" />
  		<exclude name="WordPress.XSS.EscapeOutput" />
- 		<exclude name="PEAR.Functions.FunctionCallSignature.SpaceAfterOpenBracket" />
- 		<exclude name="PEAR.Functions.FunctionCallSignature.SpaceBeforeCloseBracket" />
- 		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceAfterArrayOpener" />
- 		<exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceBeforeArrayCloser" />
- 		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis" />
- 		<exclude name="Squiz.ControlStructures.ControlSignature.SpaceAfterKeyword" />
  		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
  		<exclude name="Generic.Files.EndFileNewline.NotFound" />
- 		<exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions.NoSpacesAroundArrayKeys" />
  		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
- 		<exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.SpaceBeforeBrace" />
- 		<exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceAfter" />
- 		<exclude name="WordPress.WhiteSpace.OperatorSpacing.NoSpaceBefore" />
- 		<exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterOpenHint" />
- 		<exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing.SpacingAfterOpen" />
- 		<exclude name="Generic.Classes.OpeningBraceSameLine.SpaceBeforeBrace" />
  	</rule>
 </ruleset>
