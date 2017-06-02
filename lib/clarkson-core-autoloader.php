@@ -22,7 +22,7 @@ class Clarkson_Core_Autoloader{
 	public function sanitize_object_name( $str ){
 		// non-alpha and non-numeric characters become underscores
 		$str = trim($str);
-		$str = preg_replace('/[^a-z0-9]+/i', '_', $str);
+		$str = preg_replace('/[^a-z0-9]+/ig', '_', $str);
 
 		// String to lowercase is require by post-type namingconvention :
 		// https://codex.wordpress.org/Function_Reference/register_post_type#post_type
