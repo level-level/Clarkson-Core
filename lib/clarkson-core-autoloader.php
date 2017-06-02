@@ -12,7 +12,7 @@ class Clarkson_Core_Autoloader{
 
 		$filepath = realpath(get_template_directory()). "/wordpress-objects/User.php";
 		if(file_exists($filepath)){
-			$this->$user_types['user'] = 'user';
+			$this->user_types['user'] = 'user';
 		}
 	}
 
