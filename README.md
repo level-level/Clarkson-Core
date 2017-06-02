@@ -26,6 +26,10 @@ Our advice is you extend your new class with `Clarkson_Object`.
 1. Clone repository or download zip.
 2. Run `composer install` in the `Core` directory.
 
+## Code style check
+1. Run `vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs/`.
+2. Run `vendor/bin/phpcs --standard=ruleset.xml`.
+
 ## Theme Development
 
 Should work out of the box with an empty theme or use the starter theme [Clarkson Theme](https://github.com/level-level/Clarkson-Theme/)
