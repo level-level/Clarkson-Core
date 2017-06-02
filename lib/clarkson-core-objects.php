@@ -9,16 +9,17 @@ class Clarkson_Core_Objects {
 	}
 
 	public function get_term($term){
-		if( !isset($term->taxonomy) || !isset($term->term_id))
+		if( !isset($term->taxonomy) || !isset($term->term_id)) {
 			return;
-
-		$taxonomy = strtolower($term->taxonomy);
-
-		if( in_array($taxonomy, $this->objects) ){
-			return new $taxonomy($term->term_id, $taxonomy);
-		}else{
-			return Clarkson_Term::get_by_id($term->term_id, $taxonomy);
 		}
+
+		$cc = Clarkson_Core::get_instance();
+		$class_name = $cc->autoloader->sanitize_object_name($term->taxonomy);
+
+		if( in_array($class_name, $cc->autoloader->taxonomies) && class_exists( $class_name ) ){
+			return new $class_name($term->term_id, $term->taxonomy);
+		}
+		return Clarkson_Term::get_by_id($term->term_id, $term->taxonomy);
 	}
 
 	public function get_users($users_ids){
@@ -32,11 +33,11 @@ class Clarkson_Core_Objects {
 	}
 
 	public function get_user($users_id){
-		if( in_array('User', $this->objects) ){
+		$cc = Clarkson_Core::get_instance();
+		if( in_array('user', $cc->autoloader->user_types) && class_exists( 'User' ) ){
 			return new User($users_id);
-		}elseif( in_array('Clarkson_User', $this->objects) ){
-			return new Clarkson_User($users_id);
 		}
+		return new Clarkson_User($users_id);
 	}
 
 	public function get_objects( $posts_ids )
@@ -47,115 +48,33 @@ class Clarkson_Core_Objects {
 			$objects[] = $this->get_object($posts_id);
 		}
 
-		return $objects ;
+		return $objects;
 	}
 
 	public function get_object($post_id){
-		$type = get_post_type( $post_id);
+		$cc = Clarkson_Core::get_instance();
+
+		$type = get_post_type( $post_id );
+		$type = $cc->autoloader->sanitize_object_name( $type );
 		$type = apply_filters( 'clarkson_object_type', $type );
 
-		$object_name = $this->camel_case($type);
-
-		if( !in_array($object_name, $this->objects) ){
-			if( in_array('Clarkson_Object', $this->objects) ){
-				return new Clarkson_Object($post_id);
-			}else{
-				return $post_id;
-			}
+		if( in_array($type, $cc->autoloader->post_types) && class_exists( $type ) ){
+			return new $type($post_id);
 		}
 
-		return new $object_name($post_id);
-	}
-
-	private function camel_case($str)
-	{
-		// non-alpha and non-numeric characters become underscores
-		$str = preg_replace('/[^a-z0-9]+/i', '_', $str);
-		$str = trim($str);
-		// uppercase the first character of each word
-		$str = ucwords($str);
-		$str = str_replace(" ", "_", $str);
-
-		return $str;
+		return new Clarkson_Object($post_id);
 	}
 
 	private function register_objects(){
-		$plugin_path = dirname(__DIR__);
-		$objects = array();
+		$objects = array("Clarkson_Object"=>"", "Clarkson_Term"=>"", "Clarkson_User"=>"");
 
-		$core_objects_path  = $plugin_path. '/wordpress-objects';
-		$core_objects = $this->get_objects_from_path( $core_objects_path  );
-
-		foreach( $core_objects as $object_name=>$object_path){
-			include_once($object_path);
-			$objects[] = $object_name;
-		}
-
-		$theme_objects = array();
-
-		$theme_objects_path = get_template_directory() . '/wordpress-objects';
-		if(is_dir($theme_objects_path)){
-			$theme_objects  = $this->get_objects_from_path( $theme_objects_path );
-		}
-
-		// Load deprecated post-objects folder
-		$theme_deprecated_objects_path = get_template_directory() . '/post-objects';
-		if(is_dir($theme_deprecated_objects_path)){
-			user_error("The {$theme_deprecated_objects_path} folder is deprecated. Please use {$theme_objects_path}.", E_USER_DEPRECATED);
-			$theme_objects  = array_merge($this->get_objects_from_path( $theme_deprecated_objects_path ), $theme_objects);
-		}
-
-		// Theme overwrites plugins objects
-		$theme_objects = apply_filters( 'clarkson_available_objects_paths', $theme_objects);
-
-		if( isset($theme_objects['Page']) ){
-			include_once($theme_objects['Page']);
-			$objects[] = 'Page';
-		}
-
-		if( isset($theme_objects['Post']) ){
-			include_once($theme_objects['Post']);
-			$objects[] = 'Post';
-		}
-
-		// Load classes
-		foreach( $theme_objects as $object_name=>$object_path){
-			if( strpos( $object_name, '_tax_' ) !== false ) {
-				$object_name = strtolower( $object_name );
-			}
-
-			if( in_array($object_name, $objects) )
-				continue;
-
-			include_once($object_path);
-			$objects[] = $object_name;
-		}
+		$deprecated = Clarkson_Core_Deprecated::get_instance();
+		$deprecated_objects = $deprecated->get_theme_objects();
+		$objects = array_merge($objects, $deprecated_objects);
 
 		$objects = apply_filters( 'clarkson_available_objects', $objects);
 
 		$this->objects = $objects;
-	}
-
-	private function get_objects_from_path( $path )
-	{
-		$objects = array();
-
-		if( !file_exists($path) )
-			return $objects;
-
-		$files = glob("{$path}/*.php");
-		if( empty($files) )
-			return $objects;
-
-		foreach ( $files as $filepath){
-			$path_parts = pathinfo($filepath);
-			$class_name = $path_parts['filename'];
-			$class_name = ucfirst($class_name);
-
-			$objects[$class_name] = $filepath;
-		}
-
-		return $objects;
 	}
 
 
