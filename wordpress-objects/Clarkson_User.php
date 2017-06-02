@@ -135,7 +135,8 @@ class Clarkson_User {
 	 * @return string
 	 */
 	public function get_avatar_img( $size, $attr = array() ) {
-		if ( ! isset( $this->_avatar_imgs[ $key = serialize( $size ) ] ) ) {
+		$key = serialize( $size );
+		if ( ! isset( $this->_avatar_imgs[ $key ] ) ) {
 
 			$size = wp_parse_args( $size, array(
 				'width' => null,
@@ -145,12 +146,13 @@ class Clarkson_User {
 			$url = $this->get_avatar_url( $size );
 
 			// try to get correct size
-
-			if ( strpos( $url, get_bloginfo( 'url' ) . '/' ) === 0 && file_exists( $file = str_replace( get_bloginfo( 'url' ) . '/', ABSPATH, $url ) ) ) {
+			$file = str_replace( get_bloginfo( 'url' ) . '/', ABSPATH, $url );
+			if ( strpos( $url, get_bloginfo( 'url' ) . '/' ) === 0 && file_exists( $file ) ) {
 				$size = getimagesize( $file );
 			} elseif ( $size['crop'] ) {
 				$size = array( $size['width'], $size['height'] );
-			} else { $size = array( '', '' );
+			} else {
+				$size = array( '', '' );
 			}
 
 			$attr = wp_parse_args( $attr, array(

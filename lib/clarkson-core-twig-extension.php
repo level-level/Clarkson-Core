@@ -933,15 +933,15 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 	}
 
 	public function getFunctions() {
-		$twigFunctions = array();
+		$twig_functions = array();
 
 		$allowed_functions = apply_filters( 'clarkson_twig_functions', $this->functions );
 
 		foreach ($allowed_functions  as $function) {
-			$twigFunctions[] = new Twig_SimpleFunction( $function,$function );
+			$twig_functions[] = new Twig_SimpleFunction( $function,$function );
 		}
 
-		return $twigFunctions;
+		return $twig_functions;
 	}
 
 	public function allowFunction( $function) {

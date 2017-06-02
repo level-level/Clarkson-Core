@@ -2,7 +2,7 @@
 class Clarkson_Core_Templates {
 
 	protected $templates = array();
-	protected $hasBeenCalled = false;
+	protected $has_been_called = false;
 
 	public function render( $path, $objects, $ignore_warning = false) {
 		global $wp_query;
@@ -32,10 +32,10 @@ class Clarkson_Core_Templates {
 
 	public function render_twig( $path, $objects, $ignore_warning = false) {
 		// TWIG ARGS
-		if ( ! $ignore_warning && $this->hasBeenCalled) {
+		if ( ! $ignore_warning && $this->has_been_called) {
 			user_error( 'Template rendering has already been called. If you are trying to render a partial, include the file from the parent template for performance reasons. If you have a specific reason to render multiple times, set ignore_warning to true.', E_USER_NOTICE );
 		}
-		$this->hasBeenCalled = true;
+		$this->has_been_called = true;
 
 		$template_dirs  = $this->get_templates_dirs();
 		$template_file = str_replace( array( $this->get_template_dir(), $this->get_stylesheet_dir() ), '', $path ); // Retreive only the path to the template file, relative from the yourtheme/templates directory
@@ -130,7 +130,7 @@ class Clarkson_Core_Templates {
 			$extension = 'twig';
 		}
 
-		if ( $extension === 'twig' ) {
+		if ( 'twig' === $extension ) {
 			// Get template vars
 			global $posts;
 			$object_loader = Clarkson_Core_Objects::get_instance();
@@ -227,7 +227,7 @@ class Clarkson_Core_Templates {
 		$templates = array_merge( $templates, $choices );
 		$page_templates = array();
 		foreach ($this->templates as $name => $path) {
-			if ( strpos( $name,'page' ) !== false && $name !== 'page') {
+			if ( strpos( $name,'page' ) !== false && 'page' !== $name ) {
 				$name = str_replace( 'page-', '', $name );
 				$name = str_replace( '-', ' ', $name );
 				$name = ucwords( $name );

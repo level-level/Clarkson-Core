@@ -72,7 +72,7 @@ class Clarkson_Term {
 			}
 		} elseif ( is_object( $term_or_taxonomy ) ) {
 			foreach ( $wp_query->tax_query->queries as $query ) {
-				if ( $query['field'] == 'slug' && in_array( $term_or_taxonomy->slug, $query['terms'] ) ) {
+				if ( 'slug' == $query['field'] && in_array( $term_or_taxonomy->slug, $query['terms'] ) ) {
 					return true;
 				}
 				if ( in_array( $term_or_taxonomy->term_id, $query['terms'] ) ) {
