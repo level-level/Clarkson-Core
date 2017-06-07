@@ -137,9 +137,9 @@ class Clarkson_Core_Templates {
 
 			$page_vars = array();
 
-			if( is_author() ){
+			if ( is_author() ) {
 				$page_vars['user'] = $object_loader->get_user( get_queried_object_id() );
-			}elseif( is_tax() ){
+			} elseif ( is_tax() ) {
 				$term = get_queried_object();
 				// Custom Taxonomy Templates per Taxonomy type
 				if ( is_a( $term, 'WP_Term' ) ) {
