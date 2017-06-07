@@ -1,3 +1,5 @@
+<img src="https://travis-ci.org/level-level/Clarkson-Core.svg?branch=master">
+
 # Clarkson Core
 A plugin to write Object-Oriented code in combination with the Twig templating engine while keeping the WordPress Way of working in mind.
 
