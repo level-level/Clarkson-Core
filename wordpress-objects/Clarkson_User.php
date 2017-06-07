@@ -12,36 +12,36 @@ class Clarkson_User {
 	 * @throws Exception on not loggged in
 	 */
 	public static function current_user() {
-
-		if ( is_user_logged_in() )
+		if ( is_user_logged_in() ) {
 			return static::get( get_current_user_id() );
-
-		else
+		} else {
 			throw new Exception( 'User is not logged in' );
+		}
 	}
 
 
 	public static function get( $id ) {
-		if ( ! isset( static::$users[$id] ) ) {
+		if ( ! isset( static::$users[ $id ] ) ) {
 			$class = get_called_class();
-			static::$users[$id] = new $class( $id );
+			static::$users[ $id ] = new $class( $id );
 		}
 
-		return static::$users[$id];
+		return static::$users[ $id ];
 	}
 
 	/**
 	 * @param int $user_id
 	 */
 	public function __construct( $user_id ) {
-
-		if ( empty( $user_id ) )
+		if ( empty( $user_id ) ) {
 			throw new Exception( '$user_id empty' );
+		}
 
 		$this->_id = $user_id;
 
-		if ( ! $this->get_user() )
+		if ( ! $this->get_user() ) {
 			throw new Exception( '$user_id does not exist' );
+		}
 	}
 
 	/**
@@ -49,7 +49,6 @@ class Clarkson_User {
 	 * @return bool
 	 */
 	public function is_current_user() {
-
 		return $this->get_id() == get_current_user_id();
 	}
 
@@ -58,9 +57,9 @@ class Clarkson_User {
 	 * @return WP_User
 	 */
 	public function get_user() {
-
-		if ( ! isset( $this->_user ) )
+		if ( ! isset( $this->_user ) ) {
 			$this->_user = new WP_User( $this->_id );
+		}
 
 		if ( ! $this->_user->ID ) {
 			unset( $this->_user );
@@ -76,7 +75,6 @@ class Clarkson_User {
 	 * @return int
 	 */
 	public function get_id() {
-
 		return $this->_id;
 	}
 
@@ -86,7 +84,6 @@ class Clarkson_User {
 	 * @return string
 	 */
 	public function get_display_name() {
-
 		return $this->get_user()->display_name;
 	}
 
@@ -95,7 +92,6 @@ class Clarkson_User {
 	 * @return string
 	 */
 	public function get_display_first_name() {
-
 		return reset( explode( ' ', $this->get_display_name() ) );
 	}
 
@@ -104,11 +100,11 @@ class Clarkson_User {
 	 * @return string
 	 */
 	public function get_display_last_name() {
-
 		$parts = explode( ' ', $this->get_display_name() );
 
-		if ( isset( $parts[1] ) )
+		if ( isset( $parts[1] ) ) {
 			return $parts[1];
+		}
 
 		return '';
 	}
@@ -139,34 +135,42 @@ class Clarkson_User {
 	 * @return string
 	 */
 	public function get_avatar_img( $size, $attr = array() ) {
+		$key = serialize( $size );
+		if ( ! isset( $this->_avatar_imgs[ $key ] ) ) {
 
-		if ( ! isset( $this->_avatar_imgs[ $key = serialize($size)] ) ) {
-
-			$size = wp_parse_args( $size, array( 'width' => null, 'height' => null, 'crop' => true ) );
+			$size = wp_parse_args( $size, array(
+				'width' => null,
+				'height' => null,
+				'crop' => true,
+			) );
 			$url = $this->get_avatar_url( $size );
 
 			// try to get correct size
-
-			if ( strpos( $url, get_bloginfo( 'url' ) . '/' ) === 0 && file_exists( $file = str_replace( get_bloginfo('url') . '/', ABSPATH, $url ) ) )
+			$file = str_replace( get_bloginfo( 'url' ) . '/', ABSPATH, $url );
+			if ( strpos( $url, get_bloginfo( 'url' ) . '/' ) === 0 && file_exists( $file ) ) {
 				$size = getimagesize( $file );
-
-			else if ( $size['crop'] )
+			} elseif ( $size['crop'] ) {
 				$size = array( $size['width'], $size['height'] );
-
-			else
+			} else {
 				$size = array( '', '' );
+			}
 
-			$attr = wp_parse_args( $attr, array( 'width' => $size[0], 'height' => $size[1], 'class' => 'avatar' ) );
+			$attr = wp_parse_args( $attr, array(
+				'width' => $size[0],
+				'height' => $size[1],
+				'class' => 'avatar',
+			) );
 
 			$attr_string  = '';
 
-			foreach ( $attr as $att => $val)
+			foreach ( $attr as $att => $val) {
 				$attr_string .= ' ' . $att . '="' . $val . '"';
+			}
 
-			$this->_avatar_imgs[$key] = '<img src="' . $url . '"' . $attr_string . ' />';
+			$this->_avatar_imgs[ $key ] = '<img src="' . $url . '"' . $attr_string . ' />';
 		}
 
-		return $this->_avatar_imgs[$key];
+		return $this->_avatar_imgs[ $key ];
 	}
 
 	/**
@@ -185,8 +189,7 @@ class Clarkson_User {
 	 * @return mixed
 	 */
 	public function get_notification_setting( $setting ) {
-
-		return $this->get_user()->user_notification_settings[$setting];
+		return $this->get_user()->user_notification_settings[ $setting ];
 	}
 
 	/**
@@ -232,6 +235,4 @@ class Clarkson_User {
 	public function delete_meta( $key, $value = '' ) {
 		return delete_user_meta( $this->get_id(), $key, $value );
 	}
-
-
 }
