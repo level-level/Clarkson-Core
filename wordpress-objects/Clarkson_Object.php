@@ -100,8 +100,7 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
- 	 * Get the parent of the post, if any
-	 *
+	 * Get the parent of the post, if any
 	 * @return Post|null
 	 */
 	public function get_parent() {
@@ -333,7 +332,7 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
- 	 * Retrieve the terms for a post.
+	 * Retrieve the terms for a post.
 	 *
 	 * @param string $taxonomy Optional. The taxonomy for which to retrieve terms. Default 'post_tag'.
 	 * @param array  $args     Optional. {@link wp_get_object_terms()} arguments. Default empty array.
