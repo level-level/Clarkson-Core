@@ -128,52 +128,6 @@ class Clarkson_User {
 	}
 
 	/**
-	 * Get the avatar <img> tag for the user
-	 *
-	 * @param string|array $size
-	 * @param mixed $attr
-	 * @return string
-	 */
-	public function get_avatar_img( $size, $attr = array() ) {
-		$key = serialize( $size );
-		if ( ! isset( $this->_avatar_imgs[ $key ] ) ) {
-
-			$size = wp_parse_args( $size, array(
-				'width' => null,
-				'height' => null,
-				'crop' => true,
-			) );
-			$url = $this->get_avatar_url( $size );
-
-			// try to get correct size
-			$file = str_replace( get_bloginfo( 'url' ) . '/', ABSPATH, $url );
-			if ( strpos( $url, get_bloginfo( 'url' ) . '/' ) === 0 && file_exists( $file ) ) {
-				$size = getimagesize( $file );
-			} elseif ( $size['crop'] ) {
-				$size = array( $size['width'], $size['height'] );
-			} else {
-				$size = array( '', '' );
-			}
-
-			$attr = wp_parse_args( $attr, array(
-				'width' => $size[0],
-				'height' => $size[1],
-				'class' => 'avatar',
-			) );
-
-			$attr_string  = '';
-
-			foreach ( $attr as $att => $val) {
-				$attr_string .= ' ' . $att . '="' . $val . '"';
-			}
-
-			$this->_avatar_imgs[ $key ] = '<img src="' . $url . '"' . $attr_string . ' />';
-		}
-
-		return $this->_avatar_imgs[ $key ];
-	}
-
-	/**
 	 * Get the role for the user
 	 *
 	 * @return string
