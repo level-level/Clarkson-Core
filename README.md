@@ -8,12 +8,13 @@ Composer, that's it.
 
 ## Whats does What?
 
-Here is a brief explenation of the bas
+Here is a brief explanation of the basics of Clarkson Core.
+
 ### Template Hierachy
 Uses the internal [Template Hierarchy](https://developer.wordpress.org/themes/basics/template-hierarchy/) so you can replace `index.php` with `index.twig` or `archive-company.php` with `archive-company.twig` and still have all Posts or CPT's available in "The Loop".
 
 
-```
+```twig
 {% extends "layouts/full-width.twig" %}
 
 {% block content %}
