@@ -274,15 +274,11 @@ class Clarkson_Object implements \JsonSerializable {
 	public function get_excerpt() {
 		if ( ! isset( $this->_excerpt ) ) {
 			setup_postdata( $this->_post );
-
-			ob_start();
-			the_excerpt();
-
-			$this->_excerpt = ob_get_clean();
+			$this->_excerpt = get_the_excerpt( $this->_post );
 			wp_reset_postdata();
 		}
 
-		return $this->_excerpt;
+		return apply_filters( 'the_excerpt', $this->_excerpt );
 
 	}
 
