@@ -11,7 +11,7 @@ class Clarkson_User {
 	 * @return User
 	 * @throws Exception on not loggged in
 	 */
-	public static function current_user(){
+	public static function current_user() {
 		if ( is_user_logged_in() ) {
 			return static::get( get_current_user_id() );
 		} else {
