@@ -37,8 +37,11 @@ BUILD="$(pwd)/build"
 mkdir -p $BUILD
 rm -rfv "$BUILD/*"
 
-# With vendors
+# Run composer just in case
+echo "Composer install"
+composer install --no-dev
 
+# Vendors
 echo "Deleting unused directories and files"
 
 
