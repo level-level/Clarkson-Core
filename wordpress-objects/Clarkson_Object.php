@@ -82,9 +82,10 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param  array $args
 	 * @return Post
 	 */
-	public static function get_one( $args ) {
+	public static function get_one( $args = array() ) {
 		$args['posts_per_page'] = 1;
-		return array_shift( ( static::get_many( $args ) ) );
+		$one = static::get_many( $args );
+		return array_shift( $one );
 	}
 
 	public function _refresh_data() {
