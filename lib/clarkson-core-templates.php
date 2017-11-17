@@ -227,8 +227,16 @@ class Clarkson_Core_Templates {
 		$templates = array_merge( $templates, $choices );
 		$page_templates = array();
 		foreach ($this->templates as $name => $path) {
-			if ( strpos( $name,'page' ) !== false && 'page' !== $name ) {
+			if ( preg_match('#^page-#i', $name) === 1 && 'page' !== $name ) {
 				$name = str_replace( 'page-', '', $name );
+				$name = str_replace( '-', ' ', $name );
+				trigger_error( "Deprecated template name $path found. Use `template-$name.twig` instead.", E_USER_DEPRECATED );
+				$name = ucwords( $name );
+				$page_templates[ basename( $path ) ] = $name;
+			}
+
+			if ( preg_match('#^template-#i', $name) === 1 && 'template' !== $name ) {
+				$name = str_replace( 'template-', '', $name );
 				$name = str_replace( '-', ' ', $name );
 				$name = ucwords( $name );
 
