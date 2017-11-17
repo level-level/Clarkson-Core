@@ -273,9 +273,9 @@ class Clarkson_Object implements \JsonSerializable {
 	public function get_excerpt() {
 		if ( ! isset( $this->_excerpt ) ) {
 			global $post;
-			if(!empty($post)){
+			if ( ! empty( $post ) ) {
 				$oldpost = clone $post;
-			}else{
+			} else {
 				$oldpost = null;
 			}
 			$post = $this->_post; // Set post to what we are asking the excerpt for
