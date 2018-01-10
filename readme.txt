@@ -2,7 +2,7 @@
 Contributors: level level, jmslbam
 Tags: twig, templating, template engine, templates, oop, wordpress objects
 Requires at least: 4.0
-Tested up to: 4.7.2
+Tested up to: 4.9.1
 Stable tag: 0.2.1
 License: GPL v2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
