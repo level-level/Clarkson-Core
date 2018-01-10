@@ -272,17 +272,21 @@ class Clarkson_Object implements \JsonSerializable {
 
 	public function get_excerpt() {
 		if ( ! isset( $this->_excerpt ) ) {
+			global $post;
+			if ( ! empty( $post ) ) {
+				$oldpost = clone $post;
+			} else {
+				$oldpost = null;
+			}
+			$post = $this->_post; // Set post to what we are asking the excerpt for
 			setup_postdata( $this->_post );
-
 			ob_start();
 			the_excerpt();
-
 			$this->_excerpt = ob_get_clean();
 			wp_reset_postdata();
+			$post = $oldpost; // Reset global post
 		}
-
 		return $this->_excerpt;
-
 	}
 
 	public function get_comment_count() {
