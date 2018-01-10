@@ -232,7 +232,14 @@ class Clarkson_Core_Templates {
 		foreach ($this->templates as $name => $path) {
 			$is_valid_template = false;
 
-			// Check if template matches of page-xyz.twig and skip page.twig
+			/**
+			 * IF
+			 * Check if template matches of page-xyz.twig and skip page.twig
+			 * ELSE IF
+			 * Check for template-xyz.twig files and skip template.twig
+			 *
+			 * @since 0.2.1.
+			 */
 			if ( preg_match( '#^page-#i', $name ) === 1 && 'page' !== $name ) {
 				$is_valid_template = true;
 				$name = str_replace( 'page-', '', $name );
@@ -242,10 +249,7 @@ class Clarkson_Core_Templates {
 					trigger_error( "Deprecated template name $path found. Use `template-$name.twig` instead.", E_USER_DEPRECATED );
 				}
 
-			}
-			// Check for template-xyz.twig files and skip template.twig
-			// @since 0.2.1.
-			elseif ( preg_match( '#^template-#i', $name ) === 1 && 'template' !== $name ) {
+			} elseif ( preg_match( '#^template-#i', $name ) === 1 && 'template' !== $name ) {
 				$is_valid_template = true;
 				$name = str_replace( 'template-', '', $name );
 			}
