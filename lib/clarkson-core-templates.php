@@ -6,10 +6,8 @@ class Clarkson_Core_Templates {
 
 	public function render( $path, $objects, $ignore_warning = false) {
 		global $wp_query;
-
 		if ( is_page_template() && isset( $wp_query->post ) && isset( $wp_query->post->ID ) ) {
 			$template_path = get_post_meta( $wp_query->post->ID, '_wp_page_template', true );
-
 			// If this file doesn't exist just fallback on the default WordPress template hierarchy fallback method and first checking the child-theme and then the parent theme
 			if ( file_exists( $this->get_stylesheet_dir() . '/' . $template_path ) ) {
 				$path = $template_path;
@@ -60,7 +58,6 @@ class Clarkson_Core_Templates {
 		}
 
 		$context_args = apply_filters( 'clarkson_context_args', $objects );
-
 		return $twig->render( $template_file, $context_args );
 	}
 
@@ -169,7 +166,7 @@ class Clarkson_Core_Templates {
 		$filter = current_filter();
 		$type   = str_replace( '_template', '', $filter );
 
-		$post_type = get_post_type();
+		$post_type = $wp_query->query_vars['post_type'];
 		$term = get_queried_object();
 
 		// Custom Taxonomy Templates per Taxonomy type
@@ -281,7 +278,6 @@ class Clarkson_Core_Templates {
 			$base = str_replace( '.twig', '', $base );
 			$type = preg_replace( '|[^a-z0-9-]+|', '', $base );
 			$base_type = preg_replace( '(-.*)', '', $type );
-
 			if ( ! in_array( $base_type, $filters )) {
 				add_filter( "{$base_type}_template", array( $this, 'add_template' ) );
 				$filters[] = $base_type;
