@@ -237,7 +237,7 @@ class Clarkson_Core_Templates {
 				$is_valid_template = true;
 				$name = str_replace( 'page-', '', $name );
 
-				$show_warning = apply_filters( 'clarkson_core_deprecated_warn_page_template' , true );
+				$show_warning = apply_filters( 'clarkson_core_deprecated_warning_page_template' , true );
 				if ( $show_warning ) {
 					trigger_error( "Deprecated template name $path found. Use `template-$name.twig` instead.", E_USER_DEPRECATED );
 				}
