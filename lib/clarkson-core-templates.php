@@ -234,9 +234,12 @@ class Clarkson_Core_Templates {
 			if ( preg_match( '#^page-#i', $name ) === 1 && 'page' !== $name ) {
 				$is_valid_template = true;
 				$name = str_replace( 'page-', '', $name );
-				if ( apply_filters( 'clarkson_core_deprecated_warn_page_template' , true ) ) {
+
+				$show_warning = apply_filters( 'clarkson_core_deprecated_warn_page_template' , true );
+				if ( $show_warning ) {
 					trigger_error( "Deprecated template name $path found. Use `template-$name.twig` instead.", E_USER_DEPRECATED );
 				}
+
 			} elseif ( preg_match( '#^template-#i', $name ) === 1 && 'template' !== $name ) {
 				$is_valid_template = true;
 				$name = str_replace( 'template-', '', $name );
