@@ -203,7 +203,10 @@ class Clarkson_Core_Templates {
 	}
 
 	public function get_templates( $choices = array() ) {
-
+		$templates = wp_cache_get( 'templates', 'clarkson_core' );
+		if ( $templates ) {
+			return $templates;
+		}
 		// Retrieve the cache list.
 		// If it doesn't exist, or it's empty prepare an array
 		$theme = wp_get_theme();
@@ -224,11 +227,33 @@ class Clarkson_Core_Templates {
 		$templates = array_merge( $templates, $choices );
 		$page_templates = array();
 		foreach ($this->templates as $name => $path) {
-			if ( strpos( $name,'page' ) !== false && 'page' !== $name ) {
+			$is_valid_template = false;
+
+			/**
+			 * IF
+			 * Check if template matches of page-xyz.twig and skip page.twig
+			 * ELSE IF
+			 * Check for template-xyz.twig files and skip template.twig
+			 *
+			 * @since 0.2.1.
+			 */
+			if ( preg_match( '#^page-#i', $name ) === 1 && 'page' !== $name ) {
+				$is_valid_template = true;
 				$name = str_replace( 'page-', '', $name );
+
+				$show_warning = apply_filters( 'clarkson_core_deprecated_warning_page_template' , true );
+				if ( $show_warning ) {
+					trigger_error( "Deprecated template name $path found. Use `template-$name.twig` instead.", E_USER_DEPRECATED );
+				}
+
+			} elseif ( preg_match( '#^template-#i', $name ) === 1 && 'template' !== $name ) {
+				$is_valid_template = true;
+				$name = str_replace( 'template-', '', $name );
+			}
+
+			if ( $is_valid_template ) {
 				$name = str_replace( '-', ' ', $name );
 				$name = ucwords( $name );
-
 				$page_templates[ basename( $path ) ] = $name;
 			}
 		}
@@ -236,6 +261,7 @@ class Clarkson_Core_Templates {
 		// Now add our template to the list of templates by merging our templates
 		// with the existing templates array from the cache.
 		$templates = array_merge( $templates, $page_templates );
+		wp_cache_set( 'templates', $templates, 'clarkson_core' );
 		return $templates;
 	}
 
@@ -257,8 +283,15 @@ class Clarkson_Core_Templates {
 	/**
 	 * Adds our templates to the page dropdown for v4.7+
 	 */
-	public function add_new_template( $posts_templates ) {
-		$posts_templates = $this->get_templates( $posts_templates );
+	public function add_new_template( $posts_templates, $theme, $post, $post_type ) {
+		$custom_posts_templates = $this->get_templates();
+		foreach ( $custom_posts_templates as $path => $name ) {
+			$filename = basename( $path );
+			$show_on_post_types = apply_filters( 'clarkson_core_templates_types_for_' . $filename, array( 'page' ) );
+			if ( in_array( $post_type, $show_on_post_types ) ) {
+				$posts_templates[ $path ] = $name;
+			}
+		}
 		return $posts_templates;
 	}
 
@@ -327,9 +360,25 @@ class Clarkson_Core_Templates {
 		if ( version_compare( floatval( get_bloginfo( 'version' ) ), '4.7', '<' ) ) { // 4.6 and older
 			add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'register_custom_templates' ) );
 		} else { // Add a filter to the wp 4.7 version attributes metabox
-			add_filter( 'theme_page_templates', array( $this, 'add_new_template' ) );
-		}
+			// Add filters for all post_types
+			add_action( 'wp_loaded', function() {
+				$custom_post_types = get_post_types( array(
+					'public' => false,
+					'_builtin' => false,
+				), 'names', 'or' );
 
+				$builtin_post_types = get_post_types( array(
+					'public' => false,
+					'_builtin' => true,
+				), 'names', 'or' );
+
+				$post_types = array_merge( $custom_post_types, $builtin_post_types );
+
+				foreach ( $post_types as $post_type ) {
+					add_filter( 'theme_' . $post_type . '_templates', array( $this, 'add_new_template' ), 10, 4 );
+				}
+			} );
+		}
 	}
 
 	private function __clone() {
