@@ -268,7 +268,7 @@ class Clarkson_Core_Templates {
 	/**
 	 * Adds our templates to the page dropdown for v4.6 and older
 	 */
-	public function register_custom_templates( $atts) {
+	public function register_custom_templates( $atts ) {
 		// Create the key used for the themes cache
 		$cache_key = 'page_templates-' . md5( get_theme_root() . '/' . get_stylesheet() );
 		$templates = $this->get_templates();
@@ -284,6 +284,7 @@ class Clarkson_Core_Templates {
 	 * Adds our templates to the page dropdown for v4.7+
 	 */
 	public function add_new_template( $posts_templates, $theme, $post, $post_type ) {
+
 		$custom_posts_templates = $this->get_templates();
 		foreach ( $custom_posts_templates as $path => $name ) {
 			$filename = basename( $path );
