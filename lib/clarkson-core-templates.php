@@ -207,7 +207,7 @@ class Clarkson_Core_Templates {
 
 	public function get_templates( $choices = array() ) {
 		$templates = wp_cache_get( 'templates', 'clarkson_core' );
-		if ( ! $templates ) {
+		if ( $templates ) {
 			return $templates;
 		}
 		// Retrieve the cache list.
