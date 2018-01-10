@@ -22,11 +22,21 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 
 == Changelog ==
 
+= 0.2.1 - Jan 10, 2018 =
+
+* Add support for the new Custom Post Types templates in WordPress 4.7
+* Deprecate page-filename.twig and introduce template-filename.twig
+* Fix Excerpt on archive pages
+* Fix when an archive is empty, index.twig is used as a template instead of archive-{post_type}.twig
+
+[https://github.com/level-level/Clarkson-Core/milestone/3](Check details here)
+
 = 0.2.0 - June 7, 2017 =
 
 This release breaks backwards compatibility, but we got your back by just adding 1 line. [More info](http://wp-clarkson.com/core/docs/upgrading.html)
 
 <?php
+// Paste this code in mu-plugins/clarkson-core-deprecated.php
 add_filter('clarkson_core_autoload_theme_pre_020', '__return_true');
 
 * Proper autoloading of wordpress-objects
