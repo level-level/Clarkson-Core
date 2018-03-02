@@ -57,6 +57,12 @@ class Clarkson_Core_Objects {
 		$type = $cc->autoloader->sanitize_object_name( $type );
 		$type = apply_filters( 'clarkson_object_type', $type );
 
+		$object_creation_callback = apply_filters( 'clarkson_create_object_callback', false, $type, $post_id );
+
+		if ( ! empty( $object_creation_callback ) ) {
+			return $object_creation_callback( $post_id );
+		}
+
 		if ( in_array( $type, $cc->autoloader->post_types ) && class_exists( $type ) ) {
 			return new $type($post_id);
 		}
