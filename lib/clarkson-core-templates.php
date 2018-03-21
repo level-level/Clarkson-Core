@@ -171,21 +171,21 @@ class Clarkson_Core_Templates {
 
 		// Post Types
 		$post_type = get_post_type();
-		if( ! $post_type || empty( $post_type ) ){
-			
-			/** 
+		if ( ! $post_type || empty( $post_type ) ) {
+
+			/**
 			 * Fix for archive pages with no posts on it.
 			 * See https://github.com/level-level/Clarkson-Core/issues/90 & https://core.trac.wordpress.org/ticket/20647
-			 * 
+			 *
 			 * Don't use query_vars 'post_type' because this could return an Array if multiple Post Types are set via pre_get_posts
 			 * We always want the main Queried Object 'name' to load that specific CPT template.
 			 */
-			
+
 			if ( is_a( $queried_object, 'WP_Post_Type' ) && isset( $queried_object->name ) ) {
 				$post_type = $queried_object->name;
 			}
 		}
-		
+
 		// Taxonomy Templates per Taxonomy type
 		if ( is_a( $queried_object, 'WP_Term' ) && isset( $queried_object->taxonomy ) ) {
 			$post_type = $queried_object->taxonomy;
@@ -202,11 +202,11 @@ class Clarkson_Core_Templates {
 
 		/**
 		 * Major exception here:
-		 * 
+		 *
 		 * Fallback if $type is 'page' but the custom template file in _template
 		 * that isn't present on the disk anymore. Then $type is still 'page'
 		 * but it could fallback on singular.twig when that file is present.
-		 * 
+		 *
 		 * Offcourse only if there is a singular template
 		 */
 		if ( 'page' == $type && ! isset( $templates[ "{$type}" ] ) && isset( $templates['singular'] ) ) {
