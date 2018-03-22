@@ -169,8 +169,8 @@ class Clarkson_Core_Templates {
             }
         }
 
-		if ( isset( $templates['index'] ) ) {
-			return $templates['index'];
+		if ( isset( $twig_templates['index'] ) ) {
+			return $twig_templates['index'];
 		}
 
 		return $template;
