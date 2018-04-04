@@ -82,6 +82,9 @@ class Clarkson_Core_Autoloader {
 		}
 	}
 
+	/**
+	 * Load all files of each WordPress object
+	 */
 	protected function load_wordpress_objects( $classname ) {
 		$type = $this->sanitize_object_name( $classname );
 
