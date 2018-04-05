@@ -9,7 +9,7 @@ class Clarkson_Core_Autoloader {
 	public function __construct() {
 		add_action( 'registered_post_type', array( $this, 'registered_post_type' ), 10, 1 );
 		add_action( 'registered_taxonomy', array( $this, 'registered_taxonomy' ), 10, 1 );
-		add_action( 'parse_query', array( $this, 'load_template_objects' ) ); // could also run on 'wp' but this is already 
+		add_action( 'parse_query', array( $this, 'load_template_objects' ) ); // could also run on 'wp' but this is already
 		spl_autoload_register( array( $this, 'load_wordpress_objects' ), true, true );
 
 		$filepath = realpath( get_template_directory() ) . '/wordpress-objects/User.php';
@@ -56,27 +56,27 @@ class Clarkson_Core_Autoloader {
 	}
 
 	/**
-	 *  Returns page template filename without extension. Returns an empty string when the default page template is in use. Returns false if the post is not a page.
+	 * Returns page template filename without extension. Returns an empty string when the default page template is in use. Returns false if the post is not a page.
 	 */
-	public function get_template_filename( $post_id ){
+	public function get_template_filename( $post_id ) {
 		$page_template_slug = get_page_template_slug( $post_id );
 		$filename = '';
 
-		if( !empty( $page_template_slug ) ){
+		if( ! empty( $page_template_slug ) ) {
 			$pathinfo = pathinfo( $page_template_slug );
-			$filename = array_key_exists( 'filename', $pathinfo ) ? $pathinfo['filename'] : '';		
+			$filename = array_key_exists( 'filename', $pathinfo ) ? $pathinfo['filename'] : '';
 		}
 
 		return $filename;
 	}
 
 	/**
-	 *  Fill $extra variable with the current custom template
+	 * Fill $extra variable with the current custom template
 	 */
-	public function load_template_objects(){
+	public function load_template_objects() {
 		$template_name = $this->get_template_filename( get_queried_object_id() );
-		
-		if( $template_name && !empty( $template_name ) ){
+
+		if( $template_name && ! empty( $template_name ) ) {
 			$template_name = $this->sanitize_object_name( $template_name );
 			$this->extra[ $template_name ] = $template_name;
 		}
@@ -91,7 +91,7 @@ class Clarkson_Core_Autoloader {
 		if ( ! in_array( $type, $this->post_types ) && ! in_array( $type, $this->taxonomies ) && ! in_array( $type, $this->extra ) ) {
 			return;
 		}
-		
+
 		$filename = "{$classname}.php";
 
 		// Load child theme first

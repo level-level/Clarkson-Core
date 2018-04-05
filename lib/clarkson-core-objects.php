@@ -59,7 +59,7 @@ class Clarkson_Core_Objects {
 		// Check if post has a custom template, if so, overwrite value
 		$page_template_slug = $cc->autoloader->get_template_filename( $post_id );
 
-		if( $page_template_slug && !empty( $page_template_slug ) ){
+		if( $page_template_slug && ! empty( $page_template_slug ) ) {
 			$type = $page_template_slug;
 		}
 
