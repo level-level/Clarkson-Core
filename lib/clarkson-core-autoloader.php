@@ -62,7 +62,7 @@ class Clarkson_Core_Autoloader {
 		$page_template_slug = get_page_template_slug( $post_id );
 		$filename = '';
 
-		if( ! empty( $page_template_slug ) ) {
+		if ( ! empty( $page_template_slug ) ) {
 			$pathinfo = pathinfo( $page_template_slug );
 			$filename = array_key_exists( 'filename', $pathinfo ) ? $pathinfo['filename'] : '';
 		}
@@ -76,7 +76,7 @@ class Clarkson_Core_Autoloader {
 	public function load_template_objects() {
 		$template_name = $this->get_template_filename( get_queried_object_id() );
 
-		if( $template_name && ! empty( $template_name ) ) {
+		if ( $template_name && ! empty( $template_name ) ) {
 			$template_name = $this->sanitize_object_name( $template_name );
 			$this->extra[ $template_name ] = $template_name;
 		}
