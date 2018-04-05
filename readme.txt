@@ -2,8 +2,8 @@
 Contributors: level level, jmslbam
 Tags: twig, templating, template engine, templates, oop, wordpress objects
 Requires at least: 4.0
-Tested up to: 4.9.1
-Stable tag: 0.2.1
+Tested up to: 4.9.4
+Stable tag: 0.2.2
 License: GPL v2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,10 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 
 
 == Changelog ==
+
+= 0.2.2 - March 30, 2018 =
+
+* Reintroduce get_post_type with fallback on Queried Object for Archives #98
 
 = 0.2.1 - Jan 10, 2018 =
 
