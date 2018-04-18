@@ -344,13 +344,16 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @return array List of post tags.
 	 */
 	public function get_terms( $taxonomy, $args = array() ) {
+		$cc = Clarkson_Core::get_instance();
+		$class_name = $cc->autoloader->sanitize_object_name( $taxonomy );
+
 		return array_map(
-			function( $term ) use ( $taxonomy ) {
+			function( $term ) use ( $taxonomy, $class_name ) {
 				try {
 					if ( is_object( $term ) ) {
 						// Check if there is a Custom Taxonomy class
-						if ( class_exists( $taxonomy ) ) {
-							return call_user_func( array( $taxonomy, 'get_by_id' ) , $term->term_id, $taxonomy );
+						if ( class_exists( $class_name ) ) {
+							return call_user_func( array( $class_name, 'get_by_id' ) , $term->term_id, $taxonomy );
 						}
 						// Else return a default Clarkson Term
 						return Clarkson_Term::get_by_id( $term->term_id, $taxonomy );
@@ -361,6 +364,7 @@ class Clarkson_Object implements \JsonSerializable {
 				}
 			},
 			wp_get_post_terms( $this->get_id(), $taxonomy, $args )
+			array( $class_name )
 		);
 	}
 
