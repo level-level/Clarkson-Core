@@ -8,7 +8,7 @@ class Clarkson_Core_Objects {
 		return $this->objects;
 	}
 
-	public function get_term( $term) {
+	public function get_term( $term ) {
 		if ( ! isset( $term->taxonomy ) || ! isset( $term->term_id )) {
 			return;
 		}
