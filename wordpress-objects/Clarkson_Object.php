@@ -349,7 +349,7 @@ class Clarkson_Object implements \JsonSerializable {
 
 		$terms = wp_get_post_terms( $this->get_id(), $taxonomy, $args );
 
-		if( is_wp_error( $terms ) ){
+		if ( is_wp_error( $terms ) ) {
 			trigger_error( $terms->get_error_message() );
 			return $terms;
 		}
