@@ -932,7 +932,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 		'is_year',
 		'pings_open',
 		'gravity_form', // shouldn't be here...
-		'single_post_title'
+		'single_post_title',
 	);
 
 	public function __construct( array $functions = array()) {
