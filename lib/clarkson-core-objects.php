@@ -66,8 +66,7 @@ class Clarkson_Core_Objects {
 		$type = $cc->autoloader->sanitize_object_name( $type );
 		$type = apply_filters( 'clarkson_object_type', $type );
 
-		// remove in_array( $type, $cc->autoloader->post_types ), why was it here in the first place?
-		if ( class_exists( $type ) ) {
+		if ( ( in_array( $type, $cc->autoloader->post_types ) || in_array( $type, $cc->autoloader->extra ) ) && class_exists( $type ) ) {
 			$object = new $type( $post_id );
 		} else {
 			$object = new Clarkson_Object( $post_id );
