@@ -9,17 +9,14 @@ class Clarkson_Core_Autoloader {
 		spl_autoload_register( array( $this, 'load_wordpress_object' ), true, true );
 		add_action( 'registered_post_type', array( $this, 'registered_post_type' ), 10, 1 );
 		add_action( 'registered_taxonomy', array( $this, 'registered_taxonomy' ), 10, 1 );
-
-		$filepath = realpath( get_template_directory() ) . '/wordpress-objects/User.php';
-		if (file_exists( $filepath )) {
-			$this->user_types['user'] = 'user';
-		}
+		add_action( 'init', array( $this, 'register_user_types' ), 10, 1 );
 	}
 
 	/**
 	 * Prepares object names
 	 */
 	public function sanitize_object_name( $str ) {
+
 		$str = trim( $str );
 
 		// Replace - with _
@@ -40,35 +37,48 @@ class Clarkson_Core_Autoloader {
 	 * This also means reserved ones like page, post, attachment, revision, nav_menu_item,
 	 * custom_css and customize_changeset.
 	 */
-	public function registered_post_type( $post_type) {
+	public function registered_post_type( $post_type ) {
 		$this->post_types[ $this->sanitize_object_name( $post_type ) ] = $this->sanitize_object_name( $post_type );
 	}
 
 	/**
 	 * Fill $taxonomies variable with all registered Taxonomies
 	 */
-	public function registered_taxonomy( $taxonomy) {
+	public function registered_taxonomy( $taxonomy ) {
 		$this->taxonomies[ $this->sanitize_object_name( $taxonomy ) ] = $this->sanitize_object_name( $taxonomy );
 	}
 
-	protected function load_wordpress_object( $classname) {
+	public function register_user_types() {
+		global $wp_roles;
+
+		// Default is 'user'
+		$this->user_types[ $this->sanitize_object_name( 'user' ) ] = $this->sanitize_object_name( 'user' );
+
+		// Now register user role based classes
+		foreach ( $wp_roles->roles as $key => $role ) {
+			$class_name = $this->sanitize_object_name( 'user_' . $key );
+			$this->user_types[ $class_name ] = $class_name;
+		}
+	}
+
+	protected function load_wordpress_object( $classname ) {
 		$type = $this->sanitize_object_name( $classname );
 
-		if ( ! in_array( $type, $this->post_types ) && ! in_array( $type, $this->taxonomies )) {
+		if ( ! in_array( $type, $this->post_types ) && ! in_array( $type, $this->taxonomies ) && ! in_array( $type, $this->user_types ) ) {
 			return;
 		}
 		$filename = "{$classname}.php";
 
 		// Load child theme first
 		$filepath = realpath( get_stylesheet_directory() ) . "/wordpress-objects/{$filename}";
-		if (file_exists( $filepath )) {
+		if ( file_exists( $filepath ) ) {
 			include_once( $filepath );
 			return;
 		}
 
 		// If not exists then load normal / parent theme
 		$filepath = realpath( get_template_directory() ) . "/wordpress-objects/{$filename}";
-		if (file_exists( $filepath )) {
+		if ( file_exists( $filepath ) ) {
 			include_once( $filepath );
 			return;
 		}
