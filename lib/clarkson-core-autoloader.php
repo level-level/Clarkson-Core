@@ -10,18 +10,15 @@ class Clarkson_Core_Autoloader {
 		add_action( 'registered_post_type', array( $this, 'registered_post_type' ), 10, 1 );
 		add_action( 'registered_taxonomy', array( $this, 'registered_taxonomy' ), 10, 1 );
 		add_action( 'parse_query', array( $this, 'load_template_objects' ) ); // could also run on 'wp' but this is already
+		add_action( 'init', array( $this, 'register_user_types' ), 10, 1 );
 		spl_autoload_register( array( $this, 'load_wordpress_objects' ), true, true );
-
-		$filepath = realpath( get_template_directory() ) . '/wordpress-objects/User.php';
-		if ( file_exists( $filepath ) ) {
-			$this->user_types['user'] = 'user';
-		}
 	}
 
 	/**
 	 * Prepares object names
 	 */
 	public function sanitize_object_name( $str ) {
+
 		$str = trim( $str );
 
 		// Replace - with _
@@ -82,6 +79,19 @@ class Clarkson_Core_Autoloader {
 		}
 	}
 
+	public function register_user_types() {
+		global $wp_roles;
+
+		// Default is 'user'
+		$this->user_types[ $this->sanitize_object_name( 'user' ) ] = $this->sanitize_object_name( 'user' );
+
+		// Now register user role based classes
+		foreach ( $wp_roles->roles as $key => $role ) {
+			$class_name = $this->sanitize_object_name( 'user_' . $key );
+			$this->user_types[ $class_name ] = $class_name;
+		}
+	}
+
 	/**
 	 * Load all files of each WordPress object
 	 */
@@ -89,7 +99,7 @@ class Clarkson_Core_Autoloader {
 		$type = $this->sanitize_object_name( $classname );
 
 		// This is faster than a class_exists check
-		if ( ! in_array( $type, $this->post_types ) && ! in_array( $type, $this->taxonomies ) && ! in_array( $type, $this->extra ) ) {
+		if ( ! in_array( $type, $this->post_types ) && ! in_array( $type, $this->taxonomies ) && ! in_array( $type, $this->extra ) && ! in_array( $type, $this->user_types ) ) {
 			return;
 		}
 
@@ -97,14 +107,14 @@ class Clarkson_Core_Autoloader {
 
 		// Load child theme first
 		$filepath = realpath( get_stylesheet_directory() ) . "/wordpress-objects/{$filename}";
-		if (file_exists( $filepath )) {
+		if ( file_exists( $filepath ) ) {
 			include_once( $filepath );
 			return;
 		}
 
 		// If not exists then load normal / parent theme
 		$filepath = realpath( get_template_directory() ) . "/wordpress-objects/{$filename}";
-		if (file_exists( $filepath )) {
+		if ( file_exists( $filepath ) ) {
 			include_once( $filepath );
 			return;
 		}

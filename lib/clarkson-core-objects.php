@@ -9,7 +9,8 @@ class Clarkson_Core_Objects {
 	}
 
 	public function get_term( $term ) {
-		if ( ! isset( $term->taxonomy ) || ! isset( $term->term_id )) {
+
+		if ( ! isset( $term->taxonomy ) || ! isset( $term->term_id ) ) {
 			return;
 		}
 
@@ -32,10 +33,14 @@ class Clarkson_Core_Objects {
 		return $users;
 	}
 
-	public function get_user( $users_id ) {
+
+	public function get_user( $user_id ) {
+
 		$cc = Clarkson_Core::get_instance();
-		if ( in_array( 'user', $cc->autoloader->user_types ) && class_exists( 'User' ) ) {
-			return new User( $users_id );
+		$class_name = $cc->autoloader->get_user_class_name( get_user_by( 'ID', $user_id ) );
+
+		if ( in_array( $class_name, $cc->autoloader->user_types ) && class_exists( $class_name ) ) {
+			return new $class_name( $users_id );
 		}
 		return new Clarkson_User( $users_id );
 	}
