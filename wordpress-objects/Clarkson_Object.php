@@ -347,6 +347,13 @@ class Clarkson_Object implements \JsonSerializable {
 		$cc = Clarkson_Core::get_instance();
 		$class_name = $cc->autoloader->sanitize_object_name( $taxonomy );
 
+		$terms = wp_get_post_terms( $this->get_id(), $taxonomy, $args );
+
+		if( is_wp_error( $terms ) ){
+			trigger_error( $terms->get_error_message() );
+			return $terms;
+		}
+
 		return array_map(
 			function( $term ) use ( $taxonomy, $class_name ) {
 				try {
@@ -363,7 +370,7 @@ class Clarkson_Object implements \JsonSerializable {
 					return null;
 				}
 			},
-			wp_get_post_terms( $this->get_id(), $taxonomy, $args )
+			$terms,
 			array( $class_name )
 		);
 	}
