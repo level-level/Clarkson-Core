@@ -22,7 +22,7 @@ class Clarkson_Core_Objects {
 		return Clarkson_Term::get_by_id( $term->term_id, $term->taxonomy );
 	}
 
-	public function get_users( $users_ids) {
+	public function get_users( $users_ids ) {
 		$users = array();
 
 		foreach ( $users_ids as $users_id ) {
@@ -32,7 +32,7 @@ class Clarkson_Core_Objects {
 		return $users;
 	}
 
-	public function get_user( $users_id) {
+	public function get_user( $users_id ) {
 		$cc = Clarkson_Core::get_instance();
 		if ( in_array( 'user', $cc->autoloader->user_types ) && class_exists( 'User' ) ) {
 			return new User( $users_id );
@@ -50,7 +50,7 @@ class Clarkson_Core_Objects {
 		return $objects;
 	}
 
-	public function get_object( $post_id) {
+	public function get_object( $post_id ) {
 		$cc = Clarkson_Core::get_instance();
 
 		$type = get_post_type( $post_id );

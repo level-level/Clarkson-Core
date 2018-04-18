@@ -116,7 +116,7 @@ class Clarkson_Core_Templates {
 		return apply_filters( 'clarkson_twig_stylesheet_dir', get_stylesheet_directory() . '/templates' );
 	}
 
-	public function template_include( $template) {
+	public function template_include( $template ) {
 		$extension = pathinfo( $template, PATHINFO_EXTENSION );
 		$type = basename( $template );
 		$type = str_replace( ".{$extension}", '', $type );
