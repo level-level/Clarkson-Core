@@ -8,7 +8,7 @@ class Clarkson_Core_Objects {
 		return $this->objects;
 	}
 
-	public function get_term( $term) {
+	public function get_term( $term ) {
 		if ( ! isset( $term->taxonomy ) || ! isset( $term->term_id )) {
 			return;
 		}
@@ -17,12 +17,12 @@ class Clarkson_Core_Objects {
 		$class_name = $cc->autoloader->sanitize_object_name( $term->taxonomy );
 
 		if ( in_array( $class_name, $cc->autoloader->taxonomies ) && class_exists( $class_name ) ) {
-			return new $class_name($term->term_id, $term->taxonomy);
+			return new $class_name( $term->term_id, $term->taxonomy );
 		}
 		return Clarkson_Term::get_by_id( $term->term_id, $term->taxonomy );
 	}
 
-	public function get_users( $users_ids) {
+	public function get_users( $users_ids ) {
 		$users = array();
 
 		foreach ( $users_ids as $users_id ) {
@@ -32,7 +32,7 @@ class Clarkson_Core_Objects {
 		return $users;
 	}
 
-	public function get_user( $users_id) {
+	public function get_user( $users_id ) {
 		$cc = Clarkson_Core::get_instance();
 		if ( in_array( 'user', $cc->autoloader->user_types ) && class_exists( 'User' ) ) {
 			return new User( $users_id );
@@ -50,18 +50,30 @@ class Clarkson_Core_Objects {
 		return $objects;
 	}
 
-	public function get_object( $post_id) {
+	public function get_object( $post_id ) {
 		$cc = Clarkson_Core::get_instance();
 
+		// defaults to post type
 		$type = get_post_type( $post_id );
+
+		// Check if post has a custom template, if so, overwrite value
+		$page_template_slug = $cc->autoloader->get_template_filename( $post_id );
+
+		if ( $page_template_slug && ! empty( $page_template_slug ) ) {
+			$type = $page_template_slug;
+		}
+
 		$type = $cc->autoloader->sanitize_object_name( $type );
 		$type = apply_filters( 'clarkson_object_type', $type );
 
-		if ( in_array( $type, $cc->autoloader->post_types ) && class_exists( $type ) ) {
-			return new $type($post_id);
+		// remove in_array( $type, $cc->autoloader->post_types ), why was it here in the first place?
+		if ( class_exists( $type ) ) {
+			$object = new $type( $post_id );
+		} else {
+			$object = new Clarkson_Object( $post_id );
 		}
 
-		return new Clarkson_Object( $post_id );
+		return $object;
 	}
 
 	private function register_objects() {
