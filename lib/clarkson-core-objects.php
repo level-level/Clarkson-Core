@@ -25,8 +25,8 @@ class Clarkson_Core_Objects {
 	public function get_users( $users_ids ) {
 		$users = array();
 
-		foreach ( $users_ids as $users_id ) {
-			$users[] = $this->get_user( $users_id );
+		foreach ( $users_ids as $user_id ) {
+			$users[] = $this->get_user( $user_id );
 		}
 
 		return $users;
@@ -37,9 +37,9 @@ class Clarkson_Core_Objects {
 		$class_name = $cc->autoloader->get_user_class_name( get_user_by( 'ID', $user_id ) );
 
 		if ( in_array( $class_name, $cc->autoloader->user_types ) && class_exists( $class_name ) ) {
-			return new $class_name( $users_id );
+			return new $class_name( $user_id );
 		}
-		return new Clarkson_User( $users_id );
+		return new Clarkson_User( $user_id );
 	}
 
 	public function get_objects( $posts_ids ) {
