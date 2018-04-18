@@ -60,6 +60,10 @@ class Clarkson_Core {
 
 		add_action( 'init', array( $this, 'init' ) );
 
+		if ( ! class_exists( 'Clarkson_Core_Autoloader' ) ) {
+			return;
+		}
+
 		$this->autoloader = new Clarkson_Core_Autoloader();
 
 		if ( apply_filters( 'clarkson_core_autoload_theme_pre_020', false ) ) {
