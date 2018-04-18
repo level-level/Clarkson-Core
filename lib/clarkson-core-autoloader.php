@@ -88,6 +88,7 @@ class Clarkson_Core_Autoloader {
 	protected function load_wordpress_objects( $classname ) {
 		$type = $this->sanitize_object_name( $classname );
 
+		// This is faster than a class_exists check
 		if ( ! in_array( $type, $this->post_types ) && ! in_array( $type, $this->taxonomies ) && ! in_array( $type, $this->extra ) ) {
 			return;
 		}
