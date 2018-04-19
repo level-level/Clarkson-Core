@@ -57,8 +57,8 @@ class Clarkson_Core_Objects {
 	 * Get post that's converted to their respectievelijke WordPress object class
 	 */
 	public function get_object( $post ) {
-		if( ! $post instanceof WP_Post && is_int( (int)$post ) ){
-			trigger_error( "Deprecated calling of get_object with an ID. Use a `WP_Post` instead.", E_USER_DEPRECATED );
+		if ( ! $post instanceof WP_Post && is_int( (int) $post ) ) {
+			trigger_error( 'Deprecated calling of get_object with an ID. Use a `WP_Post` instead.', E_USER_DEPRECATED );
 			$post = get_post( $post );
 		}
 		$cc = Clarkson_Core::get_instance();
