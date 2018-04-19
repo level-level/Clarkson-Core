@@ -40,28 +40,38 @@ class Clarkson_Core_Objects {
 		return new Clarkson_User( $users_id );
 	}
 
-	public function get_objects( $posts_ids ) {
+	/**
+	 * Get a array of post converted to their respectievelijke WordPress object class
+	 */
+	public function get_objects( $posts ) {
 		$objects = array();
 
-		foreach ( $posts_ids as $posts_id ) {
-			$objects[] = $this->get_object( $posts_id );
+		foreach ( $posts as $post ) {
+			$objects[] = $this->get_object( $post );
 		}
 
 		return $objects;
 	}
 
-	public function get_object( $post_id ) {
+	/**
+	 * Get post that's converted to their respectievelijke WordPress object class
+	 */
+	public function get_object( $post ) {
+		if( ! $post instanceof WP_Post && is_int( (int)$post ) ){
+			trigger_error( "Deprecated calling of get_object with an ID. Use a `WP_Post` instead.", E_USER_DEPRECATED );
+			$post = get_post( $post );
+		}
 		$cc = Clarkson_Core::get_instance();
 
-		$type = get_post_type( $post_id );
+		$type = get_post_type( $post );
 		$type = $cc->autoloader->sanitize_object_name( $type );
 		$type = apply_filters( 'clarkson_object_type', $type );
 
 		if ( in_array( $type, $cc->autoloader->post_types ) && class_exists( $type ) ) {
-			return new $type($post_id);
+			return new $type( $post );
 		}
 
-		return new Clarkson_Object( $post_id );
+		return new Clarkson_Object( $post );
 	}
 
 	private function register_objects() {
