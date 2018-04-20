@@ -35,8 +35,10 @@ class Clarkson_Core_Objects {
 
 
 	public function get_user( $user_id ) {
-		$class_name = false;
+
+		$cc = Clarkson_Core::get_instance();
 		$user = get_userdata( $user_id );
+		$class_name = false;
 
 		if( $user && $user->roles && count( $user->roles ) >= 1 ){
 			$class_name = $user->roles[0];
