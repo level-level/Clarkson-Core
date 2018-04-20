@@ -9,7 +9,7 @@ class Clarkson_Core_Autoloader {
 	public function __construct() {
 		add_action( 'registered_post_type', array( $this, 'registered_post_type' ), 10, 1 );
 		add_action( 'registered_taxonomy', array( $this, 'registered_taxonomy' ), 10, 1 );
-		add_action( 'parse_query', array( $this, 'load_template_objects' ) ); // could also run on 'wp' but this is already
+		add_action( 'wp', array( $this, 'load_template_objects' ) ); // could also run on 'wp' but this is already
 		spl_autoload_register( array( $this, 'load_wordpress_objects' ), true, true );
 
 		$filepath = realpath( get_template_directory() ) . '/wordpress-objects/User.php';
