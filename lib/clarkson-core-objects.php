@@ -37,7 +37,7 @@ class Clarkson_Core_Objects {
 		$user = get_userdata( $user_id );
 		$class_name = false;
 
-		if( $user && $user->roles && count( $user->roles ) >= 1 ){
+		if ( $user && $user->roles && count( $user->roles ) >= 1 ) {
 			$class_name = $user->roles[0];
 		}
 
