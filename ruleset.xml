@@ -17,7 +17,6 @@
  	<rule ref="Generic.ControlStructures.InlineControlStructure"/>
 
  	<rule ref="WordPress-Core">
-       <exclude name="WordPress.XSS.EscapeOutput" />
        <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
        <exclude name="Generic.Files.EndFileNewline.NotFound" />
        <exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.Found" />
