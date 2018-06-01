@@ -138,17 +138,7 @@ class Clarkson_User {
 	public function get_role() {
 		return reset( $this->get_user()->roles );
 	}
-
-	/**
-	 * Get the notification setting for the user
-	 *
-	 * @param string $setting
-	 * @return mixed
-	 */
-	public function get_notification_setting( $setting ) {
-		return $this->get_user()->user_notification_settings[ $setting ];
-	}
-
+	
 	/**
 	 * Get meta for the user
 	 *
