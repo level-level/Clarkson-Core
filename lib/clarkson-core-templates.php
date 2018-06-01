@@ -4,7 +4,7 @@ class Clarkson_Core_Templates {
 	protected $templates = array();
 	protected $has_been_called = false;
 
-	public function render( $path, $objects, $ignore_warning = false) {
+	public function render( $path, $objects, $ignore_warning = false ) {
 		global $wp_query;
 		if ( is_page_template() && isset( $wp_query->post ) && isset( $wp_query->post->ID ) ) {
 			$template_path = get_post_meta( $wp_query->post->ID, '_wp_page_template', true );
@@ -28,9 +28,9 @@ class Clarkson_Core_Templates {
 	}
 
 
-	public function render_twig( $path, $objects, $ignore_warning = false) {
+	public function render_twig( $path, $objects, $ignore_warning = false ) {
 		// TWIG ARGS
-		if ( ! $ignore_warning && $this->has_been_called) {
+		if ( ! $ignore_warning && $this->has_been_called ) {
 			user_error( 'Template rendering has already been called. If you are trying to render a partial, include the file from the parent template for performance reasons. If you have a specific reason to render multiple times, set ignore_warning to true.', E_USER_NOTICE );
 		}
 		$this->has_been_called = true;
@@ -53,7 +53,7 @@ class Clarkson_Core_Templates {
 		$twig->addExtension( new Twig_Extensions_Extension_Array() );
 		$twig->addExtension( new Twig_Extensions_Extension_Date() );
 
-		if ( $debug) {
+		if ( $debug ) {
 			$twig->addExtension( new Twig_Extension_Debug() );
 		}
 
@@ -116,7 +116,7 @@ class Clarkson_Core_Templates {
 		return apply_filters( 'clarkson_twig_stylesheet_dir', get_stylesheet_directory() . '/templates' );
 	}
 
-	public function template_include( $template) {
+	public function template_include( $template ) {
 		$extension = pathinfo( $template, PATHINFO_EXTENSION );
 		$type = basename( $template );
 		$type = str_replace( ".{$extension}", '', $type );
@@ -234,7 +234,7 @@ class Clarkson_Core_Templates {
 			} else { // 4.7+
 				$templates = array();
 			}
-			if (empty( $templates )) {
+			if ( empty( $templates ) ) {
 				$templates = array();
 			}
 		} else {
@@ -243,7 +243,7 @@ class Clarkson_Core_Templates {
 
 		$templates = array_merge( $templates, $choices );
 		$page_templates = array();
-		foreach ($this->templates as $name => $path) {
+		foreach ( $this->templates as $name => $path ) {
 			$is_valid_template = false;
 
 			/**
@@ -262,7 +262,6 @@ class Clarkson_Core_Templates {
 				if ( $show_warning ) {
 					trigger_error( "Deprecated template name $path found. Use `template-$name.twig` instead.", E_USER_DEPRECATED );
 				}
-
 			} elseif ( preg_match( '#^template-#i', $name ) === 1 && 'template' !== $name ) {
 				$is_valid_template = true;
 				$name = str_replace( 'template-', '', $name );
@@ -329,7 +328,7 @@ class Clarkson_Core_Templates {
 			$base = str_replace( '.twig', '', $base );
 			$type = preg_replace( '|[^a-z0-9-]+|', '', $base );
 			$base_type = preg_replace( '(-.*)', '', $type );
-			if ( ! in_array( $base_type, $filters )) {
+			if ( ! in_array( $base_type, $filters ) ) {
 				add_filter( "{$base_type}_template", array( $this, 'add_template' ) );
 				$filters[] = $base_type;
 			}
@@ -338,7 +337,7 @@ class Clarkson_Core_Templates {
 		}
 	}
 
-	private function get_templates_from_path( $path) {
+	private function get_templates_from_path( $path ) {
 		$templates = array();
 		if ( ! $path || ! is_string( $path ) || ! file_exists( $path ) ) {
 			return $templates;
@@ -347,7 +346,7 @@ class Clarkson_Core_Templates {
 		if ( empty( $files ) ) {
 			return $templates;
 		}
-		foreach ($files as $file_path) {
+		foreach ( $files as $file_path ) {
 			$templates[] = $file_path;
 		}
 		return $templates;
@@ -359,7 +358,7 @@ class Clarkson_Core_Templates {
 
 	public static function get_instance() {
 		static $instance = null;
-		if (null === $instance) {
+		if ( null === $instance ) {
 			$instance = new Clarkson_Core_Templates();
 		}
 		return $instance;

@@ -27,7 +27,7 @@ class Clarkson_Core_Deprecated {
 
 		// Load deprecated post-objects folder
 		$theme_deprecated_objects_path = get_template_directory() . '/post-objects';
-		if (is_dir( $theme_deprecated_objects_path )) {
+		if ( is_dir( $theme_deprecated_objects_path ) ) {
 			user_error( "The {$theme_deprecated_objects_path} folder is deprecated. Please use 'wordpress-objects'.", E_USER_DEPRECATED );
 			$theme_objects  = array_merge( $this->get_objects_from_path( $theme_deprecated_objects_path ), $theme_objects );
 		}
@@ -36,7 +36,7 @@ class Clarkson_Core_Deprecated {
 		$theme_objects = apply_filters( 'clarkson_available_objects_paths', $theme_objects );
 
 		// Load classes
-		foreach ( $theme_objects as $object_name => $object_path) {
+		foreach ( $theme_objects as $object_name => $object_path ) {
 			if ( strpos( $object_name, '_tax_' ) !== false ) {
 				$object_name = strtolower( $object_name );
 			}
@@ -90,13 +90,13 @@ class Clarkson_Core_Deprecated {
 		// Current Theme Dir
 		$theme_dir = get_template_directory();
 
-		foreach ($dirs as $dir) {
+		foreach ( $dirs as $dir ) {
 			$this->load_php_files_from_path( $theme_dir . "/{$dir}" );
 		}
 
 	}
 
-	private function load_php_files_from_path( $path = false) {
+	private function load_php_files_from_path( $path = false ) {
 
 		if ( ! $path || ! is_string( $path ) || ! file_exists( $path ) ) {
 			return;
@@ -105,7 +105,7 @@ class Clarkson_Core_Deprecated {
 		$files = glob( "{$path}/*.php" );
 		$dirs = array_filter( glob( "{$path}/*", GLOB_ONLYDIR ), 'is_dir' );
 
-		foreach ($dirs as $dir) {
+		foreach ( $dirs as $dir ) {
 			$this->load_php_files_from_path( $dir );
 		}
 
@@ -113,7 +113,7 @@ class Clarkson_Core_Deprecated {
 			return;
 		}
 
-		foreach ( $files as $filepath) {
+		foreach ( $files as $filepath ) {
 			require_once $filepath;
 		}
 
@@ -131,7 +131,7 @@ class Clarkson_Core_Deprecated {
 			return $objects;
 		}
 
-		foreach ( $files as $filepath) {
+		foreach ( $files as $filepath ) {
 			$path_parts = pathinfo( $filepath );
 			$class_name = $path_parts['filename'];
 			$class_name = ucfirst( $class_name );
@@ -148,7 +148,7 @@ class Clarkson_Core_Deprecated {
 	public static function get_instance() {
 		static $instance = null;
 
-		if (null === $instance) {
+		if ( null === $instance ) {
 			$instance = new Clarkson_Core_Deprecated();
 		}
 

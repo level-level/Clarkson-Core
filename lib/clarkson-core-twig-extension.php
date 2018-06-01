@@ -935,8 +935,8 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 		'single_post_title',
 	);
 
-	public function __construct( array $functions = array()) {
-		if ($functions) {
+	public function __construct( array $functions = array() ) {
+		if ( $functions ) {
 			$this->allowFunctions( $functions );
 		}
 	}
@@ -946,18 +946,18 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 
 		$allowed_functions = apply_filters( 'clarkson_twig_functions', $this->functions );
 
-		foreach ($allowed_functions  as $function) {
+		foreach ( $allowed_functions  as $function ) {
 			$twig_functions[] = new Twig_SimpleFunction( $function,$function );
 		}
 
 		return $twig_functions;
 	}
 
-	public function allowFunction( $function) {
+	public function allowFunction( $function ) {
 		$this->functions[] = $function;
 	}
 
-	public function allowFunctions( array $functions) {
+	public function allowFunctions( array $functions ) {
 		$this->functions = $functions;
 	}
 

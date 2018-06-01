@@ -13,7 +13,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @throws Exception
 	 */
 	public function __construct( $post ) {
-		if (is_a( $post, 'WP_Post' )) {
+		if ( is_a( $post, 'WP_Post' ) ) {
 			$this->_post = $post;
 		} else {
 			trigger_error( "Deprecated __construct called with an ID. Use `::get($post)` instead.", E_USER_DEPRECATED );
@@ -46,7 +46,6 @@ class Clarkson_Object implements \JsonSerializable {
 			} catch ( Exception $e ) {
 				static::$posts[ $id ] = null;
 			}
-
 		}
 
 		return static::$posts[ $id ];
@@ -232,7 +231,7 @@ class Clarkson_Object implements \JsonSerializable {
 
 			// Post stays empty when wp_query 404 is set, resulting in a warning from the_content
 			global $post;
-			if ( null === $post  ) {
+			if ( null === $post ) {
 				$post = $this->_post;
 			}
 
