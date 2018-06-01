@@ -18,7 +18,6 @@
 
  	<rule ref="WordPress-Core">
        <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
-       <exclude name="Generic.Files.EndFileNewline.NotFound" />
        <exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.Found" />
        <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
    </rule>
