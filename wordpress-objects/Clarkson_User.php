@@ -30,17 +30,20 @@ class Clarkson_User {
 	}
 
 	/**
-	 * @param int $user_id
+	 * Clarkson_User constructor.
+	 *
+	 * @param  integer   $user_id.
+	 * @throws Exception User status.
 	 */
 	public function __construct( $user_id ) {
 		if ( empty( $user_id ) ) {
-			throw new Exception( '$user_id empty' );
+			throw new Exception( $user_id . ' empty' );
 		}
 
 		$this->_id = $user_id;
 
 		if ( ! $this->get_user() ) {
-			throw new Exception( '$user_id does not exist' );
+			throw new Exception( $user_id . ' does not exist' );
 		}
 	}
 
