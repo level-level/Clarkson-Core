@@ -58,21 +58,21 @@ class Clarkson_Term {
 		if ( is_string( $term_or_taxonomy ) ) {
 			if ( $wp_query->tax_query ) {
 				foreach ( $wp_query->tax_query->queries as $query ) {
-					if ( $query['taxonomy'] == $term_or_taxonomy ) {
+					if ( $query['taxonomy'] === $term_or_taxonomy ) {
 						return true;
 					}
 				}
 			}
 			if ( ! empty( $wp_query->_post_parent_query ) ) {
 				foreach ( $wp_query->_post_parent_query->tax_query->queries as $query ) {
-					if ( $query['taxonomy'] == $term_or_taxonomy ) {
+					if ( $query['taxonomy'] === $term_or_taxonomy ) {
 						return true;
 					}
 				}
 			}
 		} elseif ( is_object( $term_or_taxonomy ) ) {
 			foreach ( $wp_query->tax_query->queries as $query ) {
-				if ( 'slug' == $query['field'] && in_array( $term_or_taxonomy->slug, $query['terms'] ) ) {
+				if ( 'slug' === $query['field'] && in_array( $term_or_taxonomy->slug, $query['terms'] ) ) {
 					return true;
 				}
 				if ( in_array( $term_or_taxonomy->term_id, $query['terms'] ) ) {
