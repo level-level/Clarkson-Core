@@ -63,7 +63,7 @@ class Clarkson_Term {
 	public function __construct( $term_id, $taxonomy = null ) {
 		$taxonomy = $taxonomy ? $taxonomy : static::$taxonomy;
 		if ( empty( $term_id ) || ! $taxonomy ) {
-			throw new Exception( $term_id . ' or ' . $taxonomy. ' empty' );
+			throw new Exception( $term_id . ' or ' . $taxonomy . ' empty' );
 		}
 		$this->_term = get_term( (int) $term_id, $taxonomy );
 		if ( ! $this->_term ) {
@@ -267,5 +267,5 @@ class Clarkson_Term {
 	public function get_permalink() {
 		return get_term_link( $this->get_term(), $this->get_taxonomy() );
 	}
-	
+
 }
