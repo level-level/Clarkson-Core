@@ -80,7 +80,7 @@ class Clarkson_Term {
 				}
 			}
 		}
-
+		return false;
 	}
 
 	public function get_id() {
