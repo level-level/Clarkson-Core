@@ -138,7 +138,7 @@ class Clarkson_User {
 	public function get_role() {
 		return reset( $this->get_user()->roles );
 	}
-	
+
 	/**
 	 * Get meta for the user
 	 *
