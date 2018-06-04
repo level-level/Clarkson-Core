@@ -6,10 +6,10 @@ class Clarkson_User {
 	protected static $users;
 
 	/**
-	 * Get the current loged in user
-	 * @static
-	 * @return User
-	 * @throws Exception on not loggged in
+	 * Get the current logged in user.
+	 *
+	 * @return int|string User status.
+	 * @throws Exception  User is not logged in.
 	 */
 	public static function current_user() {
 		if ( is_user_logged_in() ) {
@@ -20,6 +20,12 @@ class Clarkson_User {
 	}
 
 
+	/**
+	 * Get user data by user id.
+	 *
+	 * @param  int    $id User id.
+	 * @return object static::$users user data
+	 */
 	public static function get( $id ) {
 		if ( ! isset( static::$users[ $id ] ) ) {
 			$class = get_called_class();
@@ -32,8 +38,8 @@ class Clarkson_User {
 	/**
 	 * Clarkson_User constructor.
 	 *
-	 * @param  integer   $user_id.
-	 * @throws Exception User status.
+	 * @param  int       $user_id User id.
+	 * @throws Exception          User status.
 	 */
 	public function __construct( $user_id ) {
 		if ( empty( $user_id ) ) {
@@ -48,7 +54,8 @@ class Clarkson_User {
 	}
 
 	/**
-	 * Check if this user is the currently logged in user
+	 * Check if this user is the currently logged in user.
+	 *
 	 * @return bool
 	 */
 	public function is_current_user() {
@@ -56,8 +63,9 @@ class Clarkson_User {
 	}
 
 	/**
-	 * Get the WordPress WP_User object
-	 * @return WP_User
+	 * Get the WordPress WP_User object.
+	 *
+	 * @return null|WP_User
 	 */
 	public function get_user() {
 		if ( ! isset( $this->_user ) ) {
@@ -73,34 +81,36 @@ class Clarkson_User {
 	}
 
 	/**
-	 * Get the ID of the user
+	 * Get the ID of the user.
 	 *
-	 * @return int
+	 * @return int User id.
 	 */
 	public function get_id() {
 		return $this->_id;
 	}
 
 	/**
-	 * Get the display name of the user
+	 * Get the display name of the user.
 	 *
-	 * @return string
+	 * @return string User display name.
 	 */
 	public function get_display_name() {
 		return $this->get_user()->display_name;
 	}
 
 	/**
-	 * Get the first name for the user for displaying (privacy allows it)
-	 * @return string
+	 * Get the user's first name.
+	 *
+	 * @return string User first name.
 	 */
 	public function get_display_first_name() {
 		return reset( explode( ' ', $this->get_display_name() ) );
 	}
 
 	/**
-	 * Get the last name for the user for displaying (privacy allows it)
-	 * @return string
+	 * Get the user's last name.
+	 *
+	 * @return string User last name.
 	 */
 	public function get_display_last_name() {
 		$parts = explode( ' ', $this->get_display_name() );
@@ -113,73 +123,80 @@ class Clarkson_User {
 	}
 
 	/**
-	 * Get the email address of the user
+	 * Get the user's email address.
 	 *
-	 * @return string
+	 * @return string Email address.
 	 */
 	public function get_email() {
 		return $this->get_user()->user_email;
 	}
 
 	/**
-	 * Get the login name for the user
+	 * Get the user's login name.
 	 *
-	 * @return string
+	 * @return string Login name.
 	 */
 	public function get_login() {
 		return $this->get_user()->user_login;
 	}
 
 	/**
-	 * Get the role for the user
+	 * Get the user's role.
 	 *
-	 * @return string
+	 * @return string User role.
 	 */
 	public function get_role() {
 		return reset( $this->get_user()->roles );
 	}
 
+
 	/**
-	 * Get meta for the user
+	 * Get the user's user_meta data.
 	 *
-	 * @param string $key
-	 * @param bool $single
-	 * @return mixed
+	 * @param string        $key    Meta key
+	 * @param bool          $single If true return value of meta data field, if false return an array.
+	 *
+	 * @return array|string         Meta data.
 	 */
 	public function get_meta( $key = '', $single = false ) {
 		return get_user_meta( $this->get_id(), $key, $single );
 	}
 
 	/**
-	 * Update a meta key for the user
+	 * Update user meta data.
 	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return bool
+	 * @param string       $key    User meta key.
+	 * @param array|string $value  User meta data.
+	 *
+	 * @return bool|int            Meta ID if the key didn't exist.
 	 */
 	public function update_meta( $key, $value ) {
 		return update_user_meta( $this->get_id(), $key, $value );
 	}
 
 	/**
-	 * Add a meta key=>value for the user
+	 * Add a meta key=>value for the user.
 	 *
-	 * @param string $key
-	 * @param mixed $value
+	 * @param string       $key   User meta key.
+	 * @param array|string $value User meta data.
+	 *
 	 * @return bool
 	 */
 	public function add_meta( $key, $value ) {
 		return add_user_meta( $this->get_id(), $key, $value );
 	}
 
+
 	/**
-	 * Delete a meta key=>value for the user
+	 * Delete a meta key=>value for the user.
 	 *
-	 * @param string $key
-	 * @param mixed $value optional
+	 * @param string       $key   User meta key.
+	 * @param array|string $value User meta data.
+	 *
 	 * @return bool
 	 */
 	public function delete_meta( $key, $value = '' ) {
 		return delete_user_meta( $this->get_id(), $key, $value );
 	}
+
 }
