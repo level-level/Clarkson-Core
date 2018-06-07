@@ -161,6 +161,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Get the thumbnail HTML for the post.
 	 *
 	 * @param array|string $size Thumbnail size.
+	 * @param array|string $attr Thumbnail attributes.
 	 *
 	 * @return string
 	 */
@@ -536,13 +537,13 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Will delete all terms for a given taxonomy.
 	 * Adds all passed terms or overwrites existing terms.
 	 *
-	 * @param  string           $taxonomy Taxonomy.
-	 * @param  \Clarkson_Term[] $terms    Terms.
-	 * @var   \Clarkson_Term    $term     Term objects.
+	 * @param string           $taxonomy Taxonomy.
+	 * @param \Clarkson_Term[] $terms    Terms.
+	 * @var   \Clarkson_Term   $term     Term objects.
 	 *
 	 * @return array|WP_Error             Affected Term IDs.
 	 */
-	public function reset_terms( $taxonomy, $terms = array() ) {
+	public function reset_terms( $taxonomy, $terms ) {
 		// Filter terms to ensure they are in the correct taxonomy.
 		$terms = array_filter( $terms, function( $term ) use ( $taxonomy ) {
 			return $term->get_taxonomy() === $taxonomy;
@@ -560,6 +561,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Remove a post term.
 	 *
 	 * @param  \Clarkson_Term $term Post term.
+	 *
 	 * @return bool|WP_Error        True on success, false or WP_Error on failure.
 	 */
 	public function remove_term( $term ) {
