@@ -1,4 +1,9 @@
 <?php
+/**
+ * Clarkson Core Twig extension.
+ *
+ * @package CLARKSON\Lib
+ */
 class Clarkson_Core_Twig_Extension extends Twig_Extension {
 
 

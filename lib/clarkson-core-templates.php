@@ -1,4 +1,10 @@
 <?php
+/**
+ * Clarkson Core Templates.
+ *
+ * @package CLARKSON\Lib
+ */
+
 class Clarkson_Core_Templates {
 
 	protected $templates = array();

@@ -1,7 +1,8 @@
 <?php
 /**
- * Clarkson Core Objects class.
+ * Clarkson Core Objects.
  *
+ * @package CLARKSON\Lib
  */
 
 /**

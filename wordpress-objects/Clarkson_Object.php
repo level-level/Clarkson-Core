@@ -1,4 +1,9 @@
 <?php
+/**
+ * Clarkson Object.
+ *
+ * @package CLARKSON\Objects
+ */
 
 class Clarkson_Object implements \JsonSerializable {
 

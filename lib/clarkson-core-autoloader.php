@@ -2,7 +2,7 @@
 /**
  * Clarkson Core Autoloader.
  *
- * @package Clarkson Core.
+ * @package CLARKSON\Lib
  */
 
 /**

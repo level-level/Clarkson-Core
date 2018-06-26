@@ -1,4 +1,9 @@
 <?php
+/**
+ * Clarkson Term.
+ *
+ * @package CLARKSON\Objects
+ */
 
 class Clarkson_Term {
 

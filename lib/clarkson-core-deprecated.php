@@ -9,6 +9,7 @@
  *
  * @todo refactor deprecated filters or remove this all together.
  *
+ * @package CLARKSON\Lib
  * @since 0.1.6
  */
 

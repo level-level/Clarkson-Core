@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Clarkson User.
+ *
+ * @package CLARKSON\Objects
+ */
 class Clarkson_User {
 
 	protected static $_current_user;
