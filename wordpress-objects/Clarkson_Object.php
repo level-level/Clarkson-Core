@@ -5,12 +5,30 @@
  * @package CLARKSON\Objects
  */
 
+/**
+ * Class Clarkson_Object.
+ */
 class Clarkson_Object implements \JsonSerializable {
 
+	/**
+	 * Set type is 'post'.
+	 *
+	 * @var string
+	 */
 	public static $type = 'post';
 
+	/**
+	 * Define $_post.
+	 *
+	 * @var array|null|WP_Post
+	 */
 	protected $_post;
 
+	/**
+	 * Define $posts.
+	 *
+	 * @var $posts
+	 */
 	protected static $posts;
 
 	/**
@@ -25,6 +43,7 @@ class Clarkson_Object implements \JsonSerializable {
 			$this->_post = $post;
 		} else {
 			trigger_error( "Deprecated __construct called with an ID. Use `::get($post)` instead.", E_USER_DEPRECATED );
+
 			if ( empty( $post ) ) {
 				throw new Exception( '$post empty' );
 			}
@@ -36,12 +55,12 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Check if name is not a wp_post object property.
 	 *
-	 * @param $name
+	 * @param string $name Post name to check.
 	 *
-	 * @throws Exception
+	 * @throws Exception Error message.
 	 */
 	public function __get( $name ) {
-		if ( in_array( $name, array( 'post_name', 'post_title', 'ID', 'post_author', 'post_type', 'post_status' ) ) ) {
+		if ( in_array( $name, array( 'post_name', 'post_title', 'ID', 'post_author', 'post_type', 'post_status' ), true ) ) {
 			throw new Exception( 'Trying to access wp_post object properties from Post object' );
 		}
 	}
@@ -49,7 +68,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get post data by id.
 	 *
-	 * @param  int        $id Post id.
+	 * @param  int $id Post id.
 	 *
 	 * @return array|null    Post data.
 	 */
@@ -87,9 +106,11 @@ class Clarkson_Object implements \JsonSerializable {
 		 * "static" refers to the "self" inside the closure which isn't
 		 * what we want.
 		 */
-		return array_map( function( $post ) use ( $class ) {
-			return new $class( $post );
-		}, $query->posts );
+		return array_map(
+			function( $post ) use ( $class ) {
+					return new $class( $post );
+			}, $query->posts
+		);
 	}
 
 	/**
@@ -101,7 +122,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 */
 	public static function get_one( $args = array() ) {
 		$args['posts_per_page'] = 1;
-		$one = static::get_many( $args );
+		$one                    = static::get_many( $args );
 		return array_shift( $one );
 	}
 
@@ -138,7 +159,9 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get the children of the post by id.
 	 *
-	 * @return array Children.
+	 * @todo: Discouraged for VIP
+	 *
+	 * @return array Children
 	 */
 	public function get_children() {
 		return get_children( 'post_parent=' . $this->get_id() );
@@ -146,6 +169,8 @@ class Clarkson_Object implements \JsonSerializable {
 
 	/**
 	 * Get the attachments for the post.
+	 *
+	 * @todo: Discouraged for VIP
 	 *
 	 * @return array Attachments.
 	 */
@@ -196,9 +221,10 @@ class Clarkson_Object implements \JsonSerializable {
 
 	/**
 	 * Get the date in localized format.
+	 * ß
 	 *
 	 * @param string $format Date format.
-	 * @param bool    $gmt   Whether to convert to GMT for time.
+	 * @param bool   $gmt   Whether to convert to GMT for time.
 	 *
 	 * @return string
 	 */
@@ -207,17 +233,19 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
-	 * Set the post date/time of the post
+	 * Set the post date/time of the post.
 	 *
-	 * @param int $time PHP timestamp
+	 * @param int $time PHP timestamp.
 	 */
 	public function set_date( $time ) {
 		$this->_post->post_data = date( 'Y-m-d H:i:s', $time );
 
-		wp_update_post( array(
+		wp_update_post(
+			array(
 				'ID'        => $this->get_id(),
 				'post_date' => $this->_post->post_data,
-		) );
+			)
+		);
 	}
 
 	/**
@@ -232,10 +260,10 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
-	 * Get the post meta data by meta key
+	 * Get the post meta data by meta key.
 	 *
-	 * @param string $key Post meta key.
-	 * @param bool   $single
+	 * @param string $key    Post meta key.
+	 * @param bool   $single Post meta data.
 	 *
 	 * @return array|string
 	 */
@@ -246,8 +274,8 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Update the post meta data.
 	 *
-	 * @param string        $key   Post meta key.
-	 * @param string|array  $value New post meta data.
+	 * @param string       $key   Post meta key.
+	 * @param string|array $value New post meta data.
 	 *
 	 * @return bool|int
 	 */
@@ -258,8 +286,8 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Add post meta data.
 	 *
-	 * @param string        $key   Post meta key.
-	 * @param string|array  $value New post meta data.
+	 * @param string       $key   Post meta key.
+	 * @param string|array $value New post meta data.
 	 *
 	 * @return false|int
 	 */
@@ -270,8 +298,8 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Delete post meta data.
 	 *
-	 * @@param string $key Post meta key.
-	 * @param  null   $value
+	 * @param string $key    Post meta key.
+	 * @param null   $value  Null, as the value will be deleted.
 	 *
 	 * @return bool
 	 */
@@ -375,7 +403,7 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
-	 * get the post excerpt.
+	 * Get the post excerpt.
 	 *
 	 * @return string
 	 */
@@ -398,6 +426,9 @@ class Clarkson_Object implements \JsonSerializable {
 		return $this->_excerpt;
 	}
 
+	/**
+	 * Get document count.
+	 */
 	public function get_comment_count() {
 	}
 
@@ -427,10 +458,12 @@ class Clarkson_Object implements \JsonSerializable {
 	public function set_status( $status ) {
 		$this->_post->post_status = $status;
 
-		wp_update_post( array(
-			'ID' => $this->get_id(),
-			'post_status' => $status,
-		) );
+		wp_update_post(
+			array(
+				'ID'          => $this->get_id(),
+				'post_status' => $status,
+			)
+		);
 	}
 
 	/**
@@ -441,7 +474,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @return false|int
 	 *
-	 * @throws Exception
+	 * @throws Exception Error message.
 	 */
 	public function add_comment( $comment_text, $user_id ) {
 		if ( empty( $comment_text ) || empty( $user_id ) ) {
@@ -472,7 +505,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @return array|WP_Error  List of post tags or a WP_Error.
 	 */
 	public function get_terms( $taxonomy, $args = array() ) {
-		$cc = Clarkson_Core::get_instance();
+		$cc         = Clarkson_Core::get_instance();
 		$class_name = $cc->autoloader->sanitize_object_name( $taxonomy );
 
 		$terms = wp_get_post_terms( $this->get_id(), $taxonomy, $args );
@@ -488,7 +521,7 @@ class Clarkson_Object implements \JsonSerializable {
 					if ( is_object( $term ) ) {
 						// Check if there is a Custom Taxonomy class.
 						if ( class_exists( $class_name ) ) {
-							return call_user_func( array( $class_name, 'get_by_id' ) , $term->term_id, $taxonomy );
+							return call_user_func( array( $class_name, 'get_by_id' ), $term->term_id, $taxonomy );
 						}
 						// Else return a default Clarkson Term.
 						return Clarkson_Term::get_by_id( $term->term_id, $taxonomy );
@@ -525,14 +558,18 @@ class Clarkson_Object implements \JsonSerializable {
 	 */
 	public function add_terms( $taxonomy, $terms ) {
 		// Filter terms to ensure they are in the correct taxonomy.
-		$terms = array_filter( $terms, function( $term ) use ( $taxonomy ) {
-			return $term->get_taxonomy() === $taxonomy;
-		} );
+		$terms = array_filter(
+			$terms, function( $term ) use ( $taxonomy ) {
+				return $term->get_taxonomy() === $taxonomy;
+			}
+		);
 
 		// get array of term IDs.
-		$terms = array_map( function( $term ) {
-			return $term->get_id();
-		}, $terms );
+		$terms = array_map(
+			function( $term ) {
+					return $term->get_id();
+			}, $terms
+		);
 
 		return wp_set_object_terms( $this->get_id(), $terms, $taxonomy, true );
 	}
@@ -550,14 +587,18 @@ class Clarkson_Object implements \JsonSerializable {
 	 */
 	public function reset_terms( $taxonomy, $terms ) {
 		// Filter terms to ensure they are in the correct taxonomy.
-		$terms = array_filter( $terms, function( $term ) use ( $taxonomy ) {
-			return $term->get_taxonomy() === $taxonomy;
-		} );
+		$terms = array_filter(
+			$terms, function( $term ) use ( $taxonomy ) {
+				return $term->get_taxonomy() === $taxonomy;
+			}
+		);
 
 		// get array of term IDs.
-		$terms = array_map( function( $term ) {
-			return $term->get_id();
-		}, $terms );
+		$terms = array_map(
+			function( $term ) {
+					return $term->get_id();
+			}, $terms
+		);
 
 		return wp_set_object_terms( $this->get_id(), $terms, $taxonomy, false );
 	}
@@ -590,18 +631,18 @@ class Clarkson_Object implements \JsonSerializable {
 	 * We can't just return $this->_post, because these values will only return raw unfiltered data.
 	 */
 	public function jsonSerialize() {
-		$data['id'] 		= $this->get_id();
-		$data['link'] 		= $this->get_permalink();
-		$data['slug'] 		= $this->get_post_name();
-		$data['date']		= $this->get_date( 'c' );
-		$data['title'] 		= $this->get_title();
-		$data['content'] 	= $this->get_content();
-		$data['excerpt'] 	= $this->get_excerpt();
-		$data['post_type'] 	= $this->get_post_type();
-		$data['status'] 	= $this->get_status();
-		$data['thumbnail'] 	= $this->get_thumbnail();
+		$data['id']        = $this->get_id();
+		$data['link']      = $this->get_permalink();
+		$data['slug']      = $this->get_post_name();
+		$data['date']      = $this->get_date( 'c' );
+		$data['title']     = $this->get_title();
+		$data['content']   = $this->get_content();
+		$data['excerpt']   = $this->get_excerpt();
+		$data['post_type'] = $this->get_post_type();
+		$data['status']    = $this->get_status();
+		$data['thumbnail'] = $this->get_thumbnail();
 
-		$data['author']		= null;
+		$data['author'] = null;
 
 		$author_id = $this->get_author_id();
 		if ( ! empty( $author_id ) ) {
