@@ -42,7 +42,7 @@ class Clarkson_Object implements \JsonSerializable {
 		if ( is_a( $post, 'WP_Post' ) ) {
 			$this->_post = $post;
 		} else {
-			trigger_error( "Deprecated __construct called with an ID. Use `::get($post)` instead.", E_USER_DEPRECATED );
+			user_error( esc_html__( "Deprecated __construct called with an ID. Use '::get(post)' instead.", 'clarkson-core' ), E_USER_DEPRECATED );
 
 			if ( empty( $post ) ) {
 				throw new Exception( '$post empty' );
@@ -159,7 +159,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get the children of the post by id.
 	 *
-	 * @todo: Discouraged for VIP
+	 * See issue: https://github.com/level-level/Clarkson-Core/issues/121
 	 *
 	 * @return array Children
 	 */
@@ -170,7 +170,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get the attachments for the post.
 	 *
-	 * @todo: Discouraged for VIP
+	 * See issue: https://github.com/level-level/Clarkson-Core/issues/121
 	 *
 	 * @return array Attachments.
 	 */
@@ -221,7 +221,6 @@ class Clarkson_Object implements \JsonSerializable {
 
 	/**
 	 * Get the date in localized format.
-	 * ß
 	 *
 	 * @param string $format Date format.
 	 * @param bool   $gmt   Whether to convert to GMT for time.
@@ -405,6 +404,8 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get the post excerpt.
 	 *
+	 * See the issue: https://github.com/level-level/Clarkson-Core/issues/122
+	 *
 	 * @return string
 	 */
 	public function get_excerpt() {
@@ -511,7 +512,7 @@ class Clarkson_Object implements \JsonSerializable {
 		$terms = wp_get_post_terms( $this->get_id(), $taxonomy, $args );
 
 		if ( is_wp_error( $terms ) ) {
-			trigger_error( $terms->get_error_message() );
+			user_error( esc_html( $terms->get_error_message() ) );
 			return $terms;
 		}
 
@@ -661,7 +662,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @return mixed
 	 */
 	public function get_json() {
-		trigger_error( 'Deprecated directly calling get_json. Just json_encode the object itself, because the Clarkson_Object implements JsonSerializable.', E_USER_DEPRECATED );
+		user_error( 'Deprecated directly calling get_json. Just json_encode the object itself, because the Clarkson_Object implements JsonSerializable.', E_USER_DEPRECATED );
 		return $this->jsonSerialize();
 	}
 
