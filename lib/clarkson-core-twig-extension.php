@@ -4,9 +4,17 @@
  *
  * @package CLARKSON\Lib
  */
+
+/**
+ * Class Clarkson_Core_Twig_Extension.
+ */
 class Clarkson_Core_Twig_Extension extends Twig_Extension {
 
-
+	/**
+	 * Twig functions.
+	 *
+	 * @var array $functions Twig functions.
+	 */
 	private $functions = array(
 		'get_search_query',
 		'get_adjacent_post',
@@ -672,7 +680,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 		'__',
 		'_x',
 		'_n',
-		'_ngettext', // deprecated function
+		'_ngettext', // deprecated function.
 		'_n_noop',
 		'_nx',
 		'_nx_noop',
@@ -940,33 +948,59 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 		'single_post_title',
 	);
 
+	/**
+	 * Clarkson_Core_Twig_Extension constructor.
+	 *
+	 * @param array $functions WordPress functions.
+	 */
 	public function __construct( array $functions = array() ) {
 		if ( $functions ) {
 			$this->allowFunctions( $functions );
 		}
 	}
 
+	/**
+	 * Get the Twig functions.
+	 *
+	 * @return array|Twig_SimpleFunction[] $twig_functions Twig functions.
+	 */
 	public function getFunctions() {
 		$twig_functions = array();
 
 		$allowed_functions = apply_filters( 'clarkson_twig_functions', $this->functions );
 
 		foreach ( $allowed_functions  as $function ) {
-			$twig_functions[] = new Twig_SimpleFunction( $function,$function );
+			$twig_functions[] = new Twig_SimpleFunction( $function, $function );
 		}
 
 		return $twig_functions;
 	}
 
+	/**
+	 * Check if function is an allowed Twig function.
+	 *
+	 * @param string $function Twig function name.
+	 */
 	public function allowFunction( $function ) {
 		$this->functions[] = $function;
 	}
 
+	/**
+	 * Check if functions in the array are allowed Twig functions.
+	 *
+	 * @param array $functions Allowed Twig functions.
+	 */
 	public function allowFunctions( array $functions ) {
 		$this->functions = $functions;
 	}
 
+	/**
+	 * Get the string 'php_function'.
+	 *
+	 * @return string 'php_function'.
+	 */
 	public function getName() {
 		return 'php_function';
 	}
+
 }
