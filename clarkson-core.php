@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Plugin Name: Clarkson Core
  * Version:     0.2.0
  * Plugin URI:  http://wp-clarkson.com/core
@@ -16,29 +16,44 @@
  * @author Level Level
  */
 
+/**
+ * Class Clarkson_Core.
+ */
 class Clarkson_Core {
 
+	/**
+	 * Init.
+	 */
 	public function init() {
-		// Deprecated functions and filters
+		// Deprecated functions and filters.
 		if ( class_exists( 'Clarkson_Core_Deprecated' ) ) {
 			Clarkson_Core_Deprecated::get_instance();
 		}
 
-		// Load post objects
+		// Load post objects.
 		if ( class_exists( 'Clarkson_Core_Objects' ) ) {
 			Clarkson_Core_Objects::get_instance();
 		}
 
-		// Load template routing
+		// Load template routing.
 		if ( class_exists( 'Clarkson_Core_Templates' ) ) {
 			Clarkson_Core_Templates::get_instance();
 		}
 
 	}
 
-	// Singleton
+	/**
+	 * Define instance.
+	 *
+	 * @var Clarkson_Core
+	 */
 	protected $instance = null;
 
+	/**
+	 * Setting up the class instance.
+	 *
+	 * @return Clarkson_Core|null
+	 */
 	public static function get_instance() {
 		static $instance = null;
 
@@ -49,12 +64,15 @@ class Clarkson_Core {
 		return $instance;
 	}
 
+	/**
+	 * Clarkson_Core constructor.
+	 */
 	protected function __construct() {
-		// Load vendor files
+		// Load vendor files.
 		$autoload_file = __DIR__ . '/vendor/autoload.php';
 
 		if ( file_exists( $autoload_file ) ) {
-			require_once( $autoload_file );
+			require_once $autoload_file;
 		}
 
 		add_action( 'init', array( $this, 'init' ) );
@@ -73,10 +91,18 @@ class Clarkson_Core {
 
 	}
 
+	/**
+	 * Clone.
+	 */
 	private function __clone() {
 	}
+
+	/**
+	 * Wakeup.
+	 */
 	private function __wakeup() {
 	}
+
 }
 
 add_action( 'plugins_loaded', array( 'Clarkson_Core', 'get_instance' ) );
