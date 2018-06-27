@@ -5,8 +5,16 @@
  * @package CLARKSON\Objects
  */
 
+/**
+ * Clarkson Term class.
+ */
 class Clarkson_Term {
 
+	/**
+	 * Define $_term.
+	 *
+	 * @var array|null|WP_Error|WP_Term
+	 */
 	public $_term;
 
 	/**
@@ -23,10 +31,9 @@ class Clarkson_Term {
 	 * @param null|string $taxonomy Taxonomy.
 	 *
 	 * @return bool|object          Term object or false.
-	 *
 	 */
 	public static function get_by_name( $name, $taxonomy = null ) {
-		$term = get_term_by( 'name', $name, $taxonomy ? $taxonomy : static::$taxonomy );
+		$term  = get_term_by( 'name', $name, $taxonomy ? $taxonomy : static::$taxonomy );
 		$class = get_called_class();
 		return new $class( $term->term_id, $taxonomy ? $taxonomy : static::$taxonomy );
 	}
@@ -40,19 +47,21 @@ class Clarkson_Term {
 	 * @return bool|object          Term object or false.
 	 */
 	public static function get_by_slug( $slug, $taxonomy = null ) {
-		$term = get_term_by( 'slug', $slug, $taxonomy ? $taxonomy : static::$taxonomy );
+		$term  = get_term_by( 'slug', $slug, $taxonomy ? $taxonomy : static::$taxonomy );
 		$class = get_called_class();
 		return new $class( $term->term_id, $taxonomy ? $taxonomy : static::$taxonomy );
 	}
 
 	/**
+	 * Get term by id.
+	 *
 	 * @param int         $term_id  Term id.
 	 * @param null|string $taxonomy Taxonomy.
 	 *
 	 * @return bool|object          Term object or false.
 	 */
 	public static function get_by_id( $term_id, $taxonomy = null ) {
-		$term = get_term_by( 'id', $term_id, $taxonomy ? $taxonomy : static::$taxonomy );
+		$term  = get_term_by( 'id', $term_id, $taxonomy ? $taxonomy : static::$taxonomy );
 		$class = get_called_class();
 		return new $class( $term->term_id, $taxonomy ? $taxonomy : static::$taxonomy );
 	}
@@ -79,12 +88,12 @@ class Clarkson_Term {
 	/**
 	 * Check if an existing field is requested.
 	 *
-	 * @param string     $name Field to search by.
+	 * @param string $name Field to search by.
 	 *
 	 * @throws Exception       Error message.
 	 */
 	public function __get( $name ) {
-		if ( in_array( $name, array( 'term_id', 'name', 'slug', 'taxonomy' ) ) ) {
+		if ( in_array( $name, array( 'term_id', 'name', 'slug', 'taxonomy' ), true ) ) {
 			throw new Exception( 'Trying to access wp_term object properties from Term object' );
 		}
 	}
@@ -117,11 +126,11 @@ class Clarkson_Term {
 			}
 		} elseif ( is_object( $term_or_taxonomy ) ) {
 			foreach ( $wp_query->tax_query->queries as $query ) {
-				if ( 'slug' === $query['field'] && in_array( $term_or_taxonomy->slug, $query['terms'] ) ) {
+				if ( 'slug' === $query['field'] && in_array( $term_or_taxonomy->slug, $query['terms'], true ) ) {
 					return true;
 				}
 
-				if ( in_array( $term_or_taxonomy->term_id, $query['terms'] ) ) {
+				if ( in_array( $term_or_taxonomy->term_id, $query['terms'], true ) ) {
 					return true;
 				}
 			}
@@ -163,8 +172,8 @@ class Clarkson_Term {
 	/**
 	 * Get term meta data by id.
 	 *
-	 * @param string        $key     Meta key.
-	 * @param bool          $single
+	 * @param string $key     Meta key.
+	 * @param bool   $single  Single or array.
 	 *
 	 * @return string|array          Meta data.
 	 */
@@ -199,8 +208,8 @@ class Clarkson_Term {
 	/**
 	 * Delete meta data.
 	 *
-	 * @param string $key Meta key.
-	 * @param null $value
+	 * @param string $key   Meta key.
+	 * @param null   $value Meta value = null because to be deleted.
 	 *
 	 * @return bool
 	 */
@@ -241,9 +250,11 @@ class Clarkson_Term {
 	 * @param string $name New term name.
 	 */
 	public function set_name( $name ) {
-		wp_update_term( $this->get_id(), $this->get_taxonomy(), array(
-			'name' => $name,
-		) );
+		wp_update_term(
+			$this->get_id(), $this->get_taxonomy(), array(
+				'name' => $name,
+			)
+		);
 	}
 
 	/**
