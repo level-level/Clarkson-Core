@@ -2,12 +2,10 @@
 /**
  * Handle renamed filters.
  *
- * Based on Mikey Jolley's example in WooCommerce
- * https://mikejolley.com/2013/12/15/deprecating-plugin-functions-hooks-woocommmerce/
+ * Based on Mikey Jolley's example in WooCommerce.
+ * https://mikejolley.com/2013/12/15/deprecating-plugin-functions-hooks-woocommmerce/.
  * and
- * https://github.com/woocommerce/woocommerce/blob/master/includes/wc-deprecated-functions.php
- *
- * @todo refactor deprecated filters or remove this all together.
+ * https://github.com/woocommerce/woocommerce/blob/master/includes/wc-deprecated-functions.php.
  *
  * @package CLARKSON\Lib
  * @since 0.1.6

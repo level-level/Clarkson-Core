@@ -209,7 +209,7 @@ class Clarkson_User {
 	public function add_meta( $key, $value ) {
 		return add_user_meta( $this->get_id(), $key, $value );
 	}
-	
+
 	/**
 	 * Delete a meta key=>value for the user.
 	 *
