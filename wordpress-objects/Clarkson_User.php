@@ -4,9 +4,23 @@
  *
  * @package CLARKSON\Objects
  */
+
+/**
+ * Clarkson User class.
+ */
 class Clarkson_User {
 
+	/**
+	 * Current user.
+	 *
+	 * @var object $_current_user
+	 */
 	protected static $_current_user;
+	/**
+	 * Users.
+	 *
+	 * @var object $users
+	 */
 	protected static $users;
 
 	/**
@@ -27,12 +41,12 @@ class Clarkson_User {
 	/**
 	 * Get user data by user id.
 	 *
-	 * @param  int    $id User id.
+	 * @param  int $id User id.
 	 * @return object static::$users user data
 	 */
 	public static function get( $id ) {
 		if ( ! isset( static::$users[ $id ] ) ) {
-			$class = get_called_class();
+			$class                = get_called_class();
 			static::$users[ $id ] = new $class( $id );
 		}
 
@@ -42,7 +56,7 @@ class Clarkson_User {
 	/**
 	 * Clarkson_User constructor.
 	 *
-	 * @param  int       $user_id User id.
+	 * @param  int $user_id User id.
 	 * @throws Exception          User status.
 	 */
 	public function __construct( $user_id ) {
@@ -63,7 +77,7 @@ class Clarkson_User {
 	 * @return bool
 	 */
 	public function is_current_user() {
-		return $this->get_id() == get_current_user_id();
+		return $this->get_id() === get_current_user_id();
 	}
 
 	/**
@@ -157,8 +171,10 @@ class Clarkson_User {
 	/**
 	 * Get the user's user_meta data.
 	 *
-	 * @param string        $key    Meta key
-	 * @param bool          $single If true return value of meta data field, if false return an array.
+	 * See: https://github.com/level-level/Clarkson-Core/issues/124.
+	 *
+	 * @param string $key    Meta key.
+	 * @param bool   $single If true return value of meta data field, if false return an array.
 	 *
 	 * @return array|string         Meta data.
 	 */
@@ -168,6 +184,8 @@ class Clarkson_User {
 
 	/**
 	 * Update user meta data.
+	 *
+	 * See: https://github.com/level-level/Clarkson-Core/issues/124.
 	 *
 	 * @param string       $key    User meta key.
 	 * @param array|string $value  User meta data.
@@ -181,6 +199,8 @@ class Clarkson_User {
 	/**
 	 * Add a meta key=>value for the user.
 	 *
+	 * See: https://github.com/level-level/Clarkson-Core/issues/124.
+	 *
 	 * @param string       $key   User meta key.
 	 * @param array|string $value User meta data.
 	 *
@@ -189,10 +209,11 @@ class Clarkson_User {
 	public function add_meta( $key, $value ) {
 		return add_user_meta( $this->get_id(), $key, $value );
 	}
-
-
+	
 	/**
 	 * Delete a meta key=>value for the user.
+	 *
+	 * See: https://github.com/level-level/Clarkson-Core/issues/124.
 	 *
 	 * @param string       $key   User meta key.
 	 * @param array|string $value User meta data.
