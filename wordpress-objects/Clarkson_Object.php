@@ -334,6 +334,8 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get the post content.
 	 *
+	 * See: https://github.com/level-level/Clarkson-Core/issues/122
+	 *
 	 * @return string
 	 */
 	public function get_content() {
