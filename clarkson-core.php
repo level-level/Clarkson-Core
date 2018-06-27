@@ -1,9 +1,9 @@
 <?php
 /**
- * Plugin Name: Clarkson Core
- * Version:     0.2.0
- * Plugin URI:  http://wp-clarkson.com/core
- * Description:  A plugin to write Object-Oriented code in combination with the Twig templating engine while keeping the WordPress Way of working in mind.
+ * Plugin Name:  Clarkson Core
+ * Version:      0.2.0
+ * Plugin URI:   http://wp-clarkson.com/core
+ * Description:  A mu-plugin to write Object-Oriented code in combination with the Twig templating engine while keeping the WordPress Way of working in mind.
  * Author:       Level Level
  * Author URI:   https://www.level-level.com
  * License:      GPL v2
