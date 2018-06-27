@@ -100,23 +100,23 @@ class Clarkson_Core_Objects {
 	}
 
 	/**
-	 * Get objects by post id.
+	 * Get an array of posts converted to their corresponding WordPress object class.
 	 *
-	 * @param array $posts_ids Post ids.
+	 * @param array $posts Posts.
 	 *
-	 * @return array $objects Array of objects.
+	 * @return array $objects Array of post objects.
 	 */
-	public function get_objects( $posts_ids ) {
+	public function get_objects( $posts ) {
 		$objects = array();
 
-		if ( empty( $posts_ids ) ) {
+		if ( empty( $posts ) ) {
 			return $objects;
 		}
 
-		foreach ( $posts_ids as $posts_id ) {
-			$object = $this->get_object( $posts_id );
+		foreach ( $posts as $post ) {
+			$object = $this->get_object( $post );
 			if ( ! empty( $object ) ) {
-				$objects[] = $object;
+				$objects[] = $this->get_object( $post );
 			}
 		}
 
@@ -124,20 +124,25 @@ class Clarkson_Core_Objects {
 	}
 
 	/**
-	 * Get object by id.
+	 * Get post that's converted to their corresponding WordPress object class.
 	 *
-	 * @param integer $post_id Post id.
+	 * @param object $post Post.
 	 *
-	 * @return object
+	 * @return object Clarkson Post object.
 	 */
-	public function get_object( $post_id ) {
+	public function get_object( $post ) {
+		if ( ! $post instanceof WP_Post && is_int( (int) $post ) ) {
+			user_error( 'Deprecated calling of get_object with an ID. Use a `WP_Post` instead.', E_USER_DEPRECATED );
+			$post = get_post( $post );
+		}
+
 		$cc = Clarkson_Core::get_instance();
 
 		// defaults to post type.
-		$type = get_post_type( $post_id );
+		$type = get_post_type( $post );
 
 		// Check if post has a custom template, if so, overwrite value.
-		$page_template_slug = $cc->autoloader->get_template_filename( $post_id );
+		$page_template_slug = $cc->autoloader->get_template_filename( $post->ID );
 
 		if ( $page_template_slug && ! empty( $page_template_slug ) ) {
 			$type = $page_template_slug;
@@ -147,9 +152,9 @@ class Clarkson_Core_Objects {
 		$type = apply_filters( 'clarkson_object_type', $type );
 
 		if ( ( in_array( $type, $cc->autoloader->post_types, true ) || in_array( $type, $cc->autoloader->extra, true ) ) && class_exists( $type ) ) {
-			$object = new $type( $post_id );
+			$object = new $type( $post );
 		} else {
-			$object = new Clarkson_Object( $post_id );
+			$object = new Clarkson_Object( $post );
 		}
 
 		return $object;
