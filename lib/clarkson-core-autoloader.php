@@ -10,10 +10,34 @@
  * Registers post types and taxonomies, users and WP Objects.
  */
 class Clarkson_Core_Autoloader {
+	/**
+	 * Define Post types.
+	 *
+	 * @var array $post_types Post types.
+	 */
 	public $post_types = array();
+
+	/**
+	 * Define Taxonomies.
+	 *
+	 * @var array $taxonomies Taxonomies.
+	 */
 	public $taxonomies = array();
+
+	/**
+	 * Define User types.
+	 *
+	 * @var array $user_types User types.
+	 */
 	public $user_types = array();
-	public $extra      = array();
+
+	/**
+	 * Define Extra.
+	 *
+	 * @var array $extra Extra.
+	 */
+	public $extra = array();
+
 
 	/**
 	 * Clarkson_Core_Autoloader constructor.
