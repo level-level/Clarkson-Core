@@ -43,10 +43,10 @@ class Clarkson_Core_Autoloader {
 	 * Clarkson_Core_Autoloader constructor.
 	 */
 	public function __construct() {
+		add_action( 'wp', array( $this, 'load_template_objects' ) );
 		add_action( 'registered_post_type', array( $this, 'registered_post_type' ), 10, 1 );
 		add_action( 'registered_taxonomy', array( $this, 'registered_taxonomy' ), 10, 1 );
 		add_action( 'init', array( $this, 'register_user_types' ), 10, 1 );
-		add_action( 'wp', array( $this, 'load_template_objects' ) );
 		spl_autoload_register( array( $this, 'load_wordpress_objects' ), true, true );
 	}
 
