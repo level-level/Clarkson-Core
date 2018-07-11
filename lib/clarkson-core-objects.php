@@ -86,7 +86,7 @@ class Clarkson_Core_Objects {
 		$class_name = false;
 
 		if ( $user && $user->roles && count( $user->roles ) >= 1 ) {
-			$class_name = $user->roles[0];
+			$class_name = $cc->autoloader->user_objectname_prefix . $user->roles[0];
 		}
 
 		if ( $class_name && in_array( $class_name, $cc->autoloader->user_types, true ) && class_exists( $class_name ) ) {

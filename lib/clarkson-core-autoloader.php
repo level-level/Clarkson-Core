@@ -32,6 +32,14 @@ class Clarkson_Core_Autoloader {
 	public $user_types = array();
 
 	/**
+	 * Define the prefix for the custom user Object classes.
+	 *
+	 * @var string $user_objectname_prefix Classname prefix.
+	 */
+	public $user_objectname_prefix = 'user_';
+
+
+	/**
 	 * Define Extra.
 	 *
 	 * @var array $extra Extra.
@@ -137,8 +145,9 @@ class Clarkson_Core_Autoloader {
 		$this->user_types[ $this->sanitize_object_name( 'user' ) ] = $this->sanitize_object_name( 'user' );
 
 		// Now register user role based classes.
+		// We prefix every role with user_ so we within the wordpress-objects directory all types will be grouped together
 		foreach ( $wp_roles->roles as $key => $role ) {
-			$class_name                      = $this->sanitize_object_name( 'user_' . $key );
+			$class_name                      = $this->sanitize_object_name( $this->user_objectname_prefix . $key );
 			$this->user_types[ $class_name ] = $class_name;
 		}
 	}
