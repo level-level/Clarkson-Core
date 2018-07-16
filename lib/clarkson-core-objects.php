@@ -151,9 +151,9 @@ class Clarkson_Core_Objects {
 		$type = apply_filters( 'clarkson_object_type', $type );
 
 		// This filter allows to control object creation before Clarkson Core determines the correct class to use. For example by calling "wc_get_product".
-		$object_creation_callback = apply_filters( 'clarkson_core_create_object_callback', false, $type, $post_id );
+		$object_creation_callback = apply_filters( 'clarkson_core_create_object_callback', false, $type, $post->ID );
 		if ( ! empty( $object_creation_callback ) ) {
-			return $object_creation_callback( $post_id );
+			return $object_creation_callback( $post->ID );
 		}
 
 		if ( ( in_array( $type, $cc->autoloader->post_types, true ) || in_array( $type, $cc->autoloader->extra, true ) ) && class_exists( $type ) ) {
