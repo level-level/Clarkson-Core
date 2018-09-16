@@ -40,6 +40,11 @@ class Clarkson_Core {
 			Clarkson_Core_Templates::get_instance();
 		}
 
+		// Load template routing.
+		if ( class_exists( 'Clarkson_Core_Gutenberg_Block_Manager' ) ) {
+			$block_manager = new Clarkson_Core_Gutenberg_Block_Manager();
+			$block_manager->init();
+		}
 	}
 
 	/**
