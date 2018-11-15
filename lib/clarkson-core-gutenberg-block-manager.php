@@ -2,7 +2,7 @@
 
 class Clarkson_Core_Gutenberg_Block_Manager{
 	public function init(){
-		add_filter( 'the_content', array($this, 'intercept_gutenberg_rendering'), 8 );
+		add_filter( 'the_content', array($this, 'intercept_gutenberg_rendering'), 1 );
 	}
 
 	protected function determine_block_type_class($block_type){
