@@ -216,7 +216,7 @@ class Clarkson_Core_Templates {
 			$page_vars['objects'] = $object_loader->get_objects( $posts );
 
 			// Render it.
-			$this->render( $template, $page_vars );
+			$this->render( $template, $page_vars, true );
 		}
 
 		return $template;
