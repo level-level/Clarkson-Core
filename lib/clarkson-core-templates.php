@@ -420,7 +420,7 @@ class Clarkson_Core_Templates {
 		foreach ( $templates as $template ) {
 			$base      = basename( $template );
 			$base      = str_replace( '.twig', '', $base );
-			$type      = preg_replace( '|[^a-z0-9-]+|', '', $base );
+			$type      = preg_replace( '|[^a-z0-9]+|', '', $base );
 			$base_type = preg_replace( '(-.*)', '', $type );
 			if ( ! in_array( $base_type, $filters, true ) ) {
 				add_filter( "{$base_type}_template", array( $this, 'add_template' ) );
