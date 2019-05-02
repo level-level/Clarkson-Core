@@ -225,7 +225,7 @@ class Clarkson_Core_Templates {
 
 	/**
 	 * Add template.
-	 * 
+	 *
 	 * Returns the Twig file location which WordPress / Clarkson is going to use.
 	 *
 	 * @param string $template Default template.
@@ -242,11 +242,11 @@ class Clarkson_Core_Templates {
 
 		$twig_templates = $this->templates;
 
-		/** 
+		/**
 		 * Loop over the $templates parameter which is an array with all the options that WordPress should load.
 		 * Like archive-projects.php, archive.php. If you have attached a Twig template to a Post Type then it's possible that there is a template-xyz.twig in there.
 		 */
-		foreach( $templates as $template_name ) {
+		foreach ( $templates as $template_name ) {
 			$template_name = str_replace( '.php', '', $template_name );
 
 			// Check if this file really is located in the 'templates' directory.
@@ -266,7 +266,7 @@ class Clarkson_Core_Templates {
 		 *
 		 * Of course only if there is a singular template.
 		 */
-		if ( $type === 'page' && ! isset( $twig_templates[ 'page' ] ) && isset( $twig_templates['singular'] ) ) {
+		if ( 'page' === $type && ! isset( $twig_templates['page'] ) && isset( $twig_templates['singular'] ) ) {
 			$type = 'singular';
 		}
 
