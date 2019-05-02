@@ -225,72 +225,58 @@ class Clarkson_Core_Templates {
 
 	/**
 	 * Add template.
+	 * 
+	 * Returns the Twig file location which WordPress / Clarkson is going to use.
 	 *
 	 * @param string $template Default template.
 	 *
 	 * @return string|array
 	 */
-	public function add_template( $template ) {
+	public function add_template( $template, $type, $templates ) {
+
 		// Allow twig based on wp_query.
 		global $wp_query;
 		if ( isset( $wp_query->twig ) && file_exists( $wp_query->twig ) ) {
 			return $wp_query->twig;
 		}
 
-		$queried_object = get_queried_object();
+		$twig_templates = $this->templates;
 
-		// Check filter for current template.
-		$filter = current_filter();
-		$type   = str_replace( '_template', '', $filter );
+		/** 
+		 * Loop over the $templates parameter which is an array with all the options that WordPress should load.
+		 * Like archive-projects.php, archive.php. If you have attached a Twig template to a Post Type then it's possible that there is a template-xyz.twig in there.
+		 */
+		foreach( $templates as $template_name ) {
+			$template_name = str_replace( '.php', '', $template_name );
 
-		// Post Types.
-		$post_type = get_post_type();
-		if ( ! $post_type || empty( $post_type ) ) {
-
-			/**
-			 * Fix for archive pages with no posts on it.
-			 * See https://github.com/level-level/Clarkson-Core/issues/90 & https://core.trac.wordpress.org/ticket/20647.
-			 *
-			 * Don't use query_vars 'post_type' because this could return an Array if multiple Post Types are set via pre_get_posts.
-			 * We always want the main Queried Object 'name' to load that specific CPT template.
-			 */
-
-			if ( is_a( $queried_object, 'WP_Post_Type' ) && isset( $queried_object->name ) ) {
-				$post_type = $queried_object->name;
+			// Check if this file really is located in the 'templates' directory.
+			if ( isset( $twig_templates[ $template_name ] ) ) {
+				// Override first hit from this array, else proceed to next option.
+				$type = $template_name;
+				break;
 			}
-		}
-
-		// Taxonomy Templates per Taxonomy type.
-		if ( is_a( $queried_object, 'WP_Term' ) && isset( $queried_object->taxonomy ) ) {
-			$post_type = $queried_object->taxonomy;
-		}
-
-		$templates = $this->templates;
-
-		if ( isset( $templates[ "{$type}-{$post_type}" ] ) ) {
-			return $templates[ "{$type}-{$post_type}" ];
-		}
-		if ( isset( $templates[ "{$type}" ] ) ) {
-			return $templates[ "{$type}" ];
 		}
 
 		/**
 		 * Major exception here:
 		 *
-		 * Fallback if $type is 'page' but the custom template file in _template.
+		 * Fallback if $type is 'page' but the custom template file in 'templates' directory.
 		 * that isn't present on the disk anymore. Then $type is still 'page'.
 		 * but it could fallback on singular.twig when that file is present.
 		 *
 		 * Of course only if there is a singular template.
 		 */
-		if ( 'page' === $type && ! isset( $templates[ "{$type}" ] ) && isset( $templates['singular'] ) ) {
-			return $templates['singular'];
-		}
-		if ( isset( $templates['index'] ) ) {
-			return $templates['index'];
+		if ( $type === 'page' && ! isset( $twig_templates[ 'page' ] ) && isset( $twig_templates['singular'] ) ) {
+			$type = 'singular';
 		}
 
-		return $template;
+		// Last double check if passed $type or the overwrite $type exists in theme dir.
+		if ( ! isset( $twig_templates[ $type ] ) ) {
+			// Always fallback to index.twig.
+			$type = 'index';
+		}
+
+		return $twig_templates[ $type ] ;
 	}
 
 	/**
@@ -423,7 +409,7 @@ class Clarkson_Core_Templates {
 			$type      = preg_replace( '|[^a-z0-9]+|', '', $base );
 			$base_type = preg_replace( '(-.*)', '', $type );
 			if ( ! in_array( $base_type, $filters, true ) ) {
-				add_filter( "{$base_type}_template", array( $this, 'add_template' ) );
+				add_filter( "{$base_type}_template", array( $this, 'add_template' ), 1, 3 );
 				$filters[] = $base_type;
 			}
 
