@@ -237,12 +237,12 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param int $time PHP timestamp.
 	 */
 	public function set_date( $time ) {
-		$this->_post->post_data = date( 'Y-m-d H:i:s', $time );
+		$this->_post->post_date = date( 'Y-m-d H:i:s', $time );
 
 		wp_update_post(
 			array(
 				'ID'        => $this->get_id(),
-				'post_date' => $this->_post->post_data,
+				'post_date' => $this->_post->post_date,
 			)
 		);
 	}
