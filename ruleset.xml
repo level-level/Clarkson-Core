@@ -17,11 +17,8 @@
  	<rule ref="Generic.ControlStructures.InlineControlStructure"/>
 
  	<rule ref="WordPress-Core">
- 		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing" />
- 		<exclude name="WordPress.XSS.EscapeOutput" />
- 		<exclude name="WordPress.Files.FileName.InvalidClassFileName" />
- 		<exclude name="Generic.Files.EndFileNewline.NotFound" />
- 		<exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.Found" />
- 		<exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
- 	</rule>
+       <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
+       <exclude name="Generic.CodeAnalysis.UnusedFunctionParameter.Found" />
+       <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
+   </rule>
 </ruleset>

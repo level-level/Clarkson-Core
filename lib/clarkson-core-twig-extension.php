@@ -1,7 +1,20 @@
 <?php
+/**
+ * Clarkson Core Twig extension.
+ *
+ * @package CLARKSON\Lib
+ */
+
+/**
+ * Class Clarkson_Core_Twig_Extension.
+ */
 class Clarkson_Core_Twig_Extension extends Twig_Extension {
 
-
+	/**
+	 * Twig functions.
+	 *
+	 * @var array $functions Twig functions.
+	 */
 	private $functions = array(
 		'get_search_query',
 		'get_adjacent_post',
@@ -667,12 +680,19 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 		'__',
 		'_x',
 		'_n',
+		'_ngettext', // deprecated function.
+		'_n_noop',
 		'_nx',
+		'_nx_noop',
+		'translate_nooped_plural',
 		'_e',
 		'_ex',
-		'_ngettext',
-		'esc_attr__',
 		'esc_attr_e',
+		'esc_attr_x',
+		'esc_attr__',
+		'esc_html_e',
+		'esc_html_x',
+		'esc_html__',
 		'get_locale',
 		'load_default_textdomain',
 		'load_plugin_textdomain',
@@ -719,6 +739,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 		'get_post_statuses',
 		'get_query_var',
 		'home_url',
+		'get_home_url',
 		'includes_url',
 		'is_blog_installed',
 		'is_main_site',
@@ -924,35 +945,62 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 		'is_year',
 		'pings_open',
 		'gravity_form', // shouldn't be here...
+		'single_post_title',
 	);
 
-	public function __construct( array $functions = array()) {
-		if ($functions) {
+	/**
+	 * Clarkson_Core_Twig_Extension constructor.
+	 *
+	 * @param array $functions WordPress functions.
+	 */
+	public function __construct( array $functions = array() ) {
+		if ( $functions ) {
 			$this->allowFunctions( $functions );
 		}
 	}
 
+	/**
+	 * Get the Twig functions.
+	 *
+	 * @return array|Twig_SimpleFunction[] $twig_functions Twig functions.
+	 */
 	public function getFunctions() {
 		$twig_functions = array();
 
 		$allowed_functions = apply_filters( 'clarkson_twig_functions', $this->functions );
 
-		foreach ($allowed_functions  as $function) {
-			$twig_functions[] = new Twig_SimpleFunction( $function,$function );
+		foreach ( $allowed_functions  as $function ) {
+			$twig_functions[] = new Twig_SimpleFunction( $function, $function );
 		}
 
 		return $twig_functions;
 	}
 
-	public function allowFunction( $function) {
+	/**
+	 * Check if function is an allowed Twig function.
+	 *
+	 * @param string $function Twig function name.
+	 */
+	public function allowFunction( $function ) {
 		$this->functions[] = $function;
 	}
 
-	public function allowFunctions( array $functions) {
+	/**
+	 * Check if functions in the array are allowed Twig functions.
+	 *
+	 * @param array $functions Allowed Twig functions.
+	 */
+	public function allowFunctions( array $functions ) {
 		$this->functions = $functions;
 	}
 
+	/**
+	 * Get the string 'php_function'.
+	 *
+	 * @return string 'php_function'.
+	 */
 	public function getName() {
 		return 'php_function';
 	}
+
 }
