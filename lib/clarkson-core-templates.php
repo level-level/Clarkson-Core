@@ -211,7 +211,7 @@ class Clarkson_Core_Templates {
 				}
 			} elseif ( is_search() ) {
 				global $wp_query;
-				$objects['found_posts'] = $wp_query->get( 'filtered_found_posts' ) ? $wp_query->get( 'filtered_found_posts' ) : $wp_query->found_posts;
+				$page_vars['found_posts'] = $wp_query->get( 'filtered_found_posts' ) ? $wp_query->get( 'filtered_found_posts' ) : $wp_query->found_posts;
 			}
 			$page_vars['objects'] = $object_loader->get_objects( $posts );
 
