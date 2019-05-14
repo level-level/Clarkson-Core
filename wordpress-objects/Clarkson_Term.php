@@ -251,7 +251,9 @@ class Clarkson_Term {
 	 */
 	public function set_name( $name ) {
 		wp_update_term(
-			$this->get_id(), $this->get_taxonomy(), array(
+			$this->get_id(),
+			$this->get_taxonomy(),
+			array(
 				'name' => $name,
 			)
 		);

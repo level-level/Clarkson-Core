@@ -493,19 +493,24 @@ class Clarkson_Core_Templates {
 			// Add a filter to the WP 4.7 version attributes meta box.
 			// Add filters for all post_types.
 			add_action(
-				'wp_loaded', function() {
+				'wp_loaded',
+				function() {
 					$custom_post_types = get_post_types(
 						array(
 							'public'   => false,
 							'_builtin' => false,
-						), 'names', 'or'
+						),
+						'names',
+						'or'
 					);
 
 					$builtin_post_types = get_post_types(
 						array(
 							'public'   => false,
 							'_builtin' => true,
-						), 'names', 'or'
+						),
+						'names',
+						'or'
 					);
 
 					$post_types = array_merge( $custom_post_types, $builtin_post_types );
