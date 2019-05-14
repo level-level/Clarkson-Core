@@ -8,6 +8,9 @@ notifications:
     on_failure: change
 
 php:
+  - 7.3
+  - 7.2
+  - 7.1
   - 7.0
   - 5.6
 
@@ -15,8 +18,5 @@ install:
   - composer self-update --no-interaction
   - composer install --no-interaction --prefer-dist
 
-before_script:
-    - vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs/
-
 script:
-    - vendor/bin/phpcs --standard=ruleset.xml
+    - composer run test
