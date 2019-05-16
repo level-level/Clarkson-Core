@@ -9,7 +9,9 @@ class Clarkson_Core_Gutenberg_Block_Manager {
 	 * Hook in as soon as we can, to replace blocks with the Clarkson-block equivalent.
 	 */
 	public function init() {
-		add_filter( 'the_content', array( $this, 'intercept_gutenberg_rendering' ), 1 );
+		if ( class_exists( '\WP_Block_Type_Registry' ) ) {
+			add_filter( 'the_content', array( $this, 'intercept_gutenberg_rendering' ), 1 );
+		}
 	}
 
 	/**
