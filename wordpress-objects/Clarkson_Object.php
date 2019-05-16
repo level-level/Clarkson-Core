@@ -109,7 +109,8 @@ class Clarkson_Object implements \JsonSerializable {
 		return array_map(
 			function( $post ) use ( $class ) {
 					return new $class( $post );
-			}, $query->posts
+			},
+			$query->posts
 		);
 	}
 
@@ -237,12 +238,12 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param int $time PHP timestamp.
 	 */
 	public function set_date( $time ) {
-		$this->_post->post_data = date( 'Y-m-d H:i:s', $time );
+		$this->_post->post_date = date( 'Y-m-d H:i:s', $time );
 
 		wp_update_post(
 			array(
 				'ID'        => $this->get_id(),
-				'post_date' => $this->_post->post_data,
+				'post_date' => $this->_post->post_date,
 			)
 		);
 	}
@@ -562,7 +563,8 @@ class Clarkson_Object implements \JsonSerializable {
 	public function add_terms( $taxonomy, $terms ) {
 		// Filter terms to ensure they are in the correct taxonomy.
 		$terms = array_filter(
-			$terms, function( $term ) use ( $taxonomy ) {
+			$terms,
+			function( $term ) use ( $taxonomy ) {
 				return $term->get_taxonomy() === $taxonomy;
 			}
 		);
@@ -571,7 +573,8 @@ class Clarkson_Object implements \JsonSerializable {
 		$terms = array_map(
 			function( $term ) {
 					return $term->get_id();
-			}, $terms
+			},
+			$terms
 		);
 
 		return wp_set_object_terms( $this->get_id(), $terms, $taxonomy, true );
@@ -591,7 +594,8 @@ class Clarkson_Object implements \JsonSerializable {
 	public function reset_terms( $taxonomy, $terms ) {
 		// Filter terms to ensure they are in the correct taxonomy.
 		$terms = array_filter(
-			$terms, function( $term ) use ( $taxonomy ) {
+			$terms,
+			function( $term ) use ( $taxonomy ) {
 				return $term->get_taxonomy() === $taxonomy;
 			}
 		);
@@ -600,7 +604,8 @@ class Clarkson_Object implements \JsonSerializable {
 		$terms = array_map(
 			function( $term ) {
 					return $term->get_id();
-			}, $terms
+			},
+			$terms
 		);
 
 		return wp_set_object_terms( $this->get_id(), $terms, $taxonomy, false );

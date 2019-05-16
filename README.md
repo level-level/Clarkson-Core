@@ -38,12 +38,11 @@ When you register a Custom Post Type `ll_company` your custom class `ll_company`
 
 [More info](http://wp-clarkson.com/core/docs/wordpress-objects.html) about WordPress objects.
 
-## Code style check
+## Tests
 Currently 
 1. Clone repository `git@github.com:level-level/Clarkson-Core.git clarkson-core`.
 1. Run `composer install` in the new `clarkson-core` directory.
-1. Run `vendor/bin/phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs/`.
-1. Run `vendor/bin/phpcs --standard=ruleset.xml`.
+1. Run `composer run test`.
 
 ## Theme Development
 
