@@ -21,7 +21,8 @@ class Clarkson_Core_Gutenberg_Block_Type extends \WP_Block_Type {
 	 * @return string
 	 */
 	public function get_twig_template_path() {
-		return apply_filters( 'clarkson_core_gutenberg_block_template_' . $this->name, get_stylesheet_directory() . '/templates/partials/blocks/gb/' . $this->name . '.twig', $this );
+		$block_directory = apply_filters( 'clarkson_core_gutenberg_block_template_directory', '/templates/partials/blocks/gb/' );
+		return apply_filters( 'clarkson_core_gutenberg_block_template_' . $this->name, get_stylesheet_directory() . $block_directory . $this->name . '.twig', $this );
 	}
 
 	/**
