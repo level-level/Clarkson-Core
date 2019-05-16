@@ -42,7 +42,7 @@ class Clarkson_Object implements \JsonSerializable {
 		if ( is_a( $post, 'WP_Post' ) ) {
 			$this->_post = $post;
 		} else {
-			user_error( esc_html__( "Deprecated __construct called with an ID. Use '::get(post)' instead.", 'clarkson-core' ), E_USER_DEPRECATED );
+			user_error( "Deprecated __construct called with an ID. Use '::get(post)' instead.", E_USER_DEPRECATED );
 
 			if ( empty( $post ) ) {
 				throw new Exception( '$post empty' );
