@@ -15,6 +15,7 @@ class Clarkson_Core_Gutenberg_Block_Manager {
 	/**
 	 * Attempts to create a custom block from class from a block. Falls back
 	 * to a default Clarkson Core block type.
+	 * 
 	 * @return string
 	 */
 	protected function determine_block_type_class( $block_type ) {
@@ -29,6 +30,7 @@ class Clarkson_Core_Gutenberg_Block_Manager {
 
 	/**
 	 * Filters a block name into a valid class name.
+	 * 
 	 * @return string
 	 */
 	protected function sanitize_block_type_name( $str ) {

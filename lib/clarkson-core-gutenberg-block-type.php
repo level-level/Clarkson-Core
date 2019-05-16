@@ -27,6 +27,8 @@ class Clarkson_Core_Gutenberg_Block_Type extends \WP_Block_Type {
 	/**
 	 * Tries to find a twig file to use for rendering. If the twig file doesn't
 	 * exists it falls back to the original render callback.
+	 * 
+	 * @return string
 	 */
 	public function clarkson_render_callback( $attributes, $content ) {
 		if ( file_exists( $this->get_twig_template_path() ) ) {
