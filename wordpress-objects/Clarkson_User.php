@@ -122,7 +122,8 @@ class Clarkson_User {
 	 * @return string User first name.
 	 */
 	public function get_display_first_name() {
-		return reset( explode( ' ', $this->get_display_name() ) );
+		$parts = explode( ' ', $this->get_display_name() );
+		return reset( $parts );
 	}
 
 	/**

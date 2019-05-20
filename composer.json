@@ -27,7 +27,8 @@
 		],
 		"test": [
 			"composer validate",
-			"phpcs"
+			"phpcs",
+			"psalm --show-info=false"
 		]
     },
     "require" : {
@@ -36,6 +37,8 @@
     },
     "require-dev": {
         "dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
-        "wp-coding-standards/wpcs": "^2.1"
+        "wp-coding-standards/wpcs": "^2.1",
+        "vimeo/psalm": "^3.2",
+        "giacocorsiglia/wordpress-stubs": "^5.1"
     }
 }
