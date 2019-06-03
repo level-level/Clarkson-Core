@@ -2,6 +2,7 @@
 class Clarkson_Core_Templates {
 
 	protected $templates = array();
+	protected $twig_instance = null;
 	protected $hasBeenCalled = false;
 
 	public function render($path, $objects, $ignore_warning = false){
@@ -35,6 +36,32 @@ class Clarkson_Core_Templates {
 	}
 
 
+	protected function get_twig_instance(){
+		if($this->twig_instance === null){
+			$debug 		= ( defined('WP_DEBUG') ? WP_DEBUG : false );
+			$twig_args 	= array(
+				'debug' => $debug
+			);
+
+			$template_dirs  = $this->get_templates_dirs();
+			$twig_args = apply_filters( 'clarkson_twig_args', $twig_args);
+			$twig_fs = new Twig_Loader_Filesystem($template_dirs);
+			$twig 	 = new Twig_Environment($twig_fs, $twig_args);
+
+			$twig->addExtension( new Clarkson_Core_Twig_Extension()    );
+			$twig->addExtension( new Twig_Extensions_Extension_I18n()  );
+			$twig->addExtension( new Twig_Extensions_Extension_Text()  );
+			$twig->addExtension( new Twig_Extensions_Extension_Array() );
+			$twig->addExtension( new Twig_Extensions_Extension_Date()  );
+
+			if( $debug){
+				$twig->addExtension(new Twig_Extension_Debug());
+			}
+			$this->twig_instance = $twig;
+		}
+		return $this->twig_instance;
+	}
+
 	public function render_twig($path, $objects, $ignore_warning = false){
 		// TWIG ARGS
 		if(!$ignore_warning && $this->hasBeenCalled){
@@ -42,30 +69,10 @@ class Clarkson_Core_Templates {
 		}
 		$this->hasBeenCalled = true;
 
-		$template_dirs  = $this->get_templates_dirs();
 		$template_file = str_replace( array( $this->get_template_dir(), $this->get_stylesheet_dir() ), '', $path); // Retreive only the path to the template file, relative from the yourtheme/templates directory
 
-		$debug 		= ( defined('WP_DEBUG') ? WP_DEBUG : false );
-		$twig_args 	= array(
-			'debug' => $debug
-		);
-
-		$twig_args = apply_filters( 'clarkson_twig_args', $twig_args);
-		$twig_fs = new Twig_Loader_Filesystem($template_dirs);
-		$twig 	 = new Twig_Environment($twig_fs, $twig_args);
-
-		$twig->addExtension( new Clarkson_Core_Twig_Extension()    );
-		$twig->addExtension( new Twig_Extensions_Extension_I18n()  );
-		$twig->addExtension( new Twig_Extensions_Extension_Text()  );
-		$twig->addExtension( new Twig_Extensions_Extension_Array() );
-		$twig->addExtension( new Twig_Extensions_Extension_Date()  );
-
-		if( $debug){
-			$twig->addExtension(new Twig_Extension_Debug());
-		}
-
-		$context_args = apply_filters('clarkson_context_args', $objects );
-
+		$context_args = apply_filters( 'clarkson_context_args', $objects );
+		$twig = $this->get_twig_instance();
 		return $twig->render( $template_file, $context_args );
 	}
 
