@@ -1,121 +1,108 @@
 <?php
-/*
- * Plugin Name: Clarkson Core
- * Version: 0.1.10
- * Plugin URI: http://wp-clarkson.com/core
- * Description: A plugin to write Object-Oriented code in combination with the Twig templating engine while keeping the WordPress Way of working in mind.
- * Author: Level Level
- * Author URI: http://www.level-level.com
- * Requires at least: 4.0
- * Tested up to: 4.7.2
+/**
+ * Plugin Name:  Clarkson Core
+ * Version:      0.2.0
+ * Plugin URI:   http://wp-clarkson.com/core
+ * Description:  A mu-plugin to write Object-Oriented code in combination with the Twig templating engine while keeping the WordPress Way of working in mind.
+ * Author:       Level Level
+ * Author URI:   https://www.level-level.com
+ * License:      GPL v2
+ * License URI:  https://www.gnu.org/licenses/gpl-2.0.html
  *
- * Text Domain: wordpress-plugin-template
+ * Text Domain: clarkson-core
  * Domain Path: /lang/
  *
- * @package WordPress
+ * @package CLARKSON\Main
  * @author Level Level
- * @since 0.1.0
  */
 
+/**
+ * Class Clarkson_Core.
+ */
 class Clarkson_Core {
 
-	public function init(){
-
-		// Load lib
-		$this->load_php_files_from_path( __DIR__ . '/lib' );
-
-		// Deprecated functions and filters
-		if( class_exists('Clarkson_Core_Deprecated') ){
+	/**
+	 * Init.
+	 */
+	public function init() {
+		// Deprecated functions and filters.
+		if ( class_exists( 'Clarkson_Core_Deprecated' ) ) {
 			Clarkson_Core_Deprecated::get_instance();
 		}
 
-		// Load post objects
-		if( class_exists('Clarkson_Core_Objects') ){
+		// Load post objects.
+		if ( class_exists( 'Clarkson_Core_Objects' ) ) {
 			Clarkson_Core_Objects::get_instance();
 		}
 
-		// Load template routing
-		if( class_exists('Clarkson_Core_Templates') ){
+		// Load template routing.
+		if ( class_exists( 'Clarkson_Core_Templates' ) ) {
 			Clarkson_Core_Templates::get_instance();
 		}
 
 	}
 
-	public function auto_load_theme(){
-		$dirs = array(
-			'functions',
-			'post-types', // Default location of WP-CLI export
-			'taxonomies'  // Default location of WP-CLI export
-		);
-
-		$dirs = apply_filters('clarkson_core_autoload_dirs', $dirs);
-
-		// Current Theme Dir
-		$theme_dir = get_template_directory();
-
-		foreach($dirs as $dir){
-			$this->load_php_files_from_path( $theme_dir . "/{$dir}" );
-		}
-
-	}
-
-	private function load_php_files_from_path($path = false){
-
-		if( !$path || !is_string($path) || !file_exists($path) )
-			return;
-
-		$files = glob("{$path}/*.php");
-		$dirs = array_filter(glob("{$path}/*", GLOB_ONLYDIR), 'is_dir');
-
-		foreach($dirs as $dir){
-			$this->load_php_files_from_path($dir);
-		}
-
-		if( empty($files) )
-			return;
-
-		foreach ( $files as $filepath){
-			require_once $filepath;
-		}
-
-	}
-
-	// Singleton
+	/**
+	 * Define instance.
+	 *
+	 * @var Clarkson_Core
+	 */
 	protected $instance = null;
 
-	public static function get_instance()
-	{
+	/**
+	 * Setting up the class instance.
+	 *
+	 * @return Clarkson_Core|null
+	 */
+	public static function get_instance() {
 		static $instance = null;
 
-		if (null === $instance) {
+		if ( null === $instance ) {
 			$instance = new Clarkson_Core();
 		}
 
 		return $instance;
 	}
 
-	protected function __construct()
-	{
-		// Load vendor files
+	/**
+	 * Clarkson_Core constructor.
+	 */
+	protected function __construct() {
+		// Load vendor files.
 		$autoload_file = __DIR__ . '/vendor/autoload.php';
 
-		if( file_exists($autoload_file) ){
-			require_once($autoload_file);
+		if ( file_exists( $autoload_file ) ) {
+			require_once $autoload_file;
 		}
 
-		add_action('init', array($this, 'init') );
+		add_action( 'init', array( $this, 'init' ) );
 
-		// Auto load theme files
-		$this->auto_load_theme();
+		if ( ! class_exists( 'Clarkson_Core_Autoloader' ) ) {
+			return;
+		}
+
+		$this->autoloader = new Clarkson_Core_Autoloader();
+
+		if ( apply_filters( 'clarkson_core_autoload_theme_pre_020', false ) ) {
+			// Autoload theme files the way CC ^0.1.0 did (triggers deprecated warning).
+			$deprecated = Clarkson_Core_Deprecated::get_instance();
+			$deprecated->auto_load_theme();
+		}
 
 	}
 
-	private function __clone()
-	{
+	/**
+	 * Clone.
+	 */
+	private function __clone() {
 	}
-	private function __wakeup()
-	{
+
+	/**
+	 * Wakeup.
+	 */
+	private function __wakeup() {
 	}
+
 }
 
-add_action('plugins_loaded', array('Clarkson_Core', 'get_instance'));
+add_action( 'plugins_loaded', array( 'Clarkson_Core', 'get_instance' ) );

@@ -1,66 +1,217 @@
 <?php
-
 /**
  * Handle renamed filters.
  *
- * Based on Mikey Jolley's example in WooCommerce
- * https://mikejolley.com/2013/12/15/deprecating-plugin-functions-hooks-woocommmerce/
+ * Based on Mikey Jolley's example in WooCommerce.
+ * https://mikejolley.com/2013/12/15/deprecating-plugin-functions-hooks-woocommmerce/.
  * and
- * https://github.com/woocommerce/woocommerce/blob/master/includes/wc-deprecated-functions.php
+ * https://github.com/woocommerce/woocommerce/blob/master/includes/wc-deprecated-functions.php.
  *
+ * @package CLARKSON\Lib
  * @since 0.1.6
  */
 
+/**
+ * Class Clarkson_Core_Deprecated.
+ */
 class Clarkson_Core_Deprecated {
-    var $map_deprecated_filters;
 
-    public function __construct(){
-        $this->set_map_deprecated_filters();
-        foreach ( $this->map_deprecated_filters as $new => $old ) {
-            add_filter( $new, array( $this, 'deprecated_filter_mapping' ) );
-        }
-    }
+	/**
+	 * Map Deprecated filters.
+	 *
+	 * @var array $map_deprecated_filters Map Deprecated filters.
+	 */
+	protected $map_deprecated_filters;
 
-    public function get_map_deprecated_filters(){
-        return array(
-            'clarkson_twig_functions' => 'yalla_twig_functions'
-        );
-    }
+	/**
+	 * Clarkson_Core_Deprecated constructor.
+	 */
+	public function __construct() {
+		$this->set_map_deprecated_filters();
+		foreach ( $this->map_deprecated_filters as $new => $old ) {
+			add_filter( $new, array( $this, 'deprecated_filter_mapping' ) );
+		}
+	}
 
-    public function set_map_deprecated_filters(){
-        $this->map_deprecated_filters = $this->get_map_deprecated_filters();
-    }
+	/**
+	 * Get theme objects.
+	 *
+	 * @return array
+	 */
+	public function get_theme_objects() {
+		$objects       = array();
+		$theme_objects = array();
 
-    public function deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3 = '' ) {
-        $map_deprecated_filters = $this->get_map_deprecated_filters();
+		// Load deprecated post-objects folder.
+		$theme_deprecated_objects_path = get_template_directory() . '/post-objects';
+		if ( is_dir( $theme_deprecated_objects_path ) ) {
+			user_error( 'The ' . esc_html( $theme_deprecated_objects_path ) . " folder is deprecated. Please use 'wordpress-objects'.", E_USER_DEPRECATED );
+			$theme_objects = array_merge( $this->get_objects_from_path( $theme_deprecated_objects_path ), $theme_objects );
+		}
 
-        $filter = current_filter();
+		// Theme overwrites plugins objects.
+		$theme_objects = apply_filters( 'clarkson_available_objects_paths', $theme_objects );
 
-        if ( isset( $map_deprecated_filters[ $filter ] ) ) {
-            if ( has_filter( $map_deprecated_filters[ $filter ] ) ) {
-                $data = apply_filters( $map_deprecated_filters[ $filter ], $data, $arg_1, $arg_2, $arg_3 );
-                if ( ! defined( 'DOING_AJAX' ) ) {
-                    _deprecated_function( 'The ' . $map_deprecated_filters[ $filter ] . ' filter', '', $filter );
-                }
-            }
-        }
+		// Load classes.
+		foreach ( $theme_objects as $object_name => $object_path ) {
+			if ( strpos( $object_name, '_tax_' ) !== false ) {
+				$object_name = strtolower( $object_name );
+			}
 
-        return $data;
-    }
+			if ( in_array( $object_name, $objects, true ) ) {
+				continue;
+			}
 
-    // Singleton
-    protected $instance = null;
+			include_once $object_path;
+			$objects[] = $object_name;
+		}
+		return $objects;
+	}
 
-    public static function get_instance()
-    {
-        static $instance = null;
+	/**
+	 * Get map deprecated filters.
+	 *
+	 * @return array Deprecated filters.
+	 */
+	public function get_map_deprecated_filters() {
+		return array(
+			'clarkson_twig_functions' => 'yalla_twig_functions',
+		);
+	}
 
-        if (null === $instance) {
-            $instance = new Clarkson_Core_Deprecated();
-        }
+	/**
+	 * Set map deprecated filters.
+	 */
+	public function set_map_deprecated_filters() {
+		$this->map_deprecated_filters = $this->get_map_deprecated_filters();
+	}
 
-        return $instance;
-    }
+	/**
+	 * Deprecated filter mapping.
+	 *
+	 * @param object $data  Deprecated_filters.
+	 * @param string $arg_1 First argument (not used).
+	 * @param string $arg_2 Second argument (not used).
+	 * @param string $arg_3 Third argument (not used).
+	 *
+	 * @return object
+	 */
+	public function deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3 = '' ) {
+		$map_deprecated_filters = $this->get_map_deprecated_filters();
+
+		$filter = current_filter();
+
+		if ( isset( $map_deprecated_filters[ $filter ] ) ) {
+			if ( has_filter( $map_deprecated_filters[ $filter ] ) ) {
+				$data = apply_filters( $map_deprecated_filters[ $filter ], $data, $arg_1, $arg_2, $arg_3 );
+				if ( ! defined( 'DOING_AJAX' ) ) {
+					$dep_function = 'The ' . $map_deprecated_filters[ $filter ] . ' filter';
+					_deprecated_function( esc_html( $dep_function ), '', esc_html( $filter ) );
+				}
+			}
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Set directories for auto load files by path.
+	 */
+	public function auto_load_theme() {
+		$dirs = array(
+			'functions',
+			'post-types', // Default location of WP-CLI export.
+			'taxonomies',  // Default location of WP-CLI export.
+		);
+
+		$dirs = apply_filters( 'clarkson_core_autoload_dirs', $dirs );
+
+		// Current Theme Dir.
+		$theme_dir = get_template_directory();
+
+		foreach ( $dirs as $dir ) {
+			$this->load_php_files_from_path( $theme_dir . "/{$dir}" );
+		}
+
+	}
+
+	/**
+	 * Load PHP files from path.
+	 *
+	 * @param string|bool $path File path.
+	 */
+	private function load_php_files_from_path( $path = false ) {
+
+		if ( ! $path || ! is_string( $path ) || ! file_exists( $path ) ) {
+			return;
+		}
+
+		$files = glob( "{$path}/*.php" );
+		$dirs  = array_filter( glob( "{$path}/*", GLOB_ONLYDIR ), 'is_dir' );
+
+		foreach ( $dirs as $dir ) {
+			$this->load_php_files_from_path( $dir );
+		}
+
+		if ( empty( $files ) ) {
+			return;
+		}
+
+		foreach ( $files as $filepath ) {
+			require_once $filepath;
+		}
+
+	}
+
+	/**
+	 * Get objects from path.
+	 *
+	 * @param string $path File path.
+	 *
+	 * @return array       Objects.
+	 */
+	private function get_objects_from_path( $path ) {
+		$objects = array();
+
+		if ( ! file_exists( $path ) ) {
+			return $objects;
+		}
+
+		$files = glob( "{$path}/*.php" );
+		if ( empty( $files ) ) {
+			return $objects;
+		}
+
+		foreach ( $files as $filepath ) {
+			$path_parts = pathinfo( $filepath );
+			$class_name = $path_parts['filename'];
+			$class_name = ucfirst( $class_name );
+
+			$objects[ $class_name ] = $filepath;
+		}
+
+		return $objects;
+	}
+
+	/**
+	 * Singleton.
+	 *
+	 * @var object|null $instance Clarkson_Core_Deprecated.
+	 */
+	protected $instance = null;
+
+	/**
+	 * Get Instance.
+	 *
+	 * @return Clarkson_Core_Deprecated|null
+	 */
+	public static function get_instance() {
+		static $instance = null;
+
+		if ( null === $instance ) {
+			$instance = new Clarkson_Core_Deprecated();
+		}
+
+		return $instance;
+	}
 }
-
-

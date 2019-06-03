@@ -1,187 +1,229 @@
 <?php
+/**
+ * Clarkson Core Objects.
+ *
+ * @package CLARKSON\Lib
+ */
 
+/**
+ * Clarkson Core Objects class.
+ */
 class Clarkson_Core_Objects {
 
+	/**
+	 * Clarkson Core Objects array.
+	 *
+	 * @var array $objects Clarkson_Core_Objects.
+	 */
 	protected $objects = array();
 
-	public function available_objects(){
+	/**
+	 * Available objects.
+	 *
+	 * @return array Available objects.
+	 */
+	public function available_objects() {
 		return $this->objects;
 	}
 
-	public function get_term($term){
-		if( !isset($term->taxonomy) || !isset($term->term_id))
-			return;
+	/**
+	 * Get term data.
+	 *
+	 * @param object $term The term.
+	 *
+	 * @return bool|object
+	 */
+	public function get_term( $term ) {
 
-		$taxonomy = strtolower($term->taxonomy);
-
-		if( in_array($taxonomy, $this->objects) ){
-			return new $taxonomy($term->term_id, $taxonomy);
-		}else{
-			return Clarkson_Term::get_by_id($term->term_id, $taxonomy);
+		if ( ! isset( $term->taxonomy ) || ! isset( $term->term_id ) ) {
+			return false;
 		}
+
+		$cc         = Clarkson_Core::get_instance();
+		$class_name = $cc->autoloader->sanitize_object_name( $term->taxonomy );
+
+		if ( in_array( $class_name, $cc->autoloader->taxonomies, true ) && class_exists( $class_name ) ) {
+			return new $class_name( $term->term_id, $term->taxonomy );
+		}
+		return Clarkson_Term::get_by_id( $term->term_id, $term->taxonomy );
 	}
 
-	public function get_users($users_ids){
+	/**
+	 * Get users by id.
+	 *
+	 * @param array $users_ids User ids.
+	 *
+	 * @return array
+	 */
+	public function get_users( $users_ids ) {
 		$users = array();
 
-		foreach ( $users_ids as $users_id ) {
-			$users[] = $this->get_user($users_id);
-		}
-
-		return $users ;
-	}
-
-	public function get_user($users_id){
-		if( in_array('User', $this->objects) ){
-			return new User($users_id);
-		}elseif( in_array('Clarkson_User', $this->objects) ){
-			return new Clarkson_User($users_id);
-		}
-	}
-
-	public function get_objects( $posts_ids )
-	{
-		$objects = array();
-
-		foreach ( $posts_ids as $posts_id ) {
-			$objects[] = $this->get_object($posts_id);
-		}
-
-		return $objects ;
-	}
-
-	public function get_object($post_id){
-		$type = get_post_type( $post_id);
-		$type = apply_filters( 'clarkson_object_type', $type );
-
-		$object_name = $this->camel_case($type);
-
-		if( !in_array($object_name, $this->objects) ){
-			if( in_array('Clarkson_Object', $this->objects) ){
-				return new Clarkson_Object($post_id);
-			}else{
-				return $post_id;
+		foreach ( $users_ids as $user_id ) {
+			$user = $this->get_user( $user_id );
+			if ( $user ) {
+				$users[] = $user;
 			}
 		}
 
-		return new $object_name($post_id);
+		return $users;
 	}
 
-	private function camel_case($str)
-	{
-		// non-alpha and non-numeric characters become underscores
-		$str = preg_replace('/[^a-z0-9]+/i', '_', $str);
-		$str = trim($str);
-		// uppercase the first character of each word
-		$str = ucwords($str);
-		$str = str_replace(" ", "_", $str);
+	/**
+	 * Get user by user id.
+	 *
+	 * @param integer $user_id User id.
+	 *
+	 * @return bool|object
+	 */
+	public function get_user( $user_id ) {
 
-		return $str;
+		if ( empty( $user_id ) ) {
+			return false;
+		}
+		$cc         = Clarkson_Core::get_instance();
+		$user       = get_userdata( $user_id );
+		$class_name = false;
+
+		if ( $user && $user->roles && count( $user->roles ) >= 1 ) {
+			$class_name = $cc->autoloader->user_objectname_prefix . $user->roles[0];
+		}
+
+		if ( $class_name && in_array( $class_name, $cc->autoloader->user_types, true ) && class_exists( $class_name ) ) {
+			$object = new $class_name( $user_id );
+		} else {
+			$object = new Clarkson_User( $user_id );
+		}
+
+		return $object;
+
 	}
 
-	private function register_objects(){
-		$plugin_path = dirname(__DIR__);
+	/**
+	 * Get an array of posts converted to their corresponding WordPress object class.
+	 *
+	 * @param array $posts Posts.
+	 *
+	 * @return array $objects Array of post objects.
+	 */
+	public function get_objects( $posts ) {
 		$objects = array();
 
-		$core_objects_path  = $plugin_path. '/wordpress-objects';
-		$core_objects = $this->get_objects_from_path( $core_objects_path  );
-
-		foreach( $core_objects as $object_name=>$object_path){
-			include_once($object_path);
-			$objects[] = $object_name;
+		if ( empty( $posts ) ) {
+			return $objects;
 		}
 
-		$theme_objects = array();
-
-		$theme_objects_path = get_template_directory() . '/wordpress-objects';
-		if(is_dir($theme_objects_path)){
-			$theme_objects  = $this->get_objects_from_path( $theme_objects_path );
-		}
-
-		// Load deprecated post-objects folder
-		$theme_deprecated_objects_path = get_template_directory() . '/post-objects';
-		if(is_dir($theme_deprecated_objects_path)){
-			user_error("The {$theme_deprecated_objects_path} folder is deprecated. Please use {$theme_objects_path}.", E_USER_DEPRECATED);
-			$theme_objects  = array_merge($this->get_objects_from_path( $theme_deprecated_objects_path ), $theme_objects);
-		}
-
-		// Theme overwrites plugins objects
-		$theme_objects = apply_filters( 'clarkson_available_objects_paths', $theme_objects);
-
-		if( isset($theme_objects['Page']) ){
-			include_once($theme_objects['Page']);
-			$objects[] = 'Page';
-		}
-
-		if( isset($theme_objects['Post']) ){
-			include_once($theme_objects['Post']);
-			$objects[] = 'Post';
-		}
-
-		// Load classes
-		foreach( $theme_objects as $object_name=>$object_path){
-			if( strpos( $object_name, '_tax_' ) !== false ) {
-				$object_name = strtolower( $object_name );
+		foreach ( $posts as $post ) {
+			$object = $this->get_object( $post );
+			if ( ! empty( $object ) ) {
+				$objects[] = $this->get_object( $post );
 			}
-
-			if( in_array($object_name, $objects) )
-				continue;
-
-			include_once($object_path);
-			$objects[] = $object_name;
-		}
-
-		$objects = apply_filters( 'clarkson_available_objects', $objects);
-
-		$this->objects = $objects;
-	}
-
-	private function get_objects_from_path( $path )
-	{
-		$objects = array();
-
-		if( !file_exists($path) )
-			return $objects;
-
-		$files = glob("{$path}/*.php");
-		if( empty($files) )
-			return $objects;
-
-		foreach ( $files as $filepath){
-			$path_parts = pathinfo($filepath);
-			$class_name = $path_parts['filename'];
-			$class_name = ucfirst($class_name);
-
-			$objects[$class_name] = $filepath;
 		}
 
 		return $objects;
 	}
 
+	/**
+	 * Get post that's converted to their corresponding WordPress object class.
+	 *
+	 * @param object $post Post.
+	 *
+	 * @return object Clarkson Post object.
+	 */
+	public function get_object( $post ) {
+		if ( ! $post instanceof WP_Post && is_int( (int) $post ) ) {
+			user_error( 'Deprecated calling of get_object with an ID. Use a `WP_Post` instead.', E_USER_DEPRECATED );
+			$post = get_post( $post );
+		}
 
-	// Singleton
+		$cc = Clarkson_Core::get_instance();
+
+		// defaults to post type.
+		$type = get_post_type( $post );
+
+		// Check if post has a custom template, if so, overwrite value.
+		$page_template_slug = $cc->autoloader->get_template_filename( $post->ID );
+
+		if ( $page_template_slug && ! empty( $page_template_slug ) ) {
+			$type = $page_template_slug;
+		}
+
+		$type = $cc->autoloader->sanitize_object_name( $type );
+		$type = apply_filters( 'clarkson_object_type', $type );
+
+		// This filter allows to control object creation before Clarkson Core determines the correct class to use. For example by calling "wc_get_product".
+		$object_creation_callback = apply_filters( 'clarkson_core_create_object_callback', false, $type, $post->ID );
+		if ( ! empty( $object_creation_callback ) ) {
+			return $object_creation_callback( $post->ID );
+		}
+
+		if ( ( in_array( $type, $cc->autoloader->post_types, true ) || in_array( $type, $cc->autoloader->extra, true ) ) && class_exists( $type ) ) {
+			$object = new $type( $post );
+		} else {
+			$object = new Clarkson_Object( $post );
+		}
+
+		return $object;
+	}
+
+	/**
+	 * Register objects.
+	 */
+	private function register_objects() {
+		$objects = array(
+			'Clarkson_Object' => '',
+			'Clarkson_Term'   => '',
+			'Clarkson_User'   => '',
+		);
+
+		$deprecated         = Clarkson_Core_Deprecated::get_instance();
+		$deprecated_objects = $deprecated->get_theme_objects();
+		$objects            = array_merge( $objects, $deprecated_objects );
+
+		$objects = apply_filters( 'clarkson_available_objects', $objects );
+
+		$this->objects = $objects;
+	}
+
+
+	/**
+	 * Singleton.
+	 *
+	 * @var object $instance The Clarkson core objects.
+	 */
 	protected $instance = null;
 
-	public static function get_instance()
-	{
+	/**
+	 * Get the instance.
+	 *
+	 * @return Clarkson_Core_Objects|null
+	 */
+	public static function get_instance() {
 		static $instance = null;
 
-		if (null === $instance) {
+		if ( null === $instance ) {
 			$instance = new Clarkson_Core_Objects();
 		}
 
 		return $instance;
 	}
 
-	protected function __construct()
-	{
+	/**
+	 * Clarkson_Core_Objects constructor.
+	 */
+	protected function __construct() {
 		$this->register_objects();
 	}
 
-	private function __clone()
-	{
+	/**
+	 *  Clone.
+	 */
+	private function __clone() {
 	}
-	private function __wakeup()
-	{
+
+	/**
+	 * Wakeup.
+	 */
+	private function __wakeup() {
 	}
+
 }
