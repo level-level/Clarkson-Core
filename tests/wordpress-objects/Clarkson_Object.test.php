@@ -1,6 +1,8 @@
 <?php
 
 class ClarksonObjectTest extends \WP_Mock\Tools\TestCase {
+	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
 	const POST_ID = 42;
 	const TERM_ID = 103;
 
@@ -36,5 +38,45 @@ class ClarksonObjectTest extends \WP_Mock\Tools\TestCase {
 		\WP_Mock::userFunction( 'get_term_by' )->with( 'id', self::TERM_ID, 'category' )->andReturn( $term );
 		\WP_Mock::userFunction( 'get_term' )->with( self::TERM_ID, 'category' )->andReturn( $term );
 		$this->assertContainsOnlyInstancesOf( \Clarkson_Term::class, $object->get_terms( 'category' ) );
+	}
+
+	/**
+	 * @depends test_can_construct_an_object
+	 */
+	public function test_can_add_comment( $object ) {
+		$user_id = 1;
+		\WP_Mock::userFunction( 'wp_insert_comment' )->with(
+			array(
+				'comment_post_ID' => self::POST_ID,
+				'user_id'         => $user_id,
+				'comment_content' => 'example',
+			)
+		)->once()->andReturn( 1 );
+		$object->add_comment( 'example', $user_id );
+	}
+
+	/**
+	 * @depends test_can_construct_an_object
+	 */
+	public function test_add_comment_without_text_fails( $object ) {
+		$user_id = 1;
+		$this->expectException( '\Exception' );
+		$object->add_comment( '', $user_id );
+	}
+
+	/**
+	 * @depends test_can_construct_an_object
+	 */
+	public function test_add_comment_insert_fails( $object ) {
+		$user_id = 1;
+		$this->expectException( '\Exception' );
+		\WP_Mock::userFunction( 'wp_insert_comment' )->with(
+			array(
+				'comment_post_ID' => self::POST_ID,
+				'user_id'         => $user_id,
+				'comment_content' => 'fails',
+			)
+		)->once()->andReturn( false );
+		$object->add_comment( 'fails', $user_id );
 	}
 }
