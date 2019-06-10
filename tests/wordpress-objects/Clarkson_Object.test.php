@@ -79,4 +79,18 @@ class ClarksonObjectTest extends \WP_Mock\Tools\TestCase {
 		)->once()->andReturn( false );
 		$object->add_comment( 'fails', $user_id );
 	}
+
+	/**
+	 * @depends test_can_construct_an_object
+	 */
+	public function test_get_excerpt( $object ) {
+		\WP_Mock::userFunction( 'setup_postdata' )->with( \Mockery::type( '\WP_Post' ) )->once();
+		\WP_Mock::userFunction( 'the_excerpt' )->once()->andReturnUsing(
+			function() {
+				echo 'test';
+			}
+		);
+		\WP_Mock::userFunction( 'wp_reset_postdata' )->once();
+		$this->assertEquals( 'test', $object->get_excerpt() );
+	}
 }
