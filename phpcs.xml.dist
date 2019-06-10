@@ -3,6 +3,7 @@
  <description>Level Level Clarkson Core ruleset</description>
 
  <file>./lib</file>
+ <file>./tests</file>
  <file>./wordpress-objects</file>
  <file>./clarkson-core.php</file>
 
