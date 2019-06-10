@@ -29,4 +29,15 @@ class ClarksonCoreTemplatesTest extends \WP_Mock\Tools\TestCase {
 		\WP_Mock::userFunction( 'get_post_type', null );
 		$this->assertEquals( 'template.twig', $cc_templates->add_template( 'template.twig' ) );
 	}
+
+	/**
+	 * @depends test_can_get_instance
+	 */
+	public function test_can_get_templates( $cc_templates ) {
+		$theme = Mockery::mock( '\WP_Theme' );
+		\WP_Mock::userFunction( 'wp_cache_get' );
+		\WP_Mock::userFunction( 'wp_get_theme' )->andReturn( $theme );
+		\WP_Mock::userFunction( 'wp_cache_set' );
+		$this->assertEquals( array( 'page-alt' ), $cc_templates->get_templates( array( 'page-alt' ) ) );
+	}
 }
