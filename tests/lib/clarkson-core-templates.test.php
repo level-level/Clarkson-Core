@@ -22,12 +22,11 @@ class ClarksonCoreTemplatesTest extends \WP_Mock\Tools\TestCase {
 	 * @depends test_can_get_instance
 	 */
 	public function test_can_add_template( $cc_templates ) {
-		$term          = Mockery::mock( '\WP_Term' );
+		$term           = Mockery::mock( '\WP_Term' );
 		$term->taxonomy = 'category';
-		\WP_Mock::userFunction( 'get_queried_object')->andReturn($term );
-		\WP_Mock::userFunction( 'current_filter', 'category_template');
-		\WP_Mock::userFunction( 'get_post_type', null);
-		$this->assertEquals('template.twig', $cc_templates->add_template( 'template.twig' ));
-
+		\WP_Mock::userFunction( 'get_queried_object' )->andReturn( $term );
+		\WP_Mock::userFunction( 'current_filter', 'category_template' );
+		\WP_Mock::userFunction( 'get_post_type', null );
+		$this->assertEquals( 'template.twig', $cc_templates->add_template( 'template.twig' ) );
 	}
 }
