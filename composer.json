@@ -28,7 +28,7 @@
 		"test": [
 			"composer validate",
 			"phpcs",
-			"@phpunit"
+			"@phpunit --no-coverage"
 		],
 		"phpunit":[
 			"phpunit"
