@@ -1,0 +1,21 @@
+<phpunit
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.3/phpunit.xsd"
+	bootstrap="tests/bootstrap.php"
+	>
+	<testsuites>
+		<testsuite name="Clarkson Core">
+			<directory suffix=".test.php">tests</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">lib/</directory>
+			<directory suffix=".php">wordpress-objects/</directory>
+			<file>clarkson-core.php</file>
+		</whitelist>
+	</filter>
+	<logging>
+		<log type="coverage-html" target="build/coverage/" lowUpperBound="35" highLowerBound="70"/>
+	</logging>
+</phpunit>
