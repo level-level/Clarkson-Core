@@ -157,9 +157,17 @@ class Clarkson_Core_Templates {
 			$this->get_template_dir(),
 		);
 
+		$template_dirs = apply_filters( 'clarkson_twig_template_dirs', $template_dirs );
+
 		// if no child-theme is used, then these two above are the same.
 		$template_dirs = array_unique( $template_dirs );
-		return apply_filters( 'clarkson_twig_template_dirs', $template_dirs );
+
+		// Ingore template dir if it doesn't exist
+		$template_dirs = array_filter( $template_dirs, function( $template_dir ) {
+			return file_exists( $template_dir );
+		} );
+
+		return $template_dirs;
 	}
 
 	/**
