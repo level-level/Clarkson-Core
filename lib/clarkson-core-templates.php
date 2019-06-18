@@ -196,8 +196,7 @@ class Clarkson_Core_Templates {
 	 */
 	public function template_include( $template ) {
 		$extension = pathinfo( $template, PATHINFO_EXTENSION );
-		$type      = basename( $template );
-		$type      = str_replace( ".{$extension}", '', $type );
+		$type      = basename( $template, ".{$extension}" );
 
 		// Double check.
 		if ( isset( $this->templates[ $type ] ) ) {
