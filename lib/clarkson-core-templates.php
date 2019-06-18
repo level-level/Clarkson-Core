@@ -428,8 +428,7 @@ class Clarkson_Core_Templates {
 			$templates = array_merge( $templates, $this->get_templates_from_path( $template_path ) );
 		}
 		foreach ( $templates as $template ) {
-			$base      = basename( $template );
-			$base      = str_replace( '.twig', '', $base );
+			$base      = basename( $template, '.twig' );
 			$type      = preg_replace( '|[^a-z0-9-]+|', '', $base );
 			$base_type = preg_replace( '(-.*)', '', $type );
 			if ( ! in_array( $base_type, $filters, true ) ) {
