@@ -163,9 +163,12 @@ class Clarkson_Core_Templates {
 		$template_dirs = array_unique( $template_dirs );
 
 		// Ingore template dir if it doesn't exist
-		$template_dirs = array_filter( $template_dirs, function( $template_dir ) {
-			return file_exists( $template_dir );
-		} );
+		$template_dirs = array_filter(
+			$template_dirs,
+			function( $template_dir ) {
+				return file_exists( $template_dir );
+			}
+		);
 
 		return $template_dirs;
 	}
