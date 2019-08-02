@@ -45,7 +45,7 @@ class Clarkson_Archive {
 	 * @throws Exception Error message.
 	 */
 	public function __get( $name ) {
-		throw new Exception( 'Trying to access WordPress Archive object properties while Wordpress doesn\'t have an archive object.' );
+		throw new Exception( 'Trying to access WordPress Archive object properties while WordPress doesn\'t have an archive object.' );
 	}
 
 	/**
