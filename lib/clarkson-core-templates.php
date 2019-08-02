@@ -214,7 +214,7 @@ class Clarkson_Core_Templates {
 
 			if ( is_archive() ) {
 				$post_type = $this->get_queried_post_type_name();
-				$page_vars['archive'] = new Clarkson_Core_Archive( $post_type );
+				$page_vars['archive'] = new Clarkson_Archive_Object( $post_type );
 			}
 
 			if ( is_author() ) {
