@@ -213,8 +213,8 @@ class Clarkson_Core_Templates {
 			$page_vars = array();
 
 			if ( is_archive() ) {
-				$post_type = $this->get_queried_post_type_name();
-				$page_vars['objects_archive'] = new Clarkson_Archive_Object( $post_type );
+				$post_type            = $this->get_queried_post_type_name();
+				$page_vars['archive'] = new Clarkson_Archive_Object( $post_type );
 			}
 
 			if ( is_author() ) {
