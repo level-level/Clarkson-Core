@@ -455,6 +455,20 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
+	 * Get the post archive data by id.
+	 *
+	 * @return null|Clarkson_Archive
+	 */
+	public function get_archive() {
+
+		if ( $this->_post->post_type ) {
+			return Clarkson_Archive::get( $this->_post->post_type );
+		}
+
+		return null;
+	}
+
+	/**
 	 * Update the post's post status.
 	 *
 	 * @param string $status New post status.

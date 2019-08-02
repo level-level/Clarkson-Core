@@ -19,7 +19,7 @@
 		}
 	],
 	"autoload": {
-	  "classmap": ["wordpress-objects/", "lib/"]
+	  "classmap": ["clarkson-objects/", "wordpress-objects/", "lib/"]
 	},
 	"scripts": {
 		"fix" : [

@@ -170,7 +170,6 @@ class Clarkson_Core_Objects {
 	 */
 	private function register_objects() {
 		$objects = array(
-			'Clarkson_Archive' => '',
 			'Clarkson_Object'  => '',
 			'Clarkson_Term'    => '',
 			'Clarkson_User'    => '',

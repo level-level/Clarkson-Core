@@ -212,6 +212,11 @@ class Clarkson_Core_Templates {
 
 			$page_vars = array();
 
+			if ( is_archive() ) {
+				$post_type = $this->get_queried_post_type_name();
+				$page_vars['archive'] = new Clarkson_Core_Archive( $post_type );
+			}
+
 			if ( is_author() ) {
 				$page_vars['user'] = $object_loader->get_user( get_queried_object_id() );
 			} elseif ( is_tax() ) {
@@ -233,6 +238,25 @@ class Clarkson_Core_Templates {
 		return $template;
 	}
 
+	protected function get_queried_post_type_name() {
+		// Post Types.
+		$post_type = get_post_type();
+		if ( ! $post_type || empty( $post_type ) ) {
+
+			/**
+			 * Fix for archive pages with no posts on it.
+			 * See https://github.com/level-level/Clarkson-Core/issues/90 & https://core.trac.wordpress.org/ticket/20647.
+			 *
+			 * Don't use query_vars 'post_type' because this could return an Array if multiple Post Types are set via pre_get_posts.
+			 * We always want the main Queried Object 'name' to load that specific CPT template.
+			 */
+
+			$queried_object = get_queried_object();
+			if ( is_a( $queried_object, 'WP_Post_Type' ) && isset( $queried_object->name ) ) {
+				$post_type = $queried_object->name;
+			}
+		}
+	}
 
 	/**
 	 * Add template.
@@ -254,22 +278,7 @@ class Clarkson_Core_Templates {
 		$filter = current_filter();
 		$type   = str_replace( '_template', '', $filter );
 
-		// Post Types.
-		$post_type = get_post_type();
-		if ( ! $post_type || empty( $post_type ) ) {
-
-			/**
-			 * Fix for archive pages with no posts on it.
-			 * See https://github.com/level-level/Clarkson-Core/issues/90 & https://core.trac.wordpress.org/ticket/20647.
-			 *
-			 * Don't use query_vars 'post_type' because this could return an Array if multiple Post Types are set via pre_get_posts.
-			 * We always want the main Queried Object 'name' to load that specific CPT template.
-			 */
-
-			if ( is_a( $queried_object, 'WP_Post_Type' ) && isset( $queried_object->name ) ) {
-				$post_type = $queried_object->name;
-			}
-		}
+		$post_type = $this->get_queried_post_type_name();
 
 		// Taxonomy Templates per Taxonomy type.
 		if ( is_a( $queried_object, 'WP_Term' ) && isset( $queried_object->taxonomy ) ) {
