@@ -35,7 +35,7 @@ class Clarkson_Core_Gutenberg_Block_Manager {
 	 *
 	 * @return string
 	 */
-	protected function sanitize_block_type_name( $str ) {
+	public function sanitize_block_type_name( $str ) {
 		$str = trim( $str );
 
 		// Replace - with _ .
