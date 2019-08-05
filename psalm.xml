@@ -9,6 +9,7 @@
         <directory name="./" />
         <ignoreFiles>
             <directory name="vendor" />
+            <directory name="tests" />
         </ignoreFiles>
     </projectFiles>
     <stubs>
