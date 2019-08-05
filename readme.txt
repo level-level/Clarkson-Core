@@ -3,7 +3,7 @@ Contributors: level level, jmslbam
 Tags: twig, templating, template engine, templates, oop, wordpress objects
 Requires at least: 4.0
 Tested up to: 4.9.4
-Stable tag: 0.2.2
+Stable tag: 0.4.0
 License: GPL v2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,14 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 
 
 == Changelog ==
+
+= 0.4.0 - August 5, 2019 =
+
+* Fixes typo for get_date function.
+* Gutenberg implementation added.
+* Object factory can now be overwritten with a filter.
+* Some unit tests added.
+* Some minor fixes.
 
 = 0.2.2 - March 30, 2018 =
 
