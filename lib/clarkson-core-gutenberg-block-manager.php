@@ -20,7 +20,7 @@ class Clarkson_Core_Gutenberg_Block_Manager {
 	 *
 	 * @return string
 	 */
-	protected function determine_block_type_class( $block_type ) {
+	public function determine_block_type_class( $block_type ) {
 		$class_name = '\\Gutenberg\\Blocks\\' . $this->sanitize_block_type_name( $block_type->name );
 		$class_name = apply_filters( 'clarkson_core_gutenberg_block_class', $class_name, $block_type );
 		$class_name = apply_filters( 'clarkson_core_gutenberg_block_class_' . $block_type->name, $class_name, $block_type );
