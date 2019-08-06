@@ -133,6 +133,7 @@ class Clarkson_Core_Autoloader {
 			$template_name                 = $this->sanitize_object_name( $template_name );
 			$this->extra[ $template_name ] = $template_name;
 		}
+		$this->extra = apply_filters( 'clarkson_core_available_templates', $this->extra );
 	}
 
 	/**
