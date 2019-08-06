@@ -22,6 +22,10 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 
 == Changelog ==
 
+= 0.4.1 - August 6, 2019 =
+
+* Adds `clarkson_core_available_templates` filter.
+
 = 0.4.0 - August 5, 2019 =
 
 * Fixes typo for get_date function.
