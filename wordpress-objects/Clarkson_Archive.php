@@ -8,7 +8,7 @@
 /**
  * Clarkson Archive class.
  */
-class Clarkson_Archive_Object {
+class Clarkson_Archive {
 
 	/**
 	 * Define $_post_type.
@@ -18,7 +18,7 @@ class Clarkson_Archive_Object {
 	protected $_type;
 
 	/**
-	 * Clarkson_Archive_Object constructor.
+	 * Clarkson_Archive constructor.
 	 *
 	 * @param string|null $type Post type.
 	 *
