@@ -170,9 +170,10 @@ class Clarkson_Core_Objects {
 	 */
 	private function register_objects() {
 		$objects = array(
-			'Clarkson_Object' => '',
-			'Clarkson_Term'   => '',
-			'Clarkson_User'   => '',
+			'Clarkson_Object'  => '',
+			'Clarkson_Term'    => '',
+			'Clarkson_User'    => '',
+			'Clarkson_Archive' => '',
 		);
 
 		$deprecated         = Clarkson_Core_Deprecated::get_instance();

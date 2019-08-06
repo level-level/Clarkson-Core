@@ -20,7 +20,7 @@ class Clarkson_Archive {
 	/**
 	 * Define $archives.
 	 *
-	 * @var $archives
+	 * @var array
 	 */
 	protected static $archives;
 
@@ -81,10 +81,11 @@ class Clarkson_Archive {
 	/**
 	 * Get the post type archive title.
 	 *
-	 * @return string|null
+	 * @return string
 	 */
-	public function get_title() {
-		return get_the_archive_title();
+	public function get_title(): string {
+		$title = apply_filters( 'post_type_archive_title', $this->_type->labels->name, $this->_type->name );
+		return apply_filters( 'get_the_archive_title', $title );
 	}
 
 	/**
