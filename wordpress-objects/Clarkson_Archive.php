@@ -15,26 +15,56 @@ class Clarkson_Archive {
 	 *
 	 * @var WP_Post_Type|null
 	 */
-	protected $_type;
+	protected $_post_type;
+
+	/**
+	 * Define $archives.
+	 *
+	 * @var $archives
+	 */
+	protected static $archives;
 
 	/**
 	 * Clarkson_Archive constructor.
 	 *
-	 * @param string|null $type Post type.
+	 * @param WP_Post_Type|null $post_type Post type object.
 	 *
 	 * @throws Exception Error message.
 	 */
-	public function __construct( $type = null ) {
-		if ( ! $type ) {
-			throw new Exception( $type . ' empty' );
-		}
-		$this->_type = get_post_type_object( $type );
-		if ( ! $this->_type ) {
+	public function __construct( \WP_Post_Type $post_type = null ) {
+		if ( ! $post_type ) {
 			throw new Exception( 'Post type not found' );
 		}
-		if ( ! $this->_type->has_archive ) {
+		if ( ! $post_type->has_archive ) {
 			throw new Exception( 'Post type has no archive' );
 		}
+
+		$this->_post_type = $post_type;
+	}
+
+	/**
+	 * Get archive by post type
+	 *
+	 * @param  string $post_type Post type name.
+	 *
+	 * @return Clarkson_Archive|null Archive object.
+	 */
+	public static function get( string $post_type ) {
+		if ( ! isset( static::$archives[ $post_type ] ) ) {
+			$class = get_called_class();
+
+			try {
+				if ( ! $post_type ) {
+					throw new Exception( $post_type . ' empty' );
+				}
+				$post_type_object               = get_post_type_object( $post_type );
+				static::$archives[ $post_type ] = new $class( $post_type_object );
+			} catch ( Exception $e ) {
+				static::$archives[ $post_type ] = null;
+			}
+		}
+
+		return static::$archives[ $post_type ];
 	}
 
 	/**
@@ -44,12 +74,12 @@ class Clarkson_Archive {
 	 *
 	 * @throws Exception Error message.
 	 */
-	public function __get( $name ) {
+	public function __get( string $name ) {
 		throw new Exception( 'Trying to access WordPress Archive object properties while WordPress doesn\'t have an archive object.' );
 	}
 
 	/**
-	 * Get the post type data.
+	 * Get the post type archive title.
 	 *
 	 * @return string|null
 	 */
@@ -62,8 +92,8 @@ class Clarkson_Archive {
 	 *
 	 * @return WP_Post_Type|null
 	 */
-	public function get_type() {
-		return $this->_type;
+	public function get_post_type() {
+		return $this->_post_type;
 	}
 
 	/**
@@ -72,7 +102,7 @@ class Clarkson_Archive {
 	 * @return string|null Archive permalink.
 	 */
 	public function get_permalink() {
-		$link = get_post_type_archive_link( $this->_type->name );
+		$link = get_post_type_archive_link( $this->_post_type->name );
 		if ( $link ) {
 			return $link;
 		}
@@ -84,8 +114,8 @@ class Clarkson_Archive {
 	 *
 	 * @return string|null Archive feed permalink.
 	 */
-	public function get_feed_permalink( $feed = '' ) {
-		$link = get_post_type_archive_feed_link( $this->_type->name, $feed );
+	public function get_feed_permalink( string $feed = '' ) {
+		$link = get_post_type_archive_feed_link( $this->_post_type->name, $feed );
 		if ( $link ) {
 			return $link;
 		}
