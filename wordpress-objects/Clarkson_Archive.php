@@ -84,7 +84,7 @@ class Clarkson_Archive {
 	 * @return string
 	 */
 	public function get_title(): string {
-		$title = apply_filters( 'post_type_archive_title', $this->_type->labels->name, $this->_type->name );
+		$title = apply_filters( 'post_type_archive_title', $this->_post_type->labels->name, $this->_post_type->name );
 		return apply_filters( 'get_the_archive_title', $title );
 	}
 
