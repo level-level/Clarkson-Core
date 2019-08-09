@@ -136,23 +136,23 @@ class Clarkson_Core_Autoloader {
 
 		/**
 		 * Adds available templates to the known available templates list.
-		 * 
+		 *
 		 * @hook clarkson_core_available_templates
 		 * @since 0.4.1
 		 * @param {string[]} $this->extra Templates automatically found by Clarkson Core.
 		 * @return {string[]} Templates that should be available as objects to Clarkson_Core_Objects.
 		 * @see https://github.com/level-level/Clarkson-Core/issues/161
-		 * 
+		 *
 		 * @example
 		 * // Use custom templates in the theme.
 		 * add_filter(
-		 * 	'clarkson_core_available_templates',
-		 * 	function() {
-		 * 		return array(
-		 * 			'template_landingpage',
-		 * 			'template_frontpage',
-		 * 		);
-		 * 	}
+		 *  'clarkson_core_available_templates',
+		 *  function() {
+		 *      return array(
+		 *          'template_landingpage',
+		 *          'template_frontpage',
+		 *      );
+		 *  }
 		 * );
 		 */
 		$this->extra = apply_filters( 'clarkson_core_available_templates', $this->extra );

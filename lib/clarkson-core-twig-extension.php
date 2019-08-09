@@ -969,18 +969,18 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 
 		/**
 		 * Adds custom functions to be available in a twig context.
-		 * 
+		 *
 		 * @hook clarkson_twig_functions
 		 * @since 0.1.0
 		 * @param {string[]} $functions Functions to be made available in twig.
 		 * @return {string[]} Functions available in twig.
 		 * @see https://twig.symfony.com/doc/2.x/advanced.html#id2
-		 * 
+		 *
 		 * @example
 		 * // Make function from pagenavi plugin to available in twig.
 		 * add_filter( 'clarkson_twig_functions', function( $functions ) {
-		 * 	$functions[] = 'wp_pagenavi';
-		 * 	return $functions;
+		 *  $functions[] = 'wp_pagenavi';
+		 *  return $functions;
 		 * } );
 		 */
 		$allowed_functions = apply_filters( 'clarkson_twig_functions', $this->functions );

@@ -80,18 +80,18 @@ class Clarkson_Core_Templates {
 
 		/**
 		 * Allows manipulation of the twig envirionment settings.
-		 * 
+		 *
 		 * @hook clarkson_twig_args
 		 * @since 0.1.0
 		 * @param {array} $twig_args Default options to use when instantiating a twig environment.
 		 * @return {array} Options to pass to the twig environment
 		 * @see https://twig.symfony.com/doc/2.x/api.html#environment-options
-		 * 
+		 *
 		 * @example
 		 * // Enable caching in the twig environment.
 		 * add_filter( 'clarkson_twig_args', function( $twig_args ) {
-		 * 	$twig_args['cache'] = get_stylesheet_directory() . '/dist/template_cache/';
-		 * 	return $twig_args;
+		 *  $twig_args['cache'] = get_stylesheet_directory() . '/dist/template_cache/';
+		 *  return $twig_args;
 		 * } );
 		 */
 		$twig_args = apply_filters( 'clarkson_twig_args', $twig_args );
@@ -110,17 +110,17 @@ class Clarkson_Core_Templates {
 
 		/**
 		 * Context variables that are available in twig templates.
-		 * 
+		 *
 		 * @hook clarkson_context_args
 		 * @since 0.1.0
 		 * @param {array} $context Available variables for the twig template.
 		 * @return {array} Available variables for the twig template.
-		 * 
+		 *
 		 * @example
 		 * // We can make the WooCommerce cart available on each template.
 		 * add_filter( 'clarkson_context_args', function( $context ) {
-		 * 	$context['cart'] = wc()->cart;
-		 * 	return $context;
+		 *  $context['cart'] = wc()->cart;
+		 *  return $context;
 		 * } );
 		 */
 		$context_args = apply_filters( 'clarkson_context_args', $objects );
@@ -189,17 +189,17 @@ class Clarkson_Core_Templates {
 
 		/**
 		 * Add/modify directories that contain twig templates that Clarkson should look for.
-		 * 
+		 *
 		 * @hook clarkson_twig_template_dirs
 		 * @since 0.1.8
 		 * @param {array} $template_dirs Available variables for the twig template.
 		 * @return {array} Template directories to look through.
-		 * 
+		 *
 		 * @example
 		 * // We can add a specific new directory to load templates from to twig.
 		 * add_filter( 'clarkson_twig_template_dirs', function( $template_dirs ) {
-		 * 	$template_dirs[] = get_stylesheet_directory() . '/admin_templates';
-		 * 	return $template_dirs;
+		 *  $template_dirs[] = get_stylesheet_directory() . '/admin_templates';
+		 *  return $template_dirs;
 		 * } );
 		 */
 		$template_dirs = apply_filters( 'clarkson_twig_template_dirs', $template_dirs );
@@ -224,16 +224,16 @@ class Clarkson_Core_Templates {
 	public function get_template_dir() {
 		/**
 		 * Modify the template directory path.
-		 * 
+		 *
 		 * @hook clarkson_twig_template_dir
 		 * @since 0.1.0
 		 * @param {string} $template_dir Path to the  template directory.
 		 * @return {string} Path to template directory.
-		 * 
+		 *
 		 * @example
 		 * // It is possible to customise the place twig looks for templates.
 		 * add_filter( 'clarkson_twig_template_dir', function( $template_dir ) {
-		 * 	return get_template_directory() . '/twig_templates';
+		 *  return get_template_directory() . '/twig_templates';
 		 * } );
 		 */
 		return apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' );
@@ -245,16 +245,16 @@ class Clarkson_Core_Templates {
 	public function get_stylesheet_dir() {
 		/**
 		 * Modify the template directory path for the stylesheet directory.
-		 * 
+		 *
 		 * @hook clarkson_twig_stylesheet_dir
 		 * @since 0.1.8
 		 * @param {string} $stylesheet_dir Path to the stylesheet template directory.
 		 * @return {string} Path to template directory.
-		 * 
+		 *
 		 * @example
 		 * // It is possible to customise the place twig looks for templates.
 		 * add_filter( 'clarkson_twig_stylesheet_dir', function() {
-		 * 	return get_stylesheet_directory() . '/twig_templates';
+		 *  return get_stylesheet_directory() . '/twig_templates';
 		 * } );
 		 */
 		return apply_filters( 'clarkson_twig_stylesheet_dir', get_stylesheet_directory() . '/templates' );
@@ -425,12 +425,12 @@ class Clarkson_Core_Templates {
 
 				/**
 				 * Allows turning of the warning for page- style naming, deprecated in 0.2.1.
-				 * 
+				 *
 				 * @hook clarkson_core_deprecated_warning_page_template
 				 * @since 0.2.1
 				 * @param {bool} WP_DEBUG WordPress debug mode constant.
 				 * @return {bool} Whether to show or hide the deprecation warning.
-				 * 
+				 *
 				 * @example
 				 * // Disable old style page warning.
 				 * add_filter( 'clarkson_core_deprecated_warning_page_template', '__return_false' );
@@ -493,21 +493,21 @@ class Clarkson_Core_Templates {
 
 		$custom_posts_templates = $this->get_templates();
 		foreach ( $custom_posts_templates as $path => $name ) {
-			$filename           = basename( $path );
+			$filename = basename( $path );
 
 			/**
 			 * Manipulate which post_types get a template in the template dropdown.
-			 * 
+			 *
 			 * @hook clarkson_core_templates_types_for_{$name}
 			 * @since 0.2.1
 			 * @param {string[]} $post_types Which post types the template can be chosen on. By default showns only on 'page'.
 			 * @return {string[]} Post type slugs that show the template in the template dropdown.
-			 * 
+			 *
 			 * @example
 			 * // Show a custom template in the 'post' post-type template dropdown.
 			 * add_filter( 'clarkson_core_templates_types_for_template-sponsored_post.twig', function($post_types){
-			 * 	$post_types[] = 'post';
-			 * 	return $post_types;
+			 *  $post_types[] = 'post';
+			 *  return $post_types;
 			 * } );
 			 */
 			$show_on_post_types = apply_filters( 'clarkson_core_templates_types_for_' . $filename, array( 'page' ) );

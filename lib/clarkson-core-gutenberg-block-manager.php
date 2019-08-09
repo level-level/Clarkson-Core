@@ -25,27 +25,27 @@ class Clarkson_Core_Gutenberg_Block_Manager {
 
 		/**
 		 * Allows the theme to overwrite the class loaded by Clarkson Core.
-		 * 
+		 *
 		 * @hook clarkson_core_gutenberg_block_class
 		 * @since 0.4.0
 		 * @param {string} $class_name Name of a calculated class that Clarkson Core would load for this block.
 		 * @param {WP_Block_type} $block_type The WordPress block that generates the content.
 		 * @return {string} Class name of object to load for this block.
-		 * 
+		 *
 		 * @example
 		 * // Change default block class.
 		 * add_filter( 'clarkson_core_gutenberg_block_class', function( $class_name ){
-		 * 	if ( ! class_exists( $class_name ) ) {
-		 *		return '\CustomDefaultBlock';
-		 * 	}
-		 * 	return $class_name;
+		 *  if ( ! class_exists( $class_name ) ) {
+		 *      return '\CustomDefaultBlock';
+		 *  }
+		 *  return $class_name;
 		 * } );
 		 */
 		$class_name = apply_filters( 'clarkson_core_gutenberg_block_class', $class_name, $block_type );
 
 		/**
 		 * Allows the theme to overwrite the class loaded by Clarkson Core.
-		 * 
+		 *
 		 * @hook clarkson_core_gutenberg_block_class_{$name}
 		 * @since 0.4.0
 		 * @param {string} $class_name Name of a calculated class that Clarkson Core would load for this block.
