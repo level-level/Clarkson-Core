@@ -1,5 +1,6 @@
 {
     "opts": {
+        "destination": "out/hooks",
         "template": "node_modules/wp-hookdoc/template"
     },
     "source": {
