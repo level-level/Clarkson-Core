@@ -1,0 +1,28 @@
+{
+  "name": "cc-niels",
+  "version": "1.0.0",
+  "description": "[![Build Status](https://travis-ci.org/level-level/Clarkson-Core.svg?branch=master)](https://travis-ci.org/level-level/Clarkson-Core)",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "doc": "jsdoc -c hookdoc-conf.json ./lib/ ./ ./README.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NielsdeBlaauw/Clarkson-Core.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NielsdeBlaauw/Clarkson-Core/issues"
+  },
+  "homepage": "https://github.com/NielsdeBlaauw/Clarkson-Core#readme",
+  "devDependencies": {
+    "jsdoc": "^3.6.3",
+    "wp-hookdoc": "^0.2.0"
+  }
+}

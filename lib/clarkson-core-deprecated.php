@@ -49,7 +49,13 @@ class Clarkson_Core_Deprecated {
 			$theme_objects = array_merge( $this->get_objects_from_path( $theme_deprecated_objects_path ), $theme_objects );
 		}
 
-		// Theme overwrites plugins objects.
+		/**
+		 * @hook clarkson_available_objects_paths
+		 * @deprecated This method of loading objects is no longer used, unless the clarkson_core_autoload_theme_pre_020 filter is enabled.
+		 * @since 0.1.0
+		 * @param {string[]} $theme_objects Objects available in Clarkson Core to be loaded.
+		 * @return {string[]} Files that should be included to make the object available to Clarkson_Core_Objects.
+		 */
 		$theme_objects = apply_filters( 'clarkson_available_objects_paths', $theme_objects );
 
 		// Load classes.
@@ -124,6 +130,13 @@ class Clarkson_Core_Deprecated {
 			'taxonomies',  // Default location of WP-CLI export.
 		);
 
+		/**
+		 * @hook clarkson_core_autoload_dirs
+		 * @since 0.1.0
+		 * @deprecated This method of loading objects is no longer used, unless the clarkson_core_autoload_theme_pre_020 filter is enabled.
+		 * @param {string[]} $dirs Directories to load alle files from.
+		 * @return {string[]} Directories that all files should be automatically loaded from.
+		 */
 		$dirs = apply_filters( 'clarkson_core_autoload_dirs', $dirs );
 
 		// Current Theme Dir.
