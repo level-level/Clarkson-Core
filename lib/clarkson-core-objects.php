@@ -148,9 +148,48 @@ class Clarkson_Core_Objects {
 		}
 
 		$type = $cc->autoloader->sanitize_object_name( $type );
+		
+		/**
+		 * Allows the theme to overwrite class that is going to be used to create an object.
+		 * 
+		 * @hook clarkson_object_type
+		 * @since 0.1.1
+		 * @param {string} $type Sanitized class name.
+		 * @return {string} Class name of object to be created.
+		 * 
+		 * @example
+		 * // load a different class instead of what Clarkson Core calculates.
+		 * add_filter( 'clarkson_object_type', function( $type ) {
+		 * 	if ( $type === 'gm_event' ){
+		 * 		$type = 'custom_event_class';
+		 * 	}
+		 * 	return $type;
+		 * } );
+		 */
 		$type = apply_filters( 'clarkson_object_type', $type );
 
-		// This filter allows to control object creation before Clarkson Core determines the correct class to use. For example by calling "wc_get_product".
+		/**
+		 * Allows to control object creation before Clarkson Core determines the correct class to use. For example by calling "wc_get_product".
+		 * 
+		 * @hook clarkson_core_create_object_callback
+		 * @since 0.3.1
+		 * @param {callable|bool} false Callable that determines how the class should be instantiated. 
+		 * False means no custom object creation will be used.
+		 * @param $type {string} Sanitized class name of what Clarkson Core would load as an object.
+		 * @param $post_id {int|string} Post ID that an object is being created for.
+		 * @return {string} Class name of object to be created.
+		 * @see https://github.com/level-level/Clarkson-Core/issues/131
+		 * 
+		 * @example
+		 * // Use a different object factory then the default one provided by Clarkson Core.
+		 * add_filter( 'clarkson_core_create_object_callback', function( $callback, $type, $post_id ) {
+		 * 	if ( $type === 'shop_order' ){
+		 * 		$callback = 'wc_get_order'; // wc_get_order is a callable function when Woocommerce is enabled.
+		 * 	}
+		 * 	return $type;
+		 * } );
+		 */
+		// 
 		$object_creation_callback = apply_filters( 'clarkson_core_create_object_callback', false, $type, $post->ID );
 		if ( ! empty( $object_creation_callback ) ) {
 			return $object_creation_callback( $post->ID );
@@ -179,6 +218,15 @@ class Clarkson_Core_Objects {
 		$deprecated_objects = $deprecated->get_theme_objects();
 		$objects            = array_merge( $objects, $deprecated_objects );
 
+		/**
+		 * Default available objects, that are loaded into Clarkson as basic neccesities.
+		 * 
+		 * @hook clarkson_available_objects
+		 * @since 0.1.0
+		 * @deprecated Clarkson Core >= 0.2.0 autoloads the neccessery objects.
+		 * @param {string[]} $objects Class names to load.
+		 * @return {string} Class names for Clarkson Core to load by default.
+		 */
 		$objects = apply_filters( 'clarkson_available_objects', $objects );
 
 		$this->objects = $objects;

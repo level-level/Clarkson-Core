@@ -21,7 +21,42 @@ class Clarkson_Core_Gutenberg_Block_Type extends \WP_Block_Type {
 	 * @return string
 	 */
 	public function get_twig_template_path() {
+		/**
+		 * Allows theme to overwrite the directory in which Clarkson Core automatically loads twig templates for blocks.
+		 * 
+		 * @hook clarkson_core_gutenberg_block_template_directory
+		 * @since 0.4.0
+		 * @param {string} '/templates/partials/blocks/gb/' Directory that will be used to automatically load gutenberg block templates.
+		 * @return {string} Directory to use for autoloading twig templates.
+		 * 
+		 * @example
+		 * // Overwrite the Gutenberg block template directory.
+		 * add_filter(
+		 * 	'clarkson_core_gutenberg_block_template_directory',
+		 * 	function() {
+		 * 		return '/templates/gutenberg/blocks/';
+		 * 	}
+		 * );
+		 */
 		$block_directory = apply_filters( 'clarkson_core_gutenberg_block_template_directory', '/templates/partials/blocks/gb/' );
+
+		/**
+		 * Allows theme to overwrite the twig templates used for a specific block.
+		 * 
+		 * @hook clarkson_core_gutenberg_block_template_{$name}
+		 * @since 0.4.0
+		 * @param {string} $template Original twig template that Clarkson Core is going to load for the block.
+		 * @return {string} Path to twig template used to render a block.
+		 * 
+		 * @example
+		 * // Overwrite a specific block template.
+		 * add_filter(
+		 * 	'clarkson_core_gutenberg_block_template_org/events',
+		 * 	function() {
+		 * 		return get_stylesheet_directory() . '/templates/gutenberg/alternative-event-template.twig';
+		 * 	}
+		 * );
+		 */
 		return apply_filters( 'clarkson_core_gutenberg_block_template_' . $this->name, get_stylesheet_directory() . $block_directory . $this->name . '.twig', $this );
 	}
 
