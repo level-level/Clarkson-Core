@@ -38,6 +38,19 @@ class Clarkson_Core_Autoloader {
 	 */
 	public $user_objectname_prefix = 'user_';
 
+	/**
+	 * Define Archives.
+	 *
+	 * @var array $archives archives.
+	 */
+	public $archives = array();
+
+	/**
+	 * Define the prefix for the custom archive Object classes.
+	 *
+	 * @var string $archive_objectname_prefix Classname prefix.
+	 */
+	public $archive_objectname_prefix = 'archive_';
 
 	/**
 	 * Define Extra.
@@ -90,6 +103,8 @@ class Clarkson_Core_Autoloader {
 	 */
 	public function registered_post_type( $post_type ) {
 		$this->post_types[ $this->sanitize_object_name( $post_type ) ] = $this->sanitize_object_name( $post_type );
+		$archive_name = $this->user_objectname_prefix . $post_type;
+		$this->archives[ $this->sanitize_object_name( $archive_name ) ] = $this->sanitize_object_name( $archive_name );
 	}
 
 	/**
@@ -124,7 +139,7 @@ class Clarkson_Core_Autoloader {
 	}
 
 	/**
-	 * Fill $extra variable with the current custom template and archive object
+	 * Fill $extra variable with the current custom template
 	 */
 	public function load_template_objects() {
 		$template_name = $this->get_template_filename( get_queried_object_id() );
@@ -133,9 +148,6 @@ class Clarkson_Core_Autoloader {
 			$template_name                 = $this->sanitize_object_name( $template_name );
 			$this->extra[ $template_name ] = $template_name;
 		}
-
-		$archive_name                 = $this->sanitize_object_name( 'archive' );
-		$this->extra[ $archive_name ] = $archive_name;
 	}
 
 	/**
@@ -164,7 +176,7 @@ class Clarkson_Core_Autoloader {
 		$type = $this->sanitize_object_name( $classname );
 
 		// This is faster than a class_exists check.
-		if ( ! in_array( $type, $this->post_types, true ) && ! in_array( $type, $this->taxonomies, true ) && ! in_array( $type, $this->extra, true ) && ! in_array( $type, $this->user_types, true ) ) {
+		if ( ! in_array( $type, $this->post_types, true ) && ! in_array( $type, $this->taxonomies, true ) && ! in_array( $type, $this->extra, true ) && ! in_array( $type, $this->user_types, true ) && ! in_array( $type, $this->archives, true ) ) {
 			return;
 		}
 

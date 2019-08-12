@@ -166,6 +166,36 @@ class Clarkson_Core_Objects {
 	}
 
 	/**
+	 * Get archive object by post type.
+	 *
+	 * @param string $post_type Post type slug.
+	 *
+	 * @return bool|object
+	 */
+	public function get_archive( $post_type ) {
+
+		if ( empty( $post_type ) ) {
+			return false;
+		}
+		$cc         = Clarkson_Core::get_instance();
+		$class_name = false;
+
+		if ( $user && $user->roles && count( $user->roles ) >= 1 ) {
+			$class_name = $cc->autoloader->archive_objectname_prefix . $post_type;
+			$class_name = $cc->autoloader->sanitize_object_name( $class_name );
+		}
+
+		if ( $class_name && in_array( $class_name, $cc->autoloader->archives, true ) && class_exists( $class_name ) ) {
+			$object = new $class_name( $post_type );
+		} else {
+			$object = new Clarkson_Archive( $post_type );
+		}
+
+		return $object;
+
+	}
+
+	/**
 	 * Register objects.
 	 */
 	private function register_objects() {
