@@ -124,7 +124,7 @@ class Clarkson_Core_Autoloader {
 	}
 
 	/**
-	 * Fill $extra variable with the current custom template
+	 * Fill $extra variable with the current custom template and archive object
 	 */
 	public function load_template_objects() {
 		$template_name = $this->get_template_filename( get_queried_object_id() );
@@ -133,6 +133,9 @@ class Clarkson_Core_Autoloader {
 			$template_name                 = $this->sanitize_object_name( $template_name );
 			$this->extra[ $template_name ] = $template_name;
 		}
+
+		$archive_name                 = $this->sanitize_object_name( 'archive' );
+		$this->extra[ $archive_name ] = $archive_name;
 	}
 
 	/**
