@@ -177,9 +177,9 @@ class Clarkson_Core_Objects {
 		if ( empty( $post_type ) ) {
 			return false;
 		}
-		$cc         = Clarkson_Core::get_instance();
+		$cc               = Clarkson_Core::get_instance();
 		$post_type_object = get_post_type_object( $post_type );
-		$class_name = false;
+		$class_name       = false;
 
 		if ( $post_type_object && $post_type_object->has_archive ) {
 			$class_name = $cc->autoloader->archive_objectname_prefix . $post_type;
