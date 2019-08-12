@@ -177,8 +177,8 @@ class Clarkson_Core_Objects {
 		if ( empty( $post_type ) ) {
 			return false;
 		}
-		$cc               = Clarkson_Core::get_instance();
-		$class_name       = false;
+		$cc         = Clarkson_Core::get_instance();
+		$class_name = false;
 
 		$class_name = $cc->autoloader->archive_objectname_prefix . $post_type->name;
 		$class_name = $cc->autoloader->sanitize_object_name( $class_name );
