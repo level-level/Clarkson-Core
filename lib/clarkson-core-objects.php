@@ -178,9 +178,10 @@ class Clarkson_Core_Objects {
 			return false;
 		}
 		$cc         = Clarkson_Core::get_instance();
+		$post_type_object = get_post_type_object( $post_type );
 		$class_name = false;
 
-		if ( $user && $user->roles && count( $user->roles ) >= 1 ) {
+		if ( $post_type_object && $post_type_object->has_archive ) {
 			$class_name = $cc->autoloader->archive_objectname_prefix . $post_type;
 			$class_name = $cc->autoloader->sanitize_object_name( $class_name );
 		}
