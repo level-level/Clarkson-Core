@@ -39,18 +39,11 @@ class Clarkson_Core_Autoloader {
 	public $user_objectname_prefix = 'user_';
 
 	/**
-	 * Define Archives.
+	 * Define the prefix for the post type Object classes.
 	 *
-	 * @var array $archives archives.
+	 * @var string $post_type_objectname_prefix Classname prefix.
 	 */
-	public $archives = array();
-
-	/**
-	 * Define the prefix for the custom archive Object classes.
-	 *
-	 * @var string $archive_objectname_prefix Classname prefix.
-	 */
-	public $archive_objectname_prefix = 'archive_';
+	public $post_type_objectname_prefix = 'post_type_';
 
 	/**
 	 * Define Extra.
@@ -103,8 +96,8 @@ class Clarkson_Core_Autoloader {
 	 */
 	public function registered_post_type( $post_type ) {
 		$this->post_types[ $this->sanitize_object_name( $post_type ) ] = $this->sanitize_object_name( $post_type );
-		$archive_name = $this->user_objectname_prefix . $post_type;
-		$this->archives[ $this->sanitize_object_name( $archive_name ) ] = $this->sanitize_object_name( $archive_name );
+		$post_type_name = $this->post_type_objectname_prefix . $post_type;
+		$this->post_types[ $this->sanitize_object_name( $post_type_name ) ] = $this->sanitize_object_name( $post_type_name );
 	}
 
 	/**
@@ -176,7 +169,7 @@ class Clarkson_Core_Autoloader {
 		$type = $this->sanitize_object_name( $classname );
 
 		// This is faster than a class_exists check.
-		if ( ! in_array( $type, $this->post_types, true ) && ! in_array( $type, $this->taxonomies, true ) && ! in_array( $type, $this->extra, true ) && ! in_array( $type, $this->user_types, true ) && ! in_array( $type, $this->archives, true ) ) {
+		if ( ! in_array( $type, $this->post_types, true ) && ! in_array( $type, $this->taxonomies, true ) && ! in_array( $type, $this->extra, true ) && ! in_array( $type, $this->user_types, true ) ) {
 			return;
 		}
 

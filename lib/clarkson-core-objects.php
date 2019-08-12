@@ -166,13 +166,13 @@ class Clarkson_Core_Objects {
 	}
 
 	/**
-	 * Get archive object by post type.
+	 * Get post type object by post type.
 	 *
 	 * @param object $post_type Post type.
 	 *
 	 * @return bool|object
 	 */
-	public function get_archive( $post_type ) {
+	public function get_post_type( $post_type ) {
 
 		if ( empty( $post_type ) ) {
 			return false;
@@ -180,13 +180,13 @@ class Clarkson_Core_Objects {
 		$cc         = Clarkson_Core::get_instance();
 		$class_name = false;
 
-		$class_name = $cc->autoloader->archive_objectname_prefix . $post_type->name;
+		$class_name = $cc->autoloader->post_type_objectname_prefix . $post_type->name;
 		$class_name = $cc->autoloader->sanitize_object_name( $class_name );
 
-		if ( $class_name && in_array( $class_name, $cc->autoloader->archives, true ) && class_exists( $class_name ) ) {
+		if ( $class_name && in_array( $class_name, $cc->autoloader->post_types, true ) && class_exists( $class_name ) ) {
 			$object = new $class_name( $post_type );
 		} else {
-			$object = new Clarkson_Archive( $post_type );
+			$object = new Clarkson_Post_Type( $post_type );
 		}
 
 		return $object;
@@ -198,10 +198,10 @@ class Clarkson_Core_Objects {
 	 */
 	private function register_objects() {
 		$objects = array(
-			'Clarkson_Object'  => '',
-			'Clarkson_Term'    => '',
-			'Clarkson_User'    => '',
-			'Clarkson_Archive' => '',
+			'Clarkson_Object'    => '',
+			'Clarkson_Term'      => '',
+			'Clarkson_User'      => '',
+			'Clarkson_Post_Type' => '',
 		);
 
 		$deprecated         = Clarkson_Core_Deprecated::get_instance();

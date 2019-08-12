@@ -260,18 +260,6 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
-	 * Get the post archive data by id.
-	 *
-	 * @return Clarkson_Archive|null
-	 */
-	public function get_archive() {
-		if ( $this->_post->post_type ) {
-			return Clarkson_Archive::get( $this->_post->post_type );
-		}
-		return null;
-	}
-
-	/**
 	 * Get the post meta data by meta key.
 	 *
 	 * @param string $key    Post meta key.
@@ -455,6 +443,13 @@ class Clarkson_Object implements \JsonSerializable {
 	 */
 	public function get_post_type() {
 		return $this->_post->post_type;
+	}
+
+	/**
+	 * Get the post's post type object.
+	 */
+	public function get_post_type_object() : \Clarkson_Post_Type {
+		return \Clarkson_Post_Type::get( $this->_post->post_type );
 	}
 
 	/**
