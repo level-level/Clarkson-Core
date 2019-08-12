@@ -168,7 +168,7 @@ class Clarkson_Core_Objects {
 	/**
 	 * Get archive object by post type.
 	 *
-	 * @param string $post_type Post type slug.
+	 * @param object $post_type Post type.
 	 *
 	 * @return bool|object
 	 */
@@ -178,13 +178,10 @@ class Clarkson_Core_Objects {
 			return false;
 		}
 		$cc               = Clarkson_Core::get_instance();
-		$post_type_object = get_post_type_object( $post_type );
 		$class_name       = false;
 
-		if ( $post_type_object && $post_type_object->has_archive ) {
-			$class_name = $cc->autoloader->archive_objectname_prefix . $post_type;
-			$class_name = $cc->autoloader->sanitize_object_name( $class_name );
-		}
+		$class_name = $cc->autoloader->archive_objectname_prefix . $post_type->name;
+		$class_name = $cc->autoloader->sanitize_object_name( $class_name );
 
 		if ( $class_name && in_array( $class_name, $cc->autoloader->archives, true ) && class_exists( $class_name ) ) {
 			$object = new $class_name( $post_type );
