@@ -41,7 +41,9 @@ class Clarkson_Post_Type {
 	 * @throws Exception Error message.
 	 */
 	public function __get( string $name ) {
-		throw new Exception( 'Trying to access WordPress Archive object properties while WordPress doesn\'t have an archive object.' );
+		if ( in_array( $name, array(), true ) ) {
+			throw new Exception( 'Trying to access wp_post_type object properties from Post Type object.' );
+		}
 	}
 
 	/**
