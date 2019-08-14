@@ -212,7 +212,7 @@ class Clarkson_Core_Templates {
 
 			$page_vars = array();
 
-			if ( is_archive() ) {
+			if ( is_post_type_archive() ) {
 				$post_type_name         = $this->get_queried_post_type_name();
 				$post_type_object       = get_post_type_object( $post_type_name );
 				$page_vars['post_type'] = $object_loader->get_post_type( $post_type_object );
