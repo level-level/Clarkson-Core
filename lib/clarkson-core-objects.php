@@ -31,7 +31,7 @@ class Clarkson_Core_Objects {
 	 *
 	 * @param object $term The term.
 	 *
-	 * @return bool|object
+	 * @return bool|\Clarkson_Term
 	 */
 	public function get_term( $term ) {
 
@@ -51,9 +51,9 @@ class Clarkson_Core_Objects {
 	/**
 	 * Get users by id.
 	 *
-	 * @param array $users_ids User ids.
+	 * @param int[] $users_ids User ids.
 	 *
-	 * @return array
+	 * @return \Clarkson_User[]
 	 */
 	public function get_users( $users_ids ) {
 		$users = array();
@@ -73,7 +73,7 @@ class Clarkson_Core_Objects {
 	 *
 	 * @param integer $user_id User id.
 	 *
-	 * @return bool|object
+	 * @return bool|\Clarkson_User
 	 */
 	public function get_user( $user_id ) {
 
@@ -101,9 +101,9 @@ class Clarkson_Core_Objects {
 	/**
 	 * Get an array of posts converted to their corresponding WordPress object class.
 	 *
-	 * @param array $posts Posts.
+	 * @param \WP_Post[] $posts Posts.
 	 *
-	 * @return array $objects Array of post objects.
+	 * @return \Clarkson_Object[] $objects Array of post objects.
 	 */
 	public function get_objects( $posts ) {
 		$objects = array();
@@ -125,9 +125,9 @@ class Clarkson_Core_Objects {
 	/**
 	 * Get post that's converted to their corresponding WordPress object class.
 	 *
-	 * @param object $post Post.
+	 * @param \WP_Post $post Post.
 	 *
-	 * @return object Clarkson Post object.
+	 * @return \Clarkson_Object Clarkson Post object.
 	 */
 	public function get_object( $post ) {
 		if ( ! $post instanceof WP_Post && is_int( (int) $post ) ) {
@@ -243,7 +243,7 @@ class Clarkson_Core_Objects {
 	/**
 	 * Get the instance.
 	 *
-	 * @return Clarkson_Core_Objects|null
+	 * @return Clarkson_Core_Objects
 	 */
 	public static function get_instance() {
 		static $instance = null;
