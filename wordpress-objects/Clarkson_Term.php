@@ -6,7 +6,7 @@
  */
 
 /**
- * Clarkson Term class.
+ * Object oriented wrapper for WP_Term objects.
  */
 class Clarkson_Term {
 
@@ -14,6 +14,7 @@ class Clarkson_Term {
 	 * Define $_term.
 	 *
 	 * @var array|null|WP_Error|WP_Term
+	 * @internal
 	 */
 	public $_term;
 
@@ -30,7 +31,7 @@ class Clarkson_Term {
 	 * @param string      $name     Term name.
 	 * @param null|string $taxonomy Taxonomy.
 	 *
-	 * @return bool|object          Term object or false.
+	 * @return bool|\Clarkson_Term Term object or false.
 	 */
 	public static function get_by_name( $name, $taxonomy = null ) {
 		$term  = get_term_by( 'name', $name, $taxonomy ? $taxonomy : static::$taxonomy );
@@ -44,7 +45,7 @@ class Clarkson_Term {
 	 * @param string      $slug     Term slug.
 	 * @param null|string $taxonomy Taxonomy.
 	 *
-	 * @return bool|object          Term object or false.
+	 * @return bool|\Clarkson_Term          Term object or false.
 	 */
 	public static function get_by_slug( $slug, $taxonomy = null ) {
 		$term  = get_term_by( 'slug', $slug, $taxonomy ? $taxonomy : static::$taxonomy );
@@ -58,7 +59,7 @@ class Clarkson_Term {
 	 * @param int         $term_id  Term id.
 	 * @param null|string $taxonomy Taxonomy.
 	 *
-	 * @return bool|object          Term object or false.
+	 * @return bool|\Clarkson_Term          Term object or false.
 	 */
 	public static function get_by_id( $term_id, $taxonomy = null ) {
 		$term  = get_term_by( 'id', $term_id, $taxonomy ? $taxonomy : static::$taxonomy );
@@ -150,7 +151,7 @@ class Clarkson_Term {
 	/**
 	 * Get the term parent.
 	 *
-	 * @return null|object Term parent object.
+	 * @return null|\Clarkson_Term Term parent object.
 	 */
 	public function get_parent() {
 		if ( $this->_term->parent ) {

@@ -6,22 +6,17 @@ workflow  "Generate documentation" {
 }
 
 action "Publish documentation" {
-  needs = ["Copy index"]
+  needs = ["Generate wp-hookdoc", "Generate phpdoc"]
   uses = "maxheld83/ghpages@v0.2.1"
   env = {
     BUILD_DIR = "out/"
   }
   secrets = ["GH_PAT"]
 }
-action "Copy index" {
-  needs = ["Generate wp-hookdoc", "Generate phpdoc"]
-  uses = "actions/bin/sh@master"
-  args = ["cp public/index.html out/index.html"]
-}
 action "Generate phpdoc" {
   needs = ["Is master"]
-  uses = "docker://phpdoc/phpdoc"
-  args = "project:run -d ./lib,./wordpress-objects -f clarkson-core.php --visibility=public -t out/phpdoc"
+  uses = "docker://uniplug/apigen"
+  args = "apigen generate -d out/phpdoc -s lib -s wordpress-objects --access-levels public -o"
 }
 action "Generate wp-hookdoc" {
   needs = ["NPM install"]

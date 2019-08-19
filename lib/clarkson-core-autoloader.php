@@ -8,12 +8,14 @@
 /**
  * Clarkson_Core_Autoloader class.
  * Registers post types and taxonomies, users and WP Objects.
+ * @internal
  */
 class Clarkson_Core_Autoloader {
 	/**
 	 * Define Post types.
 	 *
 	 * @var array $post_types Post types.
+	 * @internal
 	 */
 	public $post_types = array();
 
@@ -21,6 +23,7 @@ class Clarkson_Core_Autoloader {
 	 * Define Taxonomies.
 	 *
 	 * @var array $taxonomies Taxonomies.
+	 * @internal
 	 */
 	public $taxonomies = array();
 
@@ -28,6 +31,7 @@ class Clarkson_Core_Autoloader {
 	 * Define User types.
 	 *
 	 * @var array $user_types User types.
+	 * @internal
 	 */
 	public $user_types = array();
 
@@ -35,6 +39,7 @@ class Clarkson_Core_Autoloader {
 	 * Define the prefix for the custom user Object classes.
 	 *
 	 * @var string $user_objectname_prefix Classname prefix.
+	 * @internal
 	 */
 	public $user_objectname_prefix = 'user_';
 
@@ -43,6 +48,7 @@ class Clarkson_Core_Autoloader {
 	 * Define Extra.
 	 *
 	 * @var array $extra Extra.
+	 * @internal
 	 */
 	public $extra = array();
 
@@ -59,11 +65,15 @@ class Clarkson_Core_Autoloader {
 	}
 
 	/**
-	 * Prepares object names.
+	 * Changes object names into valid classnames.
+	 * 
+	 * A post type with a name 'll-events' can not be a valid classname in PHP.
+	 * Any none alphanumeric character is changed into an `_` and the complete
+	 * name is changed to lowercase.
 	 *
 	 * @param string $str  Object name.
 	 *
-	 * @return null|string Sanitized object name.
+	 * @return string Sanitized object name.
 	 */
 	public function sanitize_object_name( $str ) {
 
@@ -87,6 +97,7 @@ class Clarkson_Core_Autoloader {
 	 * This also means reserved ones like page, post, attachment, revision, nav_menu_item, custom_css and customize_changeset.
 	 *
 	 * @param string $post_type Post type.
+	 * @internal
 	 */
 	public function registered_post_type( $post_type ) {
 		$this->post_types[ $this->sanitize_object_name( $post_type ) ] = $this->sanitize_object_name( $post_type );
@@ -96,6 +107,7 @@ class Clarkson_Core_Autoloader {
 	 * Fill $taxonomies variable with all registered Taxonomies, every time a taxonomy is registered via WordPress after the "registered_taxonomy" action.
 	 *
 	 * @param string $taxonomy Taxonomy name.
+	 * @internal
 	 */
 	public function registered_taxonomy( $taxonomy ) {
 		$this->taxonomies[ $this->sanitize_object_name( $taxonomy ) ] = $this->sanitize_object_name( $taxonomy );
@@ -125,6 +137,7 @@ class Clarkson_Core_Autoloader {
 
 	/**
 	 * Fill $extra variable with the current custom template
+	 * @internal
 	 */
 	public function load_template_objects() {
 		$template_name = $this->get_template_filename( get_queried_object_id() );
@@ -160,6 +173,7 @@ class Clarkson_Core_Autoloader {
 
 	/**
 	 * Register user types.
+	 * @internal
 	 */
 	public function register_user_types() {
 		global $wp_roles;
@@ -179,6 +193,7 @@ class Clarkson_Core_Autoloader {
 	 * Load all files of each WordPress object.
 	 *
 	 * @param string $classname Class name.
+	 * @internal
 	 */
 	protected function load_wordpress_objects( $classname ) {
 		$type = $this->sanitize_object_name( $classname );

@@ -6,7 +6,8 @@
  */
 
 /**
- * Clarkson Core Objects class.
+ * This class is used to convert WordPress posts, terms and users into Clarkson
+ * Objects.
  */
 class Clarkson_Core_Objects {
 
@@ -20,6 +21,8 @@ class Clarkson_Core_Objects {
 	/**
 	 * Available objects.
 	 *
+	 * @deprecated
+	 * @internal
 	 * @return array Available objects.
 	 */
 	public function available_objects() {
@@ -29,7 +32,7 @@ class Clarkson_Core_Objects {
 	/**
 	 * Get term data.
 	 *
-	 * @param object $term The term.
+	 * @param \WP_Term $term The term.
 	 *
 	 * @return bool|\Clarkson_Term
 	 */

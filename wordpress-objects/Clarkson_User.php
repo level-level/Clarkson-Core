@@ -6,14 +6,14 @@
  */
 
 /**
- * Clarkson User class.
+ * Object oriented wrapper for WP_User objects.
  */
 class Clarkson_User {
 
 	/**
 	 * Current user.
 	 *
-	 * @var object $_current_user
+	 * @var \WP_User $_current_user
 	 */
 	protected static $_current_user;
 	/**
@@ -26,7 +26,7 @@ class Clarkson_User {
 	/**
 	 * Get the current logged in user.
 	 *
-	 * @return int|string User status.
+	 * @return \Clarkson_User User status.
 	 * @throws Exception  User is not logged in.
 	 */
 	public static function current_user() {
@@ -42,7 +42,7 @@ class Clarkson_User {
 	 * Get user data by user id.
 	 *
 	 * @param  int $id User id.
-	 * @return object static::$users user data
+	 * @return \Clarkson_User
 	 */
 	public static function get( $id ) {
 		if ( ! isset( static::$users[ $id ] ) ) {
@@ -83,7 +83,7 @@ class Clarkson_User {
 	/**
 	 * Get the WordPress WP_User object.
 	 *
-	 * @return null|WP_User
+	 * @return null|\WP_User
 	 */
 	public function get_user() {
 		if ( ! isset( $this->_user ) ) {

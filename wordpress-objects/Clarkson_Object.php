@@ -6,12 +6,12 @@
  */
 
 /**
- * Class Clarkson_Object.
+ * Object oriented implementation of WordPress post objects.
  */
 class Clarkson_Object implements \JsonSerializable {
 
 	/**
-	 * Set type is 'post'.
+	 * The string here is the post type name used by `::get_many()`.
 	 *
 	 * @var string
 	 */
@@ -66,11 +66,11 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
-	 * Get post data by id.
+	 * Clarkson Object for a WP_Post by ID.
 	 *
 	 * @param  int $id Post id.
 	 *
-	 * @return array|null    Post data.
+	 * @return \Clarkson_Object|null    Post data.
 	 */
 	public static function get( $id ) {
 		if ( ! isset( static::$posts[ $id ] ) ) {
@@ -89,9 +89,12 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get multiple posts, without pagination.
 	 *
-	 * @param array $args Post arguments.
+	 * @param array $args Post query arguments. {@link https://developer.wordpress.org/reference/classes/wp_query/#parameters}
 	 *
-	 * @return array      Post data.
+	 * @return \Clarkson_Object[]
+	 * 
+	 * @example
+	 * \Clarkson_Object::get_many( array( 'posts_per_page' => 5 ) );
 	 */
 	public static function get_many( $args ) {
 		$args['post_type']     = static::$type;
@@ -115,11 +118,11 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
-	 * Get one post.
+	 * Gets the first result from a `::get_many()` query.
 	 *
-	 * @param array $args Post arguments.
+	 * @param array $args Post query arguments. {@link https://developer.wordpress.org/reference/classes/wp_query/#parameters}
 	 *
-	 * @return array      Post data.
+	 * @return \Clarkson_Object|null
 	 */
 	public static function get_one( $args = array() ) {
 		$args['posts_per_page'] = 1;
@@ -129,6 +132,7 @@ class Clarkson_Object implements \JsonSerializable {
 
 	/**
 	 * Refresh post data, clear cache.
+	 * @internal
 	 */
 	public function _refresh_data() {
 		clean_post_cache( $this->_post->ID );
@@ -147,7 +151,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get the parent of the post, if any.
 	 *
-	 * @return array|null Parent.
+	 * @return \Clarkson_Object|null
 	 */
 	public function get_parent() {
 		if ( $this->_post->post_parent ) {
@@ -212,7 +216,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get the date the post was created in post_date_gmt format.
 	 *
-	 * @param  string $format Date format.
+	 * @param  string $format PHP Date format. {@link https://www.php.net/manual/en/function.date.php}
 	 *
 	 * @return string
 	 */
@@ -223,7 +227,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get the date in localized format.
 	 *
-	 * @param string $format Date format.
+	 * @param string $format Date format. {@link https://wordpress.org/support/article/formatting-date-and-time/}
 	 * @param bool   $gmt   Whether to convert to GMT for time.
 	 *
 	 * @return string
@@ -260,12 +264,14 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
-	 * Get the post meta data by meta key.
+	 * Proxy for get_post_meta.
 	 *
 	 * @param string $key    Post meta key.
 	 * @param bool   $single Post meta data.
 	 *
-	 * @return array|string
+	 * @link https://developer.wordpress.org/reference/functions/get_post_meta/
+	 * 
+	 * @return mixed
 	 */
 	public function get_meta( $key, $single = false ) {
 		return get_post_meta( $this->get_id(), $key, $single );
@@ -315,9 +321,9 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
-	 * Get the title of a post  by id.
+	 * Get the title of a post by id.
 	 *
-	 * @return string Post title.
+	 * @return string Escaped post title.
 	 */
 	public function get_title() {
 		return get_the_title( $this->get_id() );
@@ -382,9 +388,9 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
-	 * Get the post author data by id.
+	 * Get the post author object.
 	 *
-	 * @return null|object
+	 * @return null|\Clarkson_User
 	 */
 	public function get_author() {
 
@@ -432,6 +438,7 @@ class Clarkson_Object implements \JsonSerializable {
 
 	/**
 	 * Get document count.
+	 * @internal
 	 */
 	public function get_comment_count() {
 	}
@@ -455,7 +462,7 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
-	 * Update the post's post status.
+	 * Update the posts status.
 	 *
 	 * @param string $status New post status.
 	 */
@@ -506,7 +513,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param string $taxonomy Optional. The taxonomy for which to retrieve terms. Default 'post_tag'.
 	 * @param array  $args     Optional. {@link wp_get_object_terms()} arguments. Default empty array.
 	 *
-	 * @return array|WP_Error  List of post tags or a WP_Error.
+	 * @return \Clarkson_Term[]|WP_Error|null List of post tags or a WP_Error.
 	 */
 	public function get_terms( $taxonomy, $args = array() ) {
 		$cc         = Clarkson_Core::get_instance();
@@ -667,6 +674,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Create serialized json file.
 	 *
 	 * @return mixed
+	 * @deprecated
 	 */
 	public function get_json() {
 		user_error( 'Deprecated directly calling get_json. Just json_encode the object itself, because the Clarkson_Object implements JsonSerializable.', E_USER_DEPRECATED );

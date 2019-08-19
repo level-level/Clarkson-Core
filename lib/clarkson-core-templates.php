@@ -6,7 +6,7 @@
  */
 
 /**
- * Class Clarkson_Core_Templates.
+ * Allows rendering of specific templates with Twig.
  */
 class Clarkson_Core_Templates {
 
@@ -30,6 +30,7 @@ class Clarkson_Core_Templates {
 	 * @param string $path           Post meta _wp_page_template.
 	 * @param array  $objects        Post objects.
 	 * @param bool   $ignore_warning Ignore multiple render warning.
+	 * @internal
 	 */
 	public function render( $path, $objects, $ignore_warning = false ) {
 		global $wp_query;
@@ -146,9 +147,10 @@ class Clarkson_Core_Templates {
 	 *
 	 * @param array $posts Post or posts.
 	 *
-	 * see: https://github.com/level-level/Clarkson-Core/issues/125.
+	 * @see: https://github.com/level-level/Clarkson-Core/issues/125.
 	 *
 	 * @return mixed|string|void
+	 * @deprecated Use the WordPress API instead.
 	 */
 	public function render_json( $posts ) {
 		header( 'Content-Type: application/json' );
@@ -171,6 +173,7 @@ class Clarkson_Core_Templates {
 	 *
 	 * @see https://github.com/level-level/Clarkson-Core/issues/126,
 	 * @param array $objects Posts.
+	 * @deprecated Use the WordPress API instead.
 	 */
 	public function echo_json( $objects ) {
 		echo $this->render_json( $objects );
@@ -219,7 +222,7 @@ class Clarkson_Core_Templates {
 	}
 
 	/**
-	 * Filter the main or parent theme directory.
+	 * Retrieves the parent theme directory Clarkson Core is using to find templates.
 	 */
 	public function get_template_dir() {
 		/**
@@ -240,7 +243,7 @@ class Clarkson_Core_Templates {
 	}
 
 	/**
-	 * Filter the child theme directory.
+	 * Gets the stylesheet directory Clarkson Core is using to find twig templates.
 	 */
 	public function get_stylesheet_dir() {
 		/**
@@ -266,6 +269,7 @@ class Clarkson_Core_Templates {
 	 * @param string $template the template.
 	 *
 	 * @return string $template the checked template.
+	 * @internal
 	 */
 	public function template_include( $template ) {
 		$extension = pathinfo( $template, PATHINFO_EXTENSION );
@@ -313,6 +317,7 @@ class Clarkson_Core_Templates {
 	 * @param string $template Default template.
 	 *
 	 * @return string|array
+	 * @internal
 	 */
 	public function add_template( $template ) {
 		// Allow twig based on wp_query.
@@ -383,6 +388,7 @@ class Clarkson_Core_Templates {
 	 * @param array $choices Choices.
 	 *
 	 * @return array|bool|mixed
+	 * @internal
 	 */
 	public function get_templates( $choices = array() ) {
 		$templates = wp_cache_get( 'templates', 'clarkson_core' );
@@ -464,6 +470,7 @@ class Clarkson_Core_Templates {
 	 * Adds our templates to the page dropdown for v4.6 and older.
 	 *
 	 * @param array $atts Attributes .
+	 * @internal
 	 */
 	public function register_custom_templates( $atts ) {
 		// Create the key used for the themes cache.
@@ -488,6 +495,7 @@ class Clarkson_Core_Templates {
 	 * @param string $post_type       Post type.
 	 *
 	 * @return array
+	 * @internal
 	 */
 	public function add_new_template( $posts_templates, $theme, $post, $post_type ) {
 
@@ -585,7 +593,7 @@ class Clarkson_Core_Templates {
 	/**
 	 * Get instance.
 	 *
-	 * @return Clarkson_Core_Templates|null
+	 * @return Clarkson_Core_Templates
 	 */
 	public static function get_instance() {
 		static $instance = null;

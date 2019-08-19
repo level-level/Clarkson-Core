@@ -1,4 +1,10 @@
 <?php
+/**
+ * Allows for extension of Gutenberg blocks and overwriting rendering functions.
+ * 
+ * @package CLARKSON\Lib
+ * @since 0.4.0
+ */
 
 /**
  * This custom block overwrites the render callback to use twig files.
@@ -8,6 +14,9 @@ class Clarkson_Core_Gutenberg_Block_Type extends \WP_Block_Type {
 	/**
 	 * Replaces the original block render function, and saves the original render
 	 * function in case we can't find a fitting twig file.
+	 * 
+	 * @param string       $block_type Block type name including namespace.
+	 * @param array|string $args       Optional. Array or string of arguments for registering a block type.
 	 */
 	public function __construct( $block_type, $args = array() ) {
 		parent::__construct( $block_type, $args );
@@ -63,8 +72,9 @@ class Clarkson_Core_Gutenberg_Block_Type extends \WP_Block_Type {
 	/**
 	 * Tries to find a twig file to use for rendering. If the twig file doesn't
 	 * exists it falls back to the original render callback.
-	 *
-	 * @return string
+	 * @param array  $attributes Block attributes.
+	 * @param string $content    Block content.
+	 * @return string Rendered block type output.
 	 */
 	public function clarkson_render_callback( $attributes, $content ) {
 		if ( file_exists( $this->get_twig_template_path() ) ) {

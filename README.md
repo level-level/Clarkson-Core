@@ -33,17 +33,13 @@ When you register a Custom Post Type `ll_company` your custom class `ll_company`
 ## More documentation
 
 - [Installation](http://wp-clarkson.com/core/docs/wordpress-objects.html)
-- [WordPress Objects](http://wp-clarkson.com/core/docs/wordpress-objects.html)
+- [Actions & Filters](https://level-level.github.io/Clarkson-Core/hooks/)
+- [Reference](https://level-level.github.io/Clarkson-Core/phpdoc/)
+- [Explanation of loading WordPress Objects](http://wp-clarkson.com/core/docs/wordpress-objects.html)
 - [Everything else](http://wp-clarkson.com/core/docs/)
-
-[More info](http://wp-clarkson.com/core/docs/wordpress-objects.html) about WordPress objects.
 
 ## Tests
 Currently 
 1. Clone repository `git@github.com:level-level/Clarkson-Core.git clarkson-core`.
 1. Run `composer install` in the new `clarkson-core` directory.
 1. Run `composer run test`.
-
-## Theme Development
-
-Should work out of the box with an empty PHP theme or use the starter theme [Clarkson Theme](https://github.com/level-level/Clarkson-Theme/) using Twig.

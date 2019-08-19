@@ -17,12 +17,17 @@
  */
 
 /**
- * Class Clarkson_Core.
+ * The main entry point, responsible for registering all objects and hooks.
  */
 class Clarkson_Core {
 
 	/**
-	 * Init.
+	 * Initializes all neccessery objects. Is automatically called on 'init'.
+	 * 
+	 * Should not be called manually. This method is public because it needs to be 
+	 * called by an action.
+	 * 
+	 * @internal
 	 */
 	public function init() {
 		// Deprecated functions and filters.
@@ -57,7 +62,7 @@ class Clarkson_Core {
 	/**
 	 * Setting up the class instance.
 	 *
-	 * @return Clarkson_Core|null
+	 * @return Clarkson_Core
 	 */
 	public static function get_instance() {
 		static $instance = null;

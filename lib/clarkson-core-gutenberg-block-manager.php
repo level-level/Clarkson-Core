@@ -1,4 +1,10 @@
 <?php
+/**
+ * Integrates Clarkson and Gutenberg to allow for twig rendering of blocks.
+ * 
+ * @package CLARKSON\Lib
+ * @since 0.4.0
+ */
 
 /**
  * Intercepts 'the content' filter to allow overriding of the rendering functions
@@ -7,6 +13,7 @@
 class Clarkson_Core_Gutenberg_Block_Manager {
 	/**
 	 * Hook in as soon as we can, to replace blocks with the Clarkson-block equivalent.
+	 * @internal
 	 */
 	public function init() {
 		if ( class_exists( '\WP_Block_Type_Registry' ) ) {
@@ -18,6 +25,7 @@ class Clarkson_Core_Gutenberg_Block_Manager {
 	 * Attempts to create a custom block from class from a block. Falls back
 	 * to a default Clarkson Core block type.
 	 *
+	 * @param \WP_Block_type $block_type Gutenberg block to determine class for.
 	 * @return string
 	 */
 	public function determine_block_type_class( $block_type ) {
@@ -62,6 +70,7 @@ class Clarkson_Core_Gutenberg_Block_Manager {
 	/**
 	 * Filters a block name into a valid class name.
 	 *
+	 * @param string $str Classname to be sanitized.
 	 * @return string
 	 */
 	public function sanitize_block_type_name( $str ) {
@@ -85,7 +94,11 @@ class Clarkson_Core_Gutenberg_Block_Manager {
 	 *
 	 * Does not manipulate the $content.
 	 *
+	 * @param $content string The content string to be ouputted. Not manipulated
+	 * at this stage.
 	 * @return string
+	 * 
+	 * @internal
 	 */
 	public function intercept_gutenberg_rendering( $content ) {
 		$block_registry = \WP_Block_Type_Registry::get_instance();

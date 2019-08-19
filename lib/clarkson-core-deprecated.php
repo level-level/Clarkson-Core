@@ -13,6 +13,7 @@
 
 /**
  * Class Clarkson_Core_Deprecated.
+ * @internal
  */
 class Clarkson_Core_Deprecated {
 
@@ -78,6 +79,7 @@ class Clarkson_Core_Deprecated {
 	 * Get map deprecated filters.
 	 *
 	 * @return array Deprecated filters.
+	 * @internal
 	 */
 	public function get_map_deprecated_filters() {
 		return array(
@@ -87,6 +89,7 @@ class Clarkson_Core_Deprecated {
 
 	/**
 	 * Set map deprecated filters.
+	 * @internal
 	 */
 	public function set_map_deprecated_filters() {
 		$this->map_deprecated_filters = $this->get_map_deprecated_filters();
@@ -101,6 +104,8 @@ class Clarkson_Core_Deprecated {
 	 * @param string $arg_3 Third argument (not used).
 	 *
 	 * @return object
+	 * 
+	 * @internal
 	 */
 	public function deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3 = '' ) {
 		$map_deprecated_filters = $this->get_map_deprecated_filters();
@@ -122,6 +127,8 @@ class Clarkson_Core_Deprecated {
 
 	/**
 	 * Set directories for auto load files by path.
+	 * 
+	 * @internal
 	 */
 	public function auto_load_theme() {
 		$dirs = array(
@@ -209,14 +216,14 @@ class Clarkson_Core_Deprecated {
 	/**
 	 * Singleton.
 	 *
-	 * @var object|null $instance Clarkson_Core_Deprecated.
+	 * @var \Clarkson_Core_Deprecated $instance Clarkson_Core_Deprecated.
 	 */
-	protected $instance = null;
+	protected $instance;
 
 	/**
 	 * Get Instance.
 	 *
-	 * @return Clarkson_Core_Deprecated|null
+	 * @return Clarkson_Core_Deprecated
 	 */
 	public static function get_instance() {
 		static $instance = null;

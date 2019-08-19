@@ -7,6 +7,7 @@
 
 /**
  * Class Clarkson_Core_Twig_Extension.
+ * @internal
  */
 class Clarkson_Core_Twig_Extension extends Twig_Extension {
 
@@ -963,6 +964,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 	 * Get the Twig functions.
 	 *
 	 * @return array|Twig_SimpleFunction[] $twig_functions Twig functions.
+	 * @internal
 	 */
 	public function getFunctions() {
 		$twig_functions = array();
@@ -993,7 +995,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 	}
 
 	/**
-	 * Check if function is an allowed Twig function.
+	 * Add an allowed function to Twig function.
 	 *
 	 * @param string $function Twig function name.
 	 */
@@ -1002,7 +1004,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 	}
 
 	/**
-	 * Check if functions in the array are allowed Twig functions.
+	 * Set allowd functions allowed in Twig.
 	 *
 	 * @param array $functions Allowed Twig functions.
 	 */
@@ -1014,6 +1016,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 	 * Get the string 'php_function'.
 	 *
 	 * @return string 'php_function'.
+	 * @internal
 	 */
 	public function getName() {
 		return 'php_function';
