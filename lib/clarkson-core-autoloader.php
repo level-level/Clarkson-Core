@@ -66,7 +66,7 @@ class Clarkson_Core_Autoloader {
 
 	/**
 	 * Changes object names into valid classnames.
-	 * 
+	 *
 	 * A post type with a name 'll-events' can not be a valid classname in PHP.
 	 * Any none alphanumeric character is changed into an `_` and the complete
 	 * name is changed to lowercase.

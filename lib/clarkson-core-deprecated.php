@@ -104,7 +104,7 @@ class Clarkson_Core_Deprecated {
 	 * @param string $arg_3 Third argument (not used).
 	 *
 	 * @return object
-	 * 
+	 *
 	 * @internal
 	 */
 	public function deprecated_filter_mapping( $data, $arg_1 = '', $arg_2 = '', $arg_3 = '' ) {
@@ -127,7 +127,7 @@ class Clarkson_Core_Deprecated {
 
 	/**
 	 * Set directories for auto load files by path.
-	 * 
+	 *
 	 * @internal
 	 */
 	public function auto_load_theme() {

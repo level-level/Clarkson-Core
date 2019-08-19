@@ -1,7 +1,7 @@
 <?php
 /**
  * Allows for extension of Gutenberg blocks and overwriting rendering functions.
- * 
+ *
  * @package CLARKSON\Lib
  * @since 0.4.0
  */
@@ -14,7 +14,7 @@ class Clarkson_Core_Gutenberg_Block_Type extends \WP_Block_Type {
 	/**
 	 * Replaces the original block render function, and saves the original render
 	 * function in case we can't find a fitting twig file.
-	 * 
+	 *
 	 * @param string       $block_type Block type name including namespace.
 	 * @param array|string $args       Optional. Array or string of arguments for registering a block type.
 	 */

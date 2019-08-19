@@ -92,7 +92,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param array $args Post query arguments. {@link https://developer.wordpress.org/reference/classes/wp_query/#parameters}
 	 *
 	 * @return \Clarkson_Object[]
-	 * 
+	 *
 	 * @example
 	 * \Clarkson_Object::get_many( array( 'posts_per_page' => 5 ) );
 	 */
@@ -270,7 +270,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param bool   $single Post meta data.
 	 *
 	 * @link https://developer.wordpress.org/reference/functions/get_post_meta/
-	 * 
+	 *
 	 * @return mixed
 	 */
 	public function get_meta( $key, $single = false ) {

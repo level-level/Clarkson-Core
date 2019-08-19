@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrates Clarkson and Gutenberg to allow for twig rendering of blocks.
- * 
+ *
  * @package CLARKSON\Lib
  * @since 0.4.0
  */
@@ -97,7 +97,7 @@ class Clarkson_Core_Gutenberg_Block_Manager {
 	 * @param $content string The content string to be ouputted. Not manipulated
 	 * at this stage.
 	 * @return string
-	 * 
+	 *
 	 * @internal
 	 */
 	public function intercept_gutenberg_rendering( $content ) {
