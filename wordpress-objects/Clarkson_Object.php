@@ -534,8 +534,7 @@ class Clarkson_Object implements \JsonSerializable {
 					return null;
 				}
 			},
-			$terms,
-			array( $class_name )
+			$terms
 		);
 	}
 
