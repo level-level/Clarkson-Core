@@ -3,7 +3,7 @@ Contributors: level level, jmslbam
 Tags: twig, templating, template engine, templates, oop, wordpress objects
 Requires at least: 4.0
 Tested up to: 4.9.4
-Stable tag: 0.4.0
+Stable tag: 0.4.2
 License: GPL v2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,10 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 
 
 == Changelog ==
+
+= 0.4.2 - August 19, 2019 =
+
+* Fixes #165, incorrect null value when no terms are linked to a post.
 
 = 0.4.1 - August 6, 2019 =
 
