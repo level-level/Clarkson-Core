@@ -34,16 +34,28 @@ class Clarkson_Post_Type {
 	}
 
 	/**
-	 * Check if an existing field is requested.
+	 * Proxy requested properties to WP Post Type if it doesn't exist in Clarkson Post Type
 	 *
 	 * @param string $name Field to search by.
-	 *
 	 * @throws Exception Error message.
 	 */
 	public function __get( string $name ) {
-		if ( in_array( $name, array(), true ) ) {
-			throw new Exception( 'Trying to access wp_post_type object properties from Post Type object.' );
+		if ( property_exists( $this, $name ) ) {
+			return $this->name;
+		} elseif ( property_exists( $this->_post_type, $name ) ) {
+			return $this->_post_type->$name;
 		}
+		throw new Exception( 'Object property does not exist in both Clarkson_Post_Type and WP_Post_Type.' );
+	}
+
+	/**
+	 * Exists check for __get function
+	 *
+	 * @param string $name Field to search by.
+	 * @return boolean property exists
+	 */
+	public function __isset( string $name ): bool {
+		return ( property_exists( $this, $name ) || property_exists( $this->_post_type, $name ) );
 	}
 
 	/**
@@ -51,7 +63,7 @@ class Clarkson_Post_Type {
 	 */
 	public function get_title(): string {
 		$title = $this->_post_type->labels->singular_name;
-		return apply_filters( 'the_title', $title );
+		return $title;
 	}
 
 	/**
