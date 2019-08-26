@@ -40,9 +40,7 @@ class Clarkson_Post_Type {
 	 * @throws Exception Error message.
 	 */
 	public function __get( string $name ) {
-		if ( property_exists( $this, $name ) ) {
-			return $this->name;
-		} elseif ( property_exists( $this->_post_type, $name ) ) {
+		if ( property_exists( $this->_post_type, $name ) ) {
 			return $this->_post_type->$name;
 		}
 		throw new Exception( 'Object property does not exist in both Clarkson_Post_Type and WP_Post_Type.' );
@@ -55,7 +53,7 @@ class Clarkson_Post_Type {
 	 * @return boolean property exists
 	 */
 	public function __isset( string $name ): bool {
-		return ( property_exists( $this, $name ) || property_exists( $this->_post_type, $name ) );
+		return property_exists( $this->_post_type, $name );
 	}
 
 	/**
