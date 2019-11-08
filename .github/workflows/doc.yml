@@ -1,0 +1,36 @@
+name: Build assets
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build documents
+    runs-on: ubuntu-18.04
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v1
+
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
+
+    - name: Install dependencies
+      run: |
+        npm ci
+
+    - name: Generate hookdoc
+      run: |
+        npm run doc
+
+    - name: Run NPM CI
+      uses: docker://uniplug/apigen:latest
+      with:
+        args: "apigen generate -d out/phpdoc -s lib -s wordpress-objects --access-levels public -o"
+
+    - name: Publish pages
+      uses: maxheld83/ghpages@v0.2.1
+      env:
+        BUILD_DIR: "out/"
+        GH_PAT: ${{ secrets.GH_PAT }}
