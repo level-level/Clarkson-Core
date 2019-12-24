@@ -70,7 +70,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param  int $id Post id.
 	 *
-	 * @return \Clarkson_Object|null    Post data.
+	 * @return static|null    Post data.
 	 */
 	public static function get( $id ) {
 		if ( ! isset( static::$posts[ $id ] ) ) {
@@ -91,7 +91,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param array $args Post query arguments. {@link https://developer.wordpress.org/reference/classes/wp_query/#parameters}
 	 *
-	 * @return \Clarkson_Object[]
+	 * @return static[]
 	 *
 	 * @example
 	 * \Clarkson_Object::get_many( array( 'posts_per_page' => 5 ) );
@@ -122,7 +122,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param array $args Post query arguments. {@link https://developer.wordpress.org/reference/classes/wp_query/#parameters}
 	 *
-	 * @return \Clarkson_Object|null
+	 * @return static|null
 	 */
 	public static function get_one( $args = array() ) {
 		$args['posts_per_page'] = 1;
