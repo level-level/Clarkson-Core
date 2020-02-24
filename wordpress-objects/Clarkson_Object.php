@@ -20,7 +20,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Define $_post.
 	 *
-	 * @var array|null|WP_Post
+	 * @var null|WP_Post
 	 */
 	protected $_post;
 
@@ -63,6 +63,15 @@ class Clarkson_Object implements \JsonSerializable {
 		if ( in_array( $name, array( 'post_name', 'post_title', 'ID', 'post_author', 'post_type', 'post_status' ), true ) ) {
 			throw new Exception( 'Trying to access wp_post object properties from Post object' );
 		}
+	}
+
+	/**
+	 * Get the WordPress post object.
+	 *
+	 * @return null|WP_Post The post object.
+	 */
+	public function get_object(): ?WP_Post {
+		return $this->_post;
 	}
 
 	/**
