@@ -34,9 +34,10 @@ class Clarkson_Term {
 	 * @return \Clarkson_Term Term object.
 	 */
 	public static function get_by_name( $name, $taxonomy = null ) {
-		$term = get_term_by( 'name', $name, $taxonomy ? $taxonomy : static::$taxonomy );
+		$taxonomy = $taxonomy ?: static::$taxonomy;
+		$term     = get_term_by( 'name', $name, $taxonomy );
 		if ( ! $term instanceof \WP_Term ) {
-			throw new Exception( "Term not found ($taxonomy:$term)" );
+			throw new Exception( "Term not found ($taxonomy:$name)" );
 		}
 		return \Clarkson_Core_Objects::get_instance()->get_term( $term );
 	}
@@ -50,9 +51,10 @@ class Clarkson_Term {
 	 * @return \Clarkson_Term          Term object.
 	 */
 	public static function get_by_slug( $slug, $taxonomy = null ) {
-		$term = get_term_by( 'slug', $slug, $taxonomy ? $taxonomy : static::$taxonomy );
+		$taxonomy = $taxonomy ?: static::$taxonomy;
+		$term     = get_term_by( 'slug', $slug, $taxonomy );
 		if ( ! $term instanceof \WP_Term ) {
-			throw new Exception( "Term not found ($taxonomy:$term)" );
+			throw new Exception( "Term not found ($taxonomy:$slug)" );
 		}
 		return \Clarkson_Core_Objects::get_instance()->get_term( $term );
 	}
@@ -66,9 +68,10 @@ class Clarkson_Term {
 	 * @return \Clarkson_Term          Term object.
 	 */
 	public static function get_by_id( $term_id, $taxonomy = null ) {
-		$term = get_term_by( 'id', $term_id, $taxonomy ? $taxonomy : static::$taxonomy );
+		$taxonomy = $taxonomy ?: static::$taxonomy;
+		$term     = get_term_by( 'id', $term_id, $taxonomy );
 		if ( ! $term instanceof \WP_Term ) {
-			throw new Exception( "Term not found ($taxonomy:$term)" );
+			throw new Exception( "Term not found ($taxonomy:$term_id)" );
 		}
 		return \Clarkson_Core_Objects::get_instance()->get_term( $term );
 	}
@@ -86,7 +89,7 @@ class Clarkson_Term {
 			$this->term = $term;
 		} else {
 			_doing_it_wrong( __METHOD__, 'Deprecated __construct called with an ID. Use \'::get_by_id(term_id)\' instead.', '0.2.0' );
-			$taxonomy = $taxonomy ? $taxonomy : static::$taxonomy;
+			$taxonomy = $taxonomy ?: static::$taxonomy;
 			if ( empty( $term ) || ! $taxonomy ) {
 				throw new Exception( $term . ' or ' . $taxonomy . ' empty' );
 			}
