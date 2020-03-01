@@ -37,7 +37,7 @@ class Clarkson_Core_Objects {
 	 * @return bool|\Clarkson_Term
 	 */
 	public function get_term( $term ) {
-		if ( ! isset( $term->taxonomy ) || ! isset( $term->term_id ) ) {
+		if ( ! $term instanceof \WP_Term ) {
 			_doing_it_wrong( __METHOD__, 'You must call this function with a valid \WP_Term object', '0.1.0' );
 			return false;
 		}
