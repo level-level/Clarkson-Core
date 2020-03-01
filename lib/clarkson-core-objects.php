@@ -111,15 +111,8 @@ class Clarkson_Core_Objects {
 	public function get_objects( $posts ) {
 		$objects = array();
 
-		if ( empty( $posts ) ) {
-			return $objects;
-		}
-
 		foreach ( $posts as $post ) {
-			$object = $this->get_object( $post );
-			if ( ! empty( $object ) ) {
-				$objects[] = $this->get_object( $post );
-			}
+			$objects[] = $this->get_object( $post );
 		}
 
 		return $objects;
