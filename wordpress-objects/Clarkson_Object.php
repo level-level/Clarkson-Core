@@ -42,7 +42,7 @@ class Clarkson_Object implements \JsonSerializable {
 		if ( is_a( $post, 'WP_Post' ) ) {
 			$this->_post = $post;
 		} else {
-			user_error( "Deprecated __construct called with an ID. Use '::get(post)' instead.", E_USER_DEPRECATED );
+			_doing_it_wrong( __METHOD__, 'Deprecated __construct called with an ID. Use \'::get(post)\' instead.', '0.2.0' );
 
 			if ( empty( $post ) ) {
 				throw new Exception( '$post empty' );
@@ -522,12 +522,9 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param string $taxonomy Optional. The taxonomy for which to retrieve terms. Default 'post_tag'.
 	 * @param array  $args     Optional. {@link wp_get_object_terms()} arguments. Default empty array.
 	 *
-	 * @return \Clarkson_Term[]|WP_Error|null List of post tags or a WP_Error.
+	 * @return \Clarkson_Term[]|WP_Error List of post tags or a WP_Error.
 	 */
 	public function get_terms( $taxonomy, $args = array() ) {
-		$cc         = Clarkson_Core::get_instance();
-		$class_name = $cc->autoloader->sanitize_object_name( $taxonomy );
-
 		$terms = wp_get_post_terms( $this->get_id(), $taxonomy, $args );
 
 		if ( is_wp_error( $terms ) ) {
@@ -536,20 +533,8 @@ class Clarkson_Object implements \JsonSerializable {
 		}
 
 		return array_map(
-			function( $term ) use ( $taxonomy, $class_name ) {
-				try {
-					if ( is_object( $term ) ) {
-						// Check if there is a Custom Taxonomy class.
-						if ( class_exists( $class_name ) ) {
-							return call_user_func( array( $class_name, 'get_by_id' ), $term->term_id, $taxonomy );
-						}
-						// Else return a default Clarkson Term.
-						return Clarkson_Term::get_by_id( $term->term_id, $taxonomy );
-					}
-					return $term;
-				} catch ( Exception $e ) {
-					return null;
-				}
+			function( $term ) {
+				return \Clarkson_Core_Objects::get_instance()->get_term( $term );
 			},
 			$terms
 		);
@@ -558,7 +543,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Add a single term to a post.
 	 *
-	 * @param object $term    Term data.
+	 * @param \Clarkson_Term $term    Term data.
 	 *
 	 * @return array|WP_Error Affected Term IDs.
 	 */
@@ -685,7 +670,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @deprecated
 	 */
 	public function get_json() {
-		user_error( 'Deprecated directly calling get_json. Just json_encode the object itself, because the Clarkson_Object implements JsonSerializable.', E_USER_DEPRECATED );
+		_doing_it_wrong( __METHOD__, 'Deprecated directly calling get_json. Just json_encode the object itself, because the Clarkson_Object implements JsonSerializable.', '0.2.0' );
 		return $this->jsonSerialize();
 	}
 

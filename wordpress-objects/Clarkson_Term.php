@@ -13,7 +13,7 @@ class Clarkson_Term {
 	/**
 	 * Define $_term.
 	 *
-	 * @var array|null|WP_Error|WP_Term
+	 * @var \WP_Term
 	 * @internal
 	 */
 	public $_term;
@@ -31,12 +31,14 @@ class Clarkson_Term {
 	 * @param string      $name     Term name.
 	 * @param null|string $taxonomy Taxonomy.
 	 *
-	 * @return bool|\Clarkson_Term Term object or false.
+	 * @return \Clarkson_Term Term object.
 	 */
 	public static function get_by_name( $name, $taxonomy = null ) {
-		$term  = get_term_by( 'name', $name, $taxonomy ? $taxonomy : static::$taxonomy );
-		$class = get_called_class();
-		return new $class( $term->term_id, $taxonomy ? $taxonomy : static::$taxonomy );
+		$term = get_term_by( 'name', $name, $taxonomy ? $taxonomy : static::$taxonomy );
+		if ( ! $term instanceof \WP_Term ) {
+			throw new Exception( "Term not found ($taxonomy:$term)" );
+		}
+		return \Clarkson_Core_Objects::get_instance()->get_term( $term );
 	}
 
 	/**
@@ -45,12 +47,14 @@ class Clarkson_Term {
 	 * @param string      $slug     Term slug.
 	 * @param null|string $taxonomy Taxonomy.
 	 *
-	 * @return bool|\Clarkson_Term          Term object or false.
+	 * @return \Clarkson_Term          Term object.
 	 */
 	public static function get_by_slug( $slug, $taxonomy = null ) {
-		$term  = get_term_by( 'slug', $slug, $taxonomy ? $taxonomy : static::$taxonomy );
-		$class = get_called_class();
-		return new $class( $term->term_id, $taxonomy ? $taxonomy : static::$taxonomy );
+		$term = get_term_by( 'slug', $slug, $taxonomy ? $taxonomy : static::$taxonomy );
+		if ( ! $term instanceof \WP_Term ) {
+			throw new Exception( "Term not found ($taxonomy:$term)" );
+		}
+		return \Clarkson_Core_Objects::get_instance()->get_term( $term );
 	}
 
 	/**
@@ -59,30 +63,38 @@ class Clarkson_Term {
 	 * @param int         $term_id  Term id.
 	 * @param null|string $taxonomy Taxonomy.
 	 *
-	 * @return bool|\Clarkson_Term          Term object or false.
+	 * @return \Clarkson_Term          Term object.
 	 */
 	public static function get_by_id( $term_id, $taxonomy = null ) {
-		$term  = get_term_by( 'id', $term_id, $taxonomy ? $taxonomy : static::$taxonomy );
-		$class = get_called_class();
-		return new $class( $term->term_id, $taxonomy ? $taxonomy : static::$taxonomy );
+		$term = get_term_by( 'id', $term_id, $taxonomy ? $taxonomy : static::$taxonomy );
+		if ( ! $term instanceof \WP_Term ) {
+			throw new Exception( "Term not found ($taxonomy:$term)" );
+		}
+		return \Clarkson_Core_Objects::get_instance()->get_term( $term );
 	}
 
 	/**
 	 * Clarkson_Term constructor.
 	 *
-	 * @param int         $term_id  Term id.
-	 * @param null|string $taxonomy Taxonomy.
+	 * @param \WP_Term|int $term  \WPTerm object or (deprecated) term id.
+	 * @param null|string  $taxonomy Taxonomy.
 	 *
 	 * @throws Exception  Error message.
 	 */
-	public function __construct( $term_id, $taxonomy = null ) {
-		$taxonomy = $taxonomy ? $taxonomy : static::$taxonomy;
-		if ( empty( $term_id ) || ! $taxonomy ) {
-			throw new Exception( $term_id . ' or ' . $taxonomy . ' empty' );
-		}
-		$this->_term = get_term( (int) $term_id, $taxonomy );
-		if ( ! $this->_term ) {
-			throw new Exception( 'Term not found' );
+	public function __construct( $term, $taxonomy = null ) {
+		if ( $term instanceof \WP_Term ) {
+			$this->term = $term;
+		} else {
+			_doing_it_wrong( __METHOD__, 'Deprecated __construct called with an ID. Use \'::get_by_id(term_id)\' instead.', '0.2.0' );
+			$taxonomy = $taxonomy ? $taxonomy : static::$taxonomy;
+			if ( empty( $term ) || ! $taxonomy ) {
+				throw new Exception( $term . ' or ' . $taxonomy . ' empty' );
+			}
+			$term = get_term( (int) $term, $taxonomy );
+			if ( ! $term instanceof WP_Term ) {
+				throw new Exception( "Term not found ($taxonomy:$term)" );
+			}
+			$this->term = $term;
 		}
 	}
 
@@ -106,34 +118,14 @@ class Clarkson_Term {
 	 */
 	public function is_queried_object() {
 		global $wp_query;
-		$term_or_taxonomy = $this->_term;
 
-		// Check if $this->_term is a string or an object.
-		if ( is_string( $term_or_taxonomy ) ) {
-			if ( $wp_query->tax_query ) {
-				foreach ( $wp_query->tax_query->queries as $query ) {
-					if ( $query['taxonomy'] === $term_or_taxonomy ) {
-						return true;
-					}
-				}
+		foreach ( $wp_query->tax_query->queries as $query ) {
+			if ( 'slug' === $query['field'] && in_array( $this->_term->slug, $query['terms'], true ) ) {
+				return true;
 			}
 
-			if ( ! empty( $wp_query->_post_parent_query ) ) {
-				foreach ( $wp_query->_post_parent_query->tax_query->queries as $query ) {
-					if ( $query['taxonomy'] === $term_or_taxonomy ) {
-						return true;
-					}
-				}
-			}
-		} elseif ( is_object( $term_or_taxonomy ) ) {
-			foreach ( $wp_query->tax_query->queries as $query ) {
-				if ( 'slug' === $query['field'] && in_array( $term_or_taxonomy->slug, $query['terms'], true ) ) {
-					return true;
-				}
-
-				if ( in_array( $term_or_taxonomy->term_id, $query['terms'], true ) ) {
-					return true;
-				}
+			if ( in_array( $this->_term->term_id, $query['terms'], true ) ) {
+				return true;
 			}
 		}
 		return false;
@@ -151,14 +143,18 @@ class Clarkson_Term {
 	/**
 	 * Get the term parent.
 	 *
-	 * @return null|\Clarkson_Term Term parent object.
+	 * @return null|static Term parent object.
 	 */
 	public function get_parent() {
+		$parent = null;
 		if ( $this->_term->parent ) {
-			$class = get_called_class();
-			return new $class( $this->_term->parent, $this->get_taxonomy() );
+			try {
+				$parent = static::get_by_id( $this->_term->parent, $this->get_taxonomy() );
+			} catch ( \Exception $e ) {
+				$parent = null;
+			}
 		}
-		return null;
+		return $parent;
 	}
 
 	/**
@@ -263,7 +259,7 @@ class Clarkson_Term {
 	/**
 	 * Get the term data.
 	 *
-	 * @return array|null|WP_Error|WP_Term
+	 * @return \WP_Term
 	 */
 	public function get_term() {
 		return $this->_term;
