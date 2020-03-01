@@ -72,27 +72,20 @@ class Clarkson_Core_Gutenberg_Block_Type extends \WP_Block_Type {
 	/**
 	 * Tries to find a twig file to use for rendering. If the twig file doesn't
 	 * exists it falls back to the original render callback.
-	 * @param array  $attributes  Block attributes.
-	 * @param string $content     Block content.
-	 * @param bool   $is_preview  Block preview status.
-	 * @param int    $post_id     Current post id.
+	 * @param array  $attributes Block attributes.
+	 * @param string $content    Block content.
 	 * @return string Rendered block type output.
 	 */
-	public function clarkson_render_callback( $attributes, $content, $is_preview = false, $post_id = 0 ) {
+	public function clarkson_render_callback( $attributes, $content ) {
 		if ( file_exists( $this->get_twig_template_path() ) ) {
 			$cc_template              = Clarkson_Core_Templates::get_instance();
 			$this->content_attributes = $attributes;
-			$this->post_id            = $post_id;
-
 			return (string) $cc_template->render_twig(
 				$this->get_twig_template_path(),
 				array(
-					'data'       => $attributes,
-					'content'    => $content,
-					'block'      => $this,
-					'align'      => $attributes['align'],
-					'is_preview' => $is_preview,
-					'post_id'    => $post_id,
+					'data'    => $attributes,
+					'content' => $content,
+					'block'   => $this,
 				),
 				true
 			);
