@@ -93,11 +93,11 @@ class Clarkson_Term {
 			if ( empty( $term ) || ! $taxonomy ) {
 				throw new Exception( $term . ' or ' . $taxonomy . ' empty' );
 			}
-			$term = get_term( (int) $term, $taxonomy );
-			if ( ! $term instanceof WP_Term ) {
+			$term_result = get_term( (int) $term, $taxonomy );
+			if ( ! $term_result instanceof WP_Term ) {
 				throw new Exception( "Term not found ($taxonomy:$term)" );
 			}
-			$this->term = $term;
+			$this->term = $term_result;
 		}
 	}
 
