@@ -111,15 +111,8 @@ class Clarkson_Core_Objects {
 	public function get_objects( $posts ) {
 		$objects = array();
 
-		if ( empty( $posts ) ) {
-			return $objects;
-		}
-
 		foreach ( $posts as $post ) {
-			$object = $this->get_object( $post );
-			if ( ! empty( $object ) ) {
-				$objects[] = $this->get_object( $post );
-			}
+			$objects[] = $this->get_object( $post );
 		}
 
 		return $objects;
@@ -146,7 +139,7 @@ class Clarkson_Core_Objects {
 		// Check if post has a custom template, if so, overwrite value.
 		$page_template_slug = $cc->autoloader->get_template_filename( $post->ID );
 
-		if ( $page_template_slug && ! empty( $page_template_slug ) ) {
+		if ( ! empty( $page_template_slug ) ) {
 			$type = $page_template_slug;
 		}
 
@@ -199,12 +192,9 @@ class Clarkson_Core_Objects {
 		}
 
 		if ( ( in_array( $type, $cc->autoloader->post_types, true ) || in_array( $type, $cc->autoloader->extra, true ) ) && class_exists( $type ) ) {
-			$object = new $type( $post );
-		} else {
-			$object = new Clarkson_Object( $post );
+			return new $type( $post );
 		}
-
-		return $object;
+		return new Clarkson_Object( $post );
 	}
 
 	/**
