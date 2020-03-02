@@ -46,7 +46,7 @@ class Clarkson_Core_Deprecated {
 		// Load deprecated post-objects folder.
 		$theme_deprecated_objects_path = get_template_directory() . '/post-objects';
 		if ( is_dir( $theme_deprecated_objects_path ) ) {
-			user_error( 'The ' . esc_html( $theme_deprecated_objects_path ) . " folder is deprecated. Please use 'wordpress-objects'.", E_USER_DEPRECATED );
+			_doing_it_wrong( __METHOD__, 'The ' . esc_html( $theme_deprecated_objects_path ) . " folder is deprecated. Please use 'wordpress-objects'.", '0.2.0' );
 			$theme_objects = array_merge( $this->get_objects_from_path( $theme_deprecated_objects_path ), $theme_objects );
 		}
 

@@ -446,7 +446,7 @@ class Clarkson_Core_Templates {
 				 */
 				$show_warning = apply_filters( 'clarkson_core_deprecated_warning_page_template', WP_DEBUG );
 				if ( $show_warning ) {
-					user_error( 'Deprecated template name ' . esc_html( $path ) . ' found. Use `template-' . esc_html( $name ) . '.twig` instead.', E_USER_DEPRECATED );
+					_doing_it_wrong( __METHOD__, 'Deprecated template name ' . esc_html( $path ) . ' found. Use `template-' . esc_html( $name ) . '.twig` instead.', '0.2.1' );
 				}
 			} elseif ( preg_match( '#^template-#i', $name ) === 1 && 'template' !== $name ) {
 				$is_valid_template = true;

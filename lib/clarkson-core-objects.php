@@ -37,8 +37,8 @@ class Clarkson_Core_Objects {
 	 * @return bool|\Clarkson_Term
 	 */
 	public function get_term( $term ) {
-
-		if ( ! isset( $term->taxonomy ) || ! isset( $term->term_id ) ) {
+		if ( ! $term instanceof \WP_Term ) {
+			_doing_it_wrong( __METHOD__, 'You must call this function with a valid \WP_Term object', '0.1.0' );
 			return false;
 		}
 
@@ -46,9 +46,9 @@ class Clarkson_Core_Objects {
 		$class_name = $cc->autoloader->sanitize_object_name( $term->taxonomy );
 
 		if ( in_array( $class_name, $cc->autoloader->taxonomies, true ) && class_exists( $class_name ) ) {
-			return new $class_name( $term->term_id, $term->taxonomy );
+			return new $class_name( $term );
 		}
-		return Clarkson_Term::get_by_id( $term->term_id, $term->taxonomy );
+		return new \Clarkson_Term( $term );
 	}
 
 	/**
@@ -127,7 +127,7 @@ class Clarkson_Core_Objects {
 	 */
 	public function get_object( $post ) {
 		if ( ! $post instanceof WP_Post && is_int( (int) $post ) ) {
-			user_error( 'Deprecated calling of get_object with an ID. Use a `WP_Post` instead.', E_USER_DEPRECATED );
+			_doing_it_wrong( __METHOD__, 'Deprecated calling of get_object with an ID. Use a `WP_Post` instead', '0.5.0' );
 			$post = get_post( $post );
 		}
 
