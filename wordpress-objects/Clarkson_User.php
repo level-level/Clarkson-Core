@@ -9,6 +9,13 @@
  * Object oriented wrapper for WP_User objects.
  */
 class Clarkson_User {
+	/**
+	 * WordPress representation of this user object.
+	 *
+	 * @var \WP_User
+	 */
+	protected $_user;
+
 
 	/**
 	 * Current user.
@@ -16,10 +23,11 @@ class Clarkson_User {
 	 * @var \WP_User $_current_user
 	 */
 	protected static $_current_user;
+
 	/**
 	 * Users.
 	 *
-	 * @var object $users
+	 * @var static[] $users
 	 */
 	protected static $users;
 
@@ -43,31 +51,37 @@ class Clarkson_User {
 	 *
 	 * @param  int $id User id.
 	 * @return \Clarkson_User
+	 * @throws \Exception In case a requested user ID does not exist.
 	 */
 	public static function get( $id ) {
-		if ( ! isset( static::$users[ $id ] ) ) {
-			$class                = get_called_class();
-			static::$users[ $id ] = new $class( $id );
+		$user = get_userdata( $id );
+		if ( ! $user instanceof \WP_User ) {
+			throw new Exception( "User not found ($id)" );
 		}
 
-		return static::$users[ $id ];
+		return \Clarkson_Core_Objects::get_instance()->get_user( $user );
 	}
 
 	/**
 	 * Clarkson_User constructor.
 	 *
-	 * @param  int $user_id User id.
+	 * @param  \WP_User|int $user WP_User object (or deprecated User id).
 	 * @throws Exception          User status.
 	 */
-	public function __construct( $user_id ) {
-		if ( empty( $user_id ) ) {
-			throw new Exception( $user_id . ' empty' );
-		}
+	public function __construct( $user ) {
+		if ( $user instanceof \WP_User ) {
+			$this->_user = $user;
+		} else {
+			_doing_it_wrong( __METHOD__, 'Deprecated __construct called with an ID. Supply a \WP_User object or use \'::get(user_id)\' instead.', '0.5.0' );
+			if ( empty( $user ) ) {
+				throw new Exception( $user . ' empty' );
+			}
 
-		$this->_id = $user_id;
-
-		if ( ! $this->get_user() ) {
-			throw new Exception( $user_id . ' does not exist' );
+			$user_object = get_userdata( $user );
+			if ( ! $user_object instanceof \WP_User ) {
+				throw new Exception( $user . ' does not exist' );
+			}
+			$this->_user = $user_object;
 		}
 	}
 
@@ -83,18 +97,9 @@ class Clarkson_User {
 	/**
 	 * Get the WordPress WP_User object.
 	 *
-	 * @return null|\WP_User
+	 * @return \WP_User
 	 */
 	public function get_user() {
-		if ( ! isset( $this->_user ) ) {
-			$this->_user = new WP_User( $this->_id );
-		}
-
-		if ( ! $this->_user->ID ) {
-			unset( $this->_user );
-			return null;
-		}
-
 		return $this->_user;
 	}
 
@@ -104,7 +109,7 @@ class Clarkson_User {
 	 * @return int User id.
 	 */
 	public function get_id() {
-		return $this->_id;
+		return $this->_user->ID;
 	}
 
 	/**

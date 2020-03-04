@@ -131,7 +131,6 @@ class Clarkson_Core_Autoloader {
 			$pathinfo = pathinfo( $page_template_slug );
 			$filename = array_key_exists( 'filename', $pathinfo ) ? $pathinfo['filename'] : '';
 		}
-
 		return $filename;
 	}
 

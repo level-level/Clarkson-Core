@@ -404,7 +404,11 @@ class Clarkson_Object implements \JsonSerializable {
 	public function get_author() {
 
 		if ( $this->_post->post_author ) {
-			return Clarkson_User::get( $this->_post->post_author );
+			try {
+				return Clarkson_User::get( $this->_post->post_author );
+			} catch ( \Exception $e ) {
+				return null;
+			}
 		}
 
 		return null;
