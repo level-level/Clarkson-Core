@@ -18,6 +18,7 @@ require_once __DIR__ . '/../clarkson-core.php';
 class WP_Block_Type{}
 
 /**
- * Test class for custom user role casting.
+ * Test classes for custom type castings.
  */
 class user_test_role extends \Clarkson_User{}; //phpcs:ignore
+class custom_test_tax extends \Clarkson_Term{}; //phpcs:ignore

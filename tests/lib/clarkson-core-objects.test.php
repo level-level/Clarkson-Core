@@ -42,6 +42,29 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 	/**
 	 * @depends test_can_get_instance
 	 */
+	public function test_can_get_term_invalid( $cc_objects ) {
+		\WP_Mock::userFunction( '_doing_it_wrong' );
+		$this->assertFalse( $cc_objects->get_term( 'not_a_valid_term' ) );
+	}
+
+	/**
+	 * @depends test_can_get_instance
+	 */
+	public function test_can_get_term_cast_to_custom_object( $cc_objects ) {
+		$term           = Mockery::mock( '\WP_Term' );
+		$term->term_id  = 1;
+		$term->taxonomy = 'custom_test_tax';
+		\WP_Mock::userFunction( 'get_term_by' )->andReturn( $term );
+		\WP_Mock::userFunction( 'get_term' )->andReturn( $term );
+
+		$cc                         = Clarkson_Core::get_instance();
+		$cc->autoloader->taxonomies = array( 'custom_test_tax' );
+		$this->assertInstanceOf( \custom_test_tax::class, $cc_objects->get_term( $term ) );
+	}	
+
+	/**
+	 * @depends test_can_get_instance
+	 */
 	public function test_can_get_users( $cc_objects ) {
 		$user        = Mockery::mock( '\WP_User' );
 		$user->roles = array( 'administrator' );
