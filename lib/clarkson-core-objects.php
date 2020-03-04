@@ -263,13 +263,15 @@ class Clarkson_Core_Objects {
 	}
 
 	/**
-	 *  Clone.
+	 * Clone.
+	 * @codeCoverageIgnore
 	 */
 	private function __clone() {
 	}
 
 	/**
 	 * Wakeup.
+	 * @codeCoverageIgnore
 	 */
 	private function __wakeup() {
 	}

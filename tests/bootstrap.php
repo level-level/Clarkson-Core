@@ -11,6 +11,8 @@ WP_Mock::bootstrap();
  */
 require_once __DIR__ . '/../clarkson-core.php';
 
+require_once __DIR__ . '/custom_test_template.php';
+
 /**
  * Needs to be initialised for the unit test, otherwise it fails on a
  * missing class.
@@ -22,3 +24,4 @@ class WP_Block_Type{}
  */
 class user_test_role extends \Clarkson_User{}; //phpcs:ignore
 class custom_test_tax extends \Clarkson_Term{}; //phpcs:ignore
+class test_overwritten_object_creation extends \Clarkson_Object{}; //phpcs:ignore
