@@ -77,8 +77,8 @@ class Clarkson_User {
 				throw new Exception( $user . ' empty' );
 			}
 
-			$user_object = $this->get_user();
-			if ( ! $user instanceof \WP_User ) {
+			$user_object = get_userdata( $user );
+			if ( ! $user_object instanceof \WP_User ) {
 				throw new Exception( $user . ' does not exist' );
 			}
 			$this->_user = $user_object;
