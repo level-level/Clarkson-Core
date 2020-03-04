@@ -54,51 +54,58 @@ class Clarkson_Core_Objects {
 	/**
 	 * Get users by id.
 	 *
-	 * @param int[] $users_ids User ids.
+	 * @param \WP_User[]|int[] $users WP_User object (or deprecated user id).
 	 *
 	 * @return \Clarkson_User[]
 	 */
-	public function get_users( $users_ids ) {
-		$users = array();
+	public function get_users( $users ) {
+		$user_objects = array();
 
-		foreach ( $users_ids as $user_id ) {
-			$user = $this->get_user( $user_id );
-			if ( $user ) {
-				$users[] = $user;
+		foreach ( $users as $user ) {
+			if ( ! $user instanceof \WP_User ) {
+				_doing_it_wrong( __METHOD__, 'Deprecated get_user called with an ID. Supply a \WP_User object or use \'Clarkson_User::get(user_id)\' instead.', '0.5.0' );
+				$user_id = $user;
+				$user    = get_userdata( $user_id );
+				if ( ! $user instanceof \WP_User ) {
+					throw new Exception( $user_id . ' does not exist' );
+				}
 			}
+			$user_objects[] = $this->get_user( $user );
 		}
 
-		return $users;
+		return $user_objects;
 	}
 
 	/**
 	 * Get user by user id.
 	 *
-	 * @param integer $user_id User id.
+	 * @param \WP_User|integer $user WP_User object (or deprecated User id).
 	 *
-	 * @return bool|\Clarkson_User
+	 * @return \Clarkson_User
 	 */
-	public function get_user( $user_id ) {
-
-		if ( empty( $user_id ) ) {
-			return false;
+	public function get_user( $user ) {
+		if ( ! $user instanceof \WP_User ) {
+			_doing_it_wrong( __METHOD__, 'Deprecated get_user called with an ID. Supply a \WP_User object or use \'Clarkson_User::get(user_id)\' instead.', '0.5.0' );
+			$user_id = $user;
+			if ( empty( $user_id ) ) {
+				throw new Exception( $user_id . ' does not exist' );
+			}
+			$user = get_userdata( $user_id );
+			if ( ! $user instanceof \WP_User ) {
+				throw new Exception( $user_id . ' does not exist' );
+			}
 		}
 		$cc         = Clarkson_Core::get_instance();
-		$user       = get_userdata( $user_id );
 		$class_name = false;
 
-		if ( $user && $user->roles && count( $user->roles ) >= 1 ) {
+		if ( $user->roles && count( $user->roles ) >= 1 ) {
 			$class_name = $cc->autoloader->user_objectname_prefix . $user->roles[0];
 		}
 
 		if ( $class_name && in_array( $class_name, $cc->autoloader->user_types, true ) && class_exists( $class_name ) ) {
-			$object = new $class_name( $user_id );
-		} else {
-			$object = new Clarkson_User( $user_id );
+			return new $class_name( $user );
 		}
-
-		return $object;
-
+		return new Clarkson_User( $user );
 	}
 
 	/**
