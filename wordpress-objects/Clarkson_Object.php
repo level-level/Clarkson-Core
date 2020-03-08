@@ -230,7 +230,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get the thumbnail id by post id.
 	 *
-	 * @return string The ID of the post, or an empty string on failure.
+	 * @return string|int The ID of the post, or an empty string on failure.
 	 */
 	public function get_thumbnail_id() {
 		return get_post_thumbnail_id( $this->get_id() );

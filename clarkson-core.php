@@ -23,7 +23,7 @@ class Clarkson_Core {
 
 	/**
 	 * Container for autoloadable files.
-	 * 
+	 *
 	 * @var Clarkson_Core_Autoloader
 	 */
 	public $autoloader;

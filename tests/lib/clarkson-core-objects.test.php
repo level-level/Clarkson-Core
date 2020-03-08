@@ -95,7 +95,8 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 	 */
 	public function test_can_get_term_invalid( $cc_objects ) {
 		\WP_Mock::userFunction( '_doing_it_wrong' );
-		$this->assertFalse( $cc_objects->get_term( 'not_a_valid_term' ) );
+		$this->expectException( '\Exception' );
+		$cc_objects->get_term( 'not_a_valid_term' );
 	}
 
 	/**

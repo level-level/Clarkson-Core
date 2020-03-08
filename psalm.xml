@@ -125,10 +125,10 @@
 
         <UndefinedThisPropertyAssignment errorLevel="error" />
         <UndefinedPropertyAssignment errorLevel="error" />
-        <UndefinedThisPropertyFetch errorLevel="info" />
-        <UndefinedPropertyFetch errorLevel="info" />
+        <UndefinedThisPropertyFetch errorLevel="error" />
+        <UndefinedPropertyFetch errorLevel="error" />
 
-        <InvalidReturnStatement errorLevel="info" />
+        <InvalidReturnStatement errorLevel="error" />
         <InvalidReturnType errorLevel="info" />
         <InvalidArgument errorLevel="info" />
         <InvalidPropertyAssignmentValue errorLevel="info" />
