@@ -116,10 +116,10 @@
         <MoreSpecificImplementedParamType errorLevel="error" />
         <LessSpecificImplementedReturnType errorLevel="error" />
 
-        <InvalidReturnStatement errorLevel="info" />
-        <InvalidReturnType errorLevel="info" />
-        <UndefinedThisPropertyAssignment errorLevel="info" />
-        <UndefinedInterfaceMethod errorLevel="info" />
+        <InvalidReturnStatement errorLevel="error" />
+        <InvalidReturnType errorLevel="error" />
+        <UndefinedThisPropertyAssignment errorLevel="error" />
+        <UndefinedInterfaceMethod errorLevel="error" />
 
         <!-- level 7 issues - even worse -->
 
