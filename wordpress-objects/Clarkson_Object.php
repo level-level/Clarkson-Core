@@ -41,7 +41,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Define $posts.
 	 *
-	 * @var $posts
+	 * @var Clarkson_Object[] $posts
 	 */
 	protected static $posts;
 

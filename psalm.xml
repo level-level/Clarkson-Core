@@ -99,11 +99,11 @@
         <InvalidScalarArgument errorLevel="error" />
         <InvalidToString errorLevel="error" />
         <InvalidOperand errorLevel="error" />
-        <NoInterfaceProperties errorLevel="info" />
-        <TooManyArguments errorLevel="info" />
-        <TypeDoesNotContainType errorLevel="info" />
-        <TypeDoesNotContainNull errorLevel="info" />
-        <MissingDocblockType errorLevel="info" />
+        <NoInterfaceProperties errorLevel="error" />
+        <TooManyArguments errorLevel="suppress" />
+        <TypeDoesNotContainType errorLevel="error" />
+        <TypeDoesNotContainNull errorLevel="error" />
+        <MissingDocblockType errorLevel="error" />
         <ImplementedReturnTypeMismatch errorLevel="info" />
 
         <!-- level 6 issues - really bad things -->
