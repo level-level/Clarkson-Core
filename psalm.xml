@@ -104,7 +104,7 @@
         <TypeDoesNotContainType errorLevel="error" />
         <TypeDoesNotContainNull errorLevel="error" />
         <MissingDocblockType errorLevel="error" />
-        <ImplementedReturnTypeMismatch errorLevel="info" />
+        <ImplementedReturnTypeMismatch errorLevel="error" />
 
         <!-- level 6 issues - really bad things -->
 

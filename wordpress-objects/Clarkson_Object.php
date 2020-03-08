@@ -63,12 +63,12 @@ class Clarkson_Object implements \JsonSerializable {
 			}
 
 			$post_object = get_post( $post );
-			if(! $post_object instanceof WP_Post){
+			if ( ! $post_object instanceof WP_Post ) {
 				throw new Exception( '$post empty' );
 			}
 
-			$this->_post = $post_object; 
-			
+			$this->_post = $post_object;
+
 		}
 	}
 
