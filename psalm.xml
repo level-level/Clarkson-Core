@@ -131,11 +131,11 @@
         <InvalidReturnStatement errorLevel="error" />
         <InvalidReturnType errorLevel="error" />
         <InvalidArgument errorLevel="error" />
-        <InvalidPropertyAssignmentValue errorLevel="info" />
-        <InvalidArrayOffset errorLevel="info" />
-        <InvalidArrayAssignment errorLevel="info" />
-        <InvalidArrayAccess errorLevel="info" />
-        <InvalidClone errorLevel="info" />
+        <InvalidPropertyAssignmentValue errorLevel="error" />
+        <InvalidArrayOffset errorLevel="error" />
+        <InvalidArrayAssignment errorLevel="error" />
+        <InvalidArrayAccess errorLevel="error" />
+        <InvalidClone errorLevel="error" />
 
         <InvalidGlobal errorLevel="suppress" />
     </issueHandlers>
