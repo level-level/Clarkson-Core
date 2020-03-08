@@ -97,8 +97,8 @@
         <ForbiddenCode errorLevel="error" />
         <ImplicitToStringCast errorLevel="error" />
         <InvalidScalarArgument errorLevel="error" />
-        <InvalidToString errorLevel="info" />
-        <InvalidOperand errorLevel="info" />
+        <InvalidToString errorLevel="error" />
+        <InvalidOperand errorLevel="error" />
         <NoInterfaceProperties errorLevel="info" />
         <TooManyArguments errorLevel="info" />
         <TypeDoesNotContainType errorLevel="info" />

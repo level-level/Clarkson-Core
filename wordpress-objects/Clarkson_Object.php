@@ -534,7 +534,7 @@ class Clarkson_Object implements \JsonSerializable {
 		$result = wp_insert_comment( $comment );
 
 		if ( ! is_numeric( $result ) ) {
-			throw new Exception( 'wp_insert_post failed: ' . $result );
+			throw new Exception( 'wp_insert_comment failed: ' . $comment_text );
 		}
 
 		return $result;
