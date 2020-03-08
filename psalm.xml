@@ -94,9 +94,9 @@
 
         <!-- level 5 issues - should be avoided at mosts costs... -->
 
-        <ForbiddenCode errorLevel="info" />
-        <ImplicitToStringCast errorLevel="info" />
-        <InvalidScalarArgument errorLevel="info" />
+        <ForbiddenCode errorLevel="error" />
+        <ImplicitToStringCast errorLevel="error" />
+        <InvalidScalarArgument errorLevel="error" />
         <InvalidToString errorLevel="info" />
         <InvalidOperand errorLevel="info" />
         <NoInterfaceProperties errorLevel="info" />
