@@ -25,6 +25,20 @@ class Clarkson_Object implements \JsonSerializable {
 	protected $_post;
 
 	/**
+	 * Microcache for parsed post content.
+	 *
+	 * @var null|string
+	 */
+	protected $_content;
+
+	/**
+	 * Microcache for parsed post excerpt.
+	 *
+	 * @var null|string
+	 */
+	protected $_excerpt;
+
+	/**
 	 * Define $posts.
 	 *
 	 * @var $posts

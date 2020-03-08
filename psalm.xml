@@ -123,8 +123,8 @@
 
         <!-- level 7 issues - even worse -->
 
-        <UndefinedThisPropertyAssignment errorLevel="info" />
-        <UndefinedPropertyAssignment errorLevel="info" />
+        <UndefinedThisPropertyAssignment errorLevel="error" />
+        <UndefinedPropertyAssignment errorLevel="error" />
         <UndefinedThisPropertyFetch errorLevel="info" />
         <UndefinedPropertyFetch errorLevel="info" />
 

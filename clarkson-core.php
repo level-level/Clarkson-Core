@@ -22,6 +22,13 @@
 class Clarkson_Core {
 
 	/**
+	 * Container for autoloadable files.
+	 * 
+	 * @var Clarkson_Core_Autoloader
+	 */
+	public $autoloader;
+
+	/**
 	 * Initializes all neccessery objects. Is automatically called on 'init'.
 	 *
 	 * Should not be called manually. This method is public because it needs to be
