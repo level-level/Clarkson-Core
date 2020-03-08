@@ -20,7 +20,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Define $_post.
 	 *
-	 * @var null|WP_Post
+	 * @var WP_Post
 	 */
 	protected $_post;
 
@@ -62,7 +62,13 @@ class Clarkson_Object implements \JsonSerializable {
 				throw new Exception( '$post empty' );
 			}
 
-			$this->_post = get_post( $post );
+			$post_object = get_post( $post );
+			if(! $post_object instanceof WP_Post){
+				throw new Exception( '$post empty' );
+			}
+
+			$this->_post = $post_object; 
+			
 		}
 	}
 

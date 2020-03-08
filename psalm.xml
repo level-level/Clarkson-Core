@@ -108,7 +108,7 @@
 
         <!-- level 6 issues - really bad things -->
 
-        <InvalidNullableReturnType errorLevel="info" />
+        <InvalidNullableReturnType errorLevel="error" />
         <NullableReturnStatement errorLevel="info" />
         <InvalidFalsableReturnType errorLevel="info" />
         <FalsableReturnStatement errorLevel="info" />
