@@ -109,12 +109,12 @@
         <!-- level 6 issues - really bad things -->
 
         <InvalidNullableReturnType errorLevel="error" />
-        <NullableReturnStatement errorLevel="info" />
-        <InvalidFalsableReturnType errorLevel="info" />
-        <FalsableReturnStatement errorLevel="info" />
+        <NullableReturnStatement errorLevel="error" />
+        <InvalidFalsableReturnType errorLevel="error" />
+        <FalsableReturnStatement errorLevel="error" />
 
-        <MoreSpecificImplementedParamType errorLevel="info" />
-        <LessSpecificImplementedReturnType errorLevel="info" />
+        <MoreSpecificImplementedParamType errorLevel="error" />
+        <LessSpecificImplementedReturnType errorLevel="error" />
 
         <InvalidReturnStatement errorLevel="info" />
         <InvalidReturnType errorLevel="info" />
