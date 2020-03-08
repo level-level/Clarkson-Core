@@ -129,8 +129,8 @@
         <UndefinedPropertyFetch errorLevel="error" />
 
         <InvalidReturnStatement errorLevel="error" />
-        <InvalidReturnType errorLevel="info" />
-        <InvalidArgument errorLevel="info" />
+        <InvalidReturnType errorLevel="error" />
+        <InvalidArgument errorLevel="error" />
         <InvalidPropertyAssignmentValue errorLevel="info" />
         <InvalidArrayOffset errorLevel="info" />
         <InvalidArrayAssignment errorLevel="info" />
