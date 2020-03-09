@@ -20,14 +20,28 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Define $_post.
 	 *
-	 * @var null|WP_Post
+	 * @var WP_Post
 	 */
 	protected $_post;
 
 	/**
+	 * Microcache for parsed post content.
+	 *
+	 * @var null|string
+	 */
+	protected $_content;
+
+	/**
+	 * Microcache for parsed post excerpt.
+	 *
+	 * @var null|string
+	 */
+	protected $_excerpt;
+
+	/**
 	 * Define $posts.
 	 *
-	 * @var $posts
+	 * @var Clarkson_Object[] $posts
 	 */
 	protected static $posts;
 
@@ -48,7 +62,13 @@ class Clarkson_Object implements \JsonSerializable {
 				throw new Exception( '$post empty' );
 			}
 
-			$this->_post = get_post( $post );
+			$post_object = get_post( $post );
+			if ( ! $post_object instanceof WP_Post ) {
+				throw new Exception( '$post empty' );
+			}
+
+			$this->_post = $post_object;
+
 		}
 	}
 
@@ -216,7 +236,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get the thumbnail id by post id.
 	 *
-	 * @return string The ID of the post, or an empty string on failure.
+	 * @return string|int The ID of the post, or an empty string on failure.
 	 */
 	public function get_thumbnail_id() {
 		return get_post_thumbnail_id( $this->get_id() );
@@ -242,7 +262,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @return string
 	 */
 	public function get_date_i18n( $format = 'U', $gmt = false ) {
-		return date_i18n( $format, strtotime( $this->_post->post_date_gmt, $gmt ) );
+		return date_i18n( $format, strtotime( $this->_post->post_date_gmt ), $gmt );
 	}
 
 	/**
@@ -405,7 +425,7 @@ class Clarkson_Object implements \JsonSerializable {
 
 		if ( $this->_post->post_author ) {
 			try {
-				return Clarkson_User::get( $this->_post->post_author );
+				return Clarkson_User::get( (int) $this->_post->post_author );
 			} catch ( \Exception $e ) {
 				return null;
 			}
@@ -514,7 +534,7 @@ class Clarkson_Object implements \JsonSerializable {
 		$result = wp_insert_comment( $comment );
 
 		if ( ! is_numeric( $result ) ) {
-			throw new Exception( 'wp_insert_post failed: ' . $result );
+			throw new Exception( 'wp_insert_comment failed: ' . $comment_text );
 		}
 
 		return $result;

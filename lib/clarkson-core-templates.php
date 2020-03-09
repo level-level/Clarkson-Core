@@ -400,7 +400,7 @@ class Clarkson_Core_Templates {
 		$theme = wp_get_theme();
 
 		if ( method_exists( $theme, 'get_page_templates' ) ) {
-			if ( version_compare( floatval( get_bloginfo( 'version' ) ), '4.7', '<' ) ) { // 4.6 and older
+			if ( version_compare( get_bloginfo( 'version' ), '4.7', 'lt' ) ) { // 4.6 and older
 				$templates = $theme->get_page_templates();
 			} else { // 4.7+
 				$templates = array();
@@ -616,7 +616,7 @@ class Clarkson_Core_Templates {
 		add_filter( 'acf/location/rule_values/page_template', array( $this, 'get_templates' ) );
 
 		// Add a filter to the attributes metabox to inject template into the cache.
-		if ( version_compare( floatval( get_bloginfo( 'version' ) ), '4.7', '<' ) ) {
+		if ( version_compare( get_bloginfo( 'version' ), '4.7', 'lt' ) ) {
 			// WP 4.6 and older.
 			add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'register_custom_templates' ) );
 		} else {

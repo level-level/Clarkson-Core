@@ -963,7 +963,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 	/**
 	 * Get the Twig functions.
 	 *
-	 * @return array|Twig_SimpleFunction[] $twig_functions Twig functions.
+	 * @return Twig_SimpleFunction[] $twig_functions Twig functions.
 	 * @internal
 	 */
 	public function getFunctions() {

@@ -94,48 +94,48 @@
 
         <!-- level 5 issues - should be avoided at mosts costs... -->
 
-        <ForbiddenCode errorLevel="info" />
-        <ImplicitToStringCast errorLevel="info" />
-        <InvalidScalarArgument errorLevel="info" />
-        <InvalidToString errorLevel="info" />
-        <InvalidOperand errorLevel="info" />
-        <NoInterfaceProperties errorLevel="info" />
-        <TooManyArguments errorLevel="info" />
-        <TypeDoesNotContainType errorLevel="info" />
-        <TypeDoesNotContainNull errorLevel="info" />
-        <MissingDocblockType errorLevel="info" />
-        <ImplementedReturnTypeMismatch errorLevel="info" />
+        <ForbiddenCode errorLevel="error" />
+        <ImplicitToStringCast errorLevel="error" />
+        <InvalidScalarArgument errorLevel="error" />
+        <InvalidToString errorLevel="error" />
+        <InvalidOperand errorLevel="error" />
+        <NoInterfaceProperties errorLevel="error" />
+        <TooManyArguments errorLevel="suppress" />
+        <TypeDoesNotContainType errorLevel="error" />
+        <TypeDoesNotContainNull errorLevel="error" />
+        <MissingDocblockType errorLevel="error" />
+        <ImplementedReturnTypeMismatch errorLevel="error" />
 
         <!-- level 6 issues - really bad things -->
 
-        <InvalidNullableReturnType errorLevel="info" />
-        <NullableReturnStatement errorLevel="info" />
-        <InvalidFalsableReturnType errorLevel="info" />
-        <FalsableReturnStatement errorLevel="info" />
+        <InvalidNullableReturnType errorLevel="error" />
+        <NullableReturnStatement errorLevel="error" />
+        <InvalidFalsableReturnType errorLevel="error" />
+        <FalsableReturnStatement errorLevel="error" />
 
-        <MoreSpecificImplementedParamType errorLevel="info" />
-        <LessSpecificImplementedReturnType errorLevel="info" />
+        <MoreSpecificImplementedParamType errorLevel="error" />
+        <LessSpecificImplementedReturnType errorLevel="error" />
 
-        <InvalidReturnStatement errorLevel="info" />
-        <InvalidReturnType errorLevel="info" />
-        <UndefinedThisPropertyAssignment errorLevel="info" />
-        <UndefinedInterfaceMethod errorLevel="info" />
+        <InvalidReturnStatement errorLevel="error" />
+        <InvalidReturnType errorLevel="error" />
+        <UndefinedThisPropertyAssignment errorLevel="error" />
+        <UndefinedInterfaceMethod errorLevel="error" />
 
         <!-- level 7 issues - even worse -->
 
-        <UndefinedThisPropertyAssignment errorLevel="info" />
-        <UndefinedPropertyAssignment errorLevel="info" />
-        <UndefinedThisPropertyFetch errorLevel="info" />
-        <UndefinedPropertyFetch errorLevel="info" />
+        <UndefinedThisPropertyAssignment errorLevel="error" />
+        <UndefinedPropertyAssignment errorLevel="error" />
+        <UndefinedThisPropertyFetch errorLevel="error" />
+        <UndefinedPropertyFetch errorLevel="error" />
 
-        <InvalidReturnStatement errorLevel="info" />
-        <InvalidReturnType errorLevel="info" />
-        <InvalidArgument errorLevel="info" />
-        <InvalidPropertyAssignmentValue errorLevel="info" />
-        <InvalidArrayOffset errorLevel="info" />
-        <InvalidArrayAssignment errorLevel="info" />
-        <InvalidArrayAccess errorLevel="info" />
-        <InvalidClone errorLevel="info" />
+        <InvalidReturnStatement errorLevel="error" />
+        <InvalidReturnType errorLevel="error" />
+        <InvalidArgument errorLevel="error" />
+        <InvalidPropertyAssignmentValue errorLevel="error" />
+        <InvalidArrayOffset errorLevel="error" />
+        <InvalidArrayAssignment errorLevel="error" />
+        <InvalidArrayAccess errorLevel="error" />
+        <InvalidClone errorLevel="error" />
 
         <InvalidGlobal errorLevel="suppress" />
     </issueHandlers>

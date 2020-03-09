@@ -86,7 +86,7 @@ class Clarkson_Term {
 	 */
 	public function __construct( $term, $taxonomy = null ) {
 		if ( $term instanceof \WP_Term ) {
-			$this->term = $term;
+			$this->_term = $term;
 		} else {
 			_doing_it_wrong( __METHOD__, 'Deprecated __construct called with an ID. Use \'::get_by_id(term_id)\' instead.', '0.2.0' );
 			$taxonomy = $taxonomy ?: static::$taxonomy;
@@ -97,7 +97,7 @@ class Clarkson_Term {
 			if ( ! $term_result instanceof WP_Term ) {
 				throw new Exception( "Term not found ($taxonomy:$term)" );
 			}
-			$this->term = $term_result;
+			$this->_term = $term_result;
 		}
 	}
 

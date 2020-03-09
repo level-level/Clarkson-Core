@@ -210,7 +210,7 @@ class Clarkson_User {
 	 * @param string       $key   User meta key.
 	 * @param array|string $value User meta data.
 	 *
-	 * @return bool
+	 * @return int|false
 	 */
 	public function add_meta( $key, $value ) {
 		return add_user_meta( $this->get_id(), $key, $value );

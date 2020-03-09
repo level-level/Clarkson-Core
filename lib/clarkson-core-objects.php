@@ -34,12 +34,12 @@ class Clarkson_Core_Objects {
 	 *
 	 * @param \WP_Term $term The term.
 	 *
-	 * @return bool|\Clarkson_Term
+	 * @return \Clarkson_Term
 	 */
 	public function get_term( $term ) {
 		if ( ! $term instanceof \WP_Term ) {
-			_doing_it_wrong( __METHOD__, 'You must call this function with a valid \WP_Term object', '0.1.0' );
-			return false;
+			_doing_it_wrong( __METHOD__, 'You must call this function with a valid \WP_Term object.', '0.1.0' );
+			throw new Exception( 'You must call this function with a valid \WP_Term object.' );
 		}
 
 		$cc         = Clarkson_Core::get_instance();
