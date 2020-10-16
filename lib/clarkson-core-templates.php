@@ -9,7 +9,12 @@
  * Allows rendering of specific templates with Twig.
  */
 class Clarkson_Core_Templates {
-	const TEMPLATE_TYPES = array(
+	/**
+	 * The template types, are all seperate `get_query_template` can be called with.
+	 * 
+	 * @see https://developer.wordpress.org/reference/functions/get_query_template/ The code defines the possible `type` values.
+	 */
+	private const TEMPLATE_TYPES = array(
 		'index',
 		'404',
 		'archive',
@@ -110,6 +115,23 @@ class Clarkson_Core_Templates {
 		if ( $debug ) {
 			$twig->addExtension( new Twig_Extension_Debug() );
 		}
+
+		/**
+		 * Allows themes and plugins to edit the Clarkson Twig environment.
+		 *
+		 * @hook clarkson_twig_environment
+		 * @since 1.0.0
+		 * @param {Twig_Environment} $twig Twig environment.
+		 * @return {Twig_Environment} Twig environment.
+		 *
+		 * @example
+		 * // We can add custom twig extensions.
+		 * add_filter( 'clarkson_twig_environment', function( $twig ) {
+		 *  $twig->addExtension( new \Custom_Twig_Extension() );
+		 *  return $twig;
+		 * } );
+		 */
+		$twig = apply_filters( 'clarkson_twig_environment', $twig );
 
 		/**
 		 * Context variables that are available in twig templates.
