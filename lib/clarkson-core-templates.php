@@ -9,6 +9,26 @@
  * Allows rendering of specific templates with Twig.
  */
 class Clarkson_Core_Templates {
+	const TEMPLATE_TYPES = array(
+		'index',
+		'404',
+		'archive',
+		'author',
+		'category',
+		'tag',
+		'taxonomy',
+		'date',
+		'embed',
+		'home',
+		'frontpage',
+		'privacypolicy',
+		'page',
+		'paged',
+		'search',
+		'single',
+		'singular',
+		'attachment',
+	);
 
 	/**
 	 * Define Templates.
@@ -33,17 +53,6 @@ class Clarkson_Core_Templates {
 	 * @internal
 	 */
 	public function render( $path, $objects, $ignore_warning = false ) {
-		global $wp_query;
-		if ( is_page_template() && isset( $wp_query->post ) && isset( $wp_query->post->ID ) ) {
-			$template_path = get_post_meta( $wp_query->post->ID, '_wp_page_template', true );
-			// If this file doesn't exist just fallback on the default WordPress template hierarchy fallback method and first checking the child-theme and then the parent theme.
-			if ( file_exists( $this->get_stylesheet_dir() . '/' . $template_path ) ) {
-				$path = $template_path;
-			} elseif ( file_exists( $this->get_template_dir() . '/' . $template_path ) ) {
-				$path = $template_path;
-			}
-		}
-
 		$this->echo_twig( $path, $objects, $ignore_warning );
 		exit();
 	}
@@ -195,7 +204,7 @@ class Clarkson_Core_Templates {
 		 *  return get_template_directory() . '/twig_templates';
 		 * } );
 		 */
-		return apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' );
+		return realpath( apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' ) );
 	}
 
 	/**
@@ -216,7 +225,7 @@ class Clarkson_Core_Templates {
 		 *  return get_stylesheet_directory() . '/twig_templates';
 		 * } );
 		 */
-		return apply_filters( 'clarkson_twig_stylesheet_dir', get_stylesheet_directory() . '/templates' );
+		return realpath( apply_filters( 'clarkson_twig_stylesheet_dir', get_stylesheet_directory() . '/templates' ) );
 	}
 
 	/**
@@ -229,14 +238,6 @@ class Clarkson_Core_Templates {
 	 */
 	public function template_include( $template ) {
 		$extension = pathinfo( $template, PATHINFO_EXTENSION );
-		$type      = basename( $template );
-		$type      = str_replace( ".{$extension}", '', $type );
-
-		// Double check.
-		if ( isset( $this->templates[ $type ] ) ) {
-			$template  = $this->templates[ $type ];
-			$extension = 'twig';
-		}
 
 		if ( 'twig' === $extension ) {
 			// Get template vars.
@@ -258,8 +259,8 @@ class Clarkson_Core_Templates {
 				$page_vars['found_posts'] = $wp_query->get( 'filtered_found_posts' ) ? $wp_query->get( 'filtered_found_posts' ) : $wp_query->found_posts;
 			}
 			$page_vars['objects'] = $object_loader->get_objects( $posts );
+			$template = realpath($template);
 
-			// Render it.
 			$this->render( $template, $page_vars, true );
 		}
 
@@ -371,45 +372,8 @@ class Clarkson_Core_Templates {
 		$templates      = array_merge( $templates, $choices );
 		$page_templates = array();
 		foreach ( $this->templates as $name => $path ) {
-			$is_valid_template = false;
-
-			/**
-			 * IF
-			 * Check if template matches of page-xyz.twig and skip page.twig
-			 * ELSE IF
-			 * Check for template-xyz.twig files and skip template.twig
-			 *
-			 * @since 0.2.1.
-			 */
-			if ( preg_match( '#^page-#i', $name ) === 1 && 'page' !== $name ) {
-				$is_valid_template = true;
-				$name              = str_replace( 'page-', '', $name );
-
-				/**
-				 * Allows turning of the warning for page- style naming, deprecated in 0.2.1.
-				 *
-				 * @hook clarkson_core_deprecated_warning_page_template
-				 * @since 0.2.1
-				 * @param {bool} WP_DEBUG WordPress debug mode constant.
-				 * @return {bool} Whether to show or hide the deprecation warning.
-				 *
-				 * @example
-				 * // Disable old style page warning.
-				 * add_filter( 'clarkson_core_deprecated_warning_page_template', '__return_false' );
-				 */
-				/**
-				 * @psalm-suppress UndefinedConstant
-				 */
-				$show_warning = apply_filters( 'clarkson_core_deprecated_warning_page_template', WP_DEBUG );
-				if ( $show_warning ) {
-					_doing_it_wrong( __METHOD__, 'Deprecated template name ' . esc_html( $path ) . ' found. Use `template-' . esc_html( $name ) . '.twig` instead.', '0.2.1' );
-				}
-			} elseif ( preg_match( '#^template-#i', $name ) === 1 && 'template' !== $name ) {
-				$is_valid_template = true;
+			if ( preg_match( '#^template-#i', $name ) === 1 && 'template' !== $name ) {
 				$name              = str_replace( 'template-', '', $name );
-			}
-
-			if ( $is_valid_template ) {
 				$name                                = str_replace( '-', ' ', $name );
 				$name                                = ucwords( $name );
 				$page_templates[ basename( $path ) ] = $name;
@@ -503,6 +467,7 @@ class Clarkson_Core_Templates {
 		foreach ( $template_paths as $template_path ) {
 			$templates = array_merge( $templates, $this->get_templates_from_path( $template_path ) );
 		}
+
 		foreach ( $templates as $template ) {
 			$base      = basename( $template );
 			$base      = str_replace( '.twig', '', $base );
@@ -529,7 +494,7 @@ class Clarkson_Core_Templates {
 		if ( ! $path || ! is_string( $path ) || ! file_exists( $path ) ) {
 			return $templates;
 		}
-		$files = glob( "{$path}/*.twig" );
+		$files = glob( "{$path}/template-*.twig" );
 		if ( empty( $files ) ) {
 			return $templates;
 		}
@@ -559,6 +524,25 @@ class Clarkson_Core_Templates {
 		return $instance;
 	}
 
+	public function add_twig_to_template_hierarchy(array $original_templates){
+		$templates = array();
+
+		$directories = array_unique(array(
+			str_replace(get_stylesheet_directory(), '', $this->get_stylesheet_dir()),
+			str_replace(get_template_directory(), '', $this->get_template_dir()),
+		));
+
+		foreach($original_templates as $template){
+			$pathinfo = pathinfo($template);
+			foreach($directories as $directory){
+				$twig_template = $pathinfo['dirname'] . $directory . '/' . $pathinfo['filename'] . '.twig';
+				$templates[] = $twig_template;
+			}
+			$templates[] = $template;
+		}
+		return $templates;
+	}
+
 	/**
 	 * Clarkson_Core_Templates constructor.
 	 */
@@ -566,6 +550,10 @@ class Clarkson_Core_Templates {
 		if ( ! class_exists( 'Clarkson_Core_Objects' ) ) {
 			return;
 		}
+		foreach(self::TEMPLATE_TYPES as $template_type){
+			add_filter($template_type . '_template_hierarchy', array($this, 'add_twig_to_template_hierarchy'), 999);
+		}
+
 		$this->add_template_filters();
 		add_action( 'template_include', array( $this, 'template_include' ) );
 		add_filter( 'wp_insert_post_data', array( $this, 'register_custom_templates' ) );
