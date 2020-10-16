@@ -11,7 +11,7 @@
 class Clarkson_Core_Templates {
 	/**
 	 * The template types, are all seperate `get_query_template` can be called with.
-	 * 
+	 *
 	 * @see https://developer.wordpress.org/reference/functions/get_query_template/ The code defines the possible `type` values.
 	 */
 	private const TEMPLATE_TYPES = array(
@@ -281,7 +281,7 @@ class Clarkson_Core_Templates {
 				$page_vars['found_posts'] = $wp_query->get( 'filtered_found_posts' ) ? $wp_query->get( 'filtered_found_posts' ) : $wp_query->found_posts;
 			}
 			$page_vars['objects'] = $object_loader->get_objects( $posts );
-			$template = realpath($template);
+			$template             = realpath( $template );
 
 			$this->render( $template, $page_vars, true );
 		}
@@ -302,11 +302,11 @@ class Clarkson_Core_Templates {
 		if ( $templates ) {
 			return $templates;
 		}
-		$templates = $choices;
+		$templates      = $choices;
 		$page_templates = array();
 		foreach ( $this->get_template_files() as $name => $path ) {
 			if ( preg_match( '#^template-#i', $name ) === 1 && 'template' !== $name ) {
-				$name              = str_replace( 'template-', '', $name );
+				$name                                = str_replace( 'template-', '', $name );
 				$name                                = str_replace( '-', ' ', $name );
 				$name                                = ucwords( $name );
 				$page_templates[ basename( $path ) ] = $name;
@@ -380,8 +380,8 @@ class Clarkson_Core_Templates {
 		}
 
 		foreach ( $templates as $template ) {
-			$base      = basename( $template );
-			$base      = str_replace( '.twig', '', $base );
+			$base               = basename( $template );
+			$base               = str_replace( '.twig', '', $base );
 			$templates[ $base ] = $template;
 		}
 		return $templates;
@@ -425,19 +425,21 @@ class Clarkson_Core_Templates {
 		return $instance;
 	}
 
-	public function add_twig_to_template_hierarchy(array $original_templates){
+	public function add_twig_to_template_hierarchy( array $original_templates ) {
 		$templates = array();
 
-		$directories = array_unique(array(
-			str_replace(get_stylesheet_directory(), '', $this->get_stylesheet_dir()),
-			str_replace(get_template_directory(), '', $this->get_template_dir()),
-		));
+		$directories = array_unique(
+			array(
+				str_replace( get_stylesheet_directory(), '', $this->get_stylesheet_dir() ),
+				str_replace( get_template_directory(), '', $this->get_template_dir() ),
+			)
+		);
 
-		foreach($original_templates as $template){
-			$pathinfo = pathinfo($template);
-			foreach($directories as $directory){
+		foreach ( $original_templates as $template ) {
+			$pathinfo = pathinfo( $template );
+			foreach ( $directories as $directory ) {
 				$twig_template = $pathinfo['dirname'] . $directory . '/' . $pathinfo['filename'] . '.twig';
-				$templates[] = $twig_template;
+				$templates[]   = $twig_template;
 			}
 			$templates[] = $template;
 		}
@@ -451,8 +453,8 @@ class Clarkson_Core_Templates {
 		if ( ! class_exists( 'Clarkson_Core_Objects' ) ) {
 			return;
 		}
-		foreach(self::TEMPLATE_TYPES as $template_type){
-			add_filter($template_type . '_template_hierarchy', array($this, 'add_twig_to_template_hierarchy'), 999);
+		foreach ( self::TEMPLATE_TYPES as $template_type ) {
+			add_filter( $template_type . '_template_hierarchy', array( $this, 'add_twig_to_template_hierarchy' ), 999 );
 		}
 
 		add_action( 'template_include', array( $this, 'template_include' ) );

@@ -658,7 +658,7 @@ class Clarkson_Object implements \JsonSerializable {
 
 	/**
 	 * Return a set of data to use for json output.
-	 * 
+	 *
 	 * We can't just return $this->_post, because these values will only return raw unfiltered data.
 	 */
 	public function jsonSerialize() {
