@@ -44,14 +44,7 @@ class Clarkson_Core_Templates {
 			}
 		}
 
-		if ( isset( $wp_query->query_vars['json'] ) ) {
-			if ( count( $objects ) === 1 && isset( $objects['objects'][0] ) ) {
-				$objects = reset( $objects['objects'][0] );
-			}
-			$this->echo_json( $objects );
-		} else {
-			$this->echo_twig( $path, $objects, $ignore_warning );
-		}
+		$this->echo_twig( $path, $objects, $ignore_warning );
 		exit();
 	}
 
@@ -140,43 +133,6 @@ class Clarkson_Core_Templates {
 	 */
 	public function echo_twig( $template_file, $objects, $ignore_warning = false ) {
 		echo $this->render_twig( $template_file, $objects, $ignore_warning );
-	}
-
-	/**
-	 * Render Json.
-	 *
-	 * @param array $posts Post or posts.
-	 *
-	 * @see: https://github.com/level-level/Clarkson-Core/issues/125.
-	 *
-	 * @return mixed|string|void
-	 * @deprecated Use the WordPress API instead.
-	 */
-	public function render_json( $posts ) {
-		header( 'Content-Type: application/json' );
-
-		// If single post then create new array.
-		if ( ! is_array( $posts ) ) {
-			$objects[] = $posts;
-		} else {
-			$objects = $posts;
-		}
-
-		$cc_objects = Clarkson_Core_Objects::get_instance();
-		$objects    = $cc_objects->get_objects( $objects );
-		return json_encode( $objects, JSON_PRETTY_PRINT );
-	}
-
-
-	/**
-	 * Echo Json data.
-	 *
-	 * @see https://github.com/level-level/Clarkson-Core/issues/126,
-	 * @param array $objects Posts.
-	 * @deprecated Use the WordPress API instead.
-	 */
-	public function echo_json( $objects ) {
-		echo $this->render_json( $objects );
 	}
 
 	/**

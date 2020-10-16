@@ -657,9 +657,8 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
-	 * Return a set of data when calling the /json endpoint.
-	 * If you want something else, then just overwrite it in your own WordPress object.
-	 *
+	 * Return a set of data to use for json output.
+	 * 
 	 * We can't just return $this->_post, because these values will only return raw unfiltered data.
 	 */
 	public function jsonSerialize() {
@@ -686,16 +685,4 @@ class Clarkson_Object implements \JsonSerializable {
 
 		return $data;
 	}
-
-	/**
-	 * Create serialized json file.
-	 *
-	 * @return mixed
-	 * @deprecated
-	 */
-	public function get_json() {
-		_doing_it_wrong( __METHOD__, 'Deprecated directly calling get_json. Just json_encode the object itself, because the Clarkson_Object implements JsonSerializable.', '0.2.0' );
-		return $this->jsonSerialize();
-	}
-
 }
