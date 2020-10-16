@@ -74,7 +74,7 @@ class Clarkson_Core_Templates {
 		$this->has_been_called = true;
 
 		$template_dirs = $this->get_templates_dirs();
-		$template_file = str_replace( array( $this->get_template_dir(), $this->get_stylesheet_dir() ), '', $path ); // Retrieve only the path to the template file, relative from the yourtheme/templates directory.
+		$template_file = str_replace( $template_dirs, '', $path ); // Retrieve only the path to the template file, relative from the yourtheme/templates directory.
 
 		$debug     = ( defined( 'WP_DEBUG' ) ? WP_DEBUG : false );
 		$twig_args = array(
@@ -267,78 +267,6 @@ class Clarkson_Core_Templates {
 		return $template;
 	}
 
-
-	/**
-	 * Add template.
-	 *
-	 * @param string $template Default template.
-	 *
-	 * @return string|array
-	 * @internal
-	 */
-	public function add_template( $template ) {
-		// Allow twig based on wp_query.
-		global $wp_query;
-		if ( isset( $wp_query->twig ) && file_exists( $wp_query->twig ) ) {
-			return $wp_query->twig;
-		}
-
-		$queried_object = get_queried_object();
-
-		// Check filter for current template.
-		$filter = current_filter();
-		$type   = str_replace( '_template', '', $filter );
-
-		// Post Types.
-		$post_type = get_post_type();
-		if ( ! $post_type || empty( $post_type ) ) {
-
-			/**
-			 * Fix for archive pages with no posts on it.
-			 * See https://github.com/level-level/Clarkson-Core/issues/90 & https://core.trac.wordpress.org/ticket/20647.
-			 *
-			 * Don't use query_vars 'post_type' because this could return an Array if multiple Post Types are set via pre_get_posts.
-			 * We always want the main Queried Object 'name' to load that specific CPT template.
-			 */
-
-			if ( is_a( $queried_object, 'WP_Post_Type' ) && isset( $queried_object->name ) ) {
-				$post_type = $queried_object->name;
-			}
-		}
-
-		// Taxonomy Templates per Taxonomy type.
-		if ( is_a( $queried_object, 'WP_Term' ) && isset( $queried_object->taxonomy ) ) {
-			$post_type = $queried_object->taxonomy;
-		}
-
-		$templates = $this->templates;
-
-		if ( isset( $templates[ "{$type}-{$post_type}" ] ) ) {
-			return $templates[ "{$type}-{$post_type}" ];
-		}
-		if ( isset( $templates[ "{$type}" ] ) ) {
-			return $templates[ "{$type}" ];
-		}
-
-		/**
-		 * Major exception here:
-		 *
-		 * Fallback if $type is 'page' but the custom template file in _template.
-		 * that isn't present on the disk anymore. Then $type is still 'page'.
-		 * but it could fallback on singular.twig when that file is present.
-		 *
-		 * Of course only if there is a singular template.
-		 */
-		if ( 'page' === $type && ! isset( $templates[ "{$type}" ] ) && isset( $templates['singular'] ) ) {
-			return $templates['singular'];
-		}
-		if ( isset( $templates['index'] ) ) {
-			return $templates['index'];
-		}
-
-		return $template;
-	}
-
 	/**
 	 * Get templates.
 	 *
@@ -352,26 +280,9 @@ class Clarkson_Core_Templates {
 		if ( $templates ) {
 			return $templates;
 		}
-		// Retrieve the cache list.
-		// If it doesn't exist, or it's empty prepare an array.
-		$theme = wp_get_theme();
-
-		if ( method_exists( $theme, 'get_page_templates' ) ) {
-			if ( version_compare( get_bloginfo( 'version' ), '4.7', 'lt' ) ) { // 4.6 and older
-				$templates = $theme->get_page_templates();
-			} else { // 4.7+
-				$templates = array();
-			}
-			if ( empty( $templates ) ) {
-				$templates = array();
-			}
-		} else {
-			$templates = array();
-		}
-
-		$templates      = array_merge( $templates, $choices );
+		$templates = $choices;
 		$page_templates = array();
-		foreach ( $this->templates as $name => $path ) {
+		foreach ( $this->get_template_files() as $name => $path ) {
 			if ( preg_match( '#^template-#i', $name ) === 1 && 'template' !== $name ) {
 				$name              = str_replace( 'template-', '', $name );
 				$name                                = str_replace( '-', ' ', $name );
@@ -387,26 +298,6 @@ class Clarkson_Core_Templates {
 	}
 
 	/**
-	 * Adds our templates to the page dropdown for v4.6 and older.
-	 *
-	 * @param array $atts Attributes .
-	 * @internal
-	 */
-	public function register_custom_templates( $atts ) {
-		// Create the key used for the themes cache.
-		$cache_key = 'page_templates-' . md5( get_theme_root() . '/' . get_stylesheet() );
-		$templates = $this->get_templates();
-
-		// New cache, therefore remove the old one.
-		wp_cache_delete( $cache_key, 'themes' );
-
-		// Add the modified cache to allow WordPress to pick it up for listing.
-		// Available templates.
-		wp_cache_add( $cache_key, $templates, 'themes', 1800 );
-		return $atts;
-	}
-
-	/**
 	 * Adds our templates to the page dropdown for WP v4.7+.
 	 *
 	 * @param array  $posts_templates Templates array.
@@ -418,7 +309,6 @@ class Clarkson_Core_Templates {
 	 * @internal
 	 */
 	public function add_new_template( $posts_templates, $theme, $post, $post_type ) {
-
 		$custom_posts_templates = $this->get_templates();
 		foreach ( $custom_posts_templates as $path => $name ) {
 			$filename = basename( $path );
@@ -449,7 +339,7 @@ class Clarkson_Core_Templates {
 	/**
 	 * Add template filters.
 	 */
-	private function add_template_filters() {
+	private function get_template_files() {
 		// Get template files.
 		$template_paths = $this->get_templates_dirs();
 
@@ -462,7 +352,6 @@ class Clarkson_Core_Templates {
 		apply_filters( 'clarkson_core_template_paths', $template_paths );
 
 		$templates = array();
-		$filters   = array();
 
 		foreach ( $template_paths as $template_path ) {
 			$templates = array_merge( $templates, $this->get_templates_from_path( $template_path ) );
@@ -471,15 +360,9 @@ class Clarkson_Core_Templates {
 		foreach ( $templates as $template ) {
 			$base      = basename( $template );
 			$base      = str_replace( '.twig', '', $base );
-			$type      = preg_replace( '|[^a-z0-9-]+|', '', $base );
-			$base_type = preg_replace( '(-.*)', '', $type );
-			if ( ! in_array( $base_type, $filters, true ) ) {
-				add_filter( "{$base_type}_template", array( $this, 'add_template' ) );
-				$filters[] = $base_type;
-			}
-
-			$this->templates[ $base ] = $template;
+			$templates[ $base ] = $template;
 		}
+		return $templates;
 	}
 
 	/**
@@ -490,22 +373,18 @@ class Clarkson_Core_Templates {
 	 * @return array
 	 */
 	private function get_templates_from_path( $path ) {
-		$templates = array();
 		if ( ! $path || ! is_string( $path ) || ! file_exists( $path ) ) {
-			return $templates;
+			return array();
 		}
 		$files = glob( "{$path}/template-*.twig" );
 		if ( empty( $files ) ) {
-			return $templates;
+			return array();
 		}
-		foreach ( $files as $file_path ) {
-			$templates[] = $file_path;
-		}
-		return $templates;
+		return $files;
 	}
 
 	/**
-	 * Singleto.
+	 * Singleton.
 	 *
 	 * @var null instance Clarkson_Core_Templates.
 	 */
@@ -554,47 +433,39 @@ class Clarkson_Core_Templates {
 			add_filter($template_type . '_template_hierarchy', array($this, 'add_twig_to_template_hierarchy'), 999);
 		}
 
-		$this->add_template_filters();
 		add_action( 'template_include', array( $this, 'template_include' ) );
-		add_filter( 'wp_insert_post_data', array( $this, 'register_custom_templates' ) );
 		add_filter( 'acf/location/rule_values/page_template', array( $this, 'get_templates' ) );
 
-		// Add a filter to the attributes metabox to inject template into the cache.
-		if ( version_compare( get_bloginfo( 'version' ), '4.7', 'lt' ) ) {
-			// WP 4.6 and older.
-			add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'register_custom_templates' ) );
-		} else {
-			// Add a filter to the WP 4.7 version attributes meta box.
-			// Add filters for all post_types.
-			add_action(
-				'wp_loaded',
-				function() {
-					$custom_post_types = get_post_types(
-						array(
-							'public'   => false,
-							'_builtin' => false,
-						),
-						'names',
-						'or'
-					);
+		// Add a filter to the WP 4.7 version attributes meta box.
+		// Add filters for all post_types.
+		add_action(
+			'wp_loaded',
+			function() {
+				$custom_post_types = get_post_types(
+					array(
+						'public'   => false,
+						'_builtin' => false,
+					),
+					'names',
+					'or'
+				);
 
-					$builtin_post_types = get_post_types(
-						array(
-							'public'   => false,
-							'_builtin' => true,
-						),
-						'names',
-						'or'
-					);
+				$builtin_post_types = get_post_types(
+					array(
+						'public'   => false,
+						'_builtin' => true,
+					),
+					'names',
+					'or'
+				);
 
-					$post_types = array_merge( $custom_post_types, $builtin_post_types );
+				$post_types = array_merge( $custom_post_types, $builtin_post_types );
 
-					foreach ( $post_types as $post_type ) {
-						add_filter( 'theme_' . $post_type . '_templates', array( $this, 'add_new_template' ), 10, 4 );
-					}
+				foreach ( $post_types as $post_type ) {
+					add_filter( 'theme_' . $post_type . '_templates', array( $this, 'add_new_template' ), 10, 4 );
 				}
-			);
-		}
+			}
+		);
 	}
 
 	/**
