@@ -262,7 +262,7 @@ class Clarkson_Core_Templates {
 			$page_vars = array();
 
 			if ( is_author() ) {
-				$page_vars['user'] = $object_loader->get_user( get_queried_object_id() );
+				$page_vars['user'] = $object_loader->get_user( get_user_by( 'id', get_queried_object_id() ) );
 			} elseif ( is_tax() ) {
 				$term = get_queried_object();
 				// Custom Taxonomy Templates per Taxonomy type.

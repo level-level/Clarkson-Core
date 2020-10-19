@@ -19,29 +19,13 @@ class Clarkson_Core_Objects {
 	protected $objects = array();
 
 	/**
-	 * Available objects.
-	 *
-	 * @deprecated
-	 * @internal
-	 * @return array Available objects.
-	 */
-	public function available_objects() {
-		return $this->objects;
-	}
-
-	/**
 	 * Get term data.
 	 *
 	 * @param \WP_Term $term The term.
 	 *
 	 * @return \Clarkson_Term
 	 */
-	public function get_term( $term ) {
-		if ( ! $term instanceof \WP_Term ) {
-			_doing_it_wrong( __METHOD__, 'You must call this function with a valid \WP_Term object.', '0.1.0' );
-			throw new Exception( 'You must call this function with a valid \WP_Term object.' );
-		}
-
+	public function get_term( \WP_Term $term ): \Clarkson_Term {
 		$cc         = Clarkson_Core::get_instance();
 		$class_name = $cc->autoloader->sanitize_object_name( $term->taxonomy );
 
@@ -54,21 +38,16 @@ class Clarkson_Core_Objects {
 	/**
 	 * Get users by id.
 	 *
-	 * @param \WP_User[]|int[] $users WP_User object (or deprecated user id).
+	 * @param \WP_User[] $users array of \WP_User objects.
 	 *
 	 * @return \Clarkson_User[]
 	 */
-	public function get_users( $users ) {
+	public function get_users( array $users ): array {
 		$user_objects = array();
 
 		foreach ( $users as $user ) {
 			if ( ! $user instanceof \WP_User ) {
-				_doing_it_wrong( __METHOD__, 'Deprecated get_user called with an ID. Supply a \WP_User object or use \'Clarkson_User::get(user_id)\' instead.', '1.0.0' );
-				$user_id = $user;
-				$user    = get_userdata( $user_id );
-				if ( ! $user instanceof \WP_User ) {
-					throw new Exception( $user_id . ' does not exist' );
-				}
+				continue;
 			}
 			$user_objects[] = $this->get_user( $user );
 		}
@@ -79,22 +58,11 @@ class Clarkson_Core_Objects {
 	/**
 	 * Get user by user id.
 	 *
-	 * @param \WP_User|integer $user WP_User object (or deprecated User id).
+	 * @param \WP_User $user WP_User object.
 	 *
 	 * @return \Clarkson_User
 	 */
-	public function get_user( $user ) {
-		if ( ! $user instanceof \WP_User ) {
-			_doing_it_wrong( __METHOD__, 'Deprecated get_user called with an ID. Supply a \WP_User object or use \'Clarkson_User::get(user_id)\' instead.', '1.0.0' );
-			$user_id = $user;
-			if ( empty( $user_id ) ) {
-				throw new Exception( $user_id . ' does not exist' );
-			}
-			$user = get_userdata( $user_id );
-			if ( ! $user instanceof \WP_User ) {
-				throw new Exception( $user_id . ' does not exist' );
-			}
-		}
+	public function get_user( \WP_User $user ): \Clarkson_User {
 		$cc         = Clarkson_Core::get_instance();
 		$class_name = false;
 
@@ -118,7 +86,7 @@ class Clarkson_Core_Objects {
 	 *
 	 * @return \Clarkson_Object[] $objects Array of post objects.
 	 */
-	public function get_objects( $posts ) {
+	public function get_objects( array $posts ): array {
 		$objects = array();
 
 		foreach ( $posts as $post ) {
@@ -135,12 +103,7 @@ class Clarkson_Core_Objects {
 	 *
 	 * @return \Clarkson_Object Clarkson Post object.
 	 */
-	public function get_object( $post ) {
-		if ( ! $post instanceof WP_Post && is_int( (int) $post ) ) {
-			_doing_it_wrong( __METHOD__, 'Deprecated calling of get_object with an ID. Use a `WP_Post` instead', '1.0.0' );
-			$post = get_post( $post );
-		}
-
+	public function get_object( \WP_Post $post ): \Clarkson_Object {
 		$cc = Clarkson_Core::get_instance();
 
 		// defaults to post type.
@@ -217,21 +180,6 @@ class Clarkson_Core_Objects {
 			'Clarkson_User'   => '',
 		);
 
-		$deprecated         = Clarkson_Core_Deprecated::get_instance();
-		$deprecated_objects = $deprecated->get_theme_objects();
-		$objects            = array_merge( $objects, $deprecated_objects );
-
-		/**
-		 * Default available objects, that are loaded into Clarkson as basic neccesities.
-		 *
-		 * @hook clarkson_available_objects
-		 * @since 0.1.0
-		 * @deprecated Clarkson Core >= 0.2.0 autoloads the neccessery objects.
-		 * @param {string[]} $objects Class names to load.
-		 * @return {string} Class names for Clarkson Core to load by default.
-		 */
-		$objects = apply_filters( 'clarkson_available_objects', $objects );
-
 		$this->objects = $objects;
 	}
 
@@ -248,7 +196,7 @@ class Clarkson_Core_Objects {
 	 *
 	 * @return Clarkson_Core_Objects
 	 */
-	public static function get_instance() {
+	public static function get_instance(): \Clarkson_Core_Objects {
 		static $instance = null;
 
 		if ( null === $instance ) {

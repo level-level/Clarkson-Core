@@ -32,19 +32,6 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 	/**
 	 * @depends test_can_get_instance
 	 */
-	public function test_can_get_object_with_fallback( $cc_objects ) {
-		$post     = Mockery::mock( '\WP_Post' );
-		$post->ID = 1;
-		\WP_Mock::userFunction( 'get_post' )->andReturn( $post );
-		\WP_Mock::userFunction( '_doing_it_wrong' );
-		\WP_Mock::userFunction( 'get_post_type', 'post' );
-		\WP_Mock::userFunction( 'get_page_template_slug', '' );
-		$this->assertInstanceOf( \Clarkson_Object::class, $cc_objects->get_object( 1 ) );
-	}
-
-	/**
-	 * @depends test_can_get_instance
-	 */
 	public function test_can_get_object_with_class_creation_overwrite( $cc_objects ) {
 		$post     = Mockery::mock( '\WP_Post' );
 		$post->ID = 1;
@@ -58,10 +45,9 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 		->reply( $creation_callback );
 
 		\WP_Mock::userFunction( 'get_post' )->andReturn( $post );
-		\WP_Mock::userFunction( '_doing_it_wrong' );
 		\WP_Mock::userFunction( 'get_post_type', 'post' );
 		\WP_Mock::userFunction( 'get_page_template_slug', '' );
-		$this->assertInstanceOf( \Clarkson_Object::class, $cc_objects->get_object( 1 ) );
+		$this->assertInstanceOf( \Clarkson_Object::class, $cc_objects->get_object( $post ) );
 	}
 
 	/**
@@ -93,15 +79,6 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 	/**
 	 * @depends test_can_get_instance
 	 */
-	public function test_can_get_term_invalid( $cc_objects ) {
-		\WP_Mock::userFunction( '_doing_it_wrong' );
-		$this->expectException( '\Exception' );
-		$cc_objects->get_term( 'not_a_valid_term' );
-	}
-
-	/**
-	 * @depends test_can_get_instance
-	 */
 	public function test_can_get_term_cast_to_custom_object( $cc_objects ) {
 		$term           = Mockery::mock( '\WP_Term' );
 		$term->term_id  = 1;
@@ -126,57 +103,6 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 	/**
 	 * @depends test_can_get_instance
 	 */
-	public function test_can_get_users_with_id_fallback( $cc_objects ) {
-		$user        = Mockery::mock( '\WP_User' );
-		$user->roles = array( 'administrator' );
-		\WP_Mock::userFunction( '_doing_it_wrong' );
-		\WP_Mock::userFunction( 'get_userdata' )->with( 1 )->andReturn( $user );
-		$this->assertContainsOnlyInstancesOf( \Clarkson_User::class, $cc_objects->get_users( array( 1 ) ) );
-	}
-
-	/**
-	 * @depends test_can_get_instance
-	 */
-	public function test_throw_get_users_with_invalid_user_id( $cc_objects ) {
-		$this->expectException( '\Exception' );
-		\WP_Mock::userFunction( '_doing_it_wrong' );
-		\WP_Mock::userFunction( 'get_userdata' )->with( -1 )->andReturn( false );
-		$this->assertContainsOnlyInstancesOf( \Clarkson_User::class, $cc_objects->get_users( array( -1 ) ) );
-	}
-
-	/**
-	 * @depends test_can_get_instance
-	 */
-	public function test_can_get_user_with_id_fallback( $cc_objects ) {
-		$user        = Mockery::mock( '\WP_User' );
-		$user->roles = array( 'administrator' );
-		\WP_Mock::userFunction( '_doing_it_wrong' );
-		\WP_Mock::userFunction( 'get_userdata' )->with( 1 )->andReturn( $user );
-		$this->assertInstanceOf( \Clarkson_User::class, $cc_objects->get_user( 1 ) );
-	}
-
-	/**
-	 * @depends test_can_get_instance
-	 */
-	public function test_throw_get_user_with_invalid( $cc_objects ) {
-		$this->expectException( '\Exception' );
-		\WP_Mock::userFunction( '_doing_it_wrong' );
-		\WP_Mock::userFunction( 'get_userdata' )->with( -1 )->andReturn( false );
-		$this->assertInstanceOf( \Clarkson_User::class, $cc_objects->get_user( -1 ) );
-	}
-
-	/**
-	 * @depends test_can_get_instance
-	 */
-	public function test_throw_get_user_with_empty( $cc_objects ) {
-		$this->expectException( '\Exception' );
-		\WP_Mock::userFunction( '_doing_it_wrong' );
-		$this->assertInstanceOf( \Clarkson_User::class, $cc_objects->get_user( '' ) );
-	}
-
-	/**
-	 * @depends test_can_get_instance
-	 */
 	public function test_casts_user_to_custom_object( $cc_objects ) {
 		$user        = Mockery::mock( '\WP_User' );
 		$user->roles = array( 'test_role' );
@@ -184,12 +110,5 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 		$cc                         = Clarkson_Core::get_instance();
 		$cc->autoloader->user_types = array( 'user_test_role' );
 		$this->assertInstanceOf( \user_test_role::class, $cc_objects->get_user( $user ) );
-	}
-
-	/**
-	 * @depends test_can_get_instance
-	 */
-	public function test_can_get_available_objects( $cc_objects ) {
-		$this->assertIsArray( $cc_objects->available_objects() );
 	}
 }

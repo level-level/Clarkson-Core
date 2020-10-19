@@ -38,6 +38,7 @@ Backward incompatible changes:
 * Themes that relied on incorrect loading of template files may experience some incompatibility.
 * Removes `Clarkson_Object::get_json`, which was deprecated in `0.2.0`.
 * The `Clarkson_Term` and `Clarkson_User` interfaces have changed, and you might now get an Exception, instead of an invalid object.
+* Removes deprecated features everywhere except for wordpress-objects/
 
 = 0.4.2 - August 19, 2019 =
 
