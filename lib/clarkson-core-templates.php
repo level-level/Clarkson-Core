@@ -36,13 +36,6 @@ class Clarkson_Core_Templates {
 	);
 
 	/**
-	 * Define Templates.
-	 *
-	 * @var array $templates Templates.
-	 */
-	protected $templates = array();
-
-	/**
 	 * Define has_been_called
 	 *
 	 * @var bool $has_been_called Check if template rendering has already been called.
