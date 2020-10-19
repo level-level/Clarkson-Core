@@ -217,21 +217,6 @@ class Clarkson_Core_Objects {
 			'Clarkson_User'   => '',
 		);
 
-		$deprecated         = Clarkson_Core_Deprecated::get_instance();
-		$deprecated_objects = $deprecated->get_theme_objects();
-		$objects            = array_merge( $objects, $deprecated_objects );
-
-		/**
-		 * Default available objects, that are loaded into Clarkson as basic neccesities.
-		 *
-		 * @hook clarkson_available_objects
-		 * @since 0.1.0
-		 * @deprecated Clarkson Core >= 0.2.0 autoloads the neccessery objects.
-		 * @param {string[]} $objects Class names to load.
-		 * @return {string} Class names for Clarkson Core to load by default.
-		 */
-		$objects = apply_filters( 'clarkson_available_objects', $objects );
-
 		$this->objects = $objects;
 	}
 
