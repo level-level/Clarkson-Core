@@ -1,9 +1,9 @@
 === Clarkson Core ===
 Contributors: level level, jmslbam
 Tags: twig, templating, template engine, templates, oop, wordpress objects
-Requires at least: 4.0
+Requires at least: 4.7
 Tested up to: 4.9.4
-Stable tag: 0.4.2
+Stable tag: 1.0.0
 License: GPL v2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,23 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 
 
 == Changelog ==
+
+= 1.0.0 =
+
+* Now uses the actual WordPress template hierarchy, solving a lot of edge cases around template loading.
+* The twig environment is exposed through the new `clarkson_twig_environment` filter.
+* Normalises the `Clarkson_User` and `Clarkson_Term` object creation interfaces.
+* Minor docblock typehint improvements in `Clarkson_Object`.
+* Extends parameters available in `Clarkson_Core_Gutenberg_Block_Type::clarkson_render_callback`
+* `Clarkson_Object` has a new `get_object()` method.
+* 
+
+Backward incompatible changes:
+* Removes compatibility for WordPress < 4.7.
+* Removes 'page-' template file name compatibility.
+* Themes that relied on incorrect loading of template files may experience some incompatibility.
+* Removes `Clarkson_Object::get_json`, which was deprecated in `0.2.0`.
+* The `Clarkson_Term` and `Clarkson_User` interfaces have changed, and you might now get an Exception, instead of an invalid object.
 
 = 0.4.2 - August 19, 2019 =
 
