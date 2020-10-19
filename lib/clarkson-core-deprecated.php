@@ -82,9 +82,7 @@ class Clarkson_Core_Deprecated {
 	 * @internal
 	 */
 	public function get_map_deprecated_filters() {
-		return array(
-			'clarkson_twig_functions' => 'yalla_twig_functions',
-		);
+		return array();
 	}
 
 	/**
