@@ -298,7 +298,7 @@ class Clarkson_Core_Templates {
 		$templates      = $choices;
 		$page_templates = array();
 		foreach ( $this->get_template_files() as $name => $path ) {
-			if ( preg_match( '#^template-#i', $name ) === 1 && 'template' !== $name ) {
+			if ( preg_match( '#^template-#i', $name ) === 1 ) {
 				$name                                = str_replace( 'template-', '', $name );
 				$name                                = str_replace( '-', ' ', $name );
 				$name                                = ucwords( $name );
