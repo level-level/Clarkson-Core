@@ -72,7 +72,7 @@ class Clarkson_User {
 		if ( $user instanceof \WP_User ) {
 			$this->_user = $user;
 		} else {
-			_doing_it_wrong( __METHOD__, 'Deprecated __construct called with an ID. Supply a \WP_User object or use \'::get(user_id)\' instead.', '0.5.0' );
+			_doing_it_wrong( __METHOD__, 'Deprecated __construct called with an ID. Supply a \WP_User object or use \'::get(user_id)\' instead.', '1.0.0' );
 			if ( empty( $user ) ) {
 				throw new Exception( $user . ' empty' );
 			}

@@ -63,7 +63,7 @@ class Clarkson_Core_Objects {
 
 		foreach ( $users as $user ) {
 			if ( ! $user instanceof \WP_User ) {
-				_doing_it_wrong( __METHOD__, 'Deprecated get_user called with an ID. Supply a \WP_User object or use \'Clarkson_User::get(user_id)\' instead.', '0.5.0' );
+				_doing_it_wrong( __METHOD__, 'Deprecated get_user called with an ID. Supply a \WP_User object or use \'Clarkson_User::get(user_id)\' instead.', '1.0.0' );
 				$user_id = $user;
 				$user    = get_userdata( $user_id );
 				if ( ! $user instanceof \WP_User ) {
@@ -85,7 +85,7 @@ class Clarkson_Core_Objects {
 	 */
 	public function get_user( $user ) {
 		if ( ! $user instanceof \WP_User ) {
-			_doing_it_wrong( __METHOD__, 'Deprecated get_user called with an ID. Supply a \WP_User object or use \'Clarkson_User::get(user_id)\' instead.', '0.5.0' );
+			_doing_it_wrong( __METHOD__, 'Deprecated get_user called with an ID. Supply a \WP_User object or use \'Clarkson_User::get(user_id)\' instead.', '1.0.0' );
 			$user_id = $user;
 			if ( empty( $user_id ) ) {
 				throw new Exception( $user_id . ' does not exist' );
@@ -137,7 +137,7 @@ class Clarkson_Core_Objects {
 	 */
 	public function get_object( $post ) {
 		if ( ! $post instanceof WP_Post && is_int( (int) $post ) ) {
-			_doing_it_wrong( __METHOD__, 'Deprecated calling of get_object with an ID. Use a `WP_Post` instead', '0.5.0' );
+			_doing_it_wrong( __METHOD__, 'Deprecated calling of get_object with an ID. Use a `WP_Post` instead', '1.0.0' );
 			$post = get_post( $post );
 		}
 
