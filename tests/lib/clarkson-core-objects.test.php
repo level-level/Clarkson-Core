@@ -185,11 +185,4 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 		$cc->autoloader->user_types = array( 'user_test_role' );
 		$this->assertInstanceOf( \user_test_role::class, $cc_objects->get_user( $user ) );
 	}
-
-	/**
-	 * @depends test_can_get_instance
-	 */
-	public function test_can_get_available_objects( $cc_objects ) {
-		$this->assertIsArray( $cc_objects->available_objects() );
-	}
 }
