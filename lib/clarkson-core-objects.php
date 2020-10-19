@@ -25,7 +25,7 @@ class Clarkson_Core_Objects {
 	 *
 	 * @return \Clarkson_Term
 	 */
-	public function get_term( \WP_Term $term ) {
+	public function get_term( \WP_Term $term ): \Clarkson_Term {
 		$cc         = Clarkson_Core::get_instance();
 		$class_name = $cc->autoloader->sanitize_object_name( $term->taxonomy );
 
@@ -46,6 +46,9 @@ class Clarkson_Core_Objects {
 		$user_objects = array();
 
 		foreach ( $users as $user ) {
+			if ( ! $user instanceof \WP_User ) {
+				continue;
+			}
 			$user_objects[] = $this->get_user( $user );
 		}
 
@@ -59,7 +62,7 @@ class Clarkson_Core_Objects {
 	 *
 	 * @return \Clarkson_User
 	 */
-	public function get_user( \WP_User $user ) {
+	public function get_user( \WP_User $user ): \Clarkson_User {
 		$cc         = Clarkson_Core::get_instance();
 		$class_name = false;
 
@@ -100,7 +103,7 @@ class Clarkson_Core_Objects {
 	 *
 	 * @return \Clarkson_Object Clarkson Post object.
 	 */
-	public function get_object( \WP_Post $post ) {
+	public function get_object( \WP_Post $post ): \Clarkson_Object {
 		$cc = Clarkson_Core::get_instance();
 
 		// defaults to post type.
@@ -193,7 +196,7 @@ class Clarkson_Core_Objects {
 	 *
 	 * @return Clarkson_Core_Objects
 	 */
-	public static function get_instance() {
+	public static function get_instance(): \Clarkson_Core_Objects {
 		static $instance = null;
 
 		if ( null === $instance ) {
