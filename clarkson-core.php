@@ -99,26 +99,6 @@ class Clarkson_Core {
 		}
 
 		$this->autoloader = new Clarkson_Core_Autoloader();
-
-		/**
-		 * Used to migrate a theme from Clarkson Core 0.1.x to 0.2.x.
-		 *
-		 * @hook clarkson_core_autoload_theme_pre_020
-		 * @since 0.2.0
-		 * @param {bool} false
-		 * @return {bool} Autoload theme files the way Clarkson Core 0.1.0 did.
-		 * @see https://github.com/level-level/Clarkson-Core/pull/76
-		 *
-		 * @example
-		 * <?php // pre-autoload.php (requires level-level/ll-plugin-autoloader >= 0.2.1)
-		 * add_filter( 'clarkson_core_autoload_theme_pre_020' , '__return_true' );
-		 */
-		if ( apply_filters( 'clarkson_core_autoload_theme_pre_020', false ) ) {
-			// Autoload theme files the way CC ^0.1.0 did (triggers deprecated warning).
-			$deprecated = Clarkson_Core_Deprecated::get_instance();
-			$deprecated->auto_load_theme();
-		}
-
 	}
 
 	/**

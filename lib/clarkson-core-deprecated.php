@@ -126,64 +126,6 @@ class Clarkson_Core_Deprecated {
 	}
 
 	/**
-	 * Set directories for auto load files by path.
-	 *
-	 * @internal
-	 */
-	public function auto_load_theme() {
-		$dirs = array(
-			'functions',
-			'post-types', // Default location of WP-CLI export.
-			'taxonomies',  // Default location of WP-CLI export.
-		);
-
-		/**
-		 * @hook clarkson_core_autoload_dirs
-		 * @since 0.1.0
-		 * @deprecated This method of loading objects is no longer used, unless the clarkson_core_autoload_theme_pre_020 filter is enabled.
-		 * @param {string[]} $dirs Directories to load alle files from.
-		 * @return {string[]} Directories that all files should be automatically loaded from.
-		 */
-		$dirs = apply_filters( 'clarkson_core_autoload_dirs', $dirs );
-
-		// Current Theme Dir.
-		$theme_dir = get_template_directory();
-
-		foreach ( $dirs as $dir ) {
-			$this->load_php_files_from_path( $theme_dir . "/{$dir}" );
-		}
-
-	}
-
-	/**
-	 * Load PHP files from path.
-	 *
-	 * @param string|bool $path File path.
-	 */
-	private function load_php_files_from_path( $path = false ) {
-
-		if ( ! $path || ! is_string( $path ) || ! file_exists( $path ) ) {
-			return;
-		}
-
-		$files = glob( "{$path}/*.php" );
-		$dirs  = array_filter( glob( "{$path}/*", GLOB_ONLYDIR ), 'is_dir' );
-
-		foreach ( $dirs as $dir ) {
-			$this->load_php_files_from_path( $dir );
-		}
-
-		if ( empty( $files ) ) {
-			return;
-		}
-
-		foreach ( $files as $filepath ) {
-			require_once $filepath;
-		}
-
-	}
-
-	/**
 	 * Get objects from path.
 	 *
 	 * @param string $path File path.
