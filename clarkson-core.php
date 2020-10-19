@@ -37,11 +37,6 @@ class Clarkson_Core {
 	 * @internal
 	 */
 	public function init() {
-		// Deprecated functions and filters.
-		if ( class_exists( 'Clarkson_Core_Deprecated' ) ) {
-			Clarkson_Core_Deprecated::get_instance();
-		}
-
 		// Load post objects.
 		if ( class_exists( 'Clarkson_Core_Objects' ) ) {
 			Clarkson_Core_Objects::get_instance();
