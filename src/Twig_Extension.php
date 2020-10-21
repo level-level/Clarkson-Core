@@ -1000,6 +1000,7 @@ class Twig_Extension extends \Twig_Extension {
 	 * Add an allowed function to Twig function.
 	 *
 	 * @param string $function Twig function name.
+	 * @return void
 	 */
 	public function allowFunction( $function ) {
 		$this->functions[] = $function;
@@ -1009,6 +1010,7 @@ class Twig_Extension extends \Twig_Extension {
 	 * Set allowd functions allowed in Twig.
 	 *
 	 * @param array $functions Allowed Twig functions.
+	 * @return void
 	 */
 	public function allowFunctions( array $functions ) {
 		$this->functions = $functions;

@@ -25,14 +25,6 @@ class ClarksonObjectTest extends \WP_Mock\Tools\TestCase {
 		return $object;
 	}
 
-	public function test_can_construct_an_object_with_id() {
-		$post     = Mockery::mock( '\WP_Post' );
-		$post->ID = self::POST_ID;
-		\WP_Mock::userFunction( '_doing_it_wrong' );
-		\WP_Mock::userFunction( 'get_post' )->andReturn( $post );
-		new Clarkson_Object( self::POST_ID );
-	}
-
 	/**
 	 * @depends test_can_construct_an_object
 	 */

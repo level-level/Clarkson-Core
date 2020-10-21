@@ -36,7 +36,10 @@ class Objects {
 		$class_name = $cc->autoloader->sanitize_object_name( $term->taxonomy );
 
 		if ( in_array( $class_name, $cc->autoloader->taxonomies, true ) && class_exists( $class_name ) ) {
-			return new $class_name( $term );
+			$term_object = new $class_name( $term );
+			if($term_object instanceof Clarkson_Term){
+				return $term_object;
+			}
 		}
 		return new Clarkson_Term( $term );
 	}
@@ -52,9 +55,6 @@ class Objects {
 		$user_objects = array();
 
 		foreach ( $users as $user ) {
-			if ( ! $user instanceof \WP_User ) {
-				continue;
-			}
 			$user_objects[] = $this->get_user( $user );
 		}
 
@@ -80,7 +80,10 @@ class Objects {
 		}
 
 		if ( $class_name && in_array( $class_name, $cc->autoloader->user_types, true ) && class_exists( $class_name ) ) {
-			return new $class_name( $user );
+			$user_object = new $class_name( $user );
+			if($user_object instanceof Clarkson_User){
+				return $user_object;
+			}
 		}
 		return new Clarkson_User( $user );
 	}
@@ -120,6 +123,10 @@ class Objects {
 
 		if ( ! empty( $page_template_slug ) ) {
 			$type = $page_template_slug;
+		}
+
+		if(empty($type)){
+			$type = '';
 		}
 
 		$type = $cc->autoloader->sanitize_object_name( $type );
@@ -164,14 +171,19 @@ class Objects {
 		 *  return $type;
 		 * } );
 		 */
-		//
 		$object_creation_callback = apply_filters( 'clarkson_core_create_object_callback', false, $type, $post->ID );
-		if ( ! empty( $object_creation_callback ) ) {
-			return $object_creation_callback( $post->ID );
+		if ( is_callable( $object_creation_callback ) ) {
+			$clarkson_object = call_user_func_array( $object_creation_callback, array( $post->ID ) );
+			if($clarkson_object instanceof Clarkson_Object){
+				return $clarkson_object;
+			}
 		}
 
 		if ( ( in_array( $type, $cc->autoloader->post_types, true ) || in_array( $type, $cc->autoloader->extra, true ) ) && class_exists( $type ) ) {
-			return new $type( $post );
+			$clarkson_object = new $type( $post );
+			if($clarkson_object instanceof Clarkson_Object){
+				return $clarkson_object;
+			}
 		}
 		return new Clarkson_Object( $post );
 	}
@@ -179,7 +191,7 @@ class Objects {
 	/**
 	 * Register objects.
 	 */
-	private function register_objects() {
+	private function register_objects():void {
 		$objects = array(
 			'Clarkson_Object' => '',
 			'Clarkson_Term'   => '',
@@ -193,9 +205,9 @@ class Objects {
 	/**
 	 * Singleton.
 	 *
-	 * @var object $instance The Clarkson core objects.
+	 * @var null|\Clarkson_Core\Objects $instance The Clarkson core objects.
 	 */
-	protected $instance = null;
+	protected static $instance;
 
 	/**
 	 * Get the instance.
@@ -203,13 +215,11 @@ class Objects {
 	 * @return \Clarkson_Core\Objects
 	 */
 	public static function get_instance(): \Clarkson_Core\Objects {
-		static $instance = null;
-
-		if ( null === $instance ) {
-			$instance = new self();
+		if ( null === self::$instance ) {
+			self::$instance = new self();
 		}
 
-		return $instance;
+		return self::$instance;
 	}
 
 	/**

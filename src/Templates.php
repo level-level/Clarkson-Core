@@ -61,7 +61,7 @@ class Templates {
 	 * @param bool   $ignore_warning Ignore multiple render warning.
 	 * @internal
 	 */
-	public function render( $path, $objects, $ignore_warning = false ) {
+	public function render( $path, $objects, $ignore_warning = false ):void {
 		$this->echo_twig( $path, $objects, $ignore_warning );
 		exit();
 	}
@@ -166,7 +166,7 @@ class Templates {
 	 * @param array  $objects        Post objects.
 	 * @param bool   $ignore_warning Ignore multiple render warning.
 	 */
-	public function echo_twig( $template_file, $objects, $ignore_warning = false ) {
+	public function echo_twig( $template_file, $objects, $ignore_warning = false ):void {
 		echo $this->render_twig( $template_file, $objects, $ignore_warning );
 	}
 
@@ -175,7 +175,7 @@ class Templates {
 	 *
 	 * This takes notices of the child / parent hierarchy, so that's why the child theme gets searched first and then the parent theme, just like the regular WordPress templating hierarchy.
 	 */
-	public function get_templates_dirs() {
+	public function get_templates_dirs():array {
 		$template_dirs = array(
 			$this->get_stylesheet_dir(),
 			$this->get_template_dir(),
@@ -215,7 +215,7 @@ class Templates {
 	/**
 	 * Retrieves the parent theme directory Clarkson Core is using to find templates.
 	 */
-	public function get_template_dir() {
+	public function get_template_dir():string {
 		/**
 		 * Modify the template directory path.
 		 *
@@ -230,13 +230,13 @@ class Templates {
 		 *  return get_template_directory() . '/twig_templates';
 		 * } );
 		 */
-		return realpath( apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' ) );
+		return (string) realpath( apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' ) );
 	}
 
 	/**
 	 * Gets the stylesheet directory Clarkson Core is using to find twig templates.
 	 */
-	public function get_stylesheet_dir() {
+	public function get_stylesheet_dir():string {
 		/**
 		 * Modify the template directory path for the stylesheet directory.
 		 *
@@ -251,7 +251,7 @@ class Templates {
 		 *  return get_stylesheet_directory() . '/twig_templates';
 		 * } );
 		 */
-		return realpath( apply_filters( 'clarkson_twig_stylesheet_dir', get_stylesheet_directory() . '/templates' ) );
+		return (string) realpath( apply_filters( 'clarkson_twig_stylesheet_dir', get_stylesheet_directory() . '/templates' ) );
 	}
 
 	/**
@@ -298,12 +298,12 @@ class Templates {
 	 *
 	 * @param array $choices Choices.
 	 *
-	 * @return array|bool|mixed
+	 * @return array
 	 * @internal
 	 */
 	public function get_templates( $choices = array() ) {
 		$templates = wp_cache_get( 'templates', 'clarkson_core' );
-		if ( $templates ) {
+		if ( is_array($templates) ) {
 			return $templates;
 		}
 		$templates      = $choices;
@@ -365,7 +365,7 @@ class Templates {
 	/**
 	 * Add template filters.
 	 */
-	private function get_template_files() {
+	private function get_template_files():array {
 		// Get template files.
 		$template_paths = $this->get_templates_dirs();
 
@@ -398,8 +398,8 @@ class Templates {
 	 *
 	 * @return array
 	 */
-	private function get_templates_from_path( $path ) {
-		if ( ! $path || ! is_string( $path ) || ! file_exists( $path ) ) {
+	private function get_templates_from_path( string $path ) {
+		if ( ! $path || ! file_exists( $path ) ) {
 			return array();
 		}
 		$files = glob( "{$path}/template-*.twig" );
@@ -429,7 +429,7 @@ class Templates {
 		return $instance;
 	}
 
-	public function add_twig_to_template_hierarchy( array $original_templates ) {
+	public function add_twig_to_template_hierarchy( array $original_templates ):array {
 		$templates = array();
 
 		$directories = array_unique(
@@ -493,7 +493,9 @@ class Templates {
 				$post_types = array_merge( $custom_post_types, $builtin_post_types );
 
 				foreach ( $post_types as $post_type ) {
-					add_filter( 'theme_' . $post_type . '_templates', array( $this, 'add_new_template' ), 10, 4 );
+					if(is_string($post_type)){
+						add_filter( 'theme_' . $post_type . '_templates', array( $this, 'add_new_template' ), 10, 4 );
+					}
 				}
 			}
 		);

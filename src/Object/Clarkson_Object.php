@@ -53,27 +53,9 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Clarkson_Object constructor.
 	 *
 	 * @param \WP_Post $post Post object.
-	 *
-	 * @throws \Exception    Error message.
 	 */
-	public function __construct( $post ) {
-		if ( is_a( $post, 'WP_Post' ) ) {
-			$this->_post = $post;
-		} else {
-			_doing_it_wrong( __METHOD__, 'Deprecated __construct called with an ID. Use \'::get(post)\' instead.', '0.2.0' );
-
-			if ( empty( $post ) ) {
-				throw new \Exception( '$post empty' );
-			}
-
-			$post_object = get_post( $post );
-			if ( ! $post_object instanceof \WP_Post ) {
-				throw new \Exception( '$post empty' );
-			}
-
-			$this->_post = $post_object;
-
-		}
+	public function __construct( \WP_Post $post ) {
+		$this->_post = $post;
 	}
 
 	/**
@@ -92,7 +74,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get the WordPress post object.
 	 *
-	 * @return null|\WP_Post The post object.
+	 * @return \WP_Post The post object.
 	 */
 	public function get_object(): ?\WP_Post {
 		return $this->_post;
@@ -161,15 +143,6 @@ class Clarkson_Object implements \JsonSerializable {
 		$args['posts_per_page'] = 1;
 		$one                    = static::get_many( $args );
 		return array_shift( $one );
-	}
-
-	/**
-	 * Refresh post data, clear cache.
-	 * @internal
-	 */
-	public function _refresh_data() {
-		clean_post_cache( $this->_post->ID );
-		$this->_post = get_post( $this->_post->ID );
 	}
 
 	/**
@@ -274,7 +247,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param int $time PHP timestamp.
 	 */
-	public function set_date( $time ) {
+	public function set_date( $time ): void {
 		$this->_post->post_date = date( 'Y-m-d H:i:s', $time );
 
 		wp_update_post(
@@ -349,7 +322,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Delete post.
 	 */
-	public function delete() {
+	public function delete():void {
 		wp_delete_post( $this->get_id(), true );
 	}
 
@@ -379,11 +352,11 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @return string
 	 */
 	public function get_content() {
+		global $post;
 		if ( ! isset( $this->_content ) ) {
 			setup_postdata( $this->_post );
 
 			// Post stays empty when wp_query 404 is set, resulting in a warning from the_content.
-			global $post;
 			if ( null === $post ) {
 				$post = $this->_post;
 			}
@@ -455,8 +428,8 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @return string
 	 */
 	public function get_excerpt() {
+		global $post;
 		if ( ! isset( $this->_excerpt ) ) {
-			global $post;
 			if ( ! empty( $post ) ) {
 				$oldpost = clone $post;
 			} else {
@@ -471,13 +444,6 @@ class Clarkson_Object implements \JsonSerializable {
 			$post = $oldpost; // Reset global post.
 		}
 		return $this->_excerpt;
-	}
-
-	/**
-	 * Get document count.
-	 * @internal
-	 */
-	public function get_comment_count() {
 	}
 
 	/**
@@ -503,7 +469,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param string $status New post status.
 	 */
-	public function set_status( $status ) {
+	public function set_status( $status ): void {
 		$this->_post->post_status = $status;
 
 		wp_update_post(
@@ -555,7 +521,7 @@ class Clarkson_Object implements \JsonSerializable {
 	public function get_terms( $taxonomy, $args = array() ) {
 		$terms = wp_get_post_terms( $this->get_id(), $taxonomy, $args );
 
-		if ( is_wp_error( $terms ) ) {
+		if ( $terms instanceof \WP_Error ) {
 			user_error( esc_html( $terms->get_error_message() ) );
 			return $terms;
 		}
@@ -666,6 +632,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * We can't just return $this->_post, because these values will only return raw unfiltered data.
 	 */
 	public function jsonSerialize() {
+		$data = array();
 		$data['id']        = $this->get_id();
 		$data['link']      = $this->get_permalink();
 		$data['slug']      = $this->get_post_name();
@@ -680,10 +647,11 @@ class Clarkson_Object implements \JsonSerializable {
 		$data['author'] = null;
 
 		$author_id = $this->get_author_id();
-		if ( ! empty( $author_id ) ) {
+		$author = $this->get_author();
+		if ( ! empty( $author_id ) && $author ) {
 			$data['author'] = array(
 				'id'           => $author_id,
-				'display_name' => $this->get_author()->get_display_name(),
+				'display_name' => $author->get_display_name(),
 			);
 		}
 

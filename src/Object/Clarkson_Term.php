@@ -23,9 +23,9 @@ class Clarkson_Term {
 	/**
 	 * Clarkson_Term provides extra functions to retrieve term and taxonomy data.
 	 *
-	 * @var null
+	 * @var string
 	 */
-	protected static $taxonomy = null;
+	protected static $taxonomy = '';
 
 	/**
 	 * Get term by name.
@@ -251,7 +251,7 @@ class Clarkson_Term {
 	 *
 	 * @param string $name New term name.
 	 */
-	public function set_name( $name ) {
+	public function set_name( $name ):void {
 		wp_update_term(
 			$this->get_id(),
 			$this->get_taxonomy(),

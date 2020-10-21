@@ -77,7 +77,7 @@ class Autoloader {
 	 *
 	 * @return string Sanitized object name.
 	 */
-	public function sanitize_object_name( $str ) {
+	public function sanitize_object_name( $str ):string {
 
 		$str = trim( $str );
 
@@ -101,7 +101,7 @@ class Autoloader {
 	 * @param string $post_type Post type.
 	 * @internal
 	 */
-	public function registered_post_type( $post_type ) {
+	public function registered_post_type( $post_type ):void {
 		$this->post_types[ $this->sanitize_object_name( $post_type ) ] = $this->sanitize_object_name( $post_type );
 	}
 
@@ -111,7 +111,7 @@ class Autoloader {
 	 * @param string $taxonomy Taxonomy name.
 	 * @internal
 	 */
-	public function registered_taxonomy( $taxonomy ) {
+	public function registered_taxonomy( $taxonomy ):void {
 		$this->taxonomies[ $this->sanitize_object_name( $taxonomy ) ] = $this->sanitize_object_name( $taxonomy );
 	}
 
@@ -125,13 +125,13 @@ class Autoloader {
 	 *
 	 * @return string
 	 */
-	public function get_template_filename( $post_id ) {
+	public function get_template_filename( $post_id ):string {
 		$page_template_slug = get_page_template_slug( $post_id );
 		$filename           = '';
 
 		if ( ! empty( $page_template_slug ) ) {
 			$pathinfo = pathinfo( $page_template_slug );
-			$filename = array_key_exists( 'filename', $pathinfo ) ? $pathinfo['filename'] : '';
+			$filename = array_key_exists( 'filename', $pathinfo ) ? (string) $pathinfo['filename'] : '';
 		}
 		return $filename;
 	}
@@ -140,7 +140,7 @@ class Autoloader {
 	 * Fill $extra variable with the current custom template
 	 * @internal
 	 */
-	public function load_template_objects() {
+	public function load_template_objects():void {
 		$template_name = $this->get_template_filename( get_queried_object_id() );
 
 		if ( $template_name && ! empty( $template_name ) ) {
@@ -176,7 +176,7 @@ class Autoloader {
 	 * Register user types.
 	 * @internal
 	 */
-	public function register_user_types() {
+	public function register_user_types():void {
 		global $wp_roles;
 
 		// Default is 'user'.
@@ -196,7 +196,7 @@ class Autoloader {
 	 * @param string $classname Class name.
 	 * @internal
 	 */
-	protected function load_wordpress_objects( $classname ) {
+	protected function load_wordpress_objects( $classname ):void {
 		$type = $this->sanitize_object_name( $classname );
 
 		// This is faster than a class_exists check.

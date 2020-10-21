@@ -40,7 +40,7 @@ class Clarkson_Core {
 	 *
 	 * @internal
 	 */
-	public function init() {
+	public function init():void {
 		// Load post objects.
 		Objects::get_instance();
 
@@ -55,23 +55,19 @@ class Clarkson_Core {
 	/**
 	 * Define instance.
 	 *
-	 * @var Clarkson_Core
+	 * @var null|Clarkson_Core
 	 */
-	protected $instance = null;
+	protected static $instance = null;
 
 	/**
 	 * Setting up the class instance.
-	 *
-	 * @return Clarkson_Core
 	 */
-	public static function get_instance() {
-		static $instance = null;
-
-		if ( null === $instance ) {
-			$instance = new Clarkson_Core();
+	public static function get_instance(): Clarkson_Core {
+		if ( null === self::$instance ) {
+			self::$instance = new Clarkson_Core();
 		}
 
-		return $instance;
+		return self::$instance;
 	}
 
 	/**

@@ -12,7 +12,7 @@ class Template_Context {
 	/**
 	 * Register all hooks to add context to the template call.
 	 */
-	public function register_hooks() {
+	public function register_hooks():void {
 		add_filter( 'clarkson_core_template_context', array( $this, 'add_author' ), 10, 2 );
 		add_filter( 'clarkson_core_template_context', array( $this, 'add_term' ), 10, 2 );
 		add_filter( 'clarkson_core_template_context', array( $this, 'add_search_count' ), 10, 2 );
