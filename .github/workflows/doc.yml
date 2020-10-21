@@ -27,7 +27,7 @@ jobs:
     - name: Run NPM CI
       uses: docker://uniplug/apigen:latest
       with:
-        args: "apigen generate -d out/phpdoc -s lib -s wordpress-objects --access-levels public -o"
+        args: "apigen generate -d out/phpdoc -s src --access-levels public -o"
 
     - name: Publish pages
       uses: maxheld83/ghpages@v0.2.1
