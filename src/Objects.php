@@ -29,7 +29,7 @@ class Objects {
 
 		if ( in_array( $class_name, $cc->autoloader->taxonomies, true ) && class_exists( $class_name ) ) {
 			$term_object = new $class_name( $term );
-			if($term_object instanceof Clarkson_Term){
+			if ( $term_object instanceof Clarkson_Term ) {
 				return $term_object;
 			}
 		}
@@ -73,7 +73,7 @@ class Objects {
 
 		if ( $class_name && in_array( $class_name, $cc->autoloader->user_types, true ) && class_exists( $class_name ) ) {
 			$user_object = new $class_name( $user );
-			if($user_object instanceof Clarkson_User){
+			if ( $user_object instanceof Clarkson_User ) {
 				return $user_object;
 			}
 		}
@@ -117,7 +117,7 @@ class Objects {
 			$type = $page_template_slug;
 		}
 
-		if(empty($type)){
+		if ( empty( $type ) ) {
 			$type = '';
 		}
 
@@ -166,14 +166,14 @@ class Objects {
 		$object_creation_callback = apply_filters( 'clarkson_core_create_object_callback', false, $type, $post->ID );
 		if ( is_callable( $object_creation_callback ) ) {
 			$clarkson_object = call_user_func_array( $object_creation_callback, array( $post->ID ) );
-			if($clarkson_object instanceof Clarkson_Object){
+			if ( $clarkson_object instanceof Clarkson_Object ) {
 				return $clarkson_object;
 			}
 		}
 
 		if ( ( in_array( $type, $cc->autoloader->post_types, true ) || in_array( $type, $cc->autoloader->extra, true ) ) && class_exists( $type ) ) {
 			$clarkson_object = new $type( $post );
-			if($clarkson_object instanceof Clarkson_Object){
+			if ( $clarkson_object instanceof Clarkson_Object ) {
 				return $clarkson_object;
 			}
 		}

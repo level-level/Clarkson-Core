@@ -109,7 +109,7 @@ class Block_Manager {
 		foreach ( $block_registry->get_all_registered() as $original_block ) {
 			$block_type     = $this->determine_block_type_class( $original_block );
 			$clarkson_block = new $block_type( $original_block->name, get_object_vars( $original_block ) );
-			if($clarkson_block instanceof WP_Block_Type){
+			if ( $clarkson_block instanceof WP_Block_Type ) {
 				$block_registry->unregister( $original_block );
 				$block_registry->register( $clarkson_block );
 			}

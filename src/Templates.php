@@ -303,7 +303,7 @@ class Templates {
 	 */
 	public function get_templates( $choices = array() ) {
 		$templates = wp_cache_get( 'templates', 'clarkson_core' );
-		if ( is_array($templates) ) {
+		if ( is_array( $templates ) ) {
 			return $templates;
 		}
 		$templates      = $choices;
@@ -489,7 +489,7 @@ class Templates {
 				$post_types = array_merge( $custom_post_types, $builtin_post_types );
 
 				foreach ( $post_types as $post_type ) {
-					if(is_string($post_type)){
+					if ( is_string( $post_type ) ) {
 						add_filter( 'theme_' . $post_type . '_templates', array( $this, 'add_new_template' ), 10, 4 );
 					}
 				}

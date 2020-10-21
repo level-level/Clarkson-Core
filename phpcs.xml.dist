@@ -2,7 +2,7 @@
 <ruleset name="clarkson_core">
  <description>Level Level Clarkson Core ruleset</description>
 
- <file>./lib</file>
+ <file>./src</file>
  <file>./tests</file>
  <file>./clarkson-core.php</file>
 

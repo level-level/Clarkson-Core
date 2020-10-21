@@ -632,7 +632,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * We can't just return $this->_post, because these values will only return raw unfiltered data.
 	 */
 	public function jsonSerialize() {
-		$data = array();
+		$data              = array();
 		$data['id']        = $this->get_id();
 		$data['link']      = $this->get_permalink();
 		$data['slug']      = $this->get_post_name();
@@ -647,7 +647,7 @@ class Clarkson_Object implements \JsonSerializable {
 		$data['author'] = null;
 
 		$author_id = $this->get_author_id();
-		$author = $this->get_author();
+		$author    = $this->get_author();
 		if ( ! empty( $author_id ) && $author ) {
 			$data['author'] = array(
 				'id'           => $author_id,
