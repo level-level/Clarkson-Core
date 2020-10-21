@@ -16,14 +16,6 @@ use Clarkson_Core\Object\Clarkson_User;
  * Objects.
  */
 class Objects {
-
-	/**
-	 * Clarkson Core Objects array.
-	 *
-	 * @var array $objects Clarkson_Core_Objects.
-	 */
-	protected $objects = array();
-
 	/**
 	 * Get term data.
 	 *
@@ -189,20 +181,6 @@ class Objects {
 	}
 
 	/**
-	 * Register objects.
-	 */
-	private function register_objects():void {
-		$objects = array(
-			'Clarkson_Object' => '',
-			'Clarkson_Term'   => '',
-			'Clarkson_User'   => '',
-		);
-
-		$this->objects = $objects;
-	}
-
-
-	/**
 	 * Singleton.
 	 *
 	 * @var null|\Clarkson_Core\Objects $instance The Clarkson core objects.
@@ -220,13 +198,6 @@ class Objects {
 		}
 
 		return self::$instance;
-	}
-
-	/**
-	 * \Clarkson_Core\Objects constructor.
-	 */
-	protected function __construct() {
-		$this->register_objects();
 	}
 
 	/**
