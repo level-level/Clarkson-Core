@@ -412,7 +412,7 @@ class Templates {
 	/**
 	 * Singleton.
 	 *
-	 * @var null instance Templates.
+	 * @var Templates|null instance Templates.
 	 */
 	protected static $instance = null;
 
