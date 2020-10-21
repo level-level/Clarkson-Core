@@ -5,11 +5,13 @@
  * @package CLARKSON\Lib
  */
 
+namespace Clarkson_Core;
+
 /**
- * Class Clarkson_Core_Twig_Extension.
+ * Class Clarkson_Core\Twig_Extension.
  * @internal
  */
-class Clarkson_Core_Twig_Extension extends Twig_Extension {
+class Twig_Extension extends \Twig_Extension {
 
 	/**
 	 * Twig functions.
@@ -950,7 +952,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 	);
 
 	/**
-	 * Clarkson_Core_Twig_Extension constructor.
+	 * Clarkson_Core\Twig_Extension constructor.
 	 *
 	 * @param array $functions WordPress functions.
 	 */
@@ -963,7 +965,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 	/**
 	 * Get the Twig functions.
 	 *
-	 * @return Twig_SimpleFunction[] $twig_functions Twig functions.
+	 * @return \Twig_SimpleFunction[] $twig_functions Twig functions.
 	 * @internal
 	 */
 	public function getFunctions() {
@@ -988,7 +990,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 		$allowed_functions = apply_filters( 'clarkson_twig_functions', $this->functions );
 
 		foreach ( $allowed_functions  as $function ) {
-			$twig_functions[] = new Twig_SimpleFunction( $function, $function );
+			$twig_functions[] = new \Twig_SimpleFunction( $function, $function );
 		}
 
 		return $twig_functions;

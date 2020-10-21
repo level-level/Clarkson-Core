@@ -5,12 +5,14 @@
  * @package CLARKSON\Lib
  */
 
+namespace Clarkson_Core;
+
 /**
- * Clarkson_Core_Autoloader class.
+ * Autoloader class.
  * Registers post types and taxonomies, users and WP Objects.
  * @internal
  */
-class Clarkson_Core_Autoloader {
+class Autoloader {
 	/**
 	 * Define Post types.
 	 *

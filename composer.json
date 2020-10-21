@@ -19,7 +19,9 @@
 		}
 	],
 	"autoload": {
-	  "classmap": ["wordpress-objects/", "lib/"]
+	  "psr-4": {
+		  "Clarkson_Core\\": "src/"
+	  }
 	},
 	"scripts": {
 		"fix" : [

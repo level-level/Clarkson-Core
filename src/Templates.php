@@ -5,10 +5,12 @@
  * @package CLARKSON\Lib
  */
 
+namespace Clarkson_Core;
+
 /**
  * Allows rendering of specific templates with Twig.
  */
-class Clarkson_Core_Templates {
+class Templates {
 	/**
 	 * The template types, are all seperate `get_query_template` can be called with.
 	 *
@@ -40,7 +42,7 @@ class Clarkson_Core_Templates {
 	 *
 	 * This object can be used if you want to remove any of the default add_filters.
 	 *
-	 * @var \Clarkson_Core_Template_Context
+	 * @var \Clarkson_Core\Template_Context
 	 */
 	public $template_context;
 
@@ -105,17 +107,17 @@ class Clarkson_Core_Templates {
 		 * } );
 		 */
 		$twig_args = apply_filters( 'clarkson_twig_args', $twig_args );
-		$twig_fs   = new Twig_Loader_Filesystem( $template_dirs );
-		$twig      = new Twig_Environment( $twig_fs, $twig_args );
+		$twig_fs   = new \Twig_Loader_Filesystem( $template_dirs );
+		$twig      = new \Twig_Environment( $twig_fs, $twig_args );
 
-		$twig->addExtension( new Clarkson_Core_Twig_Extension() );
-		$twig->addExtension( new Twig_Extensions_Extension_I18n() );
-		$twig->addExtension( new Twig_Extensions_Extension_Text() );
-		$twig->addExtension( new Twig_Extensions_Extension_Array() );
-		$twig->addExtension( new Twig_Extensions_Extension_Date() );
+		$twig->addExtension( new Twig_Extension() );
+		$twig->addExtension( new \Twig_Extensions_Extension_I18n() );
+		$twig->addExtension( new \Twig_Extensions_Extension_Text() );
+		$twig->addExtension( new \Twig_Extensions_Extension_Array() );
+		$twig->addExtension( new \Twig_Extensions_Extension_Date() );
 
 		if ( $debug ) {
-			$twig->addExtension( new Twig_Extension_Debug() );
+			$twig->addExtension( new \Twig_Extension_Debug() );
 		}
 
 		/**
@@ -410,19 +412,19 @@ class Clarkson_Core_Templates {
 	/**
 	 * Singleton.
 	 *
-	 * @var null instance Clarkson_Core_Templates.
+	 * @var null instance Templates.
 	 */
 	protected $instance = null;
 
 	/**
 	 * Get instance.
 	 *
-	 * @return Clarkson_Core_Templates
+	 * @return Templates
 	 */
 	public static function get_instance() {
 		static $instance = null;
 		if ( null === $instance ) {
-			$instance = new Clarkson_Core_Templates();
+			$instance = new Templates();
 		}
 		return $instance;
 	}
@@ -452,7 +454,6 @@ class Clarkson_Core_Templates {
 	 * Clarkson_Core_Templates constructor.
 	 */
 	protected function __construct() {
-		require_once __DIR__ . '/clarkson-core-template-context.php';
 		if ( ! class_exists( 'Clarkson_Core_Objects' ) ) {
 			return;
 		}
@@ -460,7 +461,7 @@ class Clarkson_Core_Templates {
 			add_filter( $template_type . '_template_hierarchy', array( $this, 'add_twig_to_template_hierarchy' ), 999 );
 		}
 
-		$this->template_context = new Clarkson_Core_Template_Context();
+		$this->template_context = new Template_Context();
 		$this->template_context->register_hooks();
 
 		add_action( 'template_include', array( $this, 'template_include' ) );

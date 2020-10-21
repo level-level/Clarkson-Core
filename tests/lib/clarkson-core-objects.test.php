@@ -1,5 +1,9 @@
 <?php
 
+use Clarkson_Core\Object\Clarkson_Object;
+use Clarkson_Core\Object\Clarkson_Term;
+use Clarkson_Core\Object\Clarkson_User;
+use Clarkson_Core\Objects;
 use WP_Mock\Functions;
 
 class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
@@ -13,8 +17,8 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 
 	public function test_can_get_instance() {
 		\WP_Mock::userFunction( 'get_template_directory', '/tmp/wp-content/themes/theme/' );
-		$cc_templates = \Clarkson_Core_Objects::get_instance();
-		$this->assertInstanceOf( \Clarkson_Core_Objects::class, $cc_templates );
+		$cc_templates = Objects::get_instance();
+		$this->assertInstanceOf( Objects::class, $cc_templates );
 		return $cc_templates;
 	}
 
@@ -26,7 +30,7 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 		$post->ID = 1;
 		\WP_Mock::userFunction( 'get_post_type', 'post' );
 		\WP_Mock::userFunction( 'get_page_template_slug', '' );
-		$this->assertContainsOnlyInstancesOf( \Clarkson_Object::class, $cc_objects->get_objects( array( $post ) ) );
+		$this->assertContainsOnlyInstancesOf( Clarkson_Object::class, $cc_objects->get_objects( array( $post ) ) );
 	}
 
 	/**
@@ -47,7 +51,7 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 		\WP_Mock::userFunction( 'get_post' )->andReturn( $post );
 		\WP_Mock::userFunction( 'get_post_type', 'post' );
 		\WP_Mock::userFunction( 'get_page_template_slug', '' );
-		$this->assertInstanceOf( \Clarkson_Object::class, $cc_objects->get_object( $post ) );
+		$this->assertInstanceOf( Clarkson_Object::class, $cc_objects->get_object( $post ) );
 	}
 
 	/**
@@ -73,7 +77,7 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 		$term->taxonomy = 'category';
 		\WP_Mock::userFunction( 'get_term_by' )->andReturn( $term );
 		\WP_Mock::userFunction( 'get_term' )->andReturn( $term );
-		$this->assertInstanceOf( \Clarkson_Term::class, $cc_objects->get_term( $term ) );
+		$this->assertInstanceOf( Clarkson_Term::class, $cc_objects->get_term( $term ) );
 	}
 
 	/**
@@ -97,7 +101,7 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 	public function test_can_get_users( $cc_objects ) {
 		$user        = Mockery::mock( '\WP_User' );
 		$user->roles = array( 'administrator' );
-		$this->assertContainsOnlyInstancesOf( \Clarkson_User::class, $cc_objects->get_users( array( $user ) ) );
+		$this->assertContainsOnlyInstancesOf( Clarkson_User::class, $cc_objects->get_users( array( $user ) ) );
 	}
 
 	/**

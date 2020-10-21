@@ -16,6 +16,11 @@
  * @author Level Level
  */
 
+use Clarkson_Core\Autoloader;
+use Clarkson_Core\Gutenberg\Block_Manager;
+use Clarkson_Core\Objects;
+use Clarkson_Core\Templates;
+
 /**
  * The main entry point, responsible for registering all objects and hooks.
  */
@@ -24,7 +29,7 @@ class Clarkson_Core {
 	/**
 	 * Container for autoloadable files.
 	 *
-	 * @var Clarkson_Core_Autoloader
+	 * @var Autoloader
 	 */
 	public $autoloader;
 
@@ -38,20 +43,14 @@ class Clarkson_Core {
 	 */
 	public function init() {
 		// Load post objects.
-		if ( class_exists( 'Clarkson_Core_Objects' ) ) {
-			Clarkson_Core_Objects::get_instance();
-		}
+		Objects::get_instance();
 
 		// Load template routing.
-		if ( class_exists( 'Clarkson_Core_Templates' ) ) {
-			Clarkson_Core_Templates::get_instance();
-		}
+		Templates::get_instance();
 
 		// Load template routing.
-		if ( class_exists( 'Clarkson_Core_Gutenberg_Block_Manager' ) ) {
-			$block_manager = new Clarkson_Core_Gutenberg_Block_Manager();
-			$block_manager->init();
-		}
+		$block_manager = new Block_Manager();
+		$block_manager->init();
 	}
 
 	/**
@@ -89,11 +88,7 @@ class Clarkson_Core {
 
 		add_action( 'init', array( $this, 'init' ) );
 
-		if ( ! class_exists( 'Clarkson_Core_Autoloader' ) ) {
-			return;
-		}
-
-		$this->autoloader = new Clarkson_Core_Autoloader();
+		$this->autoloader = new Autoloader();
 	}
 
 	/**

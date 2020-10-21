@@ -5,11 +5,17 @@
  * @package CLARKSON\Lib
  */
 
+namespace Clarkson_Core;
+
+use Clarkson_Core\Object\Clarkson_Object;
+use Clarkson_Core\Object\Clarkson_Term;
+use Clarkson_Core\Object\Clarkson_User;
+
 /**
  * This class is used to convert WordPress posts, terms and users into Clarkson
  * Objects.
  */
-class Clarkson_Core_Objects {
+class Objects {
 
 	/**
 	 * Clarkson Core Objects array.
@@ -23,16 +29,16 @@ class Clarkson_Core_Objects {
 	 *
 	 * @param \WP_Term $term The term.
 	 *
-	 * @return \Clarkson_Term
+	 * @return Clarkson_Term
 	 */
-	public function get_term( \WP_Term $term ): \Clarkson_Term {
-		$cc         = Clarkson_Core::get_instance();
+	public function get_term( \WP_Term $term ): Clarkson_Term {
+		$cc         = \Clarkson_Core::get_instance();
 		$class_name = $cc->autoloader->sanitize_object_name( $term->taxonomy );
 
 		if ( in_array( $class_name, $cc->autoloader->taxonomies, true ) && class_exists( $class_name ) ) {
 			return new $class_name( $term );
 		}
-		return new \Clarkson_Term( $term );
+		return new Clarkson_Term( $term );
 	}
 
 	/**
@@ -40,7 +46,7 @@ class Clarkson_Core_Objects {
 	 *
 	 * @param \WP_User[] $users array of \WP_User objects.
 	 *
-	 * @return \Clarkson_User[]
+	 * @return Clarkson_User[]
 	 */
 	public function get_users( array $users ): array {
 		$user_objects = array();
@@ -60,10 +66,10 @@ class Clarkson_Core_Objects {
 	 *
 	 * @param \WP_User $user WP_User object.
 	 *
-	 * @return \Clarkson_User
+	 * @return Clarkson_User
 	 */
-	public function get_user( \WP_User $user ): \Clarkson_User {
-		$cc         = Clarkson_Core::get_instance();
+	public function get_user( \WP_User $user ): Clarkson_User {
+		$cc         = \Clarkson_Core::get_instance();
 		$class_name = false;
 
 		if ( $user->roles && count( $user->roles ) >= 1 ) {
@@ -84,7 +90,7 @@ class Clarkson_Core_Objects {
 	 *
 	 * @param \WP_Post[] $posts Posts.
 	 *
-	 * @return \Clarkson_Object[] $objects Array of post objects.
+	 * @return Clarkson_Object[] $objects Array of post objects.
 	 */
 	public function get_objects( array $posts ): array {
 		$objects = array();
@@ -101,10 +107,10 @@ class Clarkson_Core_Objects {
 	 *
 	 * @param \WP_Post $post Post.
 	 *
-	 * @return \Clarkson_Object Clarkson Post object.
+	 * @return Clarkson_Object Clarkson Post object.
 	 */
-	public function get_object( \WP_Post $post ): \Clarkson_Object {
-		$cc = Clarkson_Core::get_instance();
+	public function get_object( \WP_Post $post ): Clarkson_Object {
+		$cc = \Clarkson_Core::get_instance();
 
 		// defaults to post type.
 		$type = get_post_type( $post );
@@ -194,20 +200,20 @@ class Clarkson_Core_Objects {
 	/**
 	 * Get the instance.
 	 *
-	 * @return Clarkson_Core_Objects
+	 * @return \Clarkson_Core\Objects
 	 */
-	public static function get_instance(): \Clarkson_Core_Objects {
+	public static function get_instance(): \Clarkson_Core\Objects {
 		static $instance = null;
 
 		if ( null === $instance ) {
-			$instance = new Clarkson_Core_Objects();
+			$instance = new self();
 		}
 
 		return $instance;
 	}
 
 	/**
-	 * Clarkson_Core_Objects constructor.
+	 * \Clarkson_Core\Objects constructor.
 	 */
 	protected function __construct() {
 		$this->register_objects();

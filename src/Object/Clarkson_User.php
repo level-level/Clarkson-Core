@@ -1,9 +1,11 @@
 <?php
 /**
  * Clarkson User.
- *
- * @package CLARKSON\Objects
  */
+
+namespace Clarkson_Core\Object;
+
+use Clarkson_Core\Objects;
 
 /**
  * Object oriented wrapper for WP_User objects.
@@ -34,14 +36,14 @@ class Clarkson_User {
 	/**
 	 * Get the current logged in user.
 	 *
-	 * @return \Clarkson_User User status.
-	 * @throws Exception  User is not logged in.
+	 * @return Clarkson_User User status.
+	 * @throws \Exception  User is not logged in.
 	 */
 	public static function current_user() {
 		if ( is_user_logged_in() ) {
 			return static::get( get_current_user_id() );
 		} else {
-			throw new Exception( 'User is not logged in' );
+			throw new \Exception( 'User is not logged in' );
 		}
 	}
 
@@ -50,23 +52,23 @@ class Clarkson_User {
 	 * Get user data by user id.
 	 *
 	 * @param  int $id User id.
-	 * @return \Clarkson_User
+	 * @return Clarkson_User
 	 * @throws \Exception In case a requested user ID does not exist.
 	 */
 	public static function get( $id ) {
 		$user = get_userdata( $id );
 		if ( ! $user instanceof \WP_User ) {
-			throw new Exception( "User not found ($id)" );
+			throw new \Exception( "User not found ($id)" );
 		}
 
-		return \Clarkson_Core_Objects::get_instance()->get_user( $user );
+		return Objects::get_instance()->get_user( $user );
 	}
 
 	/**
 	 * Clarkson_User constructor.
 	 *
 	 * @param  \WP_User|int $user WP_User object (or deprecated User id).
-	 * @throws Exception          User status.
+	 * @throws \Exception          User status.
 	 */
 	public function __construct( $user ) {
 		if ( $user instanceof \WP_User ) {
@@ -74,12 +76,12 @@ class Clarkson_User {
 		} else {
 			_doing_it_wrong( __METHOD__, 'Deprecated __construct called with an ID. Supply a \WP_User object or use \'::get(user_id)\' instead.', '1.0.0' );
 			if ( empty( $user ) ) {
-				throw new Exception( $user . ' empty' );
+				throw new \Exception( $user . ' empty' );
 			}
 
 			$user_object = get_userdata( $user );
 			if ( ! $user_object instanceof \WP_User ) {
-				throw new Exception( $user . ' does not exist' );
+				throw new \Exception( $user . ' does not exist' );
 			}
 			$this->_user = $user_object;
 		}

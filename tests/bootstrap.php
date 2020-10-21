@@ -1,6 +1,11 @@
 <?php
 
 // First we need to load the composer autoloader so we can use WP Mock.
+
+use Clarkson_Core\Object\Clarkson_Object;
+use Clarkson_Core\Object\Clarkson_Term;
+use Clarkson_Core\Object\Clarkson_User;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // Now call the bootstrap method of WP Mock.
@@ -22,6 +27,6 @@ class WP_Block_Type{}
 /**
  * Test classes for custom type castings.
  */
-class user_test_role extends \Clarkson_User{}; //phpcs:ignore
-class custom_test_tax extends \Clarkson_Term{}; //phpcs:ignore
-class test_overwritten_object_creation extends \Clarkson_Object{}; //phpcs:ignore
+class user_test_role extends Clarkson_User{}; //phpcs:ignore
+class custom_test_tax extends Clarkson_Term{}; //phpcs:ignore
+class test_overwritten_object_creation extends Clarkson_Object{}; //phpcs:ignore

@@ -6,11 +6,13 @@
  * @since 0.4.0
  */
 
+namespace Clarkson_Core\Gutenberg;
+
 /**
  * Intercepts 'the content' filter to allow overriding of the rendering functions
  * of Gutenberg blocks. This allows us to use twig for block rendering.
  */
-class Clarkson_Core_Gutenberg_Block_Manager {
+class Block_Manager {
 	/**
 	 * Hook in as soon as we can, to replace blocks with the Clarkson-block equivalent.
 	 * @internal

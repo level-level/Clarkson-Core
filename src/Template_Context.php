@@ -5,7 +5,9 @@
  * @package CLARKSON\Lib
  */
 
-class Clarkson_Core_Template_Context {
+namespace Clarkson_Core;
+
+class Template_Context {
 
 	/**
 	 * Register all hooks to add context to the template call.
@@ -22,7 +24,7 @@ class Clarkson_Core_Template_Context {
 	 */
 	public function add_author( array $context, \WP_Query $wp_query ): array {
 		if ( $wp_query->is_author ) {
-			$object_loader = Clarkson_Core_Objects::get_instance();
+			$object_loader = Objects::get_instance();
 			$object        = $wp_query->queried_object;
 			if ( $object instanceof \WP_User ) {
 				$author            = $object_loader->get_user( $object );
@@ -38,7 +40,7 @@ class Clarkson_Core_Template_Context {
 	 */
 	public function add_term( array $context, \WP_Query $wp_query ):array {
 		if ( $wp_query->is_tax ) {
-			$object_loader = Clarkson_Core_Objects::get_instance();
+			$object_loader = Objects::get_instance();
 			$term          = $wp_query->queried_object;
 			if ( $term instanceof \WP_Term ) {
 				$context['term'] = $object_loader->get_term( $term );
@@ -61,7 +63,7 @@ class Clarkson_Core_Template_Context {
 	 * Adds posts to the current context.
 	 */
 	public function add_posts( array $context, \WP_Query $wp_query ):array {
-		$object_loader      = Clarkson_Core_Objects::get_instance();
+		$object_loader      = Objects::get_instance();
 		$context['objects'] = $object_loader->get_objects( $wp_query->posts );
 		return $context;
 	}

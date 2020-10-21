@@ -6,11 +6,15 @@
  * @since 0.4.0
  */
 
+namespace Clarkson_Core\Gutenberg;
+
+use Clarkson_Core\Templates;
+
 /**
  * This custom block overwrites the render callback to use twig files.
  * It is automatically injected into all registered blocks at render time.
  */
-class Clarkson_Core_Gutenberg_Block_Type extends \WP_Block_Type {
+class Block_Type extends \WP_Block_Type {
 	/**
 	 * Replaces the original block render function, and saves the original render
 	 * function in case we can't find a fitting twig file.
@@ -78,7 +82,7 @@ class Clarkson_Core_Gutenberg_Block_Type extends \WP_Block_Type {
 	 */
 	public function clarkson_render_callback( $attributes, $content ) {
 		if ( file_exists( $this->get_twig_template_path() ) ) {
-			$cc_template              = Clarkson_Core_Templates::get_instance();
+			$cc_template              = Templates::get_instance();
 			$this->content_attributes = $attributes;
 			return (string) $cc_template->render_twig(
 				$this->get_twig_template_path(),

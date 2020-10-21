@@ -5,6 +5,10 @@
  * @package CLARKSON\Objects
  */
 
+namespace Clarkson_Core\Object;
+
+use Clarkson_Core\Objects;
+
 /**
  * Object oriented implementation of WordPress post objects.
  */
@@ -20,7 +24,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Define $_post.
 	 *
-	 * @var WP_Post
+	 * @var \WP_Post
 	 */
 	protected $_post;
 
@@ -48,9 +52,9 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Clarkson_Object constructor.
 	 *
-	 * @param WP_Post $post Post object.
+	 * @param \WP_Post $post Post object.
 	 *
-	 * @throws Exception    Error message.
+	 * @throws \Exception    Error message.
 	 */
 	public function __construct( $post ) {
 		if ( is_a( $post, 'WP_Post' ) ) {
@@ -59,12 +63,12 @@ class Clarkson_Object implements \JsonSerializable {
 			_doing_it_wrong( __METHOD__, 'Deprecated __construct called with an ID. Use \'::get(post)\' instead.', '0.2.0' );
 
 			if ( empty( $post ) ) {
-				throw new Exception( '$post empty' );
+				throw new \Exception( '$post empty' );
 			}
 
 			$post_object = get_post( $post );
-			if ( ! $post_object instanceof WP_Post ) {
-				throw new Exception( '$post empty' );
+			if ( ! $post_object instanceof \WP_Post ) {
+				throw new \Exception( '$post empty' );
 			}
 
 			$this->_post = $post_object;
@@ -77,20 +81,20 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param string $name Post name to check.
 	 *
-	 * @throws Exception Error message.
+	 * @throws \Exception Error message.
 	 */
 	public function __get( $name ) {
 		if ( in_array( $name, array( 'post_name', 'post_title', 'ID', 'post_author', 'post_type', 'post_status' ), true ) ) {
-			throw new Exception( 'Trying to access wp_post object properties from Post object' );
+			throw new \Exception( 'Trying to access wp_post object properties from Post object' );
 		}
 	}
 
 	/**
 	 * Get the WordPress post object.
 	 *
-	 * @return null|WP_Post The post object.
+	 * @return null|\WP_Post The post object.
 	 */
-	public function get_object(): ?WP_Post {
+	public function get_object(): ?\WP_Post {
 		return $this->_post;
 	}
 
@@ -107,7 +111,7 @@ class Clarkson_Object implements \JsonSerializable {
 
 			try {
 				static::$posts[ $id ] = new $class( get_post( $id ) );
-			} catch ( Exception $e ) {
+			} catch ( \Exception $e ) {
 				static::$posts[ $id ] = null;
 			}
 		}
@@ -180,7 +184,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get the parent of the post, if any.
 	 *
-	 * @return \Clarkson_Object|null
+	 * @return Clarkson_Object|null
 	 */
 	public function get_parent() {
 		if ( $this->_post->post_parent ) {
@@ -419,7 +423,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Get the post author object.
 	 *
-	 * @return null|\Clarkson_User
+	 * @return null|Clarkson_User
 	 */
 	public function get_author() {
 
@@ -518,11 +522,11 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @return false|int
 	 *
-	 * @throws Exception Error message.
+	 * @throws \Exception Error message.
 	 */
 	public function add_comment( $comment_text, $user_id ) {
 		if ( empty( $comment_text ) || empty( $user_id ) ) {
-			throw new Exception( 'Not enough data' );
+			throw new \Exception( 'Not enough data' );
 		}
 
 		$comment = array(
@@ -534,7 +538,7 @@ class Clarkson_Object implements \JsonSerializable {
 		$result = wp_insert_comment( $comment );
 
 		if ( ! is_numeric( $result ) ) {
-			throw new Exception( 'wp_insert_comment failed: ' . $comment_text );
+			throw new \Exception( 'wp_insert_comment failed: ' . $comment_text );
 		}
 
 		return $result;
@@ -546,7 +550,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param string $taxonomy Optional. The taxonomy for which to retrieve terms. Default 'post_tag'.
 	 * @param array  $args     Optional. {@link wp_get_object_terms()} arguments. Default empty array.
 	 *
-	 * @return \Clarkson_Term[]|WP_Error List of post tags or a WP_Error.
+	 * @return Clarkson_Term[]|\WP_Error List of post tags or a WP_Error.
 	 */
 	public function get_terms( $taxonomy, $args = array() ) {
 		$terms = wp_get_post_terms( $this->get_id(), $taxonomy, $args );
@@ -558,7 +562,7 @@ class Clarkson_Object implements \JsonSerializable {
 
 		return array_map(
 			function( $term ) {
-				return \Clarkson_Core_Objects::get_instance()->get_term( $term );
+				return Objects::get_instance()->get_term( $term );
 			},
 			$terms
 		);
@@ -567,9 +571,9 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Add a single term to a post.
 	 *
-	 * @param \Clarkson_Term $term    Term data.
+	 * @param Clarkson_Term $term    Term data.
 	 *
-	 * @return array|WP_Error Affected Term IDs.
+	 * @return array|\WP_Error Affected Term IDs.
 	 */
 	public function add_term( $term ) {
 		return wp_set_object_terms( $this->get_id(), $term->get_id(), $term->get_taxonomy(), true );
@@ -579,10 +583,10 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Bulk add terms to a post.
 	 *
 	 * @param string           $taxonomy Taxonomy.
-	 * @param \Clarkson_Term[] $terms    Terms.
-	 * @var   \Clarkson_Term   $term     Term objects.
+	 * @param Clarkson_Term[] $terms    Terms.
+	 * @var   Clarkson_Term   $term     Term objects.
 	 *
-	 * @return array|WP_Error            Terms array.
+	 * @return array|\WP_Error            Terms array.
 	 */
 	public function add_terms( $taxonomy, $terms ) {
 		// Filter terms to ensure they are in the correct taxonomy.
@@ -610,10 +614,10 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Adds all passed terms or overwrites existing terms.
 	 *
 	 * @param string           $taxonomy Taxonomy.
-	 * @param \Clarkson_Term[] $terms    Terms.
-	 * @var   \Clarkson_Term   $term     Term objects.
+	 * @param Clarkson_Term[] $terms    Terms.
+	 * @var   Clarkson_Term   $term     Term objects.
 	 *
-	 * @return array|WP_Error             Affected Term IDs.
+	 * @return array|\WP_Error             Affected Term IDs.
 	 */
 	public function reset_terms( $taxonomy, $terms ) {
 		// Filter terms to ensure they are in the correct taxonomy.
@@ -638,9 +642,9 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Remove a post term.
 	 *
-	 * @param  \Clarkson_Term $term Post term.
+	 * @param  Clarkson_Term $term Post term.
 	 *
-	 * @return bool|WP_Error        True on success, false or WP_Error on failure.
+	 * @return bool|\WP_Error        True on success, false or WP_Error on failure.
 	 */
 	public function remove_term( $term ) {
 		return wp_remove_object_terms( $this->get_id(), $term->get_id(), $term->get_taxonomy() );
@@ -649,7 +653,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Is post associated with term?
 	 *
-	 * @param  \Clarkson_Term $term Post term.
+	 * @param  Clarkson_Term $term Post term.
 	 * @return boolean
 	 */
 	public function has_term( $term ) {
