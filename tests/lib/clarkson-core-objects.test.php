@@ -1,10 +1,10 @@
 <?php
 
+use Clarkson_Core\Clarkson_Core;
 use Clarkson_Core\Object\Clarkson_Object;
 use Clarkson_Core\Object\Clarkson_Term;
 use Clarkson_Core\Object\Clarkson_User;
 use Clarkson_Core\Objects;
-use WP_Mock\Functions;
 
 class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 	public function setUp():void {

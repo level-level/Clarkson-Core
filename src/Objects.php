@@ -32,7 +32,7 @@ class Objects {
 	 * @return Clarkson_Term
 	 */
 	public function get_term( \WP_Term $term ): Clarkson_Term {
-		$cc         = \Clarkson_Core::get_instance();
+		$cc         = Clarkson_Core::get_instance();
 		$class_name = $cc->autoloader->sanitize_object_name( $term->taxonomy );
 
 		if ( in_array( $class_name, $cc->autoloader->taxonomies, true ) && class_exists( $class_name ) ) {
@@ -69,7 +69,7 @@ class Objects {
 	 * @return Clarkson_User
 	 */
 	public function get_user( \WP_User $user ): Clarkson_User {
-		$cc         = \Clarkson_Core::get_instance();
+		$cc         = Clarkson_Core::get_instance();
 		$class_name = false;
 
 		if ( $user->roles && count( $user->roles ) >= 1 ) {
@@ -110,7 +110,7 @@ class Objects {
 	 * @return Clarkson_Object Clarkson Post object.
 	 */
 	public function get_object( \WP_Post $post ): Clarkson_Object {
-		$cc = \Clarkson_Core::get_instance();
+		$cc = Clarkson_Core::get_instance();
 
 		// defaults to post type.
 		$type = get_post_type( $post );

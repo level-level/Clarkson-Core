@@ -16,10 +16,9 @@
  * @author Level Level
  */
 
-use Clarkson_Core\Autoloader;
+namespace Clarkson_Core;
+
 use Clarkson_Core\Gutenberg\Block_Manager;
-use Clarkson_Core\Objects;
-use Clarkson_Core\Templates;
 
 /**
  * The main entry point, responsible for registering all objects and hooks.
@@ -105,4 +104,4 @@ class Clarkson_Core {
 
 }
 
-add_action( 'plugins_loaded', array( 'Clarkson_Core', 'get_instance' ) );
+add_action( 'plugins_loaded', array( Clarkson_Core::class, 'get_instance' ) );
