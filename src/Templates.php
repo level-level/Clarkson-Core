@@ -414,7 +414,7 @@ class Templates {
 	 *
 	 * @var null instance Templates.
 	 */
-	protected $instance = null;
+	protected static $instance = null;
 
 	/**
 	 * Get instance.
@@ -422,11 +422,10 @@ class Templates {
 	 * @return Templates
 	 */
 	public static function get_instance() {
-		static $instance = null;
-		if ( null === $instance ) {
-			$instance = new Templates();
+		if ( null === self::$instance ) {
+			self::$instance = new Templates();
 		}
-		return $instance;
+		return self::$instance;
 	}
 
 	public function add_twig_to_template_hierarchy( array $original_templates ):array {
@@ -454,9 +453,6 @@ class Templates {
 	 * Clarkson_Core_Templates constructor.
 	 */
 	protected function __construct() {
-		if ( ! class_exists( 'Clarkson_Core_Objects' ) ) {
-			return;
-		}
 		foreach ( self::TEMPLATE_TYPES as $template_type ) {
 			add_filter( $template_type . '_template_hierarchy', array( $this, 'add_twig_to_template_hierarchy' ), 999 );
 		}
