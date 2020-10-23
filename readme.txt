@@ -46,6 +46,7 @@ Backward incompatible changes:
 * The `Clarkson_Term` and `Clarkson_User` interfaces have changed, and you might now get an Exception, instead of an invalid object.
 * Removes deprecated features everywhere except for wordpress-objects/
 * Removes loading of user roles instead of a user object.
+* Removes deprecated construction of objects by id. Use ::get instead.
 
 = 0.4.2 - August 19, 2019 =
 

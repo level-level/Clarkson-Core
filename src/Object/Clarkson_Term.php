@@ -81,26 +81,10 @@ class Clarkson_Term {
 	/**
 	 * Clarkson_Term constructor.
 	 *
-	 * @param \WP_Term|int $term  \WPTerm object or (deprecated) term id.
-	 * @param null|string  $taxonomy Taxonomy.
-	 *
 	 * @throws \Exception  Error message.
 	 */
-	public function __construct( $term, $taxonomy = null ) {
-		if ( $term instanceof \WP_Term ) {
-			$this->_term = $term;
-		} else {
-			_doing_it_wrong( __METHOD__, 'Deprecated __construct called with an ID. Use \'::get_by_id(term_id)\' instead.', '0.2.0' );
-			$taxonomy = $taxonomy ?: static::$taxonomy;
-			if ( empty( $term ) || ! $taxonomy ) {
-				throw new \Exception( $term . ' or ' . $taxonomy . ' empty' );
-			}
-			$term_result = get_term( (int) $term, $taxonomy );
-			if ( ! $term_result instanceof \WP_Term ) {
-				throw new \Exception( "Term not found ($taxonomy:$term)" );
-			}
-			$this->_term = $term_result;
-		}
+	public function __construct( \WP_Term $term ) {
+		$this->_term = $term;
 	}
 
 	/**

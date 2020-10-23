@@ -67,24 +67,10 @@ class Clarkson_User {
 	/**
 	 * Clarkson_User constructor.
 	 *
-	 * @param  \WP_User|int $user WP_User object (or deprecated User id).
 	 * @throws \Exception          User status.
 	 */
-	public function __construct( $user ) {
-		if ( $user instanceof \WP_User ) {
-			$this->_user = $user;
-		} else {
-			_doing_it_wrong( __METHOD__, 'Deprecated __construct called with an ID. Supply a \WP_User object or use \'::get(user_id)\' instead.', '1.0.0' );
-			if ( empty( $user ) ) {
-				throw new \Exception( $user . ' empty' );
-			}
-
-			$user_object = get_userdata( $user );
-			if ( ! $user_object instanceof \WP_User ) {
-				throw new \Exception( $user . ' does not exist' );
-			}
-			$this->_user = $user_object;
-		}
+	public function __construct( \WP_User $user ) {
+		$this->_user = $user;
 	}
 
 	/**
