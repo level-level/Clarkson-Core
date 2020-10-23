@@ -19,6 +19,23 @@ use DomainException;
 class Objects {
 	const OBJECT_CLASS_NAMESPACE = '\\Clarkson_Core\\Object\\';
 	/**
+	 * Convert WP_Term object to a Clarkson Object.
+	 *
+	 * @param \WP_Term[] $terms array of \WP_Term objects.
+	 *
+	 * @return Clarkson_Term[]
+	 */
+	public function get_terms( array $terms ): array {
+		$term_objects = array();
+
+		foreach ( $terms as $term ) {
+			$term_objects[] = $this->get_term( $term );
+		}
+
+		return $term_objects;
+	}
+
+	/**
 	 * Get term data.
 	 *
 	 * @param \WP_Term $term The term.
@@ -45,7 +62,7 @@ class Objects {
 	}
 
 	/**
-	 * Get users by id.
+	 * Convert WP_User object to a Clarkson Object.
 	 *
 	 * @param \WP_User[] $users array of \WP_User objects.
 	 *
