@@ -42,6 +42,7 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 * Adds `clarkson_term_types` and `clarkson_user_type` filters to overwrite class lookup.
 * Adds `Clarkson_Post_Type` object. `post_type` is also automatically added to the template context on archive pages.
 * The twig environment is now only created once per request.
+* `Clarkson_Object::get_many` can now set it a variable to it's \WP_Query.
 
 Backward incompatible changes:
 * Removes compatibility for WordPress < 4.7.
