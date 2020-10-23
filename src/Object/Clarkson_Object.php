@@ -43,13 +43,6 @@ class Clarkson_Object implements \JsonSerializable {
 	protected $_excerpt;
 
 	/**
-	 * Define $posts.
-	 *
-	 * @var Clarkson_Object[] $posts
-	 */
-	protected static $posts;
-
-	/**
 	 * Clarkson_Object constructor.
 	 *
 	 * @param \WP_Post $post Post object.
@@ -85,20 +78,14 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param  int $id Post id.
 	 *
-	 * @return static|null    Post data.
+	 * @return Clarkson_Object|null    Post data.
 	 */
 	public static function get( $id ) {
-		if ( ! isset( static::$posts[ $id ] ) ) {
-			$class = get_called_class();
-
-			try {
-				static::$posts[ $id ] = new $class( get_post( $id ) );
-			} catch ( \Exception $e ) {
-				static::$posts[ $id ] = null;
-			}
+		$post = get_post( $id );
+		if ( ! $post instanceof \WP_Post ) {
+			return null;
 		}
-
-		return static::$posts[ $id ];
+		return Objects::get_instance()->get_object( $post );
 	}
 
 	/**
@@ -106,7 +93,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param array $args Post query arguments. {@link https://developer.wordpress.org/reference/classes/wp_query/#parameters}
 	 *
-	 * @return static[]
+	 * @return Clarkson_Object[]
 	 *
 	 * @example
 	 * \Clarkson_Object::get_many( array( 'posts_per_page' => 5 ) );
@@ -114,22 +101,10 @@ class Clarkson_Object implements \JsonSerializable {
 	public static function get_many( $args ) {
 		$args['post_type']     = static::$type;
 		$args['no_found_rows'] = true;
+		$args['fields']        = 'all';
 
 		$query = new \WP_Query( $args );
-
-		$class = get_called_class();
-
-		/**
-		 * PHP binds the closure to the "self" class, not "static", so
-		 * "static" refers to the "self" inside the closure which isn't
-		 * what we want.
-		 */
-		return array_map(
-			function( $post ) use ( $class ) {
-					return new $class( $post );
-			},
-			$query->posts
-		);
+		return Objects::get_instance()->get_objects( $query->posts );
 	}
 
 	/**
@@ -137,7 +112,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param array $args Post query arguments. {@link https://developer.wordpress.org/reference/classes/wp_query/#parameters}
 	 *
-	 * @return static|null
+	 * @return Clarkson_Object|null
 	 */
 	public static function get_one( $args = array() ) {
 		$args['posts_per_page'] = 1;

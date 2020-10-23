@@ -18,47 +18,25 @@ class Clarkson_User {
 	 */
 	protected $_user;
 
-
-	/**
-	 * Current user.
-	 *
-	 * @var \WP_User $_current_user
-	 */
-	protected static $_current_user;
-
-	/**
-	 * Users.
-	 *
-	 * @var static[] $users
-	 */
-	protected static $users;
-
 	/**
 	 * Get the current logged in user.
-	 *
-	 * @return Clarkson_User User status.
-	 * @throws \Exception  User is not logged in.
 	 */
-	public static function current_user() {
+	public static function current_user(): ?Clarkson_User {
 		if ( is_user_logged_in() ) {
 			return static::get( get_current_user_id() );
-		} else {
-			throw new \Exception( 'User is not logged in' );
 		}
+		return null;
 	}
-
 
 	/**
 	 * Get user data by user id.
 	 *
 	 * @param  int $id User id.
-	 * @return Clarkson_User
-	 * @throws \Exception In case a requested user ID does not exist.
 	 */
-	public static function get( $id ) {
+	public static function get( $id ): ?Clarkson_User {
 		$user = get_userdata( $id );
 		if ( ! $user instanceof \WP_User ) {
-			throw new \Exception( "User not found ($id)" );
+			return null;
 		}
 
 		return Objects::get_instance()->get_user( $user );
@@ -66,8 +44,6 @@ class Clarkson_User {
 
 	/**
 	 * Clarkson_User constructor.
-	 *
-	 * @throws \Exception          User status.
 	 */
 	public function __construct( \WP_User $user ) {
 		$this->_user = $user;
@@ -84,10 +60,8 @@ class Clarkson_User {
 
 	/**
 	 * Get the WordPress WP_User object.
-	 *
-	 * @return \WP_User
 	 */
-	public function get_user() {
+	public function get_user(): \WP_User {
 		return $this->_user;
 	}
 

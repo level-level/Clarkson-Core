@@ -32,14 +32,12 @@ class Clarkson_Term {
 	 *
 	 * @param string      $name     Term name.
 	 * @param null|string $taxonomy Taxonomy.
-	 *
-	 * @return Clarkson_Term Term object.
 	 */
-	public static function get_by_name( $name, $taxonomy = null ) {
+	public static function get_by_name( $name, $taxonomy = null ): ?Clarkson_Term {
 		$taxonomy = $taxonomy ?: static::$taxonomy;
 		$term     = get_term_by( 'name', $name, $taxonomy );
 		if ( ! $term instanceof \WP_Term ) {
-			throw new \Exception( "Term not found ($taxonomy:$name)" );
+			return null;
 		}
 		return \Clarkson_Core\Objects::get_instance()->get_term( $term );
 	}
@@ -52,11 +50,11 @@ class Clarkson_Term {
 	 *
 	 * @return Clarkson_Term          Term object.
 	 */
-	public static function get_by_slug( $slug, $taxonomy = null ) {
+	public static function get_by_slug( $slug, $taxonomy = null ): ?Clarkson_Term {
 		$taxonomy = $taxonomy ?: static::$taxonomy;
 		$term     = get_term_by( 'slug', $slug, $taxonomy );
 		if ( ! $term instanceof \WP_Term ) {
-			throw new \Exception( "Term not found ($taxonomy:$slug)" );
+			return null;
 		}
 		return \Clarkson_Core\Objects::get_instance()->get_term( $term );
 	}
@@ -66,22 +64,18 @@ class Clarkson_Term {
 	 *
 	 * @param int         $term_id  Term id.
 	 * @param null|string $taxonomy Taxonomy.
-	 *
-	 * @return Clarkson_Term          Term object.
 	 */
-	public static function get_by_id( $term_id, $taxonomy = null ) {
+	public static function get_by_id( $term_id, $taxonomy = null ): ?Clarkson_Term {
 		$taxonomy = $taxonomy ?: static::$taxonomy;
 		$term     = get_term_by( 'id', $term_id, $taxonomy );
 		if ( ! $term instanceof \WP_Term ) {
-			throw new \Exception( "Term not found ($taxonomy:$term_id)" );
+			return null;
 		}
 		return \Clarkson_Core\Objects::get_instance()->get_term( $term );
 	}
 
 	/**
 	 * Clarkson_Term constructor.
-	 *
-	 * @throws \Exception  Error message.
 	 */
 	public function __construct( \WP_Term $term ) {
 		$this->_term = $term;
@@ -131,10 +125,8 @@ class Clarkson_Term {
 
 	/**
 	 * Get the term parent.
-	 *
-	 * @return null|static Term parent object.
 	 */
-	public function get_parent() {
+	public function get_parent(): ?Clarkson_Term {
 		$parent = null;
 		if ( $this->_term->parent ) {
 			try {
