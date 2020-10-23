@@ -31,6 +31,7 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 * Extends parameters available in `Clarkson_Core_Gutenberg_Block_Type::clarkson_render_callback`
 * `Clarkson_Object` has a new `get_object()` method.
 * Adds new `clarkson_core_template_context` filter.
+* Adds `object` as the first of `objects` to twig context.
 * There is now an object hierarchy:
     * Objects: \Clarkson_Core\Object\$template, \Clarkson_Core\Object\$post_type, \Clarkson_Core\Object\base_object, \Clarkson_Core\Object\Clarkson_Object
     * Terms: \Clarkson_Core\Object\$taxonomy, \Clarkson_Core\Object\base_term, \Clarkson_Core\Object\Clarkson_Term
