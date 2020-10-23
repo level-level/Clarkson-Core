@@ -350,7 +350,7 @@ class Templates {
 	 * @return array
 	 * @internal
 	 */
-	public function add_new_template( $posts_templates, $theme, $post, $post_type ) {
+	public function add_new_template( $post_templates, $theme, $post, $post_type ) {
 		$custom_posts_templates = $this->get_templates();
 		foreach ( $custom_posts_templates as $path => $name ) {
 			$filename = basename( $path );
@@ -372,10 +372,29 @@ class Templates {
 			 */
 			$show_on_post_types = apply_filters( 'clarkson_core_templates_types_for_' . $filename, array( 'page' ) );
 			if ( in_array( $post_type, $show_on_post_types, true ) ) {
-				$posts_templates[ $path ] = $name;
+				$post_templates[ $path ] = $name;
 			}
 		}
-		return $posts_templates;
+
+		/**
+		 * Manipulate which post_types get a template in the template dropdown.
+		 *
+		 * @hook clarkson_core_{$post_type}_templates
+		 * @since 0.2.1
+		 * @param {string[]} $post_templates Which post types the template can be chosen on.
+		 * @param {WP_Theme} $theme The theme posts are shown on
+		 * @param {WP_Post|null} $post The current post.
+		 * @param {string} $post_type The post type (already known from hook).
+		 * @return {string[]} Template files as key with their display name as value.
+		 *
+		 * @example
+		 * // Show a custom template in the 'sponsored_post' post-type template dropdown.
+		 * add_filter( 'clarkson_core_sponsored_post_templates.twig', function($post_templates){
+		 *  $post_templates['template-example.twig'] = 'Example template';
+		 *  return $post_templates;
+		 * } );
+		 */
+		return apply_filters( 'clarkson_core_' . $post_type . '_templates', $post_templates, $theme, $post, $post_type );
 	}
 
 	/**
