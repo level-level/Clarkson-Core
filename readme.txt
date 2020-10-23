@@ -47,6 +47,7 @@ Backward incompatible changes:
 * Removes deprecated features everywhere except for wordpress-objects/
 * Removes loading of user roles instead of a user object.
 * Removes deprecated construction of objects by id. Use ::get instead.
+* Objects, term and user creation calls (such as ::get and ::get_one) now return null instead of throwing an error when no valid result is found.
 
 = 0.4.2 - August 19, 2019 =
 
