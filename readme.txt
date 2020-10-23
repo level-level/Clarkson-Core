@@ -31,6 +31,7 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 * Extends parameters available in `Clarkson_Core_Gutenberg_Block_Type::clarkson_render_callback`
 * `Clarkson_Object` has a new `get_object()` method.
 * Adds new `clarkson_core_template_context` filter.
+* Adds `object` as the first of `objects` to twig context.
 
 Backward incompatible changes:
 * Removes compatibility for WordPress < 4.7.
