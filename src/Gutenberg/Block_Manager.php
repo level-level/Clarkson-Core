@@ -68,7 +68,16 @@ class Block_Manager {
 		if ( class_exists( $class_name ) ) {
 			return $class_name;
 		}
-		return '\Clarkson_Core_Gutenberg_Block_Type';
+
+		/**
+		 * @psalm-var string
+		 */
+		$class_name = '\\Gutenberg\\Blocks\\base_block';
+		if ( class_exists( $class_name ) ) {
+			return $class_name;
+		}
+
+		return Block_Type::class;
 	}
 
 	/**

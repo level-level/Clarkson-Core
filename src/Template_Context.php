@@ -66,6 +66,7 @@ class Template_Context {
 	public function add_posts( array $context, \WP_Query $wp_query ):array {
 		$object_loader      = Objects::get_instance();
 		$context['objects'] = $object_loader->get_objects( $wp_query->posts );
+		$context['object']  = reset( $context['objects'] );
 		return $context;
 	}
 
