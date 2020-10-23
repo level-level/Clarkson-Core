@@ -615,11 +615,10 @@ class Clarkson_Object implements \JsonSerializable {
 
 		$data['author'] = null;
 
-		$author_id = $this->get_author_id();
-		$author    = $this->get_author();
-		if ( ! empty( $author_id ) && $author ) {
+		$author = $this->get_author();
+		if ( $author instanceof Clarkson_User ) {
 			$data['author'] = array(
-				'id'           => $author_id,
+				'id'           => $author->get_id(),
 				'display_name' => $author->get_display_name(),
 			);
 		}
