@@ -35,6 +35,7 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
     * Objects: \Clarkson_Core\Object\$template, \Clarkson_Core\Object\$post_type, \Clarkson_Core\Object\base_object, \Clarkson_Core\Object\Clarkson_Object
     * Terms: \Clarkson_Core\Object\$taxonomy, \Clarkson_Core\Object\base_term, \Clarkson_Core\Object\Clarkson_Term
     * Users: \Clarkson_Core\Object\user, \Clarkson_Core\Object\Clarkson_User
+    * Blocks: \Gutenberg\Blocks\$block_name, \Gutenberg\Blocks\base_block, Clarkson_Core\Gutenberg\Block_Type
 * Adds `get_terms()` method to mimic `get_objects` and `get_users` on Object factory.
 * Adds `clarkson_term_types` and `clarkson_user_type` filters to overwrite class lookup.
 
