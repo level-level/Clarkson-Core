@@ -351,8 +351,8 @@ class Templates {
 	 * @internal
 	 */
 	public function add_new_template( $post_templates, $theme, $post, $post_type ) {
-		$custom_posts_templates = $this->get_templates();
-		foreach ( $custom_posts_templates as $path => $name ) {
+		$custom_post_templates = $this->get_templates();
+		foreach ( $custom_post_templates as $path => $name ) {
 			$filename = basename( $path );
 
 			/**
