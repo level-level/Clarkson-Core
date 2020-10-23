@@ -1,5 +1,8 @@
 <?php
 
+use Clarkson_Core\Object\Clarkson_Object;
+use Clarkson_Core\Object\Clarkson_Term;
+
 class ClarksonObjectTest extends \WP_Mock\Tools\TestCase {
 	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
@@ -17,17 +20,9 @@ class ClarksonObjectTest extends \WP_Mock\Tools\TestCase {
 	public function test_can_construct_an_object() {
 		$post     = Mockery::mock( '\WP_Post' );
 		$post->ID = self::POST_ID;
-		$object   = new \Clarkson_Object( $post );
-		$this->assertInstanceOf( \Clarkson_Object::class, $object );
+		$object   = new Clarkson_Object( $post );
+		$this->assertInstanceOf( Clarkson_Object::class, $object );
 		return $object;
-	}
-
-	public function test_can_construct_an_object_with_id() {
-		$post     = Mockery::mock( '\WP_Post' );
-		$post->ID = self::POST_ID;
-		\WP_Mock::userFunction( '_doing_it_wrong' );
-		\WP_Mock::userFunction( 'get_post' )->andReturn( $post );
-		new \Clarkson_Object( self::POST_ID );
 	}
 
 	/**
@@ -41,7 +36,7 @@ class ClarksonObjectTest extends \WP_Mock\Tools\TestCase {
 		\WP_Mock::userFunction( 'is_wp_error', false );
 		\WP_Mock::userFunction( 'get_term_by' )->with( 'id', self::TERM_ID, 'category' )->andReturn( $term );
 		\WP_Mock::userFunction( 'get_term' )->with( self::TERM_ID, 'category' )->andReturn( $term );
-		$this->assertContainsOnlyInstancesOf( \Clarkson_Term::class, $object->get_terms( 'category' ) );
+		$this->assertContainsOnlyInstancesOf( Clarkson_Term::class, $object->get_terms( 'category' ) );
 	}
 
 	/**

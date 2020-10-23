@@ -31,6 +31,12 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 * Extends parameters available in `Clarkson_Core_Gutenberg_Block_Type::clarkson_render_callback`
 * `Clarkson_Object` has a new `get_object()` method.
 * Adds new `clarkson_core_template_context` filter.
+* There is now an object hierarchy:
+    * Objects: \Clarkson_Core\Object\$template, \Clarkson_Core\Object\$post_type, \Clarkson_Core\Object\base_object, \Clarkson_Core\Object\Clarkson_Object
+    * Terms: \Clarkson_Core\Object\$taxonomy, \Clarkson_Core\Object\base_term, \Clarkson_Core\Object\Clarkson_Term
+    * Users: \Clarkson_Core\Object\user, \Clarkson_Core\Object\Clarkson_User
+* Adds `get_terms()` method to mimic `get_objects` and `get_users` on Object factory.
+* Adds `clarkson_term_types` and `clarkson_user_type` filters to overwrite class lookup.
 
 Backward incompatible changes:
 * Removes compatibility for WordPress < 4.7.
@@ -39,6 +45,9 @@ Backward incompatible changes:
 * Removes `Clarkson_Object::get_json`, which was deprecated in `0.2.0`.
 * The `Clarkson_Term` and `Clarkson_User` interfaces have changed, and you might now get an Exception, instead of an invalid object.
 * Removes deprecated features everywhere except for wordpress-objects/
+* Removes loading of user roles instead of a user object.
+* Removes deprecated construction of objects by id. Use ::get instead.
+* Objects, term and user creation calls (such as ::get and ::get_one) now return null instead of throwing an error when no valid result is found.
 
 = 0.4.2 - August 19, 2019 =
 

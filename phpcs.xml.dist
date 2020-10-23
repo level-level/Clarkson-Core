@@ -2,9 +2,8 @@
 <ruleset name="clarkson_core">
  <description>Level Level Clarkson Core ruleset</description>
 
- <file>./lib</file>
+ <file>./src</file>
  <file>./tests</file>
- <file>./wordpress-objects</file>
  <file>./clarkson-core.php</file>
 
  <!--<arg name="report" value="summary"/>-->
