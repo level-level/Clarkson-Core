@@ -8,6 +8,7 @@
 namespace Clarkson_Core;
 
 use Clarkson_Core\Object\Clarkson_Object;
+use Clarkson_Core\Object\Clarkson_Post_Type;
 use Clarkson_Core\Object\Clarkson_Term;
 use Clarkson_Core\Object\Clarkson_User;
 use DomainException;
@@ -250,6 +251,55 @@ class Objects {
 			return $clarkson_object;
 		}
 		throw new DomainException( sprintf( 'No valid Clarkson Object was loaded. Tried to find %s. Make sure it extends Clarkson_Object.', $class_to_load ) );
+	}
+
+	/**
+	 * Get post type object by post type.
+	 */
+	public function get_post_type( \WP_Post_Type $post_type ):Clarkson_Post_Type {
+		$cc = Clarkson_Core::get_instance();
+
+		$class_name = 'post_type_' . $post_type->name;
+		$class_name = self::OBJECT_CLASS_NAMESPACE . $cc->autoloader->sanitize_object_name( $class_name );
+
+		/**
+		 * Allows the theme to overwrite class that is going to be used to create a post_type object.
+		 *
+		 * @hook clarkson_post_type_class
+		 * @since 1.0.0
+		 * @param {null|string} $type Sanitized class name.
+		 * @param {WP_Post_Type} $post_type Sanitized class name.
+		 * @return {null|string} Class name of post_type to be created.
+		 *
+		 * @example
+		 * // load a different class instead of what Clarkson Core calculates.
+		 * add_filter( 'clarkson_post_type_class', function( $type, $post_type ) {
+		 *  if ( $post_type->name === 'example' ){
+		 *      $type = self::OBJECT_CLASS_NAMESPACE . 'custom_post_type_class';
+		 *  }
+		 *  return $type;
+		 * }, 10, 2 );
+		 */
+		$class_name = apply_filters( 'clarkson_post_type_class', $class_name, $post_type );
+		if ( class_exists( $class_name ) ) {
+			$object = new $class_name( $post_type );
+			if ( $object instanceof Clarkson_Post_Type ) {
+				return $object;
+			}
+		}
+
+		/**
+		 * @psalm-var string
+		 */
+		$class_name = self::OBJECT_CLASS_NAMESPACE . 'base_post_type';
+		if ( class_exists( $class_name ) ) {
+			$object = new $class_name( $post_type );
+			if ( $object instanceof Clarkson_Post_Type ) {
+				return $object;
+			}
+		}
+
+		return new Clarkson_Post_Type( $post_type );
 	}
 
 	/**

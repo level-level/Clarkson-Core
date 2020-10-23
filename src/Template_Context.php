@@ -17,6 +17,7 @@ class Template_Context {
 		add_filter( 'clarkson_core_template_context', array( $this, 'add_term' ), 10, 2 );
 		add_filter( 'clarkson_core_template_context', array( $this, 'add_search_count' ), 10, 2 );
 		add_filter( 'clarkson_core_template_context', array( $this, 'add_posts' ), 10, 2 );
+		add_filter( 'clarkson_core_template_context', array( $this, 'add_post_type' ), 10, 2 );
 	}
 
 	/**
@@ -66,6 +67,16 @@ class Template_Context {
 		$object_loader      = Objects::get_instance();
 		$context['objects'] = $object_loader->get_objects( $wp_query->posts );
 		$context['object']  = reset( $context['objects'] );
+		return $context;
+	}
+
+	public function add_post_type( array $context, \WP_Query $wp_query ):array {
+		if ( $wp_query->is_post_type_archive ) {
+			$queried_object = get_queried_object();
+			if ( $queried_object instanceof \WP_Post_Type ) {
+				$context['post_type'] = Objects::get_instance()->get_post_type( $queried_object );
+			}
+		}
 		return $context;
 	}
 }
