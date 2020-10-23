@@ -273,7 +273,7 @@ class Templates {
 			 * @hook clarkson_core_template_context
 			 * @since 1.0.0
 			 * @param {array} $context The context that will be passed onto the template.
-			 * @param {\WP_Query} $wp_query The current query that is being rendered.
+			 * @param {WP_Query} $wp_query The current query that is being rendered.
 			 * @return {array} The context that will be passed onto the template.
 			 *
 			 * @example

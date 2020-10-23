@@ -55,7 +55,7 @@ class Objects {
 		 * @hook clarkson_term_types
 		 * @since 1.0.0
 		 * @param {array} $typse Sanitized class names to load.
-		 * @param {\WP_Term} $term Term which we are trying to convert into an object.
+		 * @param {WP_Term} $term Term which we are trying to convert into an object.
 		 * @return {array} Class names to search for.
 		 *
 		 * @example
@@ -117,7 +117,7 @@ class Objects {
 		 * @hook clarkson_user_type
 		 * @since 1.0.0
 		 * @param {null|string} $type Sanitized class name.
-		 * @param {\WP_User} $user Sanitized class name.
+		 * @param {WP_User} $user Sanitized class name.
 		 * @return {null|string} Class name of user to be created.
 		 *
 		 * @example
@@ -198,7 +198,7 @@ class Objects {
 		 * @hook clarkson_object_type
 		 * @since 0.1.1
 		 * @param {null|string} $type Sanitized class name.
-		 * @param {\WP_Post} $post Sanitized class name.
+		 * @param {WP_Post} $post Sanitized class name.
 		 * @return {null|string} Class name of object to be created.
 		 *
 		 * @example
