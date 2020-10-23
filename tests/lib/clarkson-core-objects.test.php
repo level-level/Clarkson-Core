@@ -1,6 +1,5 @@
 <?php
 
-use Clarkson_Core\Clarkson_Core;
 use Clarkson_Core\Object\Clarkson_Object;
 use Clarkson_Core\Object\Clarkson_Term;
 use Clarkson_Core\Object\Clarkson_User;
@@ -57,20 +56,6 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 	/**
 	 * @depends test_can_get_instance
 	 */
-	public function test_can_get_custom_page_template( $cc_objects ) {
-		$post     = Mockery::mock( '\WP_Post' );
-		$post->ID = 1;
-		\WP_Mock::userFunction( 'get_post_type', 'page' );
-		\WP_Mock::userFunction( 'get_page_template_slug' )->andReturn( 'custom_test_template.php' );
-
-		$cc                         = Clarkson_Core::get_instance();
-		$cc->autoloader->post_types = array( 'custom_test_template' );
-		$this->assertContainsOnlyInstancesOf( \custom_test_template::class, $cc_objects->get_objects( array( $post ) ) );
-	}
-
-	/**
-	 * @depends test_can_get_instance
-	 */
 	public function test_can_get_term( $cc_objects ) {
 		$term           = Mockery::mock( '\WP_Term' );
 		$term->term_id  = 1;
@@ -83,36 +68,9 @@ class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
 	/**
 	 * @depends test_can_get_instance
 	 */
-	public function test_can_get_term_cast_to_custom_object( $cc_objects ) {
-		$term           = Mockery::mock( '\WP_Term' );
-		$term->term_id  = 1;
-		$term->taxonomy = 'custom_test_tax';
-		\WP_Mock::userFunction( 'get_term_by' )->andReturn( $term );
-		\WP_Mock::userFunction( 'get_term' )->andReturn( $term );
-
-		$cc                         = Clarkson_Core::get_instance();
-		$cc->autoloader->taxonomies = array( 'custom_test_tax' );
-		$this->assertInstanceOf( \custom_test_tax::class, $cc_objects->get_term( $term ) );
-	}
-
-	/**
-	 * @depends test_can_get_instance
-	 */
 	public function test_can_get_users( $cc_objects ) {
 		$user        = Mockery::mock( '\WP_User' );
 		$user->roles = array( 'administrator' );
 		$this->assertContainsOnlyInstancesOf( Clarkson_User::class, $cc_objects->get_users( array( $user ) ) );
-	}
-
-	/**
-	 * @depends test_can_get_instance
-	 */
-	public function test_casts_user_to_custom_object( $cc_objects ) {
-		$user        = Mockery::mock( '\WP_User' );
-		$user->roles = array( 'test_role' );
-
-		$cc                         = Clarkson_Core::get_instance();
-		$cc->autoloader->user_types = array( 'user_test_role' );
-		$this->assertInstanceOf( \user_test_role::class, $cc_objects->get_user( $user ) );
 	}
 }

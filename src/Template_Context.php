@@ -39,7 +39,7 @@ class Template_Context {
 	 * Adds a term if the current request is a term archive.
 	 */
 	public function add_term( array $context, \WP_Query $wp_query ):array {
-		if ( $wp_query->is_tax ) {
+		if ( $wp_query->is_tax || $wp_query->is_category || $wp_query->is_tag ) {
 			$object_loader = Objects::get_instance();
 			$term          = $wp_query->queried_object;
 			if ( $term instanceof \WP_Term ) {

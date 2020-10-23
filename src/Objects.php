@@ -10,12 +10,14 @@ namespace Clarkson_Core;
 use Clarkson_Core\Object\Clarkson_Object;
 use Clarkson_Core\Object\Clarkson_Term;
 use Clarkson_Core\Object\Clarkson_User;
+use DomainException;
 
 /**
  * This class is used to convert WordPress posts, terms and users into Clarkson
  * Objects.
  */
 class Objects {
+	const OBJECT_CLASS_NAMESPACE = '\\Clarkson_Core\\Object\\';
 	/**
 	 * Get term data.
 	 *
@@ -24,15 +26,21 @@ class Objects {
 	 * @return Clarkson_Term
 	 */
 	public function get_term( \WP_Term $term ): Clarkson_Term {
-		$cc         = Clarkson_Core::get_instance();
-		$class_name = $cc->autoloader->sanitize_object_name( $term->taxonomy );
+		$cc    = Clarkson_Core::get_instance();
+		$types = array(
+			self::OBJECT_CLASS_NAMESPACE . $cc->autoloader->sanitize_object_name( $term->taxonomy ),
+			self::OBJECT_CLASS_NAMESPACE . 'base_term',
+		);
 
-		if ( in_array( $class_name, $cc->autoloader->taxonomies, true ) && class_exists( $class_name ) ) {
-			$term_object = new $class_name( $term );
-			if ( $term_object instanceof Clarkson_Term ) {
-				return $term_object;
+		foreach ( $types as $type ) {
+			if ( class_exists( $type ) ) {
+				$term_object = new $type( $term );
+				if ( $term_object instanceof Clarkson_Term ) {
+					return $term_object;
+				}
 			}
 		}
+
 		return new Clarkson_Term( $term );
 	}
 
@@ -61,18 +69,13 @@ class Objects {
 	 * @return Clarkson_User
 	 */
 	public function get_user( \WP_User $user ): Clarkson_User {
-		$cc         = Clarkson_Core::get_instance();
-		$class_name = false;
+		/**
+		 * @psalm-var string
+		 */
+		$type = self::OBJECT_CLASS_NAMESPACE . 'user';
 
-		if ( $user->roles && count( $user->roles ) >= 1 ) {
-			// get the first role in the array.
-			$roles      = array_reverse( $user->roles );
-			$role       = array_pop( $roles );
-			$class_name = $cc->autoloader->user_objectname_prefix . $role;
-		}
-
-		if ( $class_name && in_array( $class_name, $cc->autoloader->user_types, true ) && class_exists( $class_name ) ) {
-			$user_object = new $class_name( $user );
+		if ( class_exists( $type ) ) {
+			$user_object = new $type( $user );
 			if ( $user_object instanceof Clarkson_User ) {
 				return $user_object;
 			}
@@ -107,40 +110,54 @@ class Objects {
 	public function get_object( \WP_Post $post ): Clarkson_Object {
 		$cc = Clarkson_Core::get_instance();
 
-		// defaults to post type.
+		$types = array(
+			self::OBJECT_CLASS_NAMESPACE . 'base_object',
+			Clarkson_Object::class,
+		);
+
 		$type = get_post_type( $post );
+		if ( ! empty( $type ) ) {
+			$type = $cc->autoloader->sanitize_object_name( $type );
+			array_unshift( $types, self::OBJECT_CLASS_NAMESPACE . $type );
+		}
 
-		// Check if post has a custom template, if so, overwrite value.
 		$page_template_slug = $cc->autoloader->get_template_filename( $post->ID );
-
+		$page_template_slug = $cc->autoloader->sanitize_object_name( $page_template_slug );
 		if ( ! empty( $page_template_slug ) ) {
-			$type = $page_template_slug;
+			array_unshift( $types, self::OBJECT_CLASS_NAMESPACE . $page_template_slug );
 		}
 
-		if ( empty( $type ) ) {
-			$type = '';
+		$class_to_load = null;
+		foreach ( $types as $type ) {
+			if ( class_exists( $type ) ) {
+				$class_to_load = $type;
+				break;
+			}
 		}
-
-		$type = $cc->autoloader->sanitize_object_name( $type );
 
 		/**
 		 * Allows the theme to overwrite class that is going to be used to create an object.
 		 *
 		 * @hook clarkson_object_type
 		 * @since 0.1.1
-		 * @param {string} $type Sanitized class name.
-		 * @return {string} Class name of object to be created.
+		 * @param {null|string} $type Sanitized class name.
+		 * @param {\WP_Post} $post Sanitized class name.
+		 * @return {null|string} Class name of object to be created.
 		 *
 		 * @example
 		 * // load a different class instead of what Clarkson Core calculates.
-		 * add_filter( 'clarkson_object_type', function( $type ) {
-		 *  if ( $type === 'gm_event' ){
-		 *      $type = 'custom_event_class';
+		 * add_filter( 'clarkson_object_type', function( $type, $post ) {
+		 *  if ( get_post_type( $post ) === 'gm_event' ){
+		 *      $type = self::OBJECT_CLASS_NAMESPACE . 'custom_event_class';
 		 *  }
 		 *  return $type;
-		 * } );
+		 * }, 10, 2 );
 		 */
-		$type = apply_filters( 'clarkson_object_type', $type );
+		$class_to_load = apply_filters( 'clarkson_object_type', $class_to_load, $post );
+
+		if ( null === $class_to_load ) {
+			throw new DomainException( sprintf( 'No valid Clarkson Object was loaded. Tried: %s.', implode( ', ', $types ) ) );
+		}
 
 		/**
 		 * Allows to control object creation before Clarkson Core determines the correct class to use. For example by calling "wc_get_product".
@@ -157,13 +174,13 @@ class Objects {
 		 * @example
 		 * // Use a different object factory then the default one provided by Clarkson Core.
 		 * add_filter( 'clarkson_core_create_object_callback', function( $callback, $type, $post_id ) {
-		 *  if ( $type === 'shop_order' ){
+		 *  if ( $type === '\Clarkson_Core\Object\shop_order' ){
 		 *      $callback = 'wc_get_order'; // wc_get_order is a callable function when Woocommerce is enabled.
 		 *  }
 		 *  return $type;
 		 * } );
 		 */
-		$object_creation_callback = apply_filters( 'clarkson_core_create_object_callback', false, $type, $post->ID );
+		$object_creation_callback = apply_filters( 'clarkson_core_create_object_callback', false, $class_to_load, $post->ID );
 		if ( is_callable( $object_creation_callback ) ) {
 			$clarkson_object = call_user_func_array( $object_creation_callback, array( $post->ID ) );
 			if ( $clarkson_object instanceof Clarkson_Object ) {
@@ -171,13 +188,11 @@ class Objects {
 			}
 		}
 
-		if ( ( in_array( $type, $cc->autoloader->post_types, true ) || in_array( $type, $cc->autoloader->extra, true ) ) && class_exists( $type ) ) {
-			$clarkson_object = new $type( $post );
-			if ( $clarkson_object instanceof Clarkson_Object ) {
-				return $clarkson_object;
-			}
+		$clarkson_object = new $class_to_load( $post );
+		if ( $clarkson_object instanceof Clarkson_Object ) {
+			return $clarkson_object;
 		}
-		return new Clarkson_Object( $post );
+		throw new DomainException( sprintf( 'No valid Clarkson Object was loaded. Tried to find %s. Make sure it extends Clarkson_Object.', $class_to_load ) );
 	}
 
 	/**
@@ -213,5 +228,4 @@ class Objects {
 	 */
 	private function __wakeup() {
 	}
-
 }
