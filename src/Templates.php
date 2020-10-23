@@ -342,7 +342,7 @@ class Templates {
 	/**
 	 * Adds our templates to the page dropdown for WP v4.7+.
 	 *
-	 * @param array  $posts_templates Templates array.
+	 * @param array  $post_templates Templates array.
 	 * @param string $theme           Theme.
 	 * @param object $post            Post.
 	 * @param string $post_type       Post type.
