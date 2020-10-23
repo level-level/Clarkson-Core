@@ -49,6 +49,26 @@ class Objects {
 			self::OBJECT_CLASS_NAMESPACE . 'base_term',
 		);
 
+		/**
+		 * Allows the theme to overwrite classes to look for when creating an object.
+		 *
+		 * @hook clarkson_term_types
+		 * @since 1.0.0
+		 * @param {array} $typse Sanitized class names to load.
+		 * @param {\WP_Term} $term Term which we are trying to convert into an object.
+		 * @return {array} Class names to search for.
+		 *
+		 * @example
+		 * // load a different class instead of what Clarkson Core calculates.
+		 * add_filter( 'clarkson_term_types', function( $types, $term ) {
+		 *  if ( $term->taxonomy === 'gm_category' ){
+		 *      array_unshift($types, self::OBJECT_CLASS_NAMESPACE . 'custom_taxonomy_class';
+		 *  }
+		 *  return $types;
+		 * }, 10, 2 );
+		 */
+		$types = apply_filters( 'clarkson_term_types', $types, $term );
+
 		foreach ( $types as $type ) {
 			if ( class_exists( $type ) ) {
 				$term_object = new $type( $term );
@@ -90,6 +110,26 @@ class Objects {
 		 * @psalm-var string
 		 */
 		$type = self::OBJECT_CLASS_NAMESPACE . 'user';
+
+		/**
+		 * Allows the theme to overwrite class that is going to be used to create a user.
+		 *
+		 * @hook clarkson_user_type
+		 * @since 1.0.0
+		 * @param {null|string} $type Sanitized class name.
+		 * @param {\WP_User} $user Sanitized class name.
+		 * @return {null|string} Class name of user to be created.
+		 *
+		 * @example
+		 * // load a different class instead of what Clarkson Core calculates.
+		 * add_filter( 'clarkson_user_type', function( $type, $user ) {
+		 *  if ( user_can( $user, 'read' ) ){
+		 *      $type = self::OBJECT_CLASS_NAMESPACE . 'custom_user_class';
+		 *  }
+		 *  return $type;
+		 * }, 10, 2 );
+		 */
+		$type = apply_filters( 'clarkson_user_type', $type, $user );
 
 		if ( class_exists( $type ) ) {
 			$user_object = new $type( $user );
