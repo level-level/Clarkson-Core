@@ -92,19 +92,22 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Get multiple posts, without pagination.
 	 *
 	 * @param array $args Post query arguments. {@link https://developer.wordpress.org/reference/classes/wp_query/#parameters}
+	 * @param mixed $post_query The $post_query is passed by reference and will be filled with the WP_Query that produced these results.
 	 *
 	 * @return Clarkson_Object[]
 	 *
 	 * @example
-	 * \Clarkson_Object::get_many( array( 'posts_per_page' => 5 ) );
+	 * \Clarkson_Object::get_many( array( 'posts_per_page' => 5 ), $post_query );
 	 */
-	public static function get_many( $args ) {
+	public static function get_many( $args, &$post_query = null ):array {
 		$args['post_type']     = static::$type;
 		$args['no_found_rows'] = true;
 		$args['fields']        = 'all';
 
-		$query = new \WP_Query( $args );
-		return Objects::get_instance()->get_objects( $query->posts );
+		$query      = new \WP_Query( $args );
+		$objects    = Objects::get_instance()->get_objects( $query->posts );
+		$post_query = $query;
+		return $objects;
 	}
 
 	/**
