@@ -1,9 +1,11 @@
 <?php
 /**
  * Clarkson User.
- *
- * @package CLARKSON\Objects
  */
+
+namespace Clarkson_Core\Object;
+
+use Clarkson_Core\Objects;
 
 /**
  * Object oriented wrapper for WP_User objects.
@@ -16,73 +18,35 @@ class Clarkson_User {
 	 */
 	protected $_user;
 
-
-	/**
-	 * Current user.
-	 *
-	 * @var \WP_User $_current_user
-	 */
-	protected static $_current_user;
-
-	/**
-	 * Users.
-	 *
-	 * @var static[] $users
-	 */
-	protected static $users;
-
 	/**
 	 * Get the current logged in user.
-	 *
-	 * @return \Clarkson_User User status.
-	 * @throws Exception  User is not logged in.
 	 */
-	public static function current_user() {
+	public static function current_user(): ?Clarkson_User {
 		if ( is_user_logged_in() ) {
 			return static::get( get_current_user_id() );
-		} else {
-			throw new Exception( 'User is not logged in' );
 		}
+		return null;
 	}
-
 
 	/**
 	 * Get user data by user id.
 	 *
 	 * @param  int $id User id.
-	 * @return \Clarkson_User
-	 * @throws \Exception In case a requested user ID does not exist.
 	 */
-	public static function get( $id ) {
+	public static function get( $id ): ?Clarkson_User {
 		$user = get_userdata( $id );
 		if ( ! $user instanceof \WP_User ) {
-			throw new Exception( "User not found ($id)" );
+			return null;
 		}
 
-		return \Clarkson_Core_Objects::get_instance()->get_user( $user );
+		return Objects::get_instance()->get_user( $user );
 	}
 
 	/**
 	 * Clarkson_User constructor.
-	 *
-	 * @param  \WP_User|int $user WP_User object (or deprecated User id).
-	 * @throws Exception          User status.
 	 */
-	public function __construct( $user ) {
-		if ( $user instanceof \WP_User ) {
-			$this->_user = $user;
-		} else {
-			_doing_it_wrong( __METHOD__, 'Deprecated __construct called with an ID. Supply a \WP_User object or use \'::get(user_id)\' instead.', '1.0.0' );
-			if ( empty( $user ) ) {
-				throw new Exception( $user . ' empty' );
-			}
-
-			$user_object = get_userdata( $user );
-			if ( ! $user_object instanceof \WP_User ) {
-				throw new Exception( $user . ' does not exist' );
-			}
-			$this->_user = $user_object;
-		}
+	public function __construct( \WP_User $user ) {
+		$this->_user = $user;
 	}
 
 	/**
@@ -96,10 +60,8 @@ class Clarkson_User {
 
 	/**
 	 * Get the WordPress WP_User object.
-	 *
-	 * @return \WP_User
 	 */
-	public function get_user() {
+	public function get_user(): \WP_User {
 		return $this->_user;
 	}
 

@@ -10,8 +10,7 @@
 	</testsuites>
 	<filter>
 		<whitelist processUncoveredFilesFromWhitelist="true">
-			<directory suffix=".php">lib/</directory>
-			<directory suffix=".php">wordpress-objects/</directory>
+			<directory suffix=".php">src/</directory>
 			<file>clarkson-core.php</file>
 		</whitelist>
 	</filter>

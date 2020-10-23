@@ -16,6 +16,10 @@
  * @author Level Level
  */
 
+namespace Clarkson_Core;
+
+use Clarkson_Core\Gutenberg\Block_Manager;
+
 /**
  * The main entry point, responsible for registering all objects and hooks.
  */
@@ -24,7 +28,7 @@ class Clarkson_Core {
 	/**
 	 * Container for autoloadable files.
 	 *
-	 * @var Clarkson_Core_Autoloader
+	 * @var Autoloader
 	 */
 	public $autoloader;
 
@@ -36,44 +40,34 @@ class Clarkson_Core {
 	 *
 	 * @internal
 	 */
-	public function init() {
+	public function init():void {
 		// Load post objects.
-		if ( class_exists( 'Clarkson_Core_Objects' ) ) {
-			Clarkson_Core_Objects::get_instance();
-		}
+		Objects::get_instance();
 
 		// Load template routing.
-		if ( class_exists( 'Clarkson_Core_Templates' ) ) {
-			Clarkson_Core_Templates::get_instance();
-		}
+		Templates::get_instance();
 
 		// Load template routing.
-		if ( class_exists( 'Clarkson_Core_Gutenberg_Block_Manager' ) ) {
-			$block_manager = new Clarkson_Core_Gutenberg_Block_Manager();
-			$block_manager->init();
-		}
+		$block_manager = new Block_Manager();
+		$block_manager->init();
 	}
 
 	/**
 	 * Define instance.
 	 *
-	 * @var Clarkson_Core
+	 * @var null|Clarkson_Core
 	 */
-	protected $instance = null;
+	protected static $instance = null;
 
 	/**
 	 * Setting up the class instance.
-	 *
-	 * @return Clarkson_Core
 	 */
-	public static function get_instance() {
-		static $instance = null;
-
-		if ( null === $instance ) {
-			$instance = new Clarkson_Core();
+	public static function get_instance(): Clarkson_Core {
+		if ( null === self::$instance ) {
+			self::$instance = new Clarkson_Core();
 		}
 
-		return $instance;
+		return self::$instance;
 	}
 
 	/**
@@ -89,11 +83,7 @@ class Clarkson_Core {
 
 		add_action( 'init', array( $this, 'init' ) );
 
-		if ( ! class_exists( 'Clarkson_Core_Autoloader' ) ) {
-			return;
-		}
-
-		$this->autoloader = new Clarkson_Core_Autoloader();
+		$this->autoloader = new Autoloader();
 	}
 
 	/**
@@ -110,4 +100,4 @@ class Clarkson_Core {
 
 }
 
-add_action( 'plugins_loaded', array( 'Clarkson_Core', 'get_instance' ) );
+add_action( 'plugins_loaded', array( Clarkson_Core::class, 'get_instance' ) );

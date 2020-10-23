@@ -5,10 +5,12 @@
  * @package CLARKSON\Lib
  */
 
+namespace Clarkson_Core;
+
 /**
  * Allows rendering of specific templates with Twig.
  */
-class Clarkson_Core_Templates {
+class Templates {
 	/**
 	 * The template types, are all seperate `get_query_template` can be called with.
 	 *
@@ -40,7 +42,7 @@ class Clarkson_Core_Templates {
 	 *
 	 * This object can be used if you want to remove any of the default add_filters.
 	 *
-	 * @var \Clarkson_Core_Template_Context
+	 * @var \Clarkson_Core\Template_Context
 	 */
 	public $template_context;
 
@@ -59,7 +61,7 @@ class Clarkson_Core_Templates {
 	 * @param bool   $ignore_warning Ignore multiple render warning.
 	 * @internal
 	 */
-	public function render( $path, $objects, $ignore_warning = false ) {
+	public function render( $path, $objects, $ignore_warning = false ):void {
 		$this->echo_twig( $path, $objects, $ignore_warning );
 		exit();
 	}
@@ -105,17 +107,17 @@ class Clarkson_Core_Templates {
 		 * } );
 		 */
 		$twig_args = apply_filters( 'clarkson_twig_args', $twig_args );
-		$twig_fs   = new Twig_Loader_Filesystem( $template_dirs );
-		$twig      = new Twig_Environment( $twig_fs, $twig_args );
+		$twig_fs   = new \Twig_Loader_Filesystem( $template_dirs );
+		$twig      = new \Twig_Environment( $twig_fs, $twig_args );
 
-		$twig->addExtension( new Clarkson_Core_Twig_Extension() );
-		$twig->addExtension( new Twig_Extensions_Extension_I18n() );
-		$twig->addExtension( new Twig_Extensions_Extension_Text() );
-		$twig->addExtension( new Twig_Extensions_Extension_Array() );
-		$twig->addExtension( new Twig_Extensions_Extension_Date() );
+		$twig->addExtension( new Twig_Extension() );
+		$twig->addExtension( new \Twig_Extensions_Extension_I18n() );
+		$twig->addExtension( new \Twig_Extensions_Extension_Text() );
+		$twig->addExtension( new \Twig_Extensions_Extension_Array() );
+		$twig->addExtension( new \Twig_Extensions_Extension_Date() );
 
 		if ( $debug ) {
-			$twig->addExtension( new Twig_Extension_Debug() );
+			$twig->addExtension( new \Twig_Extension_Debug() );
 		}
 
 		/**
@@ -164,7 +166,7 @@ class Clarkson_Core_Templates {
 	 * @param array  $objects        Post objects.
 	 * @param bool   $ignore_warning Ignore multiple render warning.
 	 */
-	public function echo_twig( $template_file, $objects, $ignore_warning = false ) {
+	public function echo_twig( $template_file, $objects, $ignore_warning = false ):void {
 		echo $this->render_twig( $template_file, $objects, $ignore_warning );
 	}
 
@@ -173,7 +175,7 @@ class Clarkson_Core_Templates {
 	 *
 	 * This takes notices of the child / parent hierarchy, so that's why the child theme gets searched first and then the parent theme, just like the regular WordPress templating hierarchy.
 	 */
-	public function get_templates_dirs() {
+	public function get_templates_dirs():array {
 		$template_dirs = array(
 			$this->get_stylesheet_dir(),
 			$this->get_template_dir(),
@@ -213,7 +215,7 @@ class Clarkson_Core_Templates {
 	/**
 	 * Retrieves the parent theme directory Clarkson Core is using to find templates.
 	 */
-	public function get_template_dir() {
+	public function get_template_dir():string {
 		/**
 		 * Modify the template directory path.
 		 *
@@ -228,13 +230,13 @@ class Clarkson_Core_Templates {
 		 *  return get_template_directory() . '/twig_templates';
 		 * } );
 		 */
-		return realpath( apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' ) );
+		return (string) realpath( apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' ) );
 	}
 
 	/**
 	 * Gets the stylesheet directory Clarkson Core is using to find twig templates.
 	 */
-	public function get_stylesheet_dir() {
+	public function get_stylesheet_dir():string {
 		/**
 		 * Modify the template directory path for the stylesheet directory.
 		 *
@@ -249,7 +251,7 @@ class Clarkson_Core_Templates {
 		 *  return get_stylesheet_directory() . '/twig_templates';
 		 * } );
 		 */
-		return realpath( apply_filters( 'clarkson_twig_stylesheet_dir', get_stylesheet_directory() . '/templates' ) );
+		return (string) realpath( apply_filters( 'clarkson_twig_stylesheet_dir', get_stylesheet_directory() . '/templates' ) );
 	}
 
 	/**
@@ -271,7 +273,7 @@ class Clarkson_Core_Templates {
 			 * @hook clarkson_core_template_context
 			 * @since 1.0.0
 			 * @param {array} $context The context that will be passed onto the template.
-			 * @param {\WP_Query} $wp_query The current query that is being rendered.
+			 * @param {WP_Query} $wp_query The current query that is being rendered.
 			 * @return {array} The context that will be passed onto the template.
 			 *
 			 * @example
@@ -296,12 +298,12 @@ class Clarkson_Core_Templates {
 	 *
 	 * @param array $choices Choices.
 	 *
-	 * @return array|bool|mixed
+	 * @return array
 	 * @internal
 	 */
 	public function get_templates( $choices = array() ) {
 		$templates = wp_cache_get( 'templates', 'clarkson_core' );
-		if ( $templates ) {
+		if ( is_array( $templates ) ) {
 			return $templates;
 		}
 		$templates      = $choices;
@@ -363,7 +365,7 @@ class Clarkson_Core_Templates {
 	/**
 	 * Add template filters.
 	 */
-	private function get_template_files() {
+	private function get_template_files():array {
 		// Get template files.
 		$template_paths = $this->get_templates_dirs();
 
@@ -396,8 +398,8 @@ class Clarkson_Core_Templates {
 	 *
 	 * @return array
 	 */
-	private function get_templates_from_path( $path ) {
-		if ( ! $path || ! is_string( $path ) || ! file_exists( $path ) ) {
+	private function get_templates_from_path( string $path ) {
+		if ( ! $path || ! file_exists( $path ) ) {
 			return array();
 		}
 		$files = glob( "{$path}/template-*.twig" );
@@ -410,24 +412,23 @@ class Clarkson_Core_Templates {
 	/**
 	 * Singleton.
 	 *
-	 * @var null instance Clarkson_Core_Templates.
+	 * @var Templates|null instance Templates.
 	 */
-	protected $instance = null;
+	protected static $instance = null;
 
 	/**
 	 * Get instance.
 	 *
-	 * @return Clarkson_Core_Templates
+	 * @return Templates
 	 */
 	public static function get_instance() {
-		static $instance = null;
-		if ( null === $instance ) {
-			$instance = new Clarkson_Core_Templates();
+		if ( null === self::$instance ) {
+			self::$instance = new Templates();
 		}
-		return $instance;
+		return self::$instance;
 	}
 
-	public function add_twig_to_template_hierarchy( array $original_templates ) {
+	public function add_twig_to_template_hierarchy( array $original_templates ):array {
 		$templates = array();
 
 		$directories = array_unique(
@@ -452,15 +453,11 @@ class Clarkson_Core_Templates {
 	 * Clarkson_Core_Templates constructor.
 	 */
 	protected function __construct() {
-		require_once __DIR__ . '/clarkson-core-template-context.php';
-		if ( ! class_exists( 'Clarkson_Core_Objects' ) ) {
-			return;
-		}
 		foreach ( self::TEMPLATE_TYPES as $template_type ) {
 			add_filter( $template_type . '_template_hierarchy', array( $this, 'add_twig_to_template_hierarchy' ), 999 );
 		}
 
-		$this->template_context = new Clarkson_Core_Template_Context();
+		$this->template_context = new Template_Context();
 		$this->template_context->register_hooks();
 
 		add_action( 'template_include', array( $this, 'template_include' ) );
@@ -492,7 +489,9 @@ class Clarkson_Core_Templates {
 				$post_types = array_merge( $custom_post_types, $builtin_post_types );
 
 				foreach ( $post_types as $post_type ) {
-					add_filter( 'theme_' . $post_type . '_templates', array( $this, 'add_new_template' ), 10, 4 );
+					if ( is_string( $post_type ) ) {
+						add_filter( 'theme_' . $post_type . '_templates', array( $this, 'add_new_template' ), 10, 4 );
+					}
 				}
 			}
 		);

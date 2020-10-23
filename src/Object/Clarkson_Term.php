@@ -5,6 +5,8 @@
  * @package CLARKSON\Objects
  */
 
+namespace Clarkson_Core\Object;
+
 /**
  * Object oriented wrapper for WP_Term objects.
  */
@@ -21,25 +23,23 @@ class Clarkson_Term {
 	/**
 	 * Clarkson_Term provides extra functions to retrieve term and taxonomy data.
 	 *
-	 * @var null
+	 * @var string
 	 */
-	protected static $taxonomy = null;
+	protected static $taxonomy = '';
 
 	/**
 	 * Get term by name.
 	 *
 	 * @param string      $name     Term name.
 	 * @param null|string $taxonomy Taxonomy.
-	 *
-	 * @return \Clarkson_Term Term object.
 	 */
-	public static function get_by_name( $name, $taxonomy = null ) {
+	public static function get_by_name( $name, $taxonomy = null ): ?Clarkson_Term {
 		$taxonomy = $taxonomy ?: static::$taxonomy;
 		$term     = get_term_by( 'name', $name, $taxonomy );
 		if ( ! $term instanceof \WP_Term ) {
-			throw new Exception( "Term not found ($taxonomy:$name)" );
+			return null;
 		}
-		return \Clarkson_Core_Objects::get_instance()->get_term( $term );
+		return \Clarkson_Core\Objects::get_instance()->get_term( $term );
 	}
 
 	/**
@@ -48,15 +48,15 @@ class Clarkson_Term {
 	 * @param string      $slug     Term slug.
 	 * @param null|string $taxonomy Taxonomy.
 	 *
-	 * @return \Clarkson_Term          Term object.
+	 * @return Clarkson_Term          Term object.
 	 */
-	public static function get_by_slug( $slug, $taxonomy = null ) {
+	public static function get_by_slug( $slug, $taxonomy = null ): ?Clarkson_Term {
 		$taxonomy = $taxonomy ?: static::$taxonomy;
 		$term     = get_term_by( 'slug', $slug, $taxonomy );
 		if ( ! $term instanceof \WP_Term ) {
-			throw new Exception( "Term not found ($taxonomy:$slug)" );
+			return null;
 		}
-		return \Clarkson_Core_Objects::get_instance()->get_term( $term );
+		return \Clarkson_Core\Objects::get_instance()->get_term( $term );
 	}
 
 	/**
@@ -64,41 +64,21 @@ class Clarkson_Term {
 	 *
 	 * @param int         $term_id  Term id.
 	 * @param null|string $taxonomy Taxonomy.
-	 *
-	 * @return \Clarkson_Term          Term object.
 	 */
-	public static function get_by_id( $term_id, $taxonomy = null ) {
+	public static function get_by_id( $term_id, $taxonomy = null ): ?Clarkson_Term {
 		$taxonomy = $taxonomy ?: static::$taxonomy;
 		$term     = get_term_by( 'id', $term_id, $taxonomy );
 		if ( ! $term instanceof \WP_Term ) {
-			throw new Exception( "Term not found ($taxonomy:$term_id)" );
+			return null;
 		}
-		return \Clarkson_Core_Objects::get_instance()->get_term( $term );
+		return \Clarkson_Core\Objects::get_instance()->get_term( $term );
 	}
 
 	/**
 	 * Clarkson_Term constructor.
-	 *
-	 * @param \WP_Term|int $term  \WPTerm object or (deprecated) term id.
-	 * @param null|string  $taxonomy Taxonomy.
-	 *
-	 * @throws Exception  Error message.
 	 */
-	public function __construct( $term, $taxonomy = null ) {
-		if ( $term instanceof \WP_Term ) {
-			$this->_term = $term;
-		} else {
-			_doing_it_wrong( __METHOD__, 'Deprecated __construct called with an ID. Use \'::get_by_id(term_id)\' instead.', '0.2.0' );
-			$taxonomy = $taxonomy ?: static::$taxonomy;
-			if ( empty( $term ) || ! $taxonomy ) {
-				throw new Exception( $term . ' or ' . $taxonomy . ' empty' );
-			}
-			$term_result = get_term( (int) $term, $taxonomy );
-			if ( ! $term_result instanceof WP_Term ) {
-				throw new Exception( "Term not found ($taxonomy:$term)" );
-			}
-			$this->_term = $term_result;
-		}
+	public function __construct( \WP_Term $term ) {
+		$this->_term = $term;
 	}
 
 	/**
@@ -106,11 +86,11 @@ class Clarkson_Term {
 	 *
 	 * @param string $name Field to search by.
 	 *
-	 * @throws Exception       Error message.
+	 * @throws \Exception       Error message.
 	 */
 	public function __get( $name ) {
 		if ( in_array( $name, array( 'term_id', 'name', 'slug', 'taxonomy' ), true ) ) {
-			throw new Exception( 'Trying to access wp_term object properties from Term object' );
+			throw new \Exception( 'Trying to access wp_term object properties from Term object' );
 		}
 	}
 
@@ -145,10 +125,8 @@ class Clarkson_Term {
 
 	/**
 	 * Get the term parent.
-	 *
-	 * @return null|static Term parent object.
 	 */
-	public function get_parent() {
+	public function get_parent(): ?Clarkson_Term {
 		$parent = null;
 		if ( $this->_term->parent ) {
 			try {
@@ -187,7 +165,7 @@ class Clarkson_Term {
 	 * @param string $key   Meta key.
 	 * @param mixed  $value New meta data.
 	 *
-	 * @return int|WP_Error|bool
+	 * @return int|\WP_Error|bool
 	 */
 	public function update_meta( $key, $value ) {
 		return update_term_meta( $this->get_id(), $key, $value );
@@ -199,7 +177,7 @@ class Clarkson_Term {
 	 * @param string $key   Meta key.
 	 * @param mixed  $value New meta data.
 	 *
-	 * @return bool|int|WP_Error
+	 * @return bool|int|\WP_Error
 	 */
 	public function add_meta( $key, $value ) {
 		return add_term_meta( $this->get_id(), $key, $value );
@@ -249,7 +227,7 @@ class Clarkson_Term {
 	 *
 	 * @param string $name New term name.
 	 */
-	public function set_name( $name ) {
+	public function set_name( $name ):void {
 		wp_update_term(
 			$this->get_id(),
 			$this->get_taxonomy(),
@@ -280,7 +258,7 @@ class Clarkson_Term {
 	/**
 	 * Get the term permalink.
 	 *
-	 * @return string|WP_Error Term permalink.
+	 * @return string|\WP_Error Term permalink.
 	 */
 	public function get_permalink() {
 		return get_term_link( $this->get_term(), $this->get_taxonomy() );

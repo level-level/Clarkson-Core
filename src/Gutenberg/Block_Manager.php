@@ -6,16 +6,20 @@
  * @since 0.4.0
  */
 
+namespace Clarkson_Core\Gutenberg;
+
+use WP_Block_Type;
+
 /**
  * Intercepts 'the content' filter to allow overriding of the rendering functions
  * of Gutenberg blocks. This allows us to use twig for block rendering.
  */
-class Clarkson_Core_Gutenberg_Block_Manager {
+class Block_Manager {
 	/**
 	 * Hook in as soon as we can, to replace blocks with the Clarkson-block equivalent.
 	 * @internal
 	 */
-	public function init() {
+	public function init():void {
 		if ( class_exists( '\WP_Block_Type_Registry' ) ) {
 			add_filter( 'the_content', array( $this, 'intercept_gutenberg_rendering' ), 1 );
 		}
@@ -94,7 +98,7 @@ class Clarkson_Core_Gutenberg_Block_Manager {
 	 *
 	 * Does not manipulate the $content.
 	 *
-	 * @param $content string The content string to be ouputted. Not manipulated
+	 * @param string $content  The content string to be ouputted. Not manipulated
 	 * at this stage.
 	 * @return string
 	 *
@@ -105,8 +109,10 @@ class Clarkson_Core_Gutenberg_Block_Manager {
 		foreach ( $block_registry->get_all_registered() as $original_block ) {
 			$block_type     = $this->determine_block_type_class( $original_block );
 			$clarkson_block = new $block_type( $original_block->name, get_object_vars( $original_block ) );
-			$block_registry->unregister( $original_block );
-			$block_registry->register( $clarkson_block );
+			if ( $clarkson_block instanceof WP_Block_Type ) {
+				$block_registry->unregister( $original_block );
+				$block_registry->register( $clarkson_block );
+			}
 		}
 		return $content;
 	}
