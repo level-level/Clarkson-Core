@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6b22229191768854816e7ba7316cda9",
+    "content-hash": "182353fdf035e90e53b44dfa4a8ef74e",
     "packages": [
         {
             "name": "symfony/intl",
@@ -3960,7 +3960,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.1"
+        "php": "^7.2"
     },
     "platform-dev": [],
     "plugin-api-version": "1.1.0"
