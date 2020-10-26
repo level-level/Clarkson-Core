@@ -7,9 +7,6 @@
 
 namespace Clarkson_Core;
 
-use Twig\Environment;
-use Twig\Extension\EscaperExtension;
-use Twig\Extension\OptimizerExtension;
 use Twig\Extra\Html\HtmlExtension;
 use Twig\Extra\Intl\IntlExtension;
 use Twig\Extra\Markdown\MarkdownExtension;
