@@ -47,9 +47,9 @@
 	},
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
-		"wp-coding-standards/wpcs": "^2.1",
 		"giacocorsiglia/wordpress-stubs": "^5.1",
 		"vimeo/psalm": "^3.4",
-		"10up/wp_mock": "^0.4.2"
+		"10up/wp_mock": "^0.4.2",
+		"wp-coding-standards/wpcs": "^2.3"
 	}
 }

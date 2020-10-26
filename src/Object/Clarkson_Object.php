@@ -205,7 +205,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @return string
 	 */
 	public function get_date( $format = 'U' ) {
-		return date( $format, strtotime( $this->_post->post_date_gmt ) );
+		return gmdate( $format, strtotime( $this->_post->post_date_gmt ) );
 	}
 
 	/**
@@ -226,7 +226,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param int $time PHP timestamp.
 	 */
 	public function set_date( $time ): void {
-		$this->_post->post_date = date( 'Y-m-d H:i:s', $time );
+		$this->_post->post_date = gmdate( 'Y-m-d H:i:s', $time );
 
 		wp_update_post(
 			array(
@@ -244,7 +244,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @return string
 	 */
 	public function get_local_date( $format = 'U' ) {
-		return date( $format, strtotime( $this->_post->post_date ) );
+		return gmdate( $format, strtotime( $this->_post->post_date ) );
 	}
 
 	/**
