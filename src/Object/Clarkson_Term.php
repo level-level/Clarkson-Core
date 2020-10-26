@@ -34,7 +34,7 @@ class Clarkson_Term {
 	 * @param null|string $taxonomy Taxonomy.
 	 */
 	public static function get_by_name( $name, $taxonomy = null ): ?Clarkson_Term {
-		$taxonomy = $taxonomy ?: static::$taxonomy;
+		$taxonomy = $taxonomy ? $taxonomy : static::$taxonomy;
 		$term     = get_term_by( 'name', $name, $taxonomy );
 		if ( ! $term instanceof \WP_Term ) {
 			return null;
@@ -51,7 +51,7 @@ class Clarkson_Term {
 	 * @return Clarkson_Term          Term object.
 	 */
 	public static function get_by_slug( $slug, $taxonomy = null ): ?Clarkson_Term {
-		$taxonomy = $taxonomy ?: static::$taxonomy;
+		$taxonomy = $taxonomy ? $taxonomy : static::$taxonomy;
 		$term     = get_term_by( 'slug', $slug, $taxonomy );
 		if ( ! $term instanceof \WP_Term ) {
 			return null;
@@ -66,7 +66,7 @@ class Clarkson_Term {
 	 * @param null|string $taxonomy Taxonomy.
 	 */
 	public static function get_by_id( $term_id, $taxonomy = null ): ?Clarkson_Term {
-		$taxonomy = $taxonomy ?: static::$taxonomy;
+		$taxonomy = $taxonomy ? $taxonomy : static::$taxonomy;
 		$term     = get_term_by( 'id', $term_id, $taxonomy );
 		if ( ! $term instanceof \WP_Term ) {
 			return null;

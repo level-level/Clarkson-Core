@@ -55,6 +55,8 @@ Backward incompatible changes:
 * Removes loading of user roles instead of a user object.
 * Removes deprecated construction of objects by id. Use ::get instead.
 * Objects, term and user creation calls (such as ::get and ::get_one) now return null instead of throwing an error when no valid result is found.
+* Updates twig from v1 to v3. See https://twig.symfony.com/doc/1.x/deprecated.html and https://twig.symfony.com/doc/2.x/deprecated.html
+* Updates required PHP version to 7.2.
 
 = 0.4.2 - August 19, 2019 =
 
