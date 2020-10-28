@@ -1,6 +1,6 @@
 <?php
 
-use Clarkson_Core\Object\Clarkson_User;
+use Clarkson_Core\WordPress_Object\Clarkson_User;
 
 class ClarksonUserTest extends \WP_Mock\Tools\TestCase {
 	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;

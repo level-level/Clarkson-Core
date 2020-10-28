@@ -2,9 +2,9 @@
 
 // First we need to load the composer autoloader so we can use WP Mock.
 
-use Clarkson_Core\Object\Clarkson_Object;
-use Clarkson_Core\Object\Clarkson_Term;
-use Clarkson_Core\Object\Clarkson_User;
+use Clarkson_Core\WordPress_Object\Clarkson_Object;
+use Clarkson_Core\WordPress_Object\Clarkson_Term;
+use Clarkson_Core\WordPress_Object\Clarkson_User;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

@@ -1,7 +1,7 @@
 <?php
 
-use Clarkson_Core\Object\Clarkson_Object;
-use Clarkson_Core\Object\Clarkson_Term;
+use Clarkson_Core\WordPress_Object\Clarkson_Object;
+use Clarkson_Core\WordPress_Object\Clarkson_Term;
 
 class ClarksonObjectTest extends \WP_Mock\Tools\TestCase {
 	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;

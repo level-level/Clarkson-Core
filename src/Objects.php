@@ -7,10 +7,10 @@
 
 namespace Clarkson_Core;
 
-use Clarkson_Core\Object\Clarkson_Object;
-use Clarkson_Core\Object\Clarkson_Post_Type;
-use Clarkson_Core\Object\Clarkson_Term;
-use Clarkson_Core\Object\Clarkson_User;
+use Clarkson_Core\WordPress_Object\Clarkson_Object;
+use Clarkson_Core\WordPress_Object\Clarkson_Post_Type;
+use Clarkson_Core\WordPress_Object\Clarkson_Term;
+use Clarkson_Core\WordPress_Object\Clarkson_User;
 use DomainException;
 
 /**
@@ -18,7 +18,7 @@ use DomainException;
  * Objects.
  */
 class Objects {
-	const OBJECT_CLASS_NAMESPACE = '\\Clarkson_Core\\Object\\';
+	const OBJECT_CLASS_NAMESPACE = '\\Clarkson_Core\\WordPress_Object\\';
 	/**
 	 * Convert WP_Term object to a Clarkson Object.
 	 *

@@ -5,7 +5,7 @@
  * @package CLARKSON\Objects
  */
 
-namespace Clarkson_Core\Object;
+namespace Clarkson_Core\WordPress_Object;
 
 use Clarkson_Core\Objects;
 
