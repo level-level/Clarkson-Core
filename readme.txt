@@ -33,10 +33,10 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 * Adds new `clarkson_core_template_context` filter.
 * Adds `object` as the first of `objects` to twig context.
 * There is now an object hierarchy:
-    * Objects: \Clarkson_Core\Object\$template, \Clarkson_Core\Object\$post_type, \Clarkson_Core\Object\base_object, \Clarkson_Core\Object\Clarkson_Object
-    * Terms: \Clarkson_Core\Object\$taxonomy, \Clarkson_Core\Object\base_term, \Clarkson_Core\Object\Clarkson_Term
-    * Users: \Clarkson_Core\Object\user, \Clarkson_Core\Object\Clarkson_User
-    * Post Types: \Clarkson_Core\Object\post_type_$post_type, \Clarkson_Core\Object\base_post_type, \Clarkson_Core\Object\Clarkson_Post_Type
+    * Objects: \Clarkson_Core\WordPress_Object\$template, \Clarkson_Core\WordPress_Object\$post_type, \Clarkson_Core\WordPress_Object\base_object, \Clarkson_Core\WordPress_Object\Clarkson_Object
+    * Terms: \Clarkson_Core\WordPress_Object\$taxonomy, \Clarkson_Core\WordPress_Object\base_term, \Clarkson_Core\WordPress_Object\Clarkson_Term
+    * Users: \Clarkson_Core\WordPress_Object\user, \Clarkson_Core\WordPress_Object\Clarkson_User
+    * Post Types: \Clarkson_Core\WordPress_Object\post_type_$post_type, \Clarkson_Core\WordPress_Object\base_post_type, \Clarkson_Core\WordPress_Object\Clarkson_Post_Type
     * Blocks: \Gutenberg\Blocks\$block_name, \Gutenberg\Blocks\base_block, Clarkson_Core\Gutenberg\Block_Type
 * Adds `get_terms()` method to mimic `get_objects` and `get_users` on Object factory.
 * Adds `clarkson_term_types` and `clarkson_user_type` filters to overwrite class lookup.

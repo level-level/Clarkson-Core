@@ -1,8 +1,8 @@
 <?php
 
-use Clarkson_Core\Object\Clarkson_Object;
-use Clarkson_Core\Object\Clarkson_Term;
-use Clarkson_Core\Object\Clarkson_User;
+use Clarkson_Core\WordPress_Object\Clarkson_Object;
+use Clarkson_Core\WordPress_Object\Clarkson_Term;
+use Clarkson_Core\WordPress_Object\Clarkson_User;
 use Clarkson_Core\Objects;
 
 class ClarksonCoreObjectsTest extends \WP_Mock\Tools\TestCase {
