@@ -43,10 +43,10 @@
 		"twig/string-extra": "^3.1",
 		"twig/intl-extra": "^3.1",
 		"twig/html-extra": "^3.1",
-		"twig/markdown-extra": "^3.1"
+		"twig/markdown-extra": "^3.1",
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0"
 	},
 	"require-dev": {
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.5.0",
 		"giacocorsiglia/wordpress-stubs": "^5.1",
 		"vimeo/psalm": "^3.4",
 		"10up/wp_mock": "^0.4.2",
