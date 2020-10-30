@@ -211,7 +211,7 @@ class Templates {
 		 * @example
 		 * // We can add a specific new directory to load templates from to twig.
 		 * add_filter( 'clarkson_twig_template_dirs', function( $template_dirs ) {
-		 *  $template_dirs[] = get_stylesheet_directory() . '/admin_templates';
+		 *  $template_dirs[] = realpath( get_stylesheet_directory() ) . '/admin_templates';
 		 *  return $template_dirs;
 		 * } );
 		 */
@@ -471,8 +471,8 @@ class Templates {
 
 		$directories = array_unique(
 			array(
-				str_replace( get_stylesheet_directory(), '', $this->get_stylesheet_dir() ),
-				str_replace( get_template_directory(), '', $this->get_template_dir() ),
+				str_replace( realpath( get_stylesheet_directory() ), '', $this->get_stylesheet_dir() ),
+				str_replace( realpath( get_template_directory() ), '', $this->get_template_dir() ),
 			)
 		);
 
