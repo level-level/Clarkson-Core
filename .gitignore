@@ -3,3 +3,5 @@
 /node_modules
 /out
 /.vscode/
+composer.lock
+.phpunit.result.cache
