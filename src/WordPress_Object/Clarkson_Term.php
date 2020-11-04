@@ -7,6 +7,8 @@
 
 namespace Clarkson_Core\WordPress_Object;
 
+use Clarkson_Core\Objects;
+
 /**
  * Object oriented wrapper for WP_Term objects.
  */
@@ -72,6 +74,45 @@ class Clarkson_Term {
 			return null;
 		}
 		return \Clarkson_Core\Objects::get_instance()->get_term( $term );
+	}
+
+	/**
+	 * Alias of `get_by_id()`.
+	 */
+	public static function get( int $term_id ): ?Clarkson_Term {
+		return static::get_by_id( $term_id );
+	}
+
+	/**
+	 * Get multiple terms as Clarkson Objects.
+	 *
+	 * @param array $args Term query arguments. {@link https://developer.wordpress.org/reference/classes/WP_Term_Query/__construct/}
+	 * @param mixed $term_query The $term_query is passed by reference and will be filled with the WP_Term_Query that produced these results.
+	 *
+	 * @return Clarkson_Term[]
+	 *
+	 * @example
+	 * \Clarkson_Term::get_many( array( 'number' => 5 ), $term_query );
+	 */
+	public static function get_many( array $args, &$term_query = null ):array {
+		$args['taxonomy'] = static::$taxonomy;
+		$args['fields']   = 'all';
+
+		$query      = new \WP_Term_Query( $args );
+		$objects    = Objects::get_instance()->get_terms( $query->get_terms() );
+		$term_query = $query;
+		return $objects;
+	}
+
+	/**
+	 * Gets the first result from a `::get_many()` query.
+	 *
+	 * @param array $args Term query arguments. {@link https://developer.wordpress.org/reference/classes/WP_Term_Query/__construct/}
+	 */
+	public static function get_one( array $args = array() ):?Clarkson_Term {
+		$args['number'] = 1;
+		$one            = static::get_many( $args );
+		return array_shift( $one );
 	}
 
 	/**

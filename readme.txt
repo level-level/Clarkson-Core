@@ -44,6 +44,7 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 * The twig environment is now only created once per request.
 * `Clarkson_Object::get_many` can now set it a variable to it's \WP_Query.
 * Adds a filter `clarkson_core_{$post_type}_templates` to manipulate templates per post type.
+* Adds `::get_many`, `::get_one` and `::get` methods to `Clarkson_Term` and `Clarkson_User`.
 
 Backward incompatible changes:
 * Removes compatibility for WordPress < 4.7.
