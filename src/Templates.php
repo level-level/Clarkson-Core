@@ -160,8 +160,8 @@ class Templates {
 			 *
 			 * @hook clarkson_twig_environment
 			 * @since 1.0.0
-			 * @param {Twig\Environment} $twig Twig environment.
-			 * @return {Twig\Environment} Twig environment.
+			 * @param {TwigEnvironment} $twig Twig environment.
+			 * @return {TwigEnvironment} Twig environment.
 			 *
 			 * @example
 			 * // We can add custom twig extensions.
