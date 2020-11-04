@@ -43,6 +43,38 @@ class Clarkson_User {
 	}
 
 	/**
+	 * Get multiple users as Clarkson users.
+	 *
+	 * @param array $args User query arguments. {@link https://developer.wordpress.org/reference/classes/wp_user_query/#parameters}
+	 * @param mixed $user_query The $user_query is passed by reference and will be filled with the WP_User_Query that produced these results.
+	 *
+	 * @return Clarkson_User[]
+	 *
+	 * @example
+	 * \Clarkson_User::get_many( array( 'role' => 'subscriber' ), $user_query );
+	 */
+	public static function get_many( array $args, &$user_query = null ):array {
+		$args['fields'] = 'all';
+
+		$query = new \WP_User_Query( $args );
+		$query->query();
+		$objects    = Objects::get_instance()->get_users( $query->get_results() );
+		$user_query = $query;
+		return $objects;
+	}
+
+	/**
+	 * Gets the first result from a `::get_many()` query.
+	 *
+	 * @param array $args User query arguments. {@link https://developer.wordpress.org/reference/classes/wp_user_query/#parameters}
+	 */
+	public static function get_one( array $args = array() ):?Clarkson_User {
+		$args['number'] = 1;
+		$one            = static::get_many( $args );
+		return array_shift( $one );
+	}
+
+	/**
 	 * Clarkson_User constructor.
 	 */
 	public function __construct( \WP_User $user ) {
