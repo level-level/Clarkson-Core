@@ -86,7 +86,10 @@ class Templates {
 	 * @return string
 	 */
 	public function render_twig( $path, $objects, $ignore_warning = false ) {
-		$path = realpath( $path );
+		$clean_path = realpath( $path );
+		if ( $clean_path ) {
+			$path = $clean_path;
+		}
 
 		// Twig arguments.
 		if ( ! $ignore_warning && $this->has_been_called ) {
