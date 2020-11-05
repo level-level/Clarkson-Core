@@ -2,7 +2,6 @@
 /**
  * Integrates Clarkson and Gutenberg to allow for twig rendering of blocks.
  *
- * @package CLARKSON\Lib
  * @since 0.4.0
  */
 

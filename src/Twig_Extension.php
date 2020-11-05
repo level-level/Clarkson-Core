@@ -1,8 +1,6 @@
 <?php
 /**
  * Clarkson Core Twig extension.
- *
- * @package CLARKSON\Lib
  */
 
 namespace Clarkson_Core;

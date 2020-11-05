@@ -1,8 +1,6 @@
 <?php
 /**
  * Clarkson Term.
- *
- * @package CLARKSON\Objects
  */
 
 namespace Clarkson_Core\WordPress_Object;

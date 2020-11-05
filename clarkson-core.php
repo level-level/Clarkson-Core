@@ -11,9 +11,6 @@
  *
  * Text Domain: clarkson-core
  * Domain Path: /lang/
- *
- * @package CLARKSON\Main
- * @author Level Level
  */
 
 namespace Clarkson_Core;

@@ -1,8 +1,6 @@
 <?php
 /**
  * Clarkson Core Templates.
- *
- * @package CLARKSON\Lib
  */
 
 namespace Clarkson_Core;
@@ -88,6 +86,8 @@ class Templates {
 	 * @return string
 	 */
 	public function render_twig( $path, $objects, $ignore_warning = false ) {
+		$path = realpath( $path );
+
 		// Twig arguments.
 		if ( ! $ignore_warning && $this->has_been_called ) {
 			user_error( 'Template rendering has already been called. If you are trying to render a partial, include the file from the parent template for performance reasons. If you have a specific reason to render multiple times, set ignore_warning to true.', E_USER_NOTICE );
@@ -304,8 +304,7 @@ class Templates {
 			 *  return $context
 			 * } );
 			 */
-			$context  = apply_filters( 'clarkson_core_template_context', array(), $wp_query );
-			$template = realpath( $template );
+			$context = apply_filters( 'clarkson_core_template_context', array(), $wp_query );
 			$this->render( $template, $context, true );
 		}
 
