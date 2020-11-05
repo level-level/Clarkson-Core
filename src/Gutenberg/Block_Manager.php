@@ -1,7 +1,7 @@
 <?php
 /**
  * Integrates Clarkson and Gutenberg to allow for twig rendering of blocks.
- * 
+ *
  * @since 0.4.0
  */
 

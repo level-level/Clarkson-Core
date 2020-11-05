@@ -1,7 +1,7 @@
 <?php
 /**
  * Allows for extension of Gutenberg blocks and overwriting rendering functions.
- * 
+ *
  * @since 0.4.0
  */
 

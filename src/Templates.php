@@ -304,7 +304,7 @@ class Templates {
 			 *  return $context
 			 * } );
 			 */
-			$context  = apply_filters( 'clarkson_core_template_context', array(), $wp_query );
+			$context = apply_filters( 'clarkson_core_template_context', array(), $wp_query );
 			$this->render( $template, $context, true );
 		}
 
