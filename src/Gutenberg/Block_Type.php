@@ -1,8 +1,7 @@
 <?php
 /**
  * Allows for extension of Gutenberg blocks and overwriting rendering functions.
- *
- * @package CLARKSON\Lib
+ * 
  * @since 0.4.0
  */
 

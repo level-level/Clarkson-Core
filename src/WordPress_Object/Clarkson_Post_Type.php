@@ -1,8 +1,6 @@
 <?php
 /**
  * Clarkson Post Type.
- *
- * @package CLARKSON\Objects
  */
 
 namespace Clarkson_Core\WordPress_Object;

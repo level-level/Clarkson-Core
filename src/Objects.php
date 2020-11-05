@@ -1,8 +1,6 @@
 <?php
 /**
  * Clarkson Core Objects.
- *
- * @package CLARKSON\Lib
  */
 
 namespace Clarkson_Core;

@@ -24,10 +24,10 @@ jobs:
       run: |
         npm run doc
 
-    - name: Run NPM CI
-      uses: docker://uniplug/apigen:latest
+    - name: Generate PHP API docs
+      uses: docker://phpdoc/phpdoc:3
       with:
-        args: "apigen generate -d out/phpdoc -s src --access-levels public -o"
+        args: phpdoc run --title ClarksonCore --visibility public --sourcecode -d src -t out/phpdoc
 
     - name: Publish pages
       uses: maxheld83/ghpages@v0.2.1

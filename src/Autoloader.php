@@ -1,8 +1,6 @@
 <?php
 /**
  * Clarkson Core Autoloader.
- *
- * @package CLARKSON\Lib
  */
 
 namespace Clarkson_Core;

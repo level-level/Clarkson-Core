@@ -35,6 +35,9 @@
 		],
 		"phpunit":[
 			"phpunit"
+		],
+		"doc":[
+			"docker run --rm -v $(pwd):/data phpdoc/phpdoc:3 run --title \"Clarkson Core\" --visibility public --sourcecode -d src -t out/phpdoc"
 		]
 	},
 	"require" : {
