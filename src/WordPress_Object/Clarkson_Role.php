@@ -19,7 +19,7 @@ class Clarkson_Role {
 	protected $_role;
 
 	/**
-	 * Get role data by role name.
+	 * Get Clarkson Role object by role name.
 	 *
 	 * @param string $name Role name.
 	 */

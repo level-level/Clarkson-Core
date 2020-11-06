@@ -270,9 +270,9 @@ class Objects {
 	}
 
 	/**
-	 * Get role object by role.
+	 * Get Clarkson role object by WordPress role object.
 	 */
-	public function get_role( \WP_Role $role ):Clarkson_Role {
+	public function get_role( \WP_Role $role ): Clarkson_Role {
 		$cc = Clarkson_Core::get_instance();
 
 		$class_name = 'role_' . $role->name;
