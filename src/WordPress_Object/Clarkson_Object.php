@@ -417,9 +417,16 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
+	 * Get the post's post type.
+	 */
+	public function get_post_type(): string {
+		return $this->_post->post_type;
+	}
+
+	/**
 	 * Get the post's post type object.
 	 */
-	public function get_post_type(): ?Clarkson_Post_Type {
+	public function get_post_type_object(): ?Clarkson_Post_Type {
 		return Clarkson_Post_Type::get( $this->_post->post_type );
 	}
 
