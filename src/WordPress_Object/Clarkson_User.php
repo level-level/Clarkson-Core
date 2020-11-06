@@ -160,15 +160,6 @@ class Clarkson_User {
 	}
 
 	/**
-	 * Get the user's role.
-	 *
-	 * @return string User role.
-	 */
-	public function get_role(): string {
-		return reset( $this->get_user()->roles );
-	}
-
-	/**
 	 * Get the user's roles.
 	 *
 	 * @return string[] User roles.
