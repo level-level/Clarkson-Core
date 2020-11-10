@@ -33,6 +33,24 @@ class Clarkson_Role {
 	}
 
 	/**
+	 * Get Clarkson Role object by role name.
+	 *
+	 * @param string $name Role name.
+	 */
+	public static function get( $name ): ?Clarkson_Role {
+		return static::get_by_name( $name );
+	}
+
+	/**
+	 * Get all available Clarkson Role objects
+	 *
+	 * @return \Clarkson_Core\WordPress_Object\Clarkson_Role[]
+	 */
+	public static function get_many(): array {
+		return Objects::get_instance()->get_roles( wp_roles()->role_objects );
+	}
+
+	/**
 	 * Clarkson_Role constructor.
 	 */
 	public function __construct( \WP_Role $role ) {
