@@ -48,7 +48,7 @@ class Clarkson_Term {
 	 * @param string      $slug     Term slug.
 	 * @param null|string $taxonomy Taxonomy.
 	 *
-	 * @return null|Clarkson_Term          Term object.
+	 * @return null|Clarkson_Term Term object.
 	 */
 	public static function get_by_slug( $slug, $taxonomy = null ): ?Clarkson_Term {
 		$taxonomy = $taxonomy ? $taxonomy : static::$taxonomy;
