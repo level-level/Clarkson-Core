@@ -58,6 +58,8 @@ Backward incompatible changes:
 * Objects, term and user creation calls (such as ::get and ::get_one) now return null instead of throwing an error when no valid result is found.
 * Updates twig from v1 to v3. See https://twig.symfony.com/doc/1.x/deprecated.html and https://twig.symfony.com/doc/2.x/deprecated.html
 * Updates required PHP version to 7.2.
+* The `get_children()` and `get_attachments()` methods on the `Clarkson_Object` now return `Clarkson_Object[]` instead of `WP_Post[]`.
+
 
 = 0.4.2 - August 19, 2019 =
 
