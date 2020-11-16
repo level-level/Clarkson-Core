@@ -96,3 +96,6 @@ class Clarkson_Core {
 	}
 
 }
+
+// Initialize Clarkson Core
+Clarkson_Core::get_instance();
