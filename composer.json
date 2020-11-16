@@ -1,6 +1,6 @@
 {
 	"name": "level-level/clarkson-core",
-	"type": "wordpress-muplugin",
+	"type": "library",
 	"license": "GPL-2.0-or-later",
 	"description": "A plugin to write Object-Oriented code in combination with the Twig templating engine while keeping the WordPress Way of working in mind.",
 	"authors": [
