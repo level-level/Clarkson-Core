@@ -96,5 +96,3 @@ class Clarkson_Core {
 	}
 
 }
-
-add_action( 'plugins_loaded', array( Clarkson_Core::class, 'get_instance' ) );
