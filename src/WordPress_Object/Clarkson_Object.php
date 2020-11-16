@@ -496,12 +496,7 @@ class Clarkson_Object implements \JsonSerializable {
 			return $terms;
 		}
 
-		return array_map(
-			function( $term ) {
-				return Objects::get_instance()->get_term( $term );
-			},
-			$terms
-		);
+		return Objects::get_instance()->get_terms( $terms );
 	}
 
 	/**
