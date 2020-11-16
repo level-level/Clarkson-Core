@@ -19,11 +19,11 @@
 		}
 	],
 	"autoload": {
-	    "psr-4": {
-		    "Clarkson_Core\\": "src/"
-	    },
+		"psr-4": {
+			"Clarkson_Core\\": "src/"
+		},
 		"files": [
-		   "clarkson-core.php"
+			"clarkson-core.php"
 		]
 	},
 	"scripts": {
