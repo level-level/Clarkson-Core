@@ -7,6 +7,7 @@ namespace Clarkson_Core;
 
 use Clarkson_Core\WordPress_Object\Clarkson_Object;
 use Clarkson_Core\WordPress_Object\Clarkson_Post_Type;
+use Clarkson_Core\WordPress_Object\Clarkson_Role;
 use Clarkson_Core\WordPress_Object\Clarkson_Term;
 use Clarkson_Core\WordPress_Object\Clarkson_User;
 use DomainException;
@@ -249,6 +250,72 @@ class Objects {
 			return $clarkson_object;
 		}
 		throw new DomainException( sprintf( 'No valid Clarkson Object was loaded. Tried to find %s. Make sure it extends Clarkson_Object.', $class_to_load ) );
+	}
+
+	/**
+	 * Get an array of roles converted from their corresponding WordPress role class.
+	 *
+	 * @param \WP_Role[] $roles Array of WordPress role objects.
+	 *
+	 * @return Clarkson_Role[] $objects Array of post objects.
+	 */
+	public function get_roles( array $roles ): array {
+		$clarkson_roles = array();
+
+		foreach ( $roles as $role ) {
+			$clarkson_roles[] = $this->get_role( $role );
+		}
+
+		return $clarkson_roles;
+	}
+
+	/**
+	 * Get Clarkson role object by WordPress role object.
+	 */
+	public function get_role( \WP_Role $role ): Clarkson_Role {
+		$cc = Clarkson_Core::get_instance();
+
+		$class_name = 'role_' . $role->name;
+		$class_name = self::OBJECT_CLASS_NAMESPACE . $cc->autoloader->sanitize_object_name( $class_name );
+
+		/**
+		 * Allows the theme to overwrite class that is going to be used to create a role object.
+		 *
+		 * @hook clarkson_role_class
+		 * @since 1.0.0
+		 * @param {null|string} $type Sanitized class name.
+		 * @param {WP_Role} $role Sanitized class name.
+		 * @return {null|string} Class name of role to be created.
+		 *
+		 * @example
+		 * // load a different class instead of what Clarkson Core calculates.
+		 * add_filter( 'clarkson_role_class', function( $type, $role ) {
+		 *  if ( $role->name === 'example' ){
+		 *      $type = self::OBJECT_CLASS_NAMESPACE . 'custom_role_class';
+		 *  }
+		 *  return $type;
+		 * }, 10, 2 );
+		 */
+		$class_name = apply_filters( 'clarkson_role_class', $class_name, $role );
+		if ( class_exists( $class_name ) ) {
+			$object = new $class_name( $role );
+			if ( $object instanceof Clarkson_Role ) {
+				return $object;
+			}
+		}
+
+		/**
+		 * @psalm-var string
+		 */
+		$class_name = self::OBJECT_CLASS_NAMESPACE . 'base_role';
+		if ( class_exists( $class_name ) ) {
+			$object = new $class_name( $role );
+			if ( $object instanceof Clarkson_Role ) {
+				return $object;
+			}
+		}
+
+		return new Clarkson_Role( $role );
 	}
 
 	/**
