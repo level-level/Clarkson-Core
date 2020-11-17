@@ -47,6 +47,7 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 * Adds `::get_many`, `::get_one` and `::get` methods to `Clarkson_Term` and `Clarkson_User`.
 * Adds `get_roles()` method (returns role name as string) to `Clarkson_User`.
 * Adds `get_role_objects()` method (returns `Clarkson_Role`) to `Clarkson_User`.
+* The `get_children()` and `get_attachments()` methods on the `Clarkson_Object` now accepts a Post arguments parameter.
 
 
 Backward incompatible changes:
@@ -62,6 +63,7 @@ Backward incompatible changes:
 * Updates twig from v1 to v3. See https://twig.symfony.com/doc/1.x/deprecated.html and https://twig.symfony.com/doc/2.x/deprecated.html
 * Updates required PHP version to 7.2.
 * Removes `get_role()` method from `Clarkson_User` because a user can have multiple roles. Replaced with `get_roles()` method, which returns an array of role names.
+* The `get_children()` and `get_attachments()` methods on the `Clarkson_Object` now return `Clarkson_Object[]` instead of `WP_Post[]`.
 
 = 0.4.2 - August 19, 2019 =
 

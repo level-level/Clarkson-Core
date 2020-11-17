@@ -148,10 +148,14 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * See issue: https://github.com/level-level/Clarkson-Core/issues/121
 	 *
-	 * @return array Children
+	 * @param array $args Post arguments
+	 *
+	 * @return Clarkson_Object[] Children
 	 */
-	public function get_children() {
-		return get_children( 'post_parent=' . $this->get_id() );
+	public function get_children( array $args = array() ) {
+		$args['post_parent'] = $this->get_id();
+		$children            = get_children( $args );
+		return Objects::get_instance()->get_objects( $children );
 	}
 
 	/**
@@ -159,10 +163,13 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * See issue: https://github.com/level-level/Clarkson-Core/issues/121
 	 *
-	 * @return array Attachments.
+	 * @param array $args Post arguments
+	 *
+	 * @return Clarkson_Object[] Attachments.
 	 */
-	public function get_attachments() {
-		return get_children( 'post_type=attachment&post_parent=' . $this->get_id() );
+	public function get_attachments( array $args = array() ) {
+		$args['post_type'] = 'attachment';
+		return $this->get_children( $args );
 	}
 
 	/**
@@ -501,12 +508,7 @@ class Clarkson_Object implements \JsonSerializable {
 			return $terms;
 		}
 
-		return array_map(
-			function( $term ) {
-				return Objects::get_instance()->get_term( $term );
-			},
-			$terms
-		);
+		return Objects::get_instance()->get_terms( $terms );
 	}
 
 	/**
