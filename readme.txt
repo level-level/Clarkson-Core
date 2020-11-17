@@ -45,6 +45,9 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 * `Clarkson_Object::get_many` can now set it a variable to it's \WP_Query.
 * Adds a filter `clarkson_core_{$post_type}_templates` to manipulate templates per post type.
 * Adds `::get_many`, `::get_one` and `::get` methods to `Clarkson_Term` and `Clarkson_User`.
+* Adds `get_roles()` method (returns role name as string) to `Clarkson_User`.
+* Adds `get_role_objects()` method (returns `Clarkson_Role`) to `Clarkson_User`.
+
 
 Backward incompatible changes:
 * Removes compatibility for WordPress < 4.7.
@@ -58,6 +61,7 @@ Backward incompatible changes:
 * Objects, term and user creation calls (such as ::get and ::get_one) now return null instead of throwing an error when no valid result is found.
 * Updates twig from v1 to v3. See https://twig.symfony.com/doc/1.x/deprecated.html and https://twig.symfony.com/doc/2.x/deprecated.html
 * Updates required PHP version to 7.2.
+* Removes `get_role()` method from `Clarkson_User` because a user can have multiple roles. Replaced with `get_roles()` method, which returns an array of role names.
 
 = 0.4.2 - August 19, 2019 =
 

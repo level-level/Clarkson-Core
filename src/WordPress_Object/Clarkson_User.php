@@ -6,6 +6,7 @@
 namespace Clarkson_Core\WordPress_Object;
 
 use Clarkson_Core\Objects;
+use WP_Role;
 
 /**
  * Object oriented wrapper for WP_User objects.
@@ -159,12 +160,30 @@ class Clarkson_User {
 	}
 
 	/**
-	 * Get the user's role.
+	 * Get the user's roles.
 	 *
-	 * @return string User role.
+	 * @return string[] User roles.
 	 */
-	public function get_role() {
-		return reset( $this->get_user()->roles );
+	public function get_roles(): array {
+		return $this->get_user()->roles;
+	}
+
+	/**
+	 * Get the user's role objects.
+	 *
+	 * @return \Clarkson_Core\WordPress_Object\Clarkson_Role[]
+	 */
+	public function get_role_objects(): array {
+		$role_objects = array();
+		$roles        = $this->get_roles();
+		foreach ( $roles as $role ) {
+			$role_object = wp_roles()->get_role( $role );
+			if ( ! $role_object instanceof WP_Role ) {
+				continue;
+			}
+			$role_objects[] = Objects::get_instance()->get_role( $role_object );
+		}
+		return $role_objects;
 	}
 
 
