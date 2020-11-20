@@ -319,6 +319,23 @@ class Objects {
 	}
 
 	/**
+	 * Get an array of post types converted from their corresponding WordPress post type class.
+	 *
+	 * @param \WP_Post_Type[] $post_types WordPress post type objects
+	 *
+	 * @return Clarkson_Post_Type[] $objects Array of Clarkson post type objects.
+	 */
+	public function get_post_types( array $post_types ): array {
+		$objects = array();
+
+		foreach ( $post_types as $post_type ) {
+			$objects[] = $this->get_post_type( $post_type );
+		}
+
+		return $objects;
+	}
+
+	/**
 	 * Get post type object by post type.
 	 */
 	public function get_post_type( \WP_Post_Type $post_type ):Clarkson_Post_Type {
