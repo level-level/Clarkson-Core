@@ -6,6 +6,7 @@
 namespace Clarkson_Core\WordPress_Object;
 
 use Clarkson_Core\Objects;
+use WP_Post_Type;
 
 /**
  * Clarkson Post Type class.
@@ -35,6 +36,27 @@ class Clarkson_Post_Type {
 			return null;
 		}
 		return Objects::get_instance()->get_post_type( $post_type_object );
+	}
+
+	/**
+	 * Get all available Clarkson Post Type objects
+	 *
+	 * @see https://developer.wordpress.org/reference/functions/get_post_types/
+	 *
+	 * @param array $args Post type arguments
+	 * @param string $operator One of 'and', 'or', or 'not'
+	 *
+	 * @return \Clarkson_Core\WordPress_Object\Clarkson_Post_Type[]
+	 */
+	public static function get_many( array $args = array(), string $operator = 'and' ): array {
+		$post_type_objects = get_post_types( $args, 'objects', $operator );
+		$post_type_objects = array_filter(
+			$post_type_objects,
+			function( $post_type_object ) {
+				return $post_type_object instanceof WP_Post_Type;
+			}
+		);
+		return Objects::get_instance()->get_post_types( $post_type_objects );
 	}
 
 	/**
