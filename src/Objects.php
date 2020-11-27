@@ -364,7 +364,7 @@ class Objects {
 	}
 
 	/**
-	 * Get an array of posts converted to their corresponding WordPress object class.
+	 * Get an array of posts converted to their corresponding WordPress template class.
 	 *
 	 * @param \WP_Post[] $posts Posts.
 	 *
