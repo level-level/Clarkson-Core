@@ -8,6 +8,7 @@ namespace Clarkson_Core;
 use Clarkson_Core\WordPress_Object\Clarkson_Object;
 use Clarkson_Core\WordPress_Object\Clarkson_Post_Type;
 use Clarkson_Core\WordPress_Object\Clarkson_Role;
+use Clarkson_Core\WordPress_Object\Clarkson_Template;
 use Clarkson_Core\WordPress_Object\Clarkson_Term;
 use Clarkson_Core\WordPress_Object\Clarkson_User;
 use DomainException;
@@ -178,12 +179,6 @@ class Objects {
 			array_unshift( $types, self::OBJECT_CLASS_NAMESPACE . $type );
 		}
 
-		$page_template_slug = $cc->autoloader->get_template_filename( $post->ID );
-		$page_template_slug = $cc->autoloader->sanitize_object_name( $page_template_slug );
-		if ( ! empty( $page_template_slug ) ) {
-			array_unshift( $types, self::OBJECT_CLASS_NAMESPACE . $page_template_slug );
-		}
-
 		$class_to_load = null;
 		foreach ( $types as $type ) {
 			if ( class_exists( $type ) ) {
@@ -318,6 +313,73 @@ class Objects {
 		return new Clarkson_Role( $role );
 	}
 
+	public function get_template( \WP_Post $post ): Clarkson_Template {
+		$template = get_page_template_slug( $post );
+		$template = pathinfo( (string) $template, PATHINFO_FILENAME );
+
+		$template = Clarkson_Core::get_instance()->autoloader->sanitize_object_name( $template );
+		if ( empty( $template ) ) {
+			$template = 'template_default';
+		}
+
+		$class_name = self::OBJECT_CLASS_NAMESPACE . $template;
+		/**
+		 * Allows the theme to overwrite class that is going to be used to create a template object.
+		 *
+		 * @hook clarkson_template_class
+		 * @since 1.0.0
+		 * @param {null|string} $type Sanitized class name.
+		 * @param {WP_Post} $post The WordPress post to load a template for.
+		 * @return {null|string} Class name of template to be created.
+		 *
+		 * @example
+		 * // load a different class instead of what Clarkson Core calculates.
+		 * add_filter( 'clarkson_template_class', function( $class, $post ) {
+		 *  if ( $post->ID === 15 ){
+		 *      $class = self::OBJECT_CLASS_NAMESPACE . 'custom_template_class';
+		 *  }
+		 *  return $class;
+		 * }, 10, 2 );
+		 */
+		$class_name = apply_filters( 'clarkson_template_class', $class_name, $post );
+		if ( class_exists( $class_name ) ) {
+			$object = new $class_name( $post );
+			if ( $object instanceof Clarkson_Template ) {
+				return $object;
+			}
+		}
+
+		/**
+		 * @psalm-var string
+		 */
+		$class_name = self::OBJECT_CLASS_NAMESPACE . 'base_template';
+		if ( class_exists( $class_name ) ) {
+			$object = new $class_name( $post );
+			if ( $object instanceof Clarkson_Template ) {
+				return $object;
+			}
+		}
+
+		return new Clarkson_Template( $post );
+	}
+
+	/**
+	 * Get an array of posts converted to their corresponding WordPress template class.
+	 *
+	 * @param \WP_Post[] $posts Posts.
+	 *
+	 * @return Clarkson_Template[] $objects Array of post templates.
+	 */
+	public function get_templates( array $posts ): array {
+		$objects = array();
+
+		foreach ( $posts as $post ) {
+			$objects[] = $this->get_template( $post );
+		}
+
+		return $objects;
+	}
+
 	/**
 	 * Get an array of post types converted from their corresponding WordPress post type class.
 	 *
@@ -350,7 +412,7 @@ class Objects {
 		 * @hook clarkson_post_type_class
 		 * @since 1.0.0
 		 * @param {null|string} $type Sanitized class name.
-		 * @param {WP_Post_Type} $post_type Sanitized class name.
+		 * @param {WP_Post_Type} $post_type The original post type object.
 		 * @return {null|string} Class name of post_type to be created.
 		 *
 		 * @example

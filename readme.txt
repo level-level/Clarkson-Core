@@ -33,9 +33,10 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 * Adds new `clarkson_core_template_context` filter.
 * Adds `object` as the first of `objects` to twig context.
 * There is now an object hierarchy:
-    * Objects: \Clarkson_Core\WordPress_Object\$template, \Clarkson_Core\WordPress_Object\$post_type, \Clarkson_Core\WordPress_Object\base_object, \Clarkson_Core\WordPress_Object\Clarkson_Object
+    * Objects: \Clarkson_Core\WordPress_Object\$post_type, \Clarkson_Core\WordPress_Object\base_object, \Clarkson_Core\WordPress_Object\Clarkson_Object
     * Terms: \Clarkson_Core\WordPress_Object\$taxonomy, \Clarkson_Core\WordPress_Object\base_term, \Clarkson_Core\WordPress_Object\Clarkson_Term
     * Users: \Clarkson_Core\WordPress_Object\user, \Clarkson_Core\WordPress_Object\Clarkson_User
+    * Templates: \Clarkson_Core\WordPress_Object\$template, \Clarkson_Core\WordPress_Object\base_template, \Clarkson_Core\WordPress_Object\Clarkson_Template,   
     * Post Types: \Clarkson_Core\WordPress_Object\post_type_$post_type, \Clarkson_Core\WordPress_Object\base_post_type, \Clarkson_Core\WordPress_Object\Clarkson_Post_Type
     * Blocks: \Gutenberg\Blocks\$block_name, \Gutenberg\Blocks\base_block, Clarkson_Core\Gutenberg\Block_Type
 * Adds `get_terms()` method to mimic `get_objects` and `get_users` on Object factory.
@@ -48,7 +49,6 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 * Adds `get_roles()` method (returns role name as string) to `Clarkson_User`.
 * Adds `get_role_objects()` method (returns `Clarkson_Role`) to `Clarkson_User`.
 * The `get_children()` and `get_attachments()` methods on the `Clarkson_Object` now accepts a Post arguments parameter.
-
 
 Backward incompatible changes:
 * Removes compatibility for WordPress < 4.7.
@@ -64,6 +64,7 @@ Backward incompatible changes:
 * Updates required PHP version to 7.2.
 * Removes `get_role()` method from `Clarkson_User` because a user can have multiple roles. Replaced with `get_roles()` method, which returns an array of role names.
 * The `get_children()` and `get_attachments()` methods on the `Clarkson_Object` now return `Clarkson_Object[]` instead of `WP_Post[]`.
+* Template objects are now standalone objects (`Clarkson_Template`), instead of extending `Clarkson_Object`.
 
 = 0.4.2 - August 19, 2019 =
 
