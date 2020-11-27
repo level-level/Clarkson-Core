@@ -112,10 +112,8 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Gets the first result from a `::get_many()` query.
 	 *
 	 * @param array $args Post query arguments. {@link https://developer.wordpress.org/reference/classes/wp_query/#parameters}
-	 *
-	 * @return Clarkson_Object|null
 	 */
-	public static function get_one( $args = array() ) {
+	public static function get_one( $args = array() ):?Clarkson_Object {
 		$args['posts_per_page'] = 1;
 		$one                    = static::get_many( $args );
 		return array_shift( $one );
@@ -128,6 +126,10 @@ class Clarkson_Object implements \JsonSerializable {
 	 */
 	public function get_id() {
 		return $this->_post->ID;
+	}
+
+	public function get_template():Clarkson_Template {
+		return Objects::get_instance()->get_template( $this->_post );
 	}
 
 	/**
