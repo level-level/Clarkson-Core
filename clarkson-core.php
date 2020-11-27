@@ -78,7 +78,9 @@ class Clarkson_Core {
 			require_once $autoload_file;
 		}
 
-		add_action( 'init', array( $this, 'init' ) );
+		if ( is_callable( 'add_action' ) ) {
+			add_action( 'init', array( $this, 'init' ) );
+		}
 
 		$this->autoloader = new Autoloader();
 	}
@@ -97,4 +99,5 @@ class Clarkson_Core {
 
 }
 
-add_action( 'plugins_loaded', array( Clarkson_Core::class, 'get_instance' ) );
+// Initialize Clarkson Core
+Clarkson_Core::get_instance();
