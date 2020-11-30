@@ -28,7 +28,7 @@ jobs:
     - name: Generate PHP API docs
       uses: docker://phpdoc/phpdoc:3
       with:
-        args: phpdoc run
+        args: run
 
     - name: Publish pages
       uses: maxheld83/ghpages@v0.2.1
