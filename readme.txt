@@ -3,7 +3,7 @@ Contributors: level level, jmslbam
 Tags: twig, templating, template engine, templates, oop, wordpress objects
 Requires at least: 4.7
 Tested up to: 4.9.4
-Stable tag: 1.0.0
+Stable tag: 1.1.0
 License: GPL v2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,6 +21,10 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 
 
 == Changelog ==
+
+= 1.1.0 =
+
+* Adds a new `clarkson_core_block_context_{$name}` hook to modify variables available in the twig render function of a block.
 
 = 1.0.0 =
 
