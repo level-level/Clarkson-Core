@@ -83,13 +83,37 @@ class Block_Type extends \WP_Block_Type {
 		if ( file_exists( $this->get_twig_template_path() ) ) {
 			$cc_template              = Templates::get_instance();
 			$this->content_attributes = $attributes;
+
+			$context_args = array(
+				'data'    => $attributes,
+				'content' => $content,
+				'block'   => $this,
+			);
+
+			/**
+			 * Allows theme to overwrite the the variables available when rendering a specific block.
+			 *
+			 * @hook clarkson_core_block_context_{$name}
+			 * @since 1.1.0
+			 * @param {string} $context Variables available in the twig render function.
+			 * @param {Block_Type} $block Block that triggered this filter.
+			 * @return {string} Variables available in the twig render function.
+			 *
+			 * @example
+			 * // Add an Assets object to a blocks twig context variables.
+			 * add_filter(
+			 *  'clarkson_core_block_context_org/events',
+			 *  function( $context, $block ) {
+			 *      $context['assets'] = new Assets();
+			 *      return $context;
+			 *  }, 10, 2
+			 * );
+			 */
+			$context_args = apply_filters( 'clarkson_core_block_context_' . $this->name, $context_args, $this );
+
 			return (string) $cc_template->render_twig(
 				$this->get_twig_template_path(),
-				array(
-					'data'    => $attributes,
-					'content' => $content,
-					'block'   => $this,
-				),
+				$context_args,
 				true
 			);
 		}
