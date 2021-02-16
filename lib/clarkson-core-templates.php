@@ -25,6 +25,13 @@ class Clarkson_Core_Templates {
 	protected $has_been_called = false;
 
 	/**
+	 * The twig environment.
+	 *
+	 * @var null|Twig_Environment $twig The reusable twig environment object.
+	 */
+	private $twig;
+
+	/**
 	 * Render template.
 	 *
 	 * @param string $path           Post meta _wp_page_template.
@@ -73,41 +80,7 @@ class Clarkson_Core_Templates {
 
 		$template_dirs = $this->get_templates_dirs();
 		$template_file = str_replace( array( $this->get_template_dir(), $this->get_stylesheet_dir() ), '', $path ); // Retrieve only the path to the template file, relative from the yourtheme/templates directory.
-
-		$debug     = ( defined( 'WP_DEBUG' ) ? WP_DEBUG : false );
-		$twig_args = array(
-			'debug' => $debug,
-		);
-
-		/**
-		 * Allows manipulation of the twig envirionment settings.
-		 *
-		 * @hook clarkson_twig_args
-		 * @since 0.1.0
-		 * @param {array} $twig_args Default options to use when instantiating a twig environment.
-		 * @return {array} Options to pass to the twig environment
-		 * @see https://twig.symfony.com/doc/2.x/api.html#environment-options
-		 *
-		 * @example
-		 * // Enable caching in the twig environment.
-		 * add_filter( 'clarkson_twig_args', function( $twig_args ) {
-		 *  $twig_args['cache'] = get_stylesheet_directory() . '/dist/template_cache/';
-		 *  return $twig_args;
-		 * } );
-		 */
-		$twig_args = apply_filters( 'clarkson_twig_args', $twig_args );
-		$twig_fs   = new Twig_Loader_Filesystem( $template_dirs );
-		$twig      = new Twig_Environment( $twig_fs, $twig_args );
-
-		$twig->addExtension( new Clarkson_Core_Twig_Extension() );
-		$twig->addExtension( new Twig_Extensions_Extension_I18n() );
-		$twig->addExtension( new Twig_Extensions_Extension_Text() );
-		$twig->addExtension( new Twig_Extensions_Extension_Array() );
-		$twig->addExtension( new Twig_Extensions_Extension_Date() );
-
-		if ( $debug ) {
-			$twig->addExtension( new Twig_Extension_Debug() );
-		}
+		$twig = $this->get_twig_environment( $template_dirs );
 
 		/**
 		 * Context variables that are available in twig templates.
@@ -128,6 +101,62 @@ class Clarkson_Core_Templates {
 		return $twig->render( $template_file, $context_args );
 	}
 
+	private function get_twig_environment( array $template_dirs ):Twig_Environment {
+		if ( ! $this->twig ) {
+			$debug     = ( defined( 'WP_DEBUG' ) ? constant( 'WP_DEBUG' ) : false );
+			$twig_args = array(
+				'debug' => $debug,
+			);
+
+			/**
+			 * Allows manipulation of the twig envirionment settings.
+			 *
+			 * @hook clarkson_twig_args
+			 * @since 0.1.0
+			 * @param {array} $twig_args Default options to use when instantiating a twig environment.
+			 * @return {array} Options to pass to the twig environment
+			 * @see https://twig.symfony.com/doc/2.x/api.html#environment-options
+			 *
+			 * @example
+			 * // Enable caching in the twig environment.
+			 * add_filter( 'clarkson_twig_args', function( $twig_args ) {
+			 *  $twig_args['cache'] = get_stylesheet_directory() . '/dist/template_cache/';
+			 *  return $twig_args;
+			 * } );
+			 */
+			$twig_args = apply_filters( 'clarkson_twig_args', $twig_args );
+			$twig_fs   = new Twig_Loader_Filesystem( $template_dirs );
+			$twig      = new Twig_Environment( $twig_fs, $twig_args );
+
+			$twig->addExtension( new Clarkson_Core_Twig_Extension() );
+			$twig->addExtension( new Twig_Extensions_Extension_I18n() );
+			$twig->addExtension( new Twig_Extensions_Extension_Text() );
+			$twig->addExtension( new Twig_Extensions_Extension_Array() );
+			$twig->addExtension( new Twig_Extensions_Extension_Date() );
+
+			if ( $debug ) {
+				$twig->addExtension( new Twig_Extension_Debug() );
+			}
+
+			/**
+			 * Allows themes and plugins to edit the Clarkson Twig environment.
+			 *
+			 * @hook clarkson_twig_environment
+			 * @since 1.0.0
+			 * @param {Twig_Environment} $twig Twig environment.
+			 * @return {Twig_Environment} Twig environment.
+			 *
+			 * @example
+			 * // We can add custom twig extensions.
+			 * add_filter( 'clarkson_twig_environment', function( $twig ) {
+			 *  $twig->addExtension( new \Custom_Twig_Extension() );
+			 *  return $twig;
+			 * } );
+			 */
+			$this->twig = apply_filters( 'clarkson_twig_environment', $twig );
+		}
+		return $this->twig;
+	}
 
 	/**
 	 * Echo template.
