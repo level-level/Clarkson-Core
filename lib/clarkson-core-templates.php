@@ -18,6 +18,15 @@ class Clarkson_Core_Templates {
 	protected $templates = array();
 
 	/**
+	 * The template context generator.
+	 *
+	 * This object can be used if you want to remove any of the default add_filters.
+	 *
+	 * @var \Clarkson_Core_Template_Context
+	 */
+	public $template_context;
+
+	/**
 	 * Define has_been_called
 	 *
 	 * @var bool $has_been_called Check if template rendering has already been called.
@@ -239,7 +248,7 @@ class Clarkson_Core_Templates {
 		// if no child-theme is used, then these two above are the same.
 		$template_dirs = array_unique( $template_dirs );
 
-		// Ingore template dir if it doesn't exist
+		// Ignore template dir if it doesn't exist
 		$template_dirs = array_filter(
 			$template_dirs,
 			function( $template_dir ) {
@@ -301,6 +310,7 @@ class Clarkson_Core_Templates {
 	 * @internal
 	 */
 	public function template_include( $template ) {
+		global $wp_query;
 		$extension = pathinfo( $template, PATHINFO_EXTENSION );
 		$type      = basename( $template );
 		$type      = str_replace( ".{$extension}", '', $type );
@@ -312,28 +322,27 @@ class Clarkson_Core_Templates {
 		}
 
 		if ( 'twig' === $extension ) {
-			// Get template vars.
-			global $posts;
-			$object_loader = Clarkson_Core_Objects::get_instance();
-
-			$page_vars = array();
-
-			if ( is_author() ) {
-				$page_vars['user'] = $object_loader->get_user( get_queried_object_id() );
-			} elseif ( is_tax() ) {
-				$term = get_queried_object();
-				// Custom Taxonomy Templates per Taxonomy type.
-				if ( is_a( $term, 'WP_Term' ) ) {
-					$page_vars['term'] = $object_loader->get_term( $term );
-				}
-			} elseif ( is_search() ) {
-				global $wp_query;
-				$page_vars['found_posts'] = $wp_query->get( 'filtered_found_posts' ) ? $wp_query->get( 'filtered_found_posts' ) : $wp_query->found_posts;
-			}
-			$page_vars['objects'] = $object_loader->get_objects( $posts );
-
-			// Render it.
-			$this->render( $template, $page_vars, true );
+			/**
+			 * Add and modify variables available during the template rendering.
+			 *
+			 * @hook clarkson_core_template_context
+			 * @since 1.0.0
+			 * @param {array} $context The context that will be passed onto the template.
+			 * @param {\WP_Query} $wp_query The current query that is being rendered.
+			 * @return {array} The context that will be passed onto the template.
+			 *
+			 * @example
+			 * // It is possible to add custom variables to the twig context.
+			 * add_filter( 'clarkson_core_template_context', function( $context, $wp_query ) {
+			 *  if( $wp_query->is_tax ){
+			 *   $context['tax_variable'] = true;
+			 *  }
+			 *  return $context
+			 * } );
+			 */
+			$context  = apply_filters( 'clarkson_core_template_context', array(), $wp_query );
+			$template = realpath( $template );
+			$this->render( $template, $context, true );
 		}
 
 		return $template;
@@ -636,6 +645,7 @@ class Clarkson_Core_Templates {
 	 * Clarkson_Core_Templates constructor.
 	 */
 	protected function __construct() {
+		require_once __DIR__ . '/clarkson-core-template-context.php';
 		if ( ! class_exists( 'Clarkson_Core_Objects' ) ) {
 			return;
 		}
@@ -643,6 +653,9 @@ class Clarkson_Core_Templates {
 		add_action( 'template_include', array( $this, 'template_include' ) );
 		add_filter( 'wp_insert_post_data', array( $this, 'register_custom_templates' ) );
 		add_filter( 'acf/location/rule_values/page_template', array( $this, 'get_templates' ) );
+
+		$this->template_context = new Clarkson_Core_Template_Context();
+		$this->template_context->register_hooks();
 
 		// Add a filter to the attributes metabox to inject template into the cache.
 		if ( version_compare( floatval( get_bloginfo( 'version' ) ), '4.7', '<' ) ) {
