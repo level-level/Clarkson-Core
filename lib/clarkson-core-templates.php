@@ -89,7 +89,7 @@ class Clarkson_Core_Templates {
 
 		$template_dirs = $this->get_templates_dirs();
 		$template_file = str_replace( array( $this->get_template_dir(), $this->get_stylesheet_dir() ), '', $path ); // Retrieve only the path to the template file, relative from the yourtheme/templates directory.
-		$twig = $this->get_twig_environment( $template_dirs );
+		$twig          = $this->get_twig_environment( $template_dirs );
 
 		/**
 		 * Context variables that are available in twig templates.
