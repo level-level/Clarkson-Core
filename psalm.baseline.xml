@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="3.18.2@19aa905f7c3c7350569999a93c40ae91ae4e1626">
+  <file src="wordpress-objects/Clarkson_Object.php">
+    <UnsafeInstantiation occurrences="2">
+      <code>new $class( $post )</code>
+      <code>new $class( get_post( $id ) )</code>
+    </UnsafeInstantiation>
+  </file>
+  <file src="wordpress-objects/Clarkson_Term.php">
+    <UnsafeInstantiation occurrences="4">
+      <code>new $class( $term-&gt;term_id, $taxonomy ? $taxonomy : static::$taxonomy )</code>
+      <code>new $class( $term-&gt;term_id, $taxonomy ? $taxonomy : static::$taxonomy )</code>
+      <code>new $class( $term-&gt;term_id, $taxonomy ? $taxonomy : static::$taxonomy )</code>
+      <code>new $class( $this-&gt;_term-&gt;parent, $this-&gt;get_taxonomy() )</code>
+    </UnsafeInstantiation>
+  </file>
+  <file src="wordpress-objects/Clarkson_User.php">
+    <UnsafeInstantiation occurrences="1">
+      <code>new $class( $id )</code>
+    </UnsafeInstantiation>
+  </file>
+</files>
