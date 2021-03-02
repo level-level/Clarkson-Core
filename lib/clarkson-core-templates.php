@@ -88,7 +88,7 @@ class Clarkson_Core_Templates {
 		$this->has_been_called = true;
 
 		$template_dirs = $this->get_templates_dirs();
-		$template_file = str_replace( array( $this->get_template_dir(), $this->get_stylesheet_dir() ), '', $path ); // Retrieve only the path to the template file, relative from the yourtheme/templates directory.
+		$template_file = str_replace( $template_dirs, '', $path ); // Retrieve only the path to the template file, relative from the yourtheme/templates directory.
 		$twig          = $this->get_twig_environment( $template_dirs );
 
 		/**
@@ -277,7 +277,7 @@ class Clarkson_Core_Templates {
 		 *  return get_template_directory() . '/twig_templates';
 		 * } );
 		 */
-		return apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' );
+		return (string) realpath( apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' ) );
 	}
 
 	/**
@@ -298,7 +298,7 @@ class Clarkson_Core_Templates {
 		 *  return get_stylesheet_directory() . '/twig_templates';
 		 * } );
 		 */
-		return apply_filters( 'clarkson_twig_stylesheet_dir', get_stylesheet_directory() . '/templates' );
+		return (string) realpath( apply_filters( 'clarkson_twig_stylesheet_dir', get_stylesheet_directory() . '/templates' ) );
 	}
 
 	/**
