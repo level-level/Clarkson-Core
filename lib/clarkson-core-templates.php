@@ -649,13 +649,14 @@ class Clarkson_Core_Templates {
 		if ( ! class_exists( 'Clarkson_Core_Objects' ) ) {
 			return;
 		}
+
+		$this->template_context = new Clarkson_Core_Template_Context();
+		$this->template_context->register_hooks();
+		
 		$this->add_template_filters();
 		add_action( 'template_include', array( $this, 'template_include' ) );
 		add_filter( 'wp_insert_post_data', array( $this, 'register_custom_templates' ) );
 		add_filter( 'acf/location/rule_values/page_template', array( $this, 'get_templates' ) );
-
-		$this->template_context = new Clarkson_Core_Template_Context();
-		$this->template_context->register_hooks();
 
 		// Add a filter to the attributes metabox to inject template into the cache.
 		if ( version_compare( floatval( get_bloginfo( 'version' ) ), '4.7', '<' ) ) {
