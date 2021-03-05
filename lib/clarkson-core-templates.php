@@ -59,7 +59,7 @@ class Clarkson_Core_Templates {
 				$path = $template_path;
 			}
 		}
-		
+
 		if ( isset( $wp_query->query_vars['json'] ) ) {
 			if ( count( $objects ) === 1 && isset( $objects['objects'][0] ) ) {
 				$objects = reset( $objects['objects'][0] );
@@ -94,16 +94,15 @@ class Clarkson_Core_Templates {
 		if ( is_page_template() && isset( $wp_query->post ) && isset( $wp_query->post->ID ) ) {
 			// Use the default WordPress template hierarchy fallback method
 			$template_file = str_replace( $template_dirs, '', $path );
-		}
-		else {
+		} else {
 			// Use realpath to get the template file
-			$realpath_template_dir = realpath( $this->get_template_dir() );
+			$realpath_template_dir   = realpath( $this->get_template_dir() );
 			$realpath_stylesheet_dir = realpath( $this->get_stylesheet_dir() );
-			$realpath_path = realpath( $path );
-			$template_file = str_replace( array( $realpath_template_dir, $realpath_stylesheet_dir ), '', $realpath_path );
+			$realpath_path           = realpath( $path );
+			$template_file           = str_replace( array( $realpath_template_dir, $realpath_stylesheet_dir ), '', $realpath_path );
 		}
-		
-		$twig          = $this->get_twig_environment( $template_dirs );
+
+		$twig = $this->get_twig_environment( $template_dirs );
 
 		/**
 		 * Context variables that are available in twig templates.
@@ -666,7 +665,7 @@ class Clarkson_Core_Templates {
 
 		$this->template_context = new Clarkson_Core_Template_Context();
 		$this->template_context->register_hooks();
-		
+
 		$this->add_template_filters();
 		add_action( 'template_include', array( $this, 'template_include' ) );
 		add_filter( 'wp_insert_post_data', array( $this, 'register_custom_templates' ) );
