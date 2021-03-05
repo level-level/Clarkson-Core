@@ -59,7 +59,7 @@ class Clarkson_Core_Templates {
 				$path = $template_path;
 			}
 		}
-
+		
 		if ( isset( $wp_query->query_vars['json'] ) ) {
 			if ( count( $objects ) === 1 && isset( $objects['objects'][0] ) ) {
 				$objects = reset( $objects['objects'][0] );
@@ -81,6 +81,8 @@ class Clarkson_Core_Templates {
 	 * @return string
 	 */
 	public function render_twig( $path, $objects, $ignore_warning = false ) {
+		global $wp_query;
+
 		// Twig arguments.
 		if ( ! $ignore_warning && $this->has_been_called ) {
 			user_error( 'Template rendering has already been called. If you are trying to render a partial, include the file from the parent template for performance reasons. If you have a specific reason to render multiple times, set ignore_warning to true.', E_USER_NOTICE );
@@ -88,7 +90,19 @@ class Clarkson_Core_Templates {
 		$this->has_been_called = true;
 
 		$template_dirs = $this->get_templates_dirs();
-		$template_file = str_replace( $template_dirs, '', $path ); // Retrieve only the path to the template file, relative from the yourtheme/templates directory.
+
+		if ( is_page_template() && isset( $wp_query->post ) && isset( $wp_query->post->ID ) ) {
+			// Use the default WordPress template hierarchy fallback method
+			$template_file = str_replace( $template_dirs, '', $path );
+		}
+		else {
+			// Use realpath to get the template file
+			$realpath_template_dir = realpath( $this->get_template_dir() );
+			$realpath_stylesheet_dir = realpath( $this->get_stylesheet_dir() );
+			$realpath_path = realpath( $path );
+			$template_file = str_replace( array( $realpath_template_dir, $realpath_stylesheet_dir ), '', $realpath_path );
+		}
+		
 		$twig          = $this->get_twig_environment( $template_dirs );
 
 		/**
@@ -277,7 +291,7 @@ class Clarkson_Core_Templates {
 		 *  return get_template_directory() . '/twig_templates';
 		 * } );
 		 */
-		return (string) realpath( apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' ) );
+		return apply_filters( 'clarkson_twig_template_dir', get_template_directory() . '/templates' );
 	}
 
 	/**
@@ -298,7 +312,7 @@ class Clarkson_Core_Templates {
 		 *  return get_stylesheet_directory() . '/twig_templates';
 		 * } );
 		 */
-		return (string) realpath( apply_filters( 'clarkson_twig_stylesheet_dir', get_stylesheet_directory() . '/templates' ) );
+		return apply_filters( 'clarkson_twig_stylesheet_dir', get_stylesheet_directory() . '/templates' );
 	}
 
 	/**
