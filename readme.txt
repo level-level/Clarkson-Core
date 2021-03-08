@@ -22,6 +22,10 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 
 == Changelog ==
 
+= 0.4.5 - March 8, 2021 =
+
+* Fixes an issue where the template path ended up being empty in Clarkson_Core_Templates->render_twig().
+
 = 0.4.4 - March 8, 2021 =
 
 * Extracts twig instantiation to seperate method to run it only once.
