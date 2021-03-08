@@ -18,11 +18,27 @@ class Clarkson_Core_Templates {
 	protected $templates = array();
 
 	/**
+	 * The template context generator.
+	 *
+	 * This object can be used if you want to remove any of the default add_filters.
+	 *
+	 * @var \Clarkson_Core_Template_Context
+	 */
+	public $template_context;
+
+	/**
 	 * Define has_been_called
 	 *
 	 * @var bool $has_been_called Check if template rendering has already been called.
 	 */
 	protected $has_been_called = false;
+
+	/**
+	 * The twig environment.
+	 *
+	 * @var null|Twig_Environment $twig The reusable twig environment object.
+	 */
+	private $twig;
 
 	/**
 	 * Render template.
@@ -65,6 +81,8 @@ class Clarkson_Core_Templates {
 	 * @return string
 	 */
 	public function render_twig( $path, $objects, $ignore_warning = false ) {
+		global $wp_query;
+
 		// Twig arguments.
 		if ( ! $ignore_warning && $this->has_been_called ) {
 			user_error( 'Template rendering has already been called. If you are trying to render a partial, include the file from the parent template for performance reasons. If you have a specific reason to render multiple times, set ignore_warning to true.', E_USER_NOTICE );
@@ -72,42 +90,19 @@ class Clarkson_Core_Templates {
 		$this->has_been_called = true;
 
 		$template_dirs = $this->get_templates_dirs();
-		$template_file = str_replace( array( $this->get_template_dir(), $this->get_stylesheet_dir() ), '', $path ); // Retrieve only the path to the template file, relative from the yourtheme/templates directory.
 
-		$debug     = ( defined( 'WP_DEBUG' ) ? WP_DEBUG : false );
-		$twig_args = array(
-			'debug' => $debug,
-		);
-
-		/**
-		 * Allows manipulation of the twig envirionment settings.
-		 *
-		 * @hook clarkson_twig_args
-		 * @since 0.1.0
-		 * @param {array} $twig_args Default options to use when instantiating a twig environment.
-		 * @return {array} Options to pass to the twig environment
-		 * @see https://twig.symfony.com/doc/2.x/api.html#environment-options
-		 *
-		 * @example
-		 * // Enable caching in the twig environment.
-		 * add_filter( 'clarkson_twig_args', function( $twig_args ) {
-		 *  $twig_args['cache'] = get_stylesheet_directory() . '/dist/template_cache/';
-		 *  return $twig_args;
-		 * } );
-		 */
-		$twig_args = apply_filters( 'clarkson_twig_args', $twig_args );
-		$twig_fs   = new Twig_Loader_Filesystem( $template_dirs );
-		$twig      = new Twig_Environment( $twig_fs, $twig_args );
-
-		$twig->addExtension( new Clarkson_Core_Twig_Extension() );
-		$twig->addExtension( new Twig_Extensions_Extension_I18n() );
-		$twig->addExtension( new Twig_Extensions_Extension_Text() );
-		$twig->addExtension( new Twig_Extensions_Extension_Array() );
-		$twig->addExtension( new Twig_Extensions_Extension_Date() );
-
-		if ( $debug ) {
-			$twig->addExtension( new Twig_Extension_Debug() );
+		if ( is_page_template() && isset( $wp_query->post ) && isset( $wp_query->post->ID ) ) {
+			// Use the default WordPress template hierarchy fallback method
+			$template_file = str_replace( $template_dirs, '', $path );
+		} else {
+			// Use realpath to get the template file
+			$realpath_template_dir   = realpath( $this->get_template_dir() );
+			$realpath_stylesheet_dir = realpath( $this->get_stylesheet_dir() );
+			$realpath_path           = realpath( $path );
+			$template_file           = str_replace( array( $realpath_template_dir, $realpath_stylesheet_dir ), '', $realpath_path );
 		}
+
+		$twig = $this->get_twig_environment( $template_dirs );
 
 		/**
 		 * Context variables that are available in twig templates.
@@ -128,6 +123,62 @@ class Clarkson_Core_Templates {
 		return $twig->render( $template_file, $context_args );
 	}
 
+	private function get_twig_environment( array $template_dirs ):Twig_Environment {
+		if ( ! $this->twig ) {
+			$debug     = ( defined( 'WP_DEBUG' ) ? constant( 'WP_DEBUG' ) : false );
+			$twig_args = array(
+				'debug' => $debug,
+			);
+
+			/**
+			 * Allows manipulation of the twig envirionment settings.
+			 *
+			 * @hook clarkson_twig_args
+			 * @since 0.1.0
+			 * @param {array} $twig_args Default options to use when instantiating a twig environment.
+			 * @return {array} Options to pass to the twig environment
+			 * @see https://twig.symfony.com/doc/2.x/api.html#environment-options
+			 *
+			 * @example
+			 * // Enable caching in the twig environment.
+			 * add_filter( 'clarkson_twig_args', function( $twig_args ) {
+			 *  $twig_args['cache'] = get_stylesheet_directory() . '/dist/template_cache/';
+			 *  return $twig_args;
+			 * } );
+			 */
+			$twig_args = apply_filters( 'clarkson_twig_args', $twig_args );
+			$twig_fs   = new Twig_Loader_Filesystem( $template_dirs );
+			$twig      = new Twig_Environment( $twig_fs, $twig_args );
+
+			$twig->addExtension( new Clarkson_Core_Twig_Extension() );
+			$twig->addExtension( new Twig_Extensions_Extension_I18n() );
+			$twig->addExtension( new Twig_Extensions_Extension_Text() );
+			$twig->addExtension( new Twig_Extensions_Extension_Array() );
+			$twig->addExtension( new Twig_Extensions_Extension_Date() );
+
+			if ( $debug ) {
+				$twig->addExtension( new Twig_Extension_Debug() );
+			}
+
+			/**
+			 * Allows themes and plugins to edit the Clarkson Twig environment.
+			 *
+			 * @hook clarkson_twig_environment
+			 * @since 1.0.0
+			 * @param {Twig_Environment} $twig Twig environment.
+			 * @return {Twig_Environment} Twig environment.
+			 *
+			 * @example
+			 * // We can add custom twig extensions.
+			 * add_filter( 'clarkson_twig_environment', function( $twig ) {
+			 *  $twig->addExtension( new \Custom_Twig_Extension() );
+			 *  return $twig;
+			 * } );
+			 */
+			$this->twig = apply_filters( 'clarkson_twig_environment', $twig );
+		}
+		return $this->twig;
+	}
 
 	/**
 	 * Echo template.
@@ -210,7 +261,7 @@ class Clarkson_Core_Templates {
 		// if no child-theme is used, then these two above are the same.
 		$template_dirs = array_unique( $template_dirs );
 
-		// Ingore template dir if it doesn't exist
+		// Ignore template dir if it doesn't exist
 		$template_dirs = array_filter(
 			$template_dirs,
 			function( $template_dir ) {
@@ -272,6 +323,7 @@ class Clarkson_Core_Templates {
 	 * @internal
 	 */
 	public function template_include( $template ) {
+		global $wp_query;
 		$extension = pathinfo( $template, PATHINFO_EXTENSION );
 		$type      = basename( $template );
 		$type      = str_replace( ".{$extension}", '', $type );
@@ -283,28 +335,27 @@ class Clarkson_Core_Templates {
 		}
 
 		if ( 'twig' === $extension ) {
-			// Get template vars.
-			global $posts;
-			$object_loader = Clarkson_Core_Objects::get_instance();
-
-			$page_vars = array();
-
-			if ( is_author() ) {
-				$page_vars['user'] = $object_loader->get_user( get_queried_object_id() );
-			} elseif ( is_tax() ) {
-				$term = get_queried_object();
-				// Custom Taxonomy Templates per Taxonomy type.
-				if ( is_a( $term, 'WP_Term' ) ) {
-					$page_vars['term'] = $object_loader->get_term( $term );
-				}
-			} elseif ( is_search() ) {
-				global $wp_query;
-				$page_vars['found_posts'] = $wp_query->get( 'filtered_found_posts' ) ? $wp_query->get( 'filtered_found_posts' ) : $wp_query->found_posts;
-			}
-			$page_vars['objects'] = $object_loader->get_objects( $posts );
-
-			// Render it.
-			$this->render( $template, $page_vars, true );
+			/**
+			 * Add and modify variables available during the template rendering.
+			 *
+			 * @hook clarkson_core_template_context
+			 * @since 1.0.0
+			 * @param {array} $context The context that will be passed onto the template.
+			 * @param {\WP_Query} $wp_query The current query that is being rendered.
+			 * @return {array} The context that will be passed onto the template.
+			 *
+			 * @example
+			 * // It is possible to add custom variables to the twig context.
+			 * add_filter( 'clarkson_core_template_context', function( $context, $wp_query ) {
+			 *  if( $wp_query->is_tax ){
+			 *   $context['tax_variable'] = true;
+			 *  }
+			 *  return $context
+			 * } );
+			 */
+			$context  = apply_filters( 'clarkson_core_template_context', array(), $wp_query );
+			$template = realpath( $template );
+			$this->render( $template, $context, true );
 		}
 
 		return $template;
@@ -607,9 +658,14 @@ class Clarkson_Core_Templates {
 	 * Clarkson_Core_Templates constructor.
 	 */
 	protected function __construct() {
+		require_once __DIR__ . '/clarkson-core-template-context.php';
 		if ( ! class_exists( 'Clarkson_Core_Objects' ) ) {
 			return;
 		}
+
+		$this->template_context = new Clarkson_Core_Template_Context();
+		$this->template_context->register_hooks();
+
 		$this->add_template_filters();
 		add_action( 'template_include', array( $this, 'template_include' ) );
 		add_filter( 'wp_insert_post_data', array( $this, 'register_custom_templates' ) );
