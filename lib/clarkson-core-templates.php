@@ -98,7 +98,10 @@ class Clarkson_Core_Templates {
 			// Use realpath to get the template file
 			$realpath_template_dir   = realpath( $this->get_template_dir() );
 			$realpath_stylesheet_dir = realpath( $this->get_stylesheet_dir() );
-			$realpath_path           = realpath( $path ) ?: $path;
+			$realpath_path           = realpath( $path );
+			if ( ! $realpath_path ) {
+				$realpath_path = $path;
+			}
 			$template_file           = str_replace( array( $realpath_template_dir, $realpath_stylesheet_dir ), '', $realpath_path );
 		}
 
