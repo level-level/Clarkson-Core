@@ -102,7 +102,7 @@ class Clarkson_Core_Templates {
 			if ( ! $realpath_path ) {
 				$realpath_path = $path;
 			}
-			$template_file           = str_replace( array( $realpath_template_dir, $realpath_stylesheet_dir ), '', $realpath_path );
+			$template_file = str_replace( array( $realpath_template_dir, $realpath_stylesheet_dir ), '', $realpath_path );
 		}
 
 		$twig = $this->get_twig_environment( $template_dirs );
