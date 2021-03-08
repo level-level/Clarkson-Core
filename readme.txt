@@ -22,6 +22,12 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 
 == Changelog ==
 
+= 0.4.4 - March 8, 2021 =
+
+* Extracts twig instantiation to seperate method to run it only once.
+* Introduce clarkson_core_template_context from Clarkson Core 1.0.
+* Fixes rendering of templates in symlinked folders while keeping the old WordPress template hierarchy fallback method intact.
+
 = 0.4.2 - August 19, 2019 =
 
 * Fixes #165, incorrect null value when no terms are linked to a post.
