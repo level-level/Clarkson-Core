@@ -99,7 +99,10 @@ class Clarkson_Core_Templates {
 			$realpath_template_dir   = realpath( $this->get_template_dir() );
 			$realpath_stylesheet_dir = realpath( $this->get_stylesheet_dir() );
 			$realpath_path           = realpath( $path );
-			$template_file           = str_replace( array( $realpath_template_dir, $realpath_stylesheet_dir ), '', $realpath_path );
+			if ( ! $realpath_path ) {
+				$realpath_path = $path;
+			}
+			$template_file = str_replace( array( $realpath_template_dir, $realpath_stylesheet_dir ), '', $realpath_path );
 		}
 
 		$twig = $this->get_twig_environment( $template_dirs );
