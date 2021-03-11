@@ -11,11 +11,11 @@ class Template_Context {
 	 * Register all hooks to add context to the template call.
 	 */
 	public function register_hooks():void {
-		add_filter( 'clarkson_core_template_context', array( $this, 'add_author' ), 10, 2 );
-		add_filter( 'clarkson_core_template_context', array( $this, 'add_term' ), 10, 2 );
-		add_filter( 'clarkson_core_template_context', array( $this, 'add_search_count' ), 10, 2 );
-		add_filter( 'clarkson_core_template_context', array( $this, 'add_posts' ), 10, 2 );
-		add_filter( 'clarkson_core_template_context', array( $this, 'add_post_type' ), 10, 2 );
+		add_filter( 'clarkson_core_template_context', array( $this, 'add_author' ), 5, 2 );
+		add_filter( 'clarkson_core_template_context', array( $this, 'add_term' ), 5, 2 );
+		add_filter( 'clarkson_core_template_context', array( $this, 'add_search_count' ), 5, 2 );
+		add_filter( 'clarkson_core_template_context', array( $this, 'add_posts' ), 5, 2 );
+		add_filter( 'clarkson_core_template_context', array( $this, 'add_post_type' ), 5, 2 );
 	}
 
 	/**
