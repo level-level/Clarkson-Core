@@ -22,6 +22,10 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 
 == Changelog ==
 
+= 1.1.1 - March 11, 2021 =
+
+* Change the priority of the clarkson_core_template_context filter from 10 to 5 to make sure Clarkson Core fills the context first.
+
 = 1.1.0 =
 
 * Adds a new `clarkson_core_block_context_{$name}` hook to modify variables available in the twig render function of a block.
