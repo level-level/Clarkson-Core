@@ -22,6 +22,10 @@ Yes, at Level Level we use it for all of our new projects. It's already running 
 
 == Changelog ==
 
+= 0.4.6 - March 11, 2021 =
+
+* Change the priority of the clarkson_core_template_context filter from 10 to 5 to make sure Clarkson Core fills the context first.
+
 = 0.4.5 - March 8, 2021 =
 
 * Fixes an issue where the template path ended up being empty in Clarkson_Core_Templates->render_twig().
