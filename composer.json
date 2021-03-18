@@ -21,10 +21,7 @@
 	"autoload": {
 		"psr-4": {
 			"Clarkson_Core\\": "src/"
-		},
-		"files": [
-			"clarkson-core.php"
-		]
+		}
 	},
 	"scripts": {
 		"fix" : [
