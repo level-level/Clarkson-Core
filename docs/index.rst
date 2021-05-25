@@ -2,12 +2,18 @@
    :layout: landingpage
    :tada: true
 
-Clarkson Core
+.. toctree::
+   :hidden:
+   :maxdepth: 3
+
+   getting-started/index
+
+Documentation
 =======
 
 Welcome to the complete documentation for Clarkson Core.
 
 .. toctree::
-   :maxdepth: 20
+   :maxdepth: 2
 
-   getting-started/
+   getting-started/index
