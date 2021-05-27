@@ -27,7 +27,7 @@ jobs:
     - name: Generate PHP API docs
       uses: docker://phpdoc/phpdoc:3
       with:
-        args: run --title ClarksonCore --visibility public --sourcecode -d src -t out/phpdoc
+        args: run --title ClarksonCore --visibility public --sourcecode -d src -t out/phpdoc --setting="guides.enabled=true"
 
     - name: Publish pages
       uses: maxheld83/ghpages@v0.2.1
