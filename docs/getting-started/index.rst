@@ -1,7 +1,7 @@
 Getting started
 ===
 
-Clarkson Core is a framework which aims to simply WordPress theme development.
+Clarkson Core is a framework which aims to simplify WordPress theme development.
 Clarkson Core will help you in three main ways.
 
 1. You can use `Twig <https://twig.symfony.com/>`_ to construct your templates.

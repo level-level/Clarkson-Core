@@ -5,7 +5,7 @@ Clarkson Core provides a way for theme developers to work with objects.
 
 These objects represent different entities in your WordPress site, such as posts, users and terms.
 
-With these objects, you can create custom features, reuse logic and extends the way WordPress works.
+With these objects, you can create custom features, reuse logic and extend the way WordPress works.
 
 How objects are created
 ---
@@ -79,7 +79,7 @@ Blocks (Gutenberg)
 ***
 1. \Gutenberg\Blocks\$block_name
 2. \Gutenberg\Blocks\base_block
-3. Clarkson_Core\Gutenberg\Block_Type (default)
+3. \Clarkson_Core\Gutenberg\Block_Type (default)
 
 Extending objects
 ---

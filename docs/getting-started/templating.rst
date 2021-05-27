@@ -51,7 +51,7 @@ Regular posts and pages would load ``templates/archive.twig`` and ``templates/si
 
 The custom ``event`` post and the custom ``venue`` taxonomy would load ``templates/single-event.twig``, ``templates/archive-event.twig`` and ``templates/taxonomy-venue.twig``.
 
-The use could select a custom template ``template-contact.twig`` for a page.
+The user could select a custom template ``template-contact.twig`` for a page.
 
 Embeds for the ``event`` post type would be handled by ``templates/embed-event.twig``, while all other embeds would be handled by ``embed.php``.
 
