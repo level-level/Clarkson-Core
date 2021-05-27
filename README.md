@@ -1,17 +1,22 @@
-[![Build Status](https://travis-ci.org/level-level/Clarkson-Core.svg?branch=master)](https://travis-ci.org/level-level/Clarkson-Core)
+[![Test](https://github.com/level-level/Clarkson-Core/actions/workflows/test.yml/badge.svg)](https://github.com/level-level/Clarkson-Core/actions/workflows/test.yml)
 
 # Clarkson Core
 A plugin to write Object-Oriented code in combination with the Twig templating engine while keeping the WordPress Way of working in mind.
 
-## Requirements
-Composer, that's it.
+## Documentation and getting started
+Check out the [getting started with Clarkson Core guide](https://level-level.github.io/Clarkson-Core/phpdoc/guide/index.html) if you are just getting to know the project.
 
-## Whats does What?
+## Overview
 
-Here is a brief explanation of the basics of Clarkson Core.
+### Installation
+```
+composer require level-level/clarkson-Core
+```
+
+or read the [installation guide](https://level-level.github.io/Clarkson-Core/phpdoc/guide/getting-started/installation.html).
 
 ### Template Hierachy
-Uses the internal [Template Hierarchy](https://developer.wordpress.org/themes/basics/template-hierarchy/) so you can replace `index.php` with `index.twig` or `archive-company.php` with `archive-company.twig` and still have all Posts or CPT's available in "The Loop".
+Uses the internal [Template Hierarchy](https://level-level.github.io/Clarkson-Core/phpdoc/guide/getting-started/templating.html) so you can replace `index.php` with `index.twig` or `archive-company.php` with `archive-company.twig` and still have all Posts or CPT's available in "The Loop".
 
 
 ```twig
@@ -25,17 +30,16 @@ Uses the internal [Template Hierarchy](https://developer.wordpress.org/themes/ba
 ```
 
 ### Autoloading of WordPress-object classes per Custom Post Type.
-It autoloads a default [Clarkson Object](https://github.com/level-level/Clarkson-Core/blob/master/wordpress-objects/Clarkson_Object.php) that is just like `WP_Post` but with some more handy stuff.
+It autoloads a default objects that behave just like `WP_Post` and other native WordPress object but with some more handy stuff.
 When you register a Custom Post Type `ll_company` your custom class `ll_company` gets loaded in the Twig context as `objects` variable within the `archive-company.twig`.  
 
-[More info](https://github.com/level-level/Clarkson-Core/wiki/WordPress-objects) about WordPress objects.
+Read up on [Clarkson objects and how they are initiated](https://level-level.github.io/Clarkson-Core/phpdoc/guide/getting-started/clarkson-objects.html).
 
 ## More documentation
 
-- [Installation](https://github.com/level-level/Clarkson-Core/wiki/Installation)
-- [Reference](https://level-level.github.io/Clarkson-Core/phpdoc/)
-- [Explanation of loading WordPress Objects](https://github.com/level-level/Clarkson-Core/wiki/WordPress-objects)
-- [Everything else](https://github.com/level-level/Clarkson-Core/wiki)
+- [Actions & filters](https://level-level.github.io/Clarkson-Core/hooks/)
+- [Reference](https://level-level.github.io/Clarkson-Core/phpdoc/namespaces/clarkson-core.html)
+- [Legacy documentation](https://github.com/level-level/Clarkson-Core/wiki)
 
 ## Tests
 Currently 
