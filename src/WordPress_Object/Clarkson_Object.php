@@ -67,7 +67,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @return \WP_Post The post object.
 	 */
-	public function get_object(): ?\WP_Post {
+	public function get_object(): \WP_Post {
 		return $this->_post;
 	}
 
