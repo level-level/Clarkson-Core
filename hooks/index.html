@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>WP Hookdoc: Home</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Home</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    <h2></h2>
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+        
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+        
+    
+    </div>
+
+    
+</article>
+
+</section>
+
+
+
+
+
+
+    
+
+
+    <section>
+        <article><p><a href="https://github.com/level-level/Clarkson-Core/actions/workflows/test.yml"><img src="https://github.com/level-level/Clarkson-Core/actions/workflows/test.yml/badge.svg" alt="Test"></a></p>
+<h1>Clarkson Core</h1>
+<p>A plugin to write Object-Oriented code in combination with the Twig templating engine while keeping the WordPress Way of working in mind.</p>
+<h2>Documentation and getting started</h2>
+<p>Check out the <a href="https://level-level.github.io/Clarkson-Core/phpdoc/guide/index.html">getting started with Clarkson Core guide</a> if you are just getting to know the project.</p>
+<h2>Overview</h2>
+<h3>Installation</h3>
+<pre class="prettyprint source"><code>composer require level-level/clarkson-Core
+</code></pre>
+<p>or read the <a href="https://level-level.github.io/Clarkson-Core/phpdoc/guide/getting-started/installation.html">installation guide</a>.</p>
+<h3>Template Hierachy</h3>
+<p>Uses the internal <a href="https://level-level.github.io/Clarkson-Core/phpdoc/guide/getting-started/templating.html">Template Hierarchy</a> so you can replace <code>index.php</code> with <code>index.twig</code> or <code>archive-company.php</code> with <code>archive-company.twig</code> and still have all Posts or CPT's available in &quot;The Loop&quot;.</p>
+<pre class="prettyprint source lang-twig"><code>{% extends &quot;layouts/full-width.twig&quot; %}
+
+{% block content %}
+    {% for object in objects %}
+        {% include 'partials/teaser.twig' %}
+    {% endfor %}
+{% endblock %}
+</code></pre>
+<h3>Autoloading of WordPress-object classes per Custom Post Type.</h3>
+<p>It autoloads default objects that behave just like <code>WP_Post</code> and other native WordPress object but with some more handy stuff.
+When you register a Custom Post Type <code>ll_company</code> your custom class <code>ll_company</code> gets loaded in the Twig context as <code>objects</code> variable within the <code>archive-company.twig</code>.</p>
+<p>Read up on <a href="https://level-level.github.io/Clarkson-Core/phpdoc/guide/getting-started/clarkson-objects.html">Clarkson objects and how they are initiated</a>.</p>
+<h2>More documentation</h2>
+<ul>
+<li><a href="https://level-level.github.io/Clarkson-Core/hooks/">Actions &amp; filters</a></li>
+<li><a href="https://level-level.github.io/Clarkson-Core/phpdoc/namespaces/clarkson-core.html">Reference</a></li>
+<li><a href="https://github.com/level-level/Clarkson-Core/wiki">Legacy documentation</a></li>
+</ul>
+<h2>Tests</h2>
+<p>Currently</p>
+<ol>
+<li>Clone repository <code>git@github.com:level-level/Clarkson-Core.git clarkson-core</code>.</li>
+<li>Run <code>composer install</code> in the new <code>clarkson-core</code> directory.</li>
+<li>Run <code>composer run test</code>.</li>
+</ol></article>
+    </section>
+
+
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Filters</h3><ul><li><a href="clarkson_context_args.html">clarkson_context_args</a></li><li><a href="clarkson_core_create_object_callback.html">clarkson_core_create_object_callback</a></li><li><a href="clarkson_core_template_context.html">clarkson_core_template_context</a></li><li><a href="clarkson_core_template_paths.html">clarkson_core_template_paths</a></li><li><a href="clarkson_core_templates_types_for_%257B$name%257D.html">clarkson_core_templates_types_for_{$name}</a></li><li><a href="clarkson_core_%257B$post_type%257D_templates.html">clarkson_core_{$post_type}_templates</a></li><li><a href="clarkson_object_type.html">clarkson_object_type</a></li><li><a href="clarkson_post_type_class.html">clarkson_post_type_class</a></li><li><a href="clarkson_role_class.html">clarkson_role_class</a></li><li><a href="clarkson_template_class.html">clarkson_template_class</a></li><li><a href="clarkson_term_types.html">clarkson_term_types</a></li><li><a href="clarkson_twig_args.html">clarkson_twig_args</a></li><li><a href="clarkson_twig_environment.html">clarkson_twig_environment</a></li><li><a href="clarkson_twig_functions.html">clarkson_twig_functions</a></li><li><a href="clarkson_twig_stylesheet_dir.html">clarkson_twig_stylesheet_dir</a></li><li><a href="clarkson_twig_template_dir.html">clarkson_twig_template_dir</a></li><li><a href="clarkson_twig_template_dirs.html">clarkson_twig_template_dirs</a></li><li><a href="clarkson_user_type.html">clarkson_user_type</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
