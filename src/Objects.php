@@ -477,6 +477,6 @@ class Objects {
 	 * Wakeup.
 	 * @codeCoverageIgnore
 	 */
-	private function __wakeup() {
+	public function __wakeup() {
 	}
 }
