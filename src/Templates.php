@@ -331,9 +331,28 @@ class Templates {
 		$page_templates = array();
 		foreach ( $this->get_template_files() as $name => $path ) {
 			if ( preg_match( '#^template-#i', $name ) === 1 ) {
-				$name                                = str_replace( 'template-', '', $name );
-				$name                                = str_replace( '-', ' ', $name );
-				$name                                = ucwords( $name );
+				$name = str_replace( 'template-', '', $name );
+				$name = str_replace( '-', ' ', $name );
+				$name = ucwords( $name );
+				/**
+				 * Rename templates shown in the page template dropdown.
+				 *
+				 * @hook clarkson_core_template_name
+				 * @since 1.2.0
+				 * @param {string} $name The name calculated by Clarkson Core from the filename.
+				 * @param {string} $filename The filename of the template being renamed.
+				 * @return {string} The new name for the template.
+				 *
+				 * @example
+				 * // It is possible to change a template name with the filter.
+				 * add_filter( 'clarkson_core_template_name', function( string $name, string $filename ): string {
+				 *  if( $filename === 'template-contact.twig' ){
+				 *   return __( 'Contact and location', 'textdomain' );
+				 *  }
+				 *  return $name;
+				 * } );
+				 */
+				$name                                = apply_filters( 'clarkson_core_template_name', $name, basename( $path ) );
 				$page_templates[ basename( $path ) ] = $name;
 			}
 		}
