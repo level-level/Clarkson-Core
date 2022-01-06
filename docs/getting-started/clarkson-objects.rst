@@ -44,42 +44,43 @@ You can use `Composer PSR-4 autoloading <https://getcomposer.org/doc/04-schema.m
 Objects (Posts, Pages, custom post types)
 ***
 
-1. \Clarkson_Core\WordPress_Object\$post_type
-2. \Clarkson_Core\WordPress_Object\base_object
-3. \Clarkson_Core\WordPress_Object\Clarkson_Object (default)
+1. ``\Clarkson_Core\WordPress_Object\$post_type``
+2. ``\Clarkson_Core\WordPress_Object\base_object``
+3. ``\Clarkson_Core\WordPress_Object\Clarkson_Object`` (default)
 
 Terms
 ***
 
-1. \Clarkson_Core\WordPress_Object\$taxonomy
-2. \Clarkson_Core\WordPress_Object\base_term
-3. \Clarkson_Core\WordPress_Object\Clarkson_Term (default)
+1. ``\Clarkson_Core\WordPress_Object\$taxonomy``
+2. ``\Clarkson_Core\WordPress_Object\base_term``
+3. ``\Clarkson_Core\WordPress_Object\Clarkson_Term`` (default)
 
 Users
 ***
 
-1. \Clarkson_Core\WordPress_Object\user
-2. \Clarkson_Core\WordPress_Object\Clarkson_User (default)
+1. ``\Clarkson_Core\WordPress_Object\user``
+2. ``\Clarkson_Core\WordPress_Object\Clarkson_User`` (default)
 
 Templates
 ***
 
-1. \Clarkson_Core\WordPress_Object\$template
-2. \Clarkson_Core\WordPress_Object\base_template
-3. \Clarkson_Core\WordPress_Object\Clarkson_Template (default)
+1. ``\Clarkson_Core\WordPress_Object\$template``
+2. ``\Clarkson_Core\WordPress_Object\base_template``
+3. ``\Clarkson_Core\WordPress_Object\Clarkson_Template`` (default)
 
 Post types
 ***
 
-1. \Clarkson_Core\WordPress_Object\post_type_$post_type
-2. \Clarkson_Core\WordPress_Object\base_post_type
-3. \Clarkson_Core\WordPress_Object\Clarkson_Post_Type (default)
+1. ``\Clarkson_Core\WordPress_Object\post_type_$post_type``
+2. ``\Clarkson_Core\WordPress_Object\base_post_type``
+3. ``\Clarkson_Core\WordPress_Object\Clarkson_Post_Type`` (default)
 
 Blocks (Gutenberg)
 ***
-1. \Gutenberg\Blocks\$block_name
-2. \Gutenberg\Blocks\base_block
-3. \Clarkson_Core\Gutenberg\Block_Type (default)
+
+1. ``\Gutenberg\Blocks\$block_name``
+2. ``\Gutenberg\Blocks\base_block``
+3. ``\Clarkson_Core\Gutenberg\Block_Type`` (default)
 
 Extending objects
 ---
@@ -131,6 +132,7 @@ When retrieving data from the database, you directly want to have the correct ob
 
 Get multiple resources at once
 ***
+
 Every type of object has a ``get_many`` function. This allows you to perform a database query for the resource type and the result will be automatically converted into Clarkson Objects.
 
 .. code-block:: php
