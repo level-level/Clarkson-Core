@@ -152,6 +152,14 @@ Clarkson Core will have some :doc:`clarkson-objects` available in a template by 
         'found_posts' => "Number of posts matching the query"
     ]
 
+.. code-block:: php
+
+    // home (home.twig)
+    [
+        'posts_page' => "An object representing the selected posts page",
+        'objects' => "All results of the query, maybe limited by posts_per_page.",
+    ]
+
 
 .. note::
 

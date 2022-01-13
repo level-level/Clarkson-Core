@@ -16,6 +16,7 @@ class Template_Context {
 		add_filter( 'clarkson_core_template_context', array( $this, 'add_search_count' ), 5, 2 );
 		add_filter( 'clarkson_core_template_context', array( $this, 'add_posts' ), 5, 2 );
 		add_filter( 'clarkson_core_template_context', array( $this, 'add_post_type' ), 5, 2 );
+		add_filter( 'clarkson_core_template_context', array( $this, 'add_posts_page' ), 5 );
 	}
 
 	/**
@@ -75,6 +76,26 @@ class Template_Context {
 				$context['post_type'] = Objects::get_instance()->get_post_type( $queried_object );
 			}
 		}
+		return $context;
+	}
+
+	/**
+	 * Adds posts page overview as Clarkson Object if current page is home
+	 */
+	public function add_posts_page( array $context ):array {
+		if ( ! is_home() ) {
+			return $context;
+		}
+
+		$page_for_posts = get_option( 'page_for_posts' );
+
+		if ( empty( $page_for_posts ) ) {
+			return $context;
+		}
+
+		$post                  = get_post( get_option( 'page_for_posts' ) );
+		$context['posts_page'] = Objects::get_instance()->get_object( $post );
+
 		return $context;
 	}
 }
