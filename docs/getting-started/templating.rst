@@ -156,7 +156,7 @@ Clarkson Core will have some :doc:`clarkson-objects` available in a template by 
 
     // home (home.twig)
     [
-        'posts_page' => "An object representing the selected posts page"
+        'posts_page' => "An object representing the selected posts page",
         'objects' => "All results of the query, maybe limited by posts_per_page.",
     ]
 
