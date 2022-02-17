@@ -94,7 +94,7 @@ class Template_Context {
 		}
 
 		$post                  = get_post( get_option( 'page_for_posts' ) );
-		$context['posts_page'] = Objects::get_instance()->get_object( $post );
+		$context['posts_page'] = $post instanceof \WP_Post ? Objects::get_instance()->get_object( $post ) : null;
 
 		return $context;
 	}

@@ -527,13 +527,12 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * Bulk add terms to a post.
 	 *
-	 * @param string           $taxonomy Taxonomy.
+	 * @param string          $taxonomy Taxonomy.
 	 * @param Clarkson_Term[] $terms    Terms.
-	 * @var   Clarkson_Term   $term     Term objects.
 	 *
 	 * @return array|\WP_Error            Terms array.
 	 */
-	public function add_terms( $taxonomy, $terms ) {
+	public function add_terms( string $taxonomy, array $terms ) {
 		// Filter terms to ensure they are in the correct taxonomy.
 		$terms = array_filter(
 			$terms,
@@ -558,13 +557,12 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Will delete all terms for a given taxonomy.
 	 * Adds all passed terms or overwrites existing terms.
 	 *
-	 * @param string           $taxonomy Taxonomy.
+	 * @param string          $taxonomy Taxonomy.
 	 * @param Clarkson_Term[] $terms    Terms.
-	 * @var   Clarkson_Term   $term     Term objects.
 	 *
 	 * @return array|\WP_Error             Affected Term IDs.
 	 */
-	public function reset_terms( $taxonomy, $terms ) {
+	public function reset_terms( string $taxonomy, array $terms ) {
 		// Filter terms to ensure they are in the correct taxonomy.
 		$terms = array_filter(
 			$terms,

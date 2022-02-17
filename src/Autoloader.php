@@ -60,7 +60,7 @@ class Autoloader {
 
 		if ( ! empty( $page_template_slug ) ) {
 			$pathinfo = pathinfo( $page_template_slug );
-			$filename = array_key_exists( 'filename', $pathinfo ) ? (string) $pathinfo['filename'] : '';
+			$filename = array_key_exists( 'filename', $pathinfo ) ? $pathinfo['filename'] : '';
 		}
 		return $filename;
 	}
