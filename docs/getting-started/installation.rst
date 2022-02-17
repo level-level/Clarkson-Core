@@ -4,7 +4,7 @@ Installation
 Requirements
 ---
 
-- PHP 7.2 or higher
+- PHP 7.4 or higher
 - WordPress 4.7 or higher
 
 Using composer
