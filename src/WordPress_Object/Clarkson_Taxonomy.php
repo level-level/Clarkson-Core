@@ -78,13 +78,10 @@ class Clarkson_Taxonomy {
 	}
 
 	/**
-	 * Get the post type names that support this taxonomy.
-	 *
-	 * @return string[]
+	 * Get the taxonomy data.
 	 */
-	public function get_supported_post_types(): array {
-		global $wp_taxonomies;
-		return ( is_array( $wp_taxonomies[$this->_taxonomy->name] ) ) ? $wp_taxonomies[$this->_taxonomy->name]->object_type : array();
+	public function get_taxonomy(): WP_Taxonomy {
+		return $this->_taxonomy;
 	}
 
 	/**
@@ -96,10 +93,30 @@ class Clarkson_Taxonomy {
 	}
 
 	/**
-	 * Get the taxonomy data.
+	 * Get multiple terms.
+	 *
+	 * @param array $args Tax query arguments. {@link https://developer.wordpress.org/reference/classes/wp_term_query/__construct/#parameters}
+	 *
+	 * @return Clarkson_Term[]
+	 *
+	 * @example
+	 * Clarkson_Taxonomy->get_terms( array( 'posts_per_page' => 5 ) );
 	 */
-	public function get_taxonomy(): WP_Taxonomy {
-		return $this->_taxonomy;
+	public function get_terms( $args ) {
+		$args['taxonomy']     = $this->_taxonomy->name;
+		$args['fields']        = 'all';
+
+		$terms = get_terms( $args );
+		return Objects::get_instance()->get_objects( is_array( $terms ) ? $terms : array() );
 	}
 
+	/**
+	 * Get the post type names that support this taxonomy.
+	 *
+	 * @return string[]
+	 */
+	public function get_supported_post_types(): array {
+		global $wp_taxonomies;
+		return ( is_array( $wp_taxonomies[$this->_taxonomy->name] ) ) ? $wp_taxonomies[$this->_taxonomy->name]->object_type : array();
+	}
 }
