@@ -103,8 +103,8 @@ class Clarkson_Taxonomy {
 	 * Clarkson_Taxonomy->get_terms( array( 'posts_per_page' => 5 ) );
 	 */
 	public function get_terms( $args ) {
-		$args['taxonomy']     = $this->_taxonomy->name;
-		$args['fields']        = 'all';
+		$args['taxonomy'] = $this->_taxonomy->name;
+		$args['fields']   = 'all';
 
 		$terms = get_terms( $args );
 		return Objects::get_instance()->get_objects( is_array( $terms ) ? $terms : array() );
@@ -117,6 +117,6 @@ class Clarkson_Taxonomy {
 	 */
 	public function get_supported_post_types(): array {
 		global $wp_taxonomies;
-		return ( is_array( $wp_taxonomies[$this->_taxonomy->name] ) ) ? $wp_taxonomies[$this->_taxonomy->name]->object_type : array();
+		return ( is_array( $wp_taxonomies[ $this->_taxonomy->name ] ) ) ? $wp_taxonomies[ $this->_taxonomy->name ]->object_type : array();
 	}
 }
