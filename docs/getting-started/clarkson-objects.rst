@@ -75,6 +75,13 @@ Post types
 2. ``\Clarkson_Core\WordPress_Object\base_post_type``
 3. ``\Clarkson_Core\WordPress_Object\Clarkson_Post_Type`` (default)
 
+Taxonomies
+***
+
+1. ``\Clarkson_Core\WordPress_Object\taxonomy_$taxonomy``
+2. ``\Clarkson_Core\WordPress_Object\base_taxonomy``
+3. ``\Clarkson_Core\WordPress_Object\Clarkson_Taxonomy`` (default)
+
 Blocks (Gutenberg)
 ***
 
@@ -196,6 +203,7 @@ The following filters are available to manipulate the Clarkson Core object creat
 - `clarkson_core_create_object_callback <https://level-level.github.io/Clarkson-Core/hooks/clarkson_core_create_object_callback.html>`_
 - `clarkson_object_type <https://level-level.github.io/Clarkson-Core/hooks/clarkson_object_type.html>`_
 - `clarkson_post_type_class <https://level-level.github.io/Clarkson-Core/hooks/clarkson_post_type_class.html>`_
+- `clarkson_taxonomy_class <https://level-level.github.io/Clarkson-Core/hooks/clarkson_taxonomy_class.html>`_
 - `clarkson_role_class <https://level-level.github.io/Clarkson-Core/hooks/clarkson_role_class.html>`_
 - `clarkson_template_class <https://level-level.github.io/Clarkson-Core/hooks/clarkson_template_class.html>`_
 - `clarkson_term_types <https://level-level.github.io/Clarkson-Core/hooks/clarkson_term_types.html>`_
