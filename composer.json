@@ -2,6 +2,7 @@
 	"name": "level-level/clarkson-core",
 	"type": "library",
 	"license": "GPL-2.0-or-later",
+	"version": "1.4.0",
 	"description": "A plugin to write Object-Oriented code in combination with the Twig templating engine while keeping the WordPress Way of working in mind.",
 	"authors": [
 		{
@@ -44,19 +45,19 @@
 		]
 	},
 	"require" : {
-		"php":"^7.4|^8.0",
-		"twig/twig": "^3.1",
-		"twig/string-extra": "^3.1",
-		"twig/intl-extra": "^3.1",
-		"twig/html-extra": "^3.1",
-		"twig/markdown-extra": "^3.1"
+		"php":"^7.4|^8.0|^8.1",
+		"twig/twig": "^3.3",
+		"twig/string-extra": "^3.3",
+		"twig/intl-extra": "^3.3",
+		"twig/html-extra": "^3.3",
+		"twig/markdown-extra": "^3.3"
 	},
 	"require-dev": {
 		"giacocorsiglia/wordpress-stubs": "^5.1",
 		"vimeo/psalm": "^4.20",
 		"10up/wp_mock": "^0.4.2",
 		"wp-coding-standards/wpcs": "^2.3",
-		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0"
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.2"
 	},
 	"config": {
 		"allow-plugins": {

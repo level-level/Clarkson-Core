@@ -32,7 +32,7 @@ class Block_Type extends \WP_Block_Type {
 	 *
 	 * @return string
 	 */
-	public function get_twig_template_path() {
+	public function get_twig_template_path(): string {
 		/**
 		 * Allows theme to overwrite the directory in which Clarkson Core automatically loads twig templates for blocks.
 		 *
@@ -75,11 +75,12 @@ class Block_Type extends \WP_Block_Type {
 	/**
 	 * Tries to find a twig file to use for rendering. If the twig file doesn't
 	 * exists it falls back to the original render callback.
-	 * @param array  $attributes Block attributes.
-	 * @param string $content    Block content.
-	 * @return string Rendered block type output.
+	 * @param array     $attributes Block attributes.
+	 * @param string    $content    Block content.
+	 * @param \WP_Block $block      Block instance.
+	 * @return string   Rendered block type output.
 	 */
-	public function clarkson_render_callback( $attributes, $content ) {
+	public function clarkson_render_callback( array $attributes, string $content, \WP_Block $block ): string {
 		if ( file_exists( $this->get_twig_template_path() ) ) {
 			$cc_template              = Templates::get_instance();
 			$this->content_attributes = $attributes;
@@ -118,7 +119,7 @@ class Block_Type extends \WP_Block_Type {
 			);
 		}
 		if ( is_callable( $this->original_render_callback ) ) {
-			return (string) call_user_func( $this->original_render_callback, $attributes, $content );
+			return (string) call_user_func( $this->original_render_callback, $attributes, $content, $block );
 		}
 		return $content;
 	}

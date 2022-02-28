@@ -17,7 +17,11 @@ class Clarkson_User {
 	 *
 	 * @var \WP_User
 	 */
-	protected $_user;
+	protected \WP_User $user;
+
+	public function __construct( \WP_User $user ) {
+		$this->user = $user;
+	}
 
 	/**
 	 * Get the current logged in user.
@@ -34,7 +38,7 @@ class Clarkson_User {
 	 *
 	 * @param  int $id User id.
 	 */
-	public static function get( $id ): ?Clarkson_User {
+	public static function get( int $id ): ?Clarkson_User {
 		$user = get_userdata( $id );
 		if ( ! $user instanceof \WP_User ) {
 			return null;
@@ -54,7 +58,7 @@ class Clarkson_User {
 	 * @example
 	 * \Clarkson_User::get_many( array( 'role' => 'subscriber' ), $user_query );
 	 */
-	public static function get_many( array $args, &$user_query = null ):array {
+	public static function get_many( array $args, &$user_query = null ): array {
 		$args['fields'] = 'all';
 
 		$query = new \WP_User_Query( $args );
@@ -69,17 +73,10 @@ class Clarkson_User {
 	 *
 	 * @param array $args User query arguments. {@link https://developer.wordpress.org/reference/classes/wp_user_query/#parameters}
 	 */
-	public static function get_one( array $args = array() ):?Clarkson_User {
+	public static function get_one( array $args = array() ): ?Clarkson_User {
 		$args['number'] = 1;
 		$one            = static::get_many( $args );
 		return array_shift( $one );
-	}
-
-	/**
-	 * Clarkson_User constructor.
-	 */
-	public function __construct( \WP_User $user ) {
-		$this->_user = $user;
 	}
 
 	/**
@@ -87,7 +84,7 @@ class Clarkson_User {
 	 *
 	 * @return bool
 	 */
-	public function is_current_user() {
+	public function is_current_user(): bool {
 		return $this->get_id() === get_current_user_id();
 	}
 
@@ -95,7 +92,7 @@ class Clarkson_User {
 	 * Get the WordPress WP_User object.
 	 */
 	public function get_user(): \WP_User {
-		return $this->_user;
+		return $this->user;
 	}
 
 	/**
@@ -103,8 +100,8 @@ class Clarkson_User {
 	 *
 	 * @return int User id.
 	 */
-	public function get_id() {
-		return $this->_user->ID;
+	public function get_id(): int {
+		return $this->user->ID;
 	}
 
 	/**
@@ -112,7 +109,7 @@ class Clarkson_User {
 	 *
 	 * @return string User display name.
 	 */
-	public function get_display_name() {
+	public function get_display_name(): string {
 		return $this->get_user()->display_name;
 	}
 
@@ -121,7 +118,7 @@ class Clarkson_User {
 	 *
 	 * @return string User first name.
 	 */
-	public function get_display_first_name() {
+	public function get_display_first_name(): string {
 		$parts = explode( ' ', $this->get_display_name() );
 		return reset( $parts );
 	}
@@ -131,7 +128,7 @@ class Clarkson_User {
 	 *
 	 * @return string User last name.
 	 */
-	public function get_display_last_name() {
+	public function get_display_last_name(): string {
 		$parts = explode( ' ', $this->get_display_name() );
 
 		if ( isset( $parts[1] ) ) {
@@ -146,7 +143,7 @@ class Clarkson_User {
 	 *
 	 * @return string Email address.
 	 */
-	public function get_email() {
+	public function get_email(): string {
 		return $this->get_user()->user_email;
 	}
 
@@ -155,7 +152,7 @@ class Clarkson_User {
 	 *
 	 * @return string Login name.
 	 */
-	public function get_login() {
+	public function get_login(): string {
 		return $this->get_user()->user_login;
 	}
 
@@ -195,9 +192,9 @@ class Clarkson_User {
 	 * @param string $key    Meta key.
 	 * @param bool   $single If true return value of meta data field, if false return an array.
 	 *
-	 * @return array|string         Meta data.
+	 * @return array|string  Meta data.
 	 */
-	public function get_meta( $key = '', $single = false ) {
+	public function get_meta( string $key = '', bool $single = false ) {
 		return get_user_meta( $this->get_id(), $key, $single );
 	}
 
@@ -211,7 +208,7 @@ class Clarkson_User {
 	 *
 	 * @return bool|int            Meta ID if the key didn't exist.
 	 */
-	public function update_meta( $key, $value ) {
+	public function update_meta( string $key, $value ) {
 		return update_user_meta( $this->get_id(), $key, $value );
 	}
 
@@ -225,7 +222,7 @@ class Clarkson_User {
 	 *
 	 * @return int|false
 	 */
-	public function add_meta( $key, $value ) {
+	public function add_meta( string $key, $value ) {
 		return add_user_meta( $this->get_id(), $key, $value );
 	}
 
@@ -239,7 +236,7 @@ class Clarkson_User {
 	 *
 	 * @return bool
 	 */
-	public function delete_meta( $key, $value = '' ) {
+	public function delete_meta( string $key, $value = '' ) {
 		return delete_user_meta( $this->get_id(), $key, $value );
 	}
 

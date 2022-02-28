@@ -31,7 +31,7 @@ class Block_Manager {
 	 * @param \WP_Block_type $block_type Gutenberg block to determine class for.
 	 * @return string
 	 */
-	public function determine_block_type_class( $block_type ) {
+	public function determine_block_type_class( \WP_Block_Type $block_type ): string {
 		$class_name = '\\Gutenberg\\Blocks\\' . $this->sanitize_block_type_name( $block_type->name );
 
 		/**
@@ -85,7 +85,7 @@ class Block_Manager {
 	 * @param string $str Classname to be sanitized.
 	 * @return string
 	 */
-	public function sanitize_block_type_name( $str ) {
+	public function sanitize_block_type_name( string $str ): string {
 		$str = trim( $str );
 
 		// Replace - with _ .
@@ -112,7 +112,7 @@ class Block_Manager {
 	 *
 	 * @internal
 	 */
-	public function intercept_gutenberg_rendering( $content ) {
+	public function intercept_gutenberg_rendering( string $content ): string {
 		$block_registry = \WP_Block_Type_Registry::get_instance();
 		foreach ( $block_registry->get_all_registered() as $original_block ) {
 			$block_type     = $this->determine_block_type_class( $original_block );

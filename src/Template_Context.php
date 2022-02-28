@@ -38,7 +38,7 @@ class Template_Context {
 	/**
 	 * Adds a term if the current request is a term archive.
 	 */
-	public function add_term( array $context, \WP_Query $wp_query ):array {
+	public function add_term( array $context, \WP_Query $wp_query ): array {
 		if ( $wp_query->is_tax || $wp_query->is_category || $wp_query->is_tag ) {
 			$object_loader = Objects::get_instance();
 			$term          = $wp_query->queried_object;
@@ -52,7 +52,7 @@ class Template_Context {
 	/**
 	 * Adds the search result count if the current request is a search.
 	 */
-	public function add_search_count( array $context, \WP_Query $wp_query ):array {
+	public function add_search_count( array $context, \WP_Query $wp_query ): array {
 		if ( $wp_query->is_search ) {
 			$context['found_posts'] = $wp_query->get( 'filtered_found_posts' ) ? $wp_query->get( 'filtered_found_posts' ) : $wp_query->found_posts;
 		}
@@ -62,14 +62,14 @@ class Template_Context {
 	/**
 	 * Adds posts to the current context.
 	 */
-	public function add_posts( array $context, \WP_Query $wp_query ):array {
+	public function add_posts( array $context, \WP_Query $wp_query ): array {
 		$object_loader      = Objects::get_instance();
 		$context['objects'] = $object_loader->get_objects( $wp_query->posts );
 		$context['object']  = reset( $context['objects'] );
 		return $context;
 	}
 
-	public function add_post_type( array $context, \WP_Query $wp_query ):array {
+	public function add_post_type( array $context, \WP_Query $wp_query ): array {
 		if ( $wp_query->is_post_type_archive ) {
 			$queried_object = get_queried_object();
 			if ( $queried_object instanceof \WP_Post_Type ) {
@@ -82,7 +82,7 @@ class Template_Context {
 	/**
 	 * Adds posts page overview as Clarkson Object if current page is home
 	 */
-	public function add_posts_page( array $context ):array {
+	public function add_posts_page( array $context ): array {
 		if ( ! is_home() ) {
 			return $context;
 		}

@@ -13,17 +13,22 @@ use Clarkson_Core\Objects;
 class Clarkson_Role {
 	/**
 	 * WordPress representation of this role object.
-	 *
-	 * @var \WP_Role
 	 */
-	protected $_role;
+	protected \WP_Role $role;
+
+	/**
+	 * Clarkson_Role constructor.
+	 */
+	public function __construct( \WP_Role $role ) {
+		$this->role = $role;
+	}
 
 	/**
 	 * Get Clarkson Role object by role name.
 	 *
 	 * @param string $name Role name.
 	 */
-	public static function get_by_name( $name ): ?Clarkson_Role {
+	public static function get_by_name( string $name ): ?Clarkson_Role {
 		$role = wp_roles()->get_role( $name );
 		if ( ! $role instanceof \WP_Role ) {
 			return null;
@@ -37,7 +42,7 @@ class Clarkson_Role {
 	 *
 	 * @param string $name Role name.
 	 */
-	public static function get( $name ): ?Clarkson_Role {
+	public static function get( string $name ): ?Clarkson_Role {
 		return static::get_by_name( $name );
 	}
 
@@ -51,16 +56,9 @@ class Clarkson_Role {
 	}
 
 	/**
-	 * Clarkson_Role constructor.
-	 */
-	public function __construct( \WP_Role $role ) {
-		$this->_role = $role;
-	}
-
-	/**
 	 * Get the WordPress WP_Role object.
 	 */
 	public function get_role(): \WP_Role {
-		return $this->_role;
+		return $this->role;
 	}
 }

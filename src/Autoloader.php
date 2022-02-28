@@ -13,11 +13,9 @@ namespace Clarkson_Core;
 class Autoloader {
 	/**
 	 * Define the prefix for the custom user Object classes.
-	 *
-	 * @var string $user_objectname_prefix Classname prefix.
 	 * @internal
 	 */
-	public $user_objectname_prefix = 'user_';
+	public string $user_objectname_prefix = 'user_';
 
 	/**
 	 * Changes object names into valid classnames.
@@ -30,7 +28,7 @@ class Autoloader {
 	 *
 	 * @return string Sanitized object name.
 	 */
-	public function sanitize_object_name( $str ):string {
+	public function sanitize_object_name( string $str ): string {
 		$str = trim( $str );
 
 		// Replace - with _ .
@@ -50,11 +48,11 @@ class Autoloader {
 	 * Returns an empty string when the default page template is in use.
 	 * Returns false if the post is not a page.
 	 *
-	 * @param integer $post_id Post id.
+	 * @param int $post_id Post id.
 	 *
 	 * @return string
 	 */
-	public function get_template_filename( $post_id ):string {
+	public function get_template_filename( int $post_id ): string {
 		$page_template_slug = get_page_template_slug( $post_id );
 		$filename           = '';
 

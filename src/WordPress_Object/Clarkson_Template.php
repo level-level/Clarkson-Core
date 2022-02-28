@@ -12,26 +12,24 @@ use Clarkson_Core\Objects;
 class Clarkson_Template {
 	/**
 	 * The string here is the template name used by `::get_many()`.
-	 *
-	 * @var string
 	 */
-	public static $type = '';
+	public static string $type = '';
 
 	/**
-	 * @var \WP_Post
+	 * The WordPress post object
 	 */
-	protected $_post;
+	protected \WP_Post $post;
 
 	/**
-	 * @var Clarkson_Object|null
+	 * The Clarkson Object passed to the template
 	 */
-	private $_object;
+	protected ?Clarkson_Object $object = null;
 
 	public function __construct( \WP_Post $post ) {
-		$this->_post = $post;
+		$this->post = $post;
 	}
 
-	public static function get( int $id ):?Clarkson_Template {
+	public static function get( int $id ): ?Clarkson_Template {
 		$post = get_post( $id );
 		if ( ! $post instanceof \WP_Post ) {
 			return null;
@@ -50,7 +48,7 @@ class Clarkson_Template {
 	 * @example
 	 * \Clarkson_Template::get_many( array( 'posts_per_page' => 5 ), $post_query );
 	 */
-	public static function get_many( array $args, &$post_query = null ):array {
+	public static function get_many( array $args, &$post_query = null ): array {
 		$args                 = wp_parse_args(
 			$args,
 			array(
@@ -77,7 +75,7 @@ class Clarkson_Template {
 	 *
 	 * @param array $args Post query arguments. {@link https://developer.wordpress.org/reference/classes/wp_query/#parameters}
 	 */
-	public static function get_one( $args = array() ): ?Clarkson_Template {
+	public static function get_one( array $args = array() ): ?Clarkson_Template {
 		$args['posts_per_page'] = 1;
 		$one                    = static::get_many( $args );
 		return array_shift( $one );
@@ -86,10 +84,10 @@ class Clarkson_Template {
 	/**
 	 * Get the Clarkson object for this template.
 	 */
-	public function get_object():Clarkson_Object {
-		if ( empty( $this->_object ) ) {
-			$this->_object = Objects::get_instance()->get_object( $this->_post );
+	public function get_object(): Clarkson_Object {
+		if ( empty( $this->object ) ) {
+			$this->object = Objects::get_instance()->get_object( $this->post );
 		}
-		return $this->_object;
+		return $this->object;
 	}
 }
