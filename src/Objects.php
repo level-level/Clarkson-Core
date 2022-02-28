@@ -8,6 +8,7 @@ namespace Clarkson_Core;
 use Clarkson_Core\WordPress_Object\Clarkson_Object;
 use Clarkson_Core\WordPress_Object\Clarkson_Post_Type;
 use Clarkson_Core\WordPress_Object\Clarkson_Role;
+use Clarkson_Core\WordPress_Object\Clarkson_Taxonomy;
 use Clarkson_Core\WordPress_Object\Clarkson_Template;
 use Clarkson_Core\WordPress_Object\Clarkson_Term;
 use Clarkson_Core\WordPress_Object\Clarkson_User;
@@ -458,6 +459,72 @@ class Objects {
 		}
 
 		return new Clarkson_Post_Type( $post_type );
+	}
+
+	/**
+	 * Get an array of taxonomies converted from their corresponding WordPress taxonomy class.
+	 *
+	 * @param \WP_Taxonomy[] $taxonomies WordPress taxonomy objects
+	 *
+	 * @return Clarkson_Taxonomy[] $objects Array of Clarkson taxonomy objects.
+	 */
+	public function get_taxonomies( array $taxonomies ): array {
+		$objects = array();
+
+		foreach ( $taxonomies as $taxonomy ) {
+			$objects[] = $this->get_taxonomy( $taxonomy );
+		}
+
+		return $objects;
+	}
+
+	/**
+	 * Get taxonomy object by taxonomy.
+	 */
+	public function get_taxonomy( \WP_Taxonomy $taxonomy ): Clarkson_Taxonomy {
+		$cc = Clarkson_Core::get_instance();
+
+		$class_name = 'taxonomy_' . $taxonomy->name;
+		$class_name = self::OBJECT_CLASS_NAMESPACE . $cc->autoloader->sanitize_object_name( $class_name );
+
+		/**
+		 * Allows the theme to overwrite class that is going to be used to create a taxonomy object.
+		 *
+		 * @hook clarkson_taxonomy_class
+		 * @since 1.0.0
+		 * @param {null|string} $type Sanitized class name.
+		 * @param {WP_Taxonomy} $taxonomy The original taxonomy object.
+		 * @return {null|string} Class name of taxonomy to be created.
+		 *
+		 * @example
+		 * // load a different class instead of what Clarkson Core calculates.
+		 * add_filter( 'clarkson_taxonomy_class', function( $type, $taxonomy ) {
+		 *  if ( $taxonomy->name === 'example' ){
+		 *      $type = self::OBJECT_CLASS_NAMESPACE . 'custom_taxonomy_class';
+		 *  }
+		 *  return $type;
+		 * }, 10, 2 );
+		 */
+		$class_name = apply_filters( 'clarkson_taxonomy_class', $class_name, $taxonomy );
+		if ( class_exists( $class_name ) ) {
+			$object = new $class_name( $taxonomy );
+			if ( $object instanceof Clarkson_Taxonomy ) {
+				return $object;
+			}
+		}
+
+		/**
+		 * @psalm-var string
+		 */
+		$class_name = self::OBJECT_CLASS_NAMESPACE . 'base_taxonomy';
+		if ( class_exists( $class_name ) ) {
+			$object = new $class_name( $taxonomy );
+			if ( $object instanceof Clarkson_Taxonomy ) {
+				return $object;
+			}
+		}
+
+		return new Clarkson_Taxonomy( $taxonomy );
 	}
 
 	/**

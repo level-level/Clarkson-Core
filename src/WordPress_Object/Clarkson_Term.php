@@ -175,6 +175,13 @@ class Clarkson_Term {
 	}
 
 	/**
+	 * Get the term's taxonomy object.
+	 */
+	public function get_taxonomy_object(): ?Clarkson_Taxonomy {
+		return Clarkson_Taxonomy::get( $this->term->taxonomy );
+	}
+
+	/**
 	 * Get term meta data by id.
 	 *
 	 * @param string $key     Meta key.
