@@ -5,6 +5,8 @@
 
 namespace Clarkson_Core;
 
+use Clarkson_Core\WordPress_Object\Clarkson_Post_Type;
+
 class Template_Context {
 
 	/**
@@ -70,11 +72,22 @@ class Template_Context {
 	}
 
 	public function add_post_type( array $context, \WP_Query $wp_query ):array {
-		if ( $wp_query->is_post_type_archive ) {
-			$queried_object = get_queried_object();
-			if ( $queried_object instanceof \WP_Post_Type ) {
-				$context['post_type'] = Objects::get_instance()->get_post_type( $queried_object );
-			}
+		if ( ! $wp_query->is_post_type_archive ) {
+			return $context;
+		}
+
+		$post_type      = null;
+		$queried_object = get_queried_object();
+		if ( $queried_object instanceof \WP_Post_Type ) {
+			$post_type = Objects::get_instance()->get_post_type( $queried_object );
+		} elseif ( isset( $wp_query->query['post_type'] ) && is_string( $wp_query->query['post_type'] ) ) {
+			$post_type = Clarkson_Post_Type::get( $wp_query->query['post_type'] );
+		} elseif ( isset( $wp_query->query_vars['post_type'] ) && is_string( $wp_query->query_vars['post_type'] ) ) {
+			$post_type = Clarkson_Post_Type::get( $wp_query->query_vars['post_type'] );
+		}
+
+		if ( $post_type ) {
+			$context['post_type'] = $post_type;
 		}
 		return $context;
 	}
