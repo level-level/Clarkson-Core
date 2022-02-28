@@ -13,7 +13,7 @@ use Clarkson_Core\Objects;
 class Clarkson_Term {
 
 	/**
-	 * The WordPress Term object
+	 * The WordPress term object
 	 */
 	protected \WP_Term $term;
 

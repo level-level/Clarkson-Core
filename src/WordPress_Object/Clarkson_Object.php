@@ -5,6 +5,7 @@
 
 namespace Clarkson_Core\WordPress_Object;
 
+use Clarkson_Core\ClarksonWPException;
 use Clarkson_Core\Objects;
 
 /**
@@ -33,11 +34,6 @@ class Clarkson_Object implements \JsonSerializable {
 	 */
 	protected string $excerpt = '';
 
-	/**
-	 * Clarkson_Object constructor.
-	 *
-	 * @param \WP_Post $post Post object.
-	 */
 	public function __construct( \WP_Post $post ) {
 		$this->post = $post;
 	}
@@ -488,7 +484,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param string $taxonomy Optional. The taxonomy for which to retrieve terms. Default 'post_tag'.
 	 * @param array  $args     Optional. {@link wp_get_object_terms()} arguments. Default empty array.
 	 *
-	 * @throws \Clarkson_Core\ClarksonWPException
+	 * @throws ClarksonWPException
 	 *
 	 * @return Clarkson_Term[] List of post tags
 	 */
@@ -496,7 +492,7 @@ class Clarkson_Object implements \JsonSerializable {
 		$terms = wp_get_post_terms( $this->get_id(), $taxonomy, $args );
 
 		if ( $terms instanceof \WP_Error ) {
-			throw new \Clarkson_Core\ClarksonWPException( $terms );
+			throw new ClarksonWPException( $terms );
 		}
 
 		return Objects::get_instance()->get_terms( $terms );
@@ -507,7 +503,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param Clarkson_Term $term    Term data.
 	 *
-	 * @throws \Clarkson_Core\ClarksonWPException
+	 * @throws ClarksonWPException
 	 *
 	 * @return int[] Taxonomy ids of affected terms
 	 */
@@ -515,7 +511,7 @@ class Clarkson_Object implements \JsonSerializable {
 		$object_terms = wp_set_object_terms( $this->get_id(), $term->get_id(), $term->get_taxonomy(), true );
 
 		if ( $object_terms instanceof \WP_Error ) {
-			throw new \Clarkson_Core\ClarksonWPException( $object_terms );
+			throw new ClarksonWPException( $object_terms );
 		}
 
 		return $object_terms;
@@ -527,7 +523,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param string          $taxonomy Taxonomy name
 	 * @param Clarkson_Term[] $terms    Terms
 	 *
-	 * @throws \Clarkson_Core\ClarksonWPException
+	 * @throws ClarksonWPException
 	 *
 	 * @return int[] Taxonomy ids of affected terms
 	 */
@@ -551,7 +547,7 @@ class Clarkson_Object implements \JsonSerializable {
 		$object_terms = wp_set_object_terms( $this->get_id(), $terms, $taxonomy, true );
 
 		if ( $object_terms instanceof \WP_Error ) {
-			throw new \Clarkson_Core\ClarksonWPException( $object_terms );
+			throw new ClarksonWPException( $object_terms );
 		}
 
 		return $object_terms;
@@ -565,7 +561,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param string          $taxonomy Taxonomy name
 	 * @param Clarkson_Term[] $terms    Terms
 	 *
-	 * @throws \Clarkson_Core\ClarksonWPException
+	 * @throws ClarksonWPException
 	 *
 	 * @return int[] Taxonomy ids of affected terms
 	 */
@@ -589,7 +585,7 @@ class Clarkson_Object implements \JsonSerializable {
 		$object_terms = wp_set_object_terms( $this->get_id(), $terms, $taxonomy, false );
 
 		if ( $object_terms instanceof \WP_Error ) {
-			throw new \Clarkson_Core\ClarksonWPException( $object_terms );
+			throw new ClarksonWPException( $object_terms );
 		}
 
 		return $object_terms;
@@ -600,7 +596,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param Clarkson_Term $term
 	 *
-	 * @throws \Clarkson_Core\ClarksonWPException
+	 * @throws ClarksonWPException
 	 *
 	 * @return bool True on success
 	 */
@@ -608,7 +604,7 @@ class Clarkson_Object implements \JsonSerializable {
 		$remove_object = wp_remove_object_terms( $this->get_id(), $term->get_id(), $term->get_taxonomy() );
 
 		if ( $remove_object instanceof \WP_Error ) {
-			throw new \Clarkson_Core\ClarksonWPException( $remove_object );
+			throw new ClarksonWPException( $remove_object );
 		}
 
 		return $remove_object;

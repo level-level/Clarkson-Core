@@ -13,9 +13,7 @@ use WP_Role;
  */
 class Clarkson_User {
 	/**
-	 * WordPress representation of this user object.
-	 *
-	 * @var \WP_User
+	 * The WordPress user object
 	 */
 	protected \WP_User $user;
 
@@ -58,7 +56,7 @@ class Clarkson_User {
 	 * @example
 	 * \Clarkson_User::get_many( array( 'role' => 'subscriber' ), $user_query );
 	 */
-	public static function get_many( $args, &$user_query = null ): array {
+	public static function get_many( array $args, &$user_query = null ): array {
 		$args['fields'] = 'all';
 
 		$query = new \WP_User_Query( $args );

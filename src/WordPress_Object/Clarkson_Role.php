@@ -12,13 +12,10 @@ use Clarkson_Core\Objects;
  */
 class Clarkson_Role {
 	/**
-	 * WordPress representation of this role object.
+	 * The WordPress role object
 	 */
 	protected \WP_Role $role;
 
-	/**
-	 * Clarkson_Role constructor.
-	 */
 	public function __construct( \WP_Role $role ) {
 		$this->role = $role;
 	}
