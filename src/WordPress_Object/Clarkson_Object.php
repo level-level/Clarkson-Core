@@ -354,12 +354,12 @@ class Clarkson_Object implements \JsonSerializable {
 
 	/**
 	 * Get the post author id.
-	 * 
+	 *
 	 * The post author is returned as a string in WordPress for backward
 	 * compatibility reasons that do not apply in this situation.
-	 * 
+	 *
 	 * @see https://core.trac.wordpress.org/ticket/25092
-	 * 
+	 *
 	 * @return int|null The Author ID if it exists
 	 */
 	public function get_author_id(): ?int {
