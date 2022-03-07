@@ -23,10 +23,6 @@ class Autoloader {
 	 * A post type with a name 'll-events' can not be a valid classname in PHP.
 	 * Any none alphanumeric character is changed into an `_` and the complete
 	 * name is changed to lowercase.
-	 *
-	 * @param string $str  Object name.
-	 *
-	 * @return string Sanitized object name.
 	 */
 	public function sanitize_object_name( string $str ): string {
 		$str = trim( $str );
@@ -47,10 +43,6 @@ class Autoloader {
 	 * Returns the page template filename without extension.
 	 * Returns an empty string when the default page template is in use.
 	 * Returns false if the post is not a page.
-	 *
-	 * @param int $post_id Post id.
-	 *
-	 * @return string
 	 */
 	public function get_template_filename( int $post_id ): string {
 		$page_template_slug = get_page_template_slug( $post_id );

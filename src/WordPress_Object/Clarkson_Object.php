@@ -53,8 +53,6 @@ class Clarkson_Object implements \JsonSerializable {
 
 	/**
 	 * Get the WordPress post object.
-	 *
-	 * @return \WP_Post The post object.
 	 */
 	public function get_object(): \WP_Post {
 		return $this->post;
@@ -62,10 +60,6 @@ class Clarkson_Object implements \JsonSerializable {
 
 	/**
 	 * Clarkson Object for a WP_Post by ID.
-	 *
-	 * @param  int $id Post id.
-	 *
-	 * @return Clarkson_Object|null    Post data.
 	 */
 	public static function get( int $id ): ?Clarkson_Object {
 		$post = get_post( $id );
@@ -110,8 +104,6 @@ class Clarkson_Object implements \JsonSerializable {
 
 	/**
 	 * Get the id of a post.
-	 *
-	 * @return int The post id.
 	 */
 	public function get_id(): int {
 		return $this->post->ID;
@@ -123,8 +115,6 @@ class Clarkson_Object implements \JsonSerializable {
 
 	/**
 	 * Get the parent of the post, if any.
-	 *
-	 * @return Clarkson_Object|null
 	 */
 	public function get_parent(): ?Clarkson_Object {
 		if ( $this->post->post_parent ) {
@@ -165,8 +155,6 @@ class Clarkson_Object implements \JsonSerializable {
 
 	/**
 	 * Check if the post has a thumbnail.
-	 *
-	 * @return bool
 	 */
 	public function has_thumbnail(): bool {
 		return has_post_thumbnail( $this->get_id() );
@@ -177,8 +165,6 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param array|string $size Thumbnail size.
 	 * @param array|string $attr Thumbnail attributes.
-	 *
-	 * @return string
 	 */
 	public function get_thumbnail( $size = 'thumbnail', $attr = '' ): string {
 		return get_the_post_thumbnail( $this->get_id(), $size, $attr );
@@ -197,8 +183,6 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Get the date the post was created in post_date_gmt format.
 	 *
 	 * @param  string $format PHP Date format. {@link https://www.php.net/manual/en/function.date.php}
-	 *
-	 * @return string
 	 */
 	public function get_date( $format = 'U' ): string {
 		return gmdate( $format, strtotime( $this->post->post_date_gmt ) );
@@ -209,8 +193,6 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param string $format Date format. {@link https://wordpress.org/support/article/formatting-date-and-time/}
 	 * @param bool   $gmt   Whether to convert to GMT for time.
-	 *
-	 * @return string
 	 */
 	public function get_date_i18n( string $format = 'U', bool $gmt = false ): string {
 		return date_i18n( $format, strtotime( $this->post->post_date_gmt ), $gmt );
@@ -236,8 +218,6 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Get the local date the post was created.
 	 *
 	 * @param string $format Date format.
-	 *
-	 * @return string
 	 */
 	public function get_local_date( string $format = 'U' ): string {
 		return gmdate( $format, strtotime( $this->post->post_date ) );
@@ -286,8 +266,6 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param string $key    Post meta key.
 	 * @param null   $value  Null, as the value will be deleted.
-	 *
-	 * @return bool
 	 */
 	public function delete_meta( string $key, $value = null ): bool {
 		return delete_post_meta( $this->get_id(), $key, $value );
@@ -311,8 +289,6 @@ class Clarkson_Object implements \JsonSerializable {
 
 	/**
 	 * Get post name (slug) by id.
-	 *
-	 * @return string Post name.
 	 */
 	public function get_post_name(): string {
 		return $this->post->post_name;
@@ -322,8 +298,6 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Get the post content.
 	 *
 	 * See: https://github.com/level-level/Clarkson-Core/issues/122
-	 *
-	 * @return string
 	 */
 	public function get_content(): string {
 		global $post;

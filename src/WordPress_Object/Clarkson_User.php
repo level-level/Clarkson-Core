@@ -33,8 +33,6 @@ class Clarkson_User {
 
 	/**
 	 * Get user data by user id.
-	 *
-	 * @param  int $id User id.
 	 */
 	public static function get( int $id ): ?Clarkson_User {
 		$user = get_userdata( $id );
@@ -79,8 +77,6 @@ class Clarkson_User {
 
 	/**
 	 * Check if this user is the currently logged in user.
-	 *
-	 * @return bool
 	 */
 	public function is_current_user(): bool {
 		return $this->get_id() === get_current_user_id();
@@ -95,8 +91,6 @@ class Clarkson_User {
 
 	/**
 	 * Get the ID of the user.
-	 *
-	 * @return int User id.
 	 */
 	public function get_id(): int {
 		return $this->user->ID;
@@ -104,8 +98,6 @@ class Clarkson_User {
 
 	/**
 	 * Get the display name of the user.
-	 *
-	 * @return string User display name.
 	 */
 	public function get_display_name(): string {
 		return $this->get_user()->display_name;
@@ -113,8 +105,6 @@ class Clarkson_User {
 
 	/**
 	 * Get the user's first name.
-	 *
-	 * @return string User first name.
 	 */
 	public function get_display_first_name(): string {
 		$parts = explode( ' ', $this->get_display_name() );
@@ -123,8 +113,6 @@ class Clarkson_User {
 
 	/**
 	 * Get the user's last name.
-	 *
-	 * @return string User last name.
 	 */
 	public function get_display_last_name(): string {
 		$parts = explode( ' ', $this->get_display_name() );
@@ -138,8 +126,6 @@ class Clarkson_User {
 
 	/**
 	 * Get the user's email address.
-	 *
-	 * @return string Email address.
 	 */
 	public function get_email(): string {
 		return $this->get_user()->user_email;
@@ -147,8 +133,6 @@ class Clarkson_User {
 
 	/**
 	 * Get the user's login name.
-	 *
-	 * @return string Login name.
 	 */
 	public function get_login(): string {
 		return $this->get_user()->user_login;

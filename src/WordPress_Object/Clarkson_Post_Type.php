@@ -87,9 +87,6 @@ class Clarkson_Post_Type {
 
 	/**
 	 * Exists check for __get function
-	 *
-	 * @param string $name Field to search by.
-	 * @return boolean property exists
 	 */
 	public function __isset( string $name ): bool {
 		return property_exists( $this->post_type, $name );
@@ -120,8 +117,6 @@ class Clarkson_Post_Type {
 
 	/**
 	 * Get the archive permalink.
-	 *
-	 * @return string|null Archive permalink.
 	 */
 	public function get_archive_permalink(): ?string {
 		$link = get_post_type_archive_link( $this->post_type->name );
@@ -133,8 +128,6 @@ class Clarkson_Post_Type {
 
 	/**
 	 * Get the archive feed permalink.
-	 *
-	 * @return string|null Archive feed permalink.
 	 */
 	public function get_archive_feed_permalink( string $feed = '' ): ?string {
 		$link = get_post_type_archive_feed_link( $this->post_type->name, $feed );

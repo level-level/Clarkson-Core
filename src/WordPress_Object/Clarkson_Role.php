@@ -22,8 +22,6 @@ class Clarkson_Role {
 
 	/**
 	 * Get Clarkson Role object by role name.
-	 *
-	 * @param string $name Role name.
 	 */
 	public static function get_by_name( string $name ): ?Clarkson_Role {
 		$role = wp_roles()->get_role( $name );
@@ -36,8 +34,6 @@ class Clarkson_Role {
 
 	/**
 	 * Get Clarkson Role object by role name.
-	 *
-	 * @param string $name Role name.
 	 */
 	public static function get( string $name ): ?Clarkson_Role {
 		return static::get_by_name( $name );

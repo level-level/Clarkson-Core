@@ -166,11 +166,9 @@ class Clarkson_Term {
 	}
 
 	/**
-	 * Get the taxonomy.
-	 *
-	 * @return string Taxonomy.
+	 * Get the taxonomy name.
 	 */
-	public function get_taxonomy() {
+	public function get_taxonomy(): string {
 		return $this->term->taxonomy;
 	}
 
@@ -187,7 +185,7 @@ class Clarkson_Term {
 	 * @param string $key     Meta key.
 	 * @param bool   $single  Single or array.
 	 *
-	 * @return string|array          Meta data.
+	 * @return string|array   Meta data.
 	 */
 	public function get_meta( string $key, bool $single = false ) {
 		return get_term_meta( $this->get_id(), $key, $single );
@@ -231,8 +229,6 @@ class Clarkson_Term {
 
 	/**
 	 * Get the term slug.
-	 *
-	 * @return string Term slug.
 	 */
 	public function get_slug(): string {
 		return $this->term->slug;
@@ -240,8 +236,6 @@ class Clarkson_Term {
 
 	/**
 	 * Get the term name.
-	 *
-	 * @return string Term name.
 	 */
 	public function get_name(): string {
 		return $this->term->name;
@@ -249,8 +243,6 @@ class Clarkson_Term {
 
 	/**
 	 * Get the term description.
-	 *
-	 * @return string Term description.
 	 */
 	public function get_description(): string {
 		return $this->term->description;
@@ -258,8 +250,6 @@ class Clarkson_Term {
 
 	/**
 	 * Update term name.
-	 *
-	 * @param string $name New term name.
 	 */
 	public function set_name( string $name ): void {
 		wp_update_term(
@@ -282,8 +272,6 @@ class Clarkson_Term {
 
 	/**
 	 * Get the taxonomy id.
-	 *
-	 * @return int Taxonomy id.
 	 */
 	public function get_term_taxonomy_id(): int {
 		return $this->term->term_taxonomy_id;
