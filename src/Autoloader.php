@@ -13,11 +13,9 @@ namespace Clarkson_Core;
 class Autoloader {
 	/**
 	 * Define the prefix for the custom user Object classes.
-	 *
-	 * @var string $user_objectname_prefix Classname prefix.
 	 * @internal
 	 */
-	public $user_objectname_prefix = 'user_';
+	public string $user_objectname_prefix = 'user_';
 
 	/**
 	 * Changes object names into valid classnames.
@@ -25,12 +23,8 @@ class Autoloader {
 	 * A post type with a name 'll-events' can not be a valid classname in PHP.
 	 * Any none alphanumeric character is changed into an `_` and the complete
 	 * name is changed to lowercase.
-	 *
-	 * @param string $str  Object name.
-	 *
-	 * @return string Sanitized object name.
 	 */
-	public function sanitize_object_name( $str ):string {
+	public function sanitize_object_name( string $str ): string {
 		$str = trim( $str );
 
 		// Replace - with _ .
@@ -49,18 +43,13 @@ class Autoloader {
 	 * Returns the page template filename without extension.
 	 * Returns an empty string when the default page template is in use.
 	 * Returns false if the post is not a page.
-	 *
-	 * @param integer $post_id Post id.
-	 *
-	 * @return string
 	 */
-	public function get_template_filename( $post_id ):string {
+	public function get_template_filename( int $post_id ): string {
 		$page_template_slug = get_page_template_slug( $post_id );
 		$filename           = '';
 
 		if ( ! empty( $page_template_slug ) ) {
-			$pathinfo = pathinfo( $page_template_slug );
-			$filename = array_key_exists( 'filename', $pathinfo ) ? (string) $pathinfo['filename'] : '';
+			$filename = pathinfo( $page_template_slug, PATHINFO_FILENAME );
 		}
 		return $filename;
 	}

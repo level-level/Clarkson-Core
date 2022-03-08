@@ -44,24 +44,33 @@ class Templates {
 	 * The template context generator.
 	 *
 	 * This object can be used if you want to remove any of the default add_filters.
-	 *
-	 * @var \Clarkson_Core\Template_Context
 	 */
-	public $template_context;
+	public \Clarkson_Core\Template_Context $template_context;
 
 	/**
-	 * Define has_been_called
-	 *
-	 * @var bool $has_been_called Check if template rendering has already been called.
+	 * Check if template rendering has already been called.
 	 */
-	protected $has_been_called = false;
+	protected bool $has_been_called = false;
 
 	/**
-	 * The twig environment.
-	 *
-	 * @var null|\Twig\Environment $twig The reusable twig environment object.
+	 * The reusable twig environment object.
 	 */
-	private $twig;
+	private ?\Twig\Environment $twig = null;
+
+	/**
+	 * Singleton.
+	 */
+	protected static ?Templates $instance = null;
+
+	/**
+	 * Get instance.
+	 */
+	public static function get_instance(): Templates {
+		if ( null === self::$instance ) {
+			self::$instance = new Templates();
+		}
+		return self::$instance;
+	}
 
 	/**
 	 * Render template.
@@ -71,7 +80,7 @@ class Templates {
 	 * @param bool   $ignore_warning Ignore multiple render warning.
 	 * @internal
 	 */
-	public function render( $path, $objects, $ignore_warning = false ):void {
+	public function render( string $path, array $objects, bool $ignore_warning = false ): void {
 		$this->echo_twig( $path, $objects, $ignore_warning );
 		exit();
 	}
@@ -85,7 +94,7 @@ class Templates {
 	 *
 	 * @return string
 	 */
-	public function render_twig( $path, $objects, $ignore_warning = false ) {
+	public function render_twig( string $path, array $objects, bool $ignore_warning = false ): string {
 		$clean_path = realpath( $path );
 		if ( $clean_path ) {
 			$path = $clean_path;
@@ -121,7 +130,7 @@ class Templates {
 		return $twig->render( $template_file, $context_args );
 	}
 
-	private function get_twig_environment( array $template_dirs ):\Twig\Environment {
+	private function get_twig_environment( array $template_dirs ): \Twig\Environment {
 		if ( ! $this->twig ) {
 			$debug     = ( defined( 'WP_DEBUG' ) ? constant( 'WP_DEBUG' ) : false );
 			$twig_args = array(
@@ -188,16 +197,20 @@ class Templates {
 	 * @param array  $objects        Post objects.
 	 * @param bool   $ignore_warning Ignore multiple render warning.
 	 */
-	public function echo_twig( $template_file, $objects, $ignore_warning = false ):void {
+	public function echo_twig( string $template_file, array $objects, bool $ignore_warning = false ): void {
 		echo $this->render_twig( $template_file, $objects, $ignore_warning );
 	}
 
 	/**
 	 * Get the template directories where the Twig files are located in.
 	 *
-	 * This takes notices of the child / parent hierarchy, so that's why the child theme gets searched first and then the parent theme, just like the regular WordPress templating hierarchy.
+	 * This takes notices of the child / parent hierarchy, so that's why the
+	 * child theme gets searched first and then the parent theme, just like
+	 * the regular WordPress templating hierarchy.
+	 *
+	 * @return string[]
 	 */
-	public function get_templates_dirs():array {
+	public function get_templates_dirs(): array {
 		$template_dirs = array(
 			$this->get_stylesheet_dir(),
 			$this->get_template_dir(),
@@ -237,7 +250,7 @@ class Templates {
 	/**
 	 * Retrieves the parent theme directory Clarkson Core is using to find templates.
 	 */
-	public function get_template_dir():string {
+	public function get_template_dir(): string {
 		/**
 		 * Modify the template directory path.
 		 *
@@ -258,7 +271,7 @@ class Templates {
 	/**
 	 * Gets the stylesheet directory Clarkson Core is using to find twig templates.
 	 */
-	public function get_stylesheet_dir():string {
+	public function get_stylesheet_dir(): string {
 		/**
 		 * Modify the template directory path for the stylesheet directory.
 		 *
@@ -284,7 +297,7 @@ class Templates {
 	 * @return string $template the checked template.
 	 * @internal
 	 */
-	public function template_include( $template ) {
+	public function template_include( string $template ) {
 		global $wp_query;
 		$extension = pathinfo( $template, PATHINFO_EXTENSION );
 
@@ -322,7 +335,7 @@ class Templates {
 	 * @return array
 	 * @internal
 	 */
-	public function get_templates( $choices = array() ) {
+	public function get_templates( array $choices = array() ): array {
 		$templates = wp_cache_get( 'templates', 'clarkson_core' );
 		if ( is_array( $templates ) ) {
 			return $templates;
@@ -366,15 +379,15 @@ class Templates {
 	/**
 	 * Adds our templates to the page dropdown for WP v4.7+.
 	 *
-	 * @param array  $post_templates Templates array.
-	 * @param string $theme           Theme.
-	 * @param object $post            Post.
-	 * @param string $post_type       Post type.
+	 * @param string[]  $post_templates  Templates array.
+	 * @param \WP_Theme $theme           Theme.
+	 * @param ?\WP_Post $post            Post.
+	 * @param string    $post_type       Post type.
 	 *
-	 * @return array
+	 * @return string[]
 	 * @internal
 	 */
-	public function add_new_template( $post_templates, $theme, $post, $post_type ) {
+	public function add_new_template( array $post_templates, \WP_Theme $theme, ?\WP_Post $post, string $post_type ): array {
 		$custom_post_templates = $this->get_templates();
 		foreach ( $custom_post_templates as $path => $name ) {
 			$filename = basename( $path );
@@ -406,7 +419,7 @@ class Templates {
 		 * @hook clarkson_core_{$post_type}_templates
 		 * @since 0.2.1
 		 * @param {string[]} $post_templates Which post types the template can be chosen on.
-		 * @param {WP_Theme} $theme The theme posts are shown on
+		 * @param {string} $theme The theme posts are shown on
 		 * @param {WP_Post|null} $post The current post.
 		 * @param {string} $post_type The post type (already known from hook).
 		 * @return {string[]} Template files as key with their display name as value.
@@ -423,8 +436,10 @@ class Templates {
 
 	/**
 	 * Add template filters.
+	 *
+	 * @return string[]
 	 */
-	private function get_template_files():array {
+	private function get_template_files(): array {
 		// Get template files.
 		$template_paths = $this->get_templates_dirs();
 
@@ -447,6 +462,7 @@ class Templates {
 			$base               = str_replace( '.twig', '', $base );
 			$templates[ $base ] = $template;
 		}
+
 		return $templates;
 	}
 
@@ -455,9 +471,9 @@ class Templates {
 	 *
 	 * @param string $path File path.
 	 *
-	 * @return array
+	 * @return string[]
 	 */
-	private function get_templates_from_path( string $path ) {
+	private function get_templates_from_path( string $path ): array {
 		if ( ! $path || ! file_exists( $path ) ) {
 			return array();
 		}
@@ -469,25 +485,9 @@ class Templates {
 	}
 
 	/**
-	 * Singleton.
-	 *
-	 * @var Templates|null instance Templates.
+	 * @return string[]
 	 */
-	protected static $instance = null;
-
-	/**
-	 * Get instance.
-	 *
-	 * @return Templates
-	 */
-	public static function get_instance() {
-		if ( null === self::$instance ) {
-			self::$instance = new Templates();
-		}
-		return self::$instance;
-	}
-
-	public function add_twig_to_template_hierarchy( array $original_templates ):array {
+	public function add_twig_to_template_hierarchy( array $original_templates ): array {
 		$templates = array();
 
 		$directories = array_unique(

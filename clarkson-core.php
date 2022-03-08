@@ -24,10 +24,8 @@ class Clarkson_Core {
 
 	/**
 	 * Container for autoloadable files.
-	 *
-	 * @var Autoloader
 	 */
-	public $autoloader;
+	public Autoloader $autoloader;
 
 	/**
 	 * Initializes all neccessery objects. Is automatically called on 'init'.
@@ -37,7 +35,7 @@ class Clarkson_Core {
 	 *
 	 * @internal
 	 */
-	public function init():void {
+	public function init(): void {
 		// Load post objects.
 		Objects::get_instance();
 
@@ -50,11 +48,9 @@ class Clarkson_Core {
 	}
 
 	/**
-	 * Define instance.
-	 *
-	 * @var null|Clarkson_Core
+	 * The Clarkson Core instance
 	 */
-	protected static $instance = null;
+	protected static ?Clarkson_Core $instance = null;
 
 	/**
 	 * Setting up the class instance.

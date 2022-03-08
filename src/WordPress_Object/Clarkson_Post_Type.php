@@ -12,16 +12,10 @@ use WP_Post_Type;
  * Clarkson Post Type class.
  */
 class Clarkson_Post_Type {
-
 	/**
-	 * @var \WP_Post_Type
+	 * The WordPress post type object
 	 */
-	protected $_post_type;
-
-	/**
-	 * @var array
-	 */
-	protected static $post_types;
+	protected \WP_Post_Type $_post_type;
 
 	public function __construct( \WP_Post_Type $post_type ) {
 		$this->_post_type = $post_type;
@@ -65,7 +59,7 @@ class Clarkson_Post_Type {
 	 * @param string $name Field to search by.
 	 * @throws \Exception Error message.
 	 */
-	public function __get( string $name ) {
+	public function __get( string $name ): string {
 		if ( property_exists( $this->_post_type, $name ) ) {
 			return $this->_post_type->$name;
 		}
@@ -82,7 +76,7 @@ class Clarkson_Post_Type {
 	 * @example
 	 * Clarkson_Post_type->get_posts( array( 'posts_per_page' => 5 ) );
 	 */
-	public function get_posts( $args ) {
+	public function get_posts( array $args ): array {
 		$args['post_type']     = $this->_post_type->name;
 		$args['no_found_rows'] = true;
 		$args['fields']        = 'all';
@@ -93,9 +87,6 @@ class Clarkson_Post_Type {
 
 	/**
 	 * Exists check for __get function
-	 *
-	 * @param string $name Field to search by.
-	 * @return boolean property exists
 	 */
 	public function __isset( string $name ): bool {
 		return property_exists( $this->_post_type, $name );
@@ -126,8 +117,6 @@ class Clarkson_Post_Type {
 
 	/**
 	 * Get the archive permalink.
-	 *
-	 * @return string|null Archive permalink.
 	 */
 	public function get_archive_permalink(): ?string {
 		$link = get_post_type_archive_link( $this->_post_type->name );
@@ -139,8 +128,6 @@ class Clarkson_Post_Type {
 
 	/**
 	 * Get the archive feed permalink.
-	 *
-	 * @return string|null Archive feed permalink.
 	 */
 	public function get_archive_feed_permalink( string $feed = '' ): ?string {
 		$link = get_post_type_archive_feed_link( $this->_post_type->name, $feed );

@@ -19,7 +19,26 @@ use DomainException;
  * Objects.
  */
 class Objects {
-	const OBJECT_CLASS_NAMESPACE = '\\Clarkson_Core\\WordPress_Object\\';
+	public const OBJECT_CLASS_NAMESPACE = '\\Clarkson_Core\\WordPress_Object\\';
+
+	/**
+	 * Singleton.
+	 */
+	protected static ?\Clarkson_Core\Objects $instance = null;
+
+	/**
+	 * Get the instance.
+	 *
+	 * @return \Clarkson_Core\Objects
+	 */
+	public static function get_instance(): \Clarkson_Core\Objects {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
+
 	/**
 	 * Convert WP_Term object to a Clarkson Object.
 	 *
@@ -108,9 +127,6 @@ class Objects {
 	 * @return Clarkson_User
 	 */
 	public function get_user( \WP_User $user ): Clarkson_User {
-		/**
-		 * @psalm-var string
-		 */
 		$type = self::OBJECT_CLASS_NAMESPACE . 'user';
 
 		/**
@@ -350,9 +366,7 @@ class Objects {
 			}
 		}
 
-		/**
-		 * @psalm-var string
-		 */
+		/** @var string */
 		$class_name = self::OBJECT_CLASS_NAMESPACE . 'base_template';
 		if ( class_exists( $class_name ) ) {
 			$object = new $class_name( $post );
@@ -401,7 +415,7 @@ class Objects {
 	/**
 	 * Get post type object by post type.
 	 */
-	public function get_post_type( \WP_Post_Type $post_type ):Clarkson_Post_Type {
+	public function get_post_type( \WP_Post_Type $post_type ): Clarkson_Post_Type {
 		$cc = Clarkson_Core::get_instance();
 
 		$class_name = 'post_type_' . $post_type->name;
@@ -467,7 +481,7 @@ class Objects {
 	/**
 	 * Get taxonomy object by taxonomy.
 	 */
-	public function get_taxonomy( \WP_Taxonomy $taxonomy ):Clarkson_Taxonomy {
+	public function get_taxonomy( \WP_Taxonomy $taxonomy ): Clarkson_Taxonomy {
 		$cc = Clarkson_Core::get_instance();
 
 		$class_name = 'taxonomy_' . $taxonomy->name;
@@ -511,26 +525,6 @@ class Objects {
 		}
 
 		return new Clarkson_Taxonomy( $taxonomy );
-	}
-
-	/**
-	 * Singleton.
-	 *
-	 * @var null|\Clarkson_Core\Objects $instance The Clarkson core objects.
-	 */
-	protected static $instance;
-
-	/**
-	 * Get the instance.
-	 *
-	 * @return \Clarkson_Core\Objects
-	 */
-	public static function get_instance(): \Clarkson_Core\Objects {
-		if ( null === self::$instance ) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
 	}
 
 	/**

@@ -14,9 +14,9 @@ use WP_Taxonomy;
 class Clarkson_Taxonomy {
 
 	/**
-	 * @var WP_Taxonomy
+	 * The WordPress taxonomy object
 	 */
-	protected $_taxonomy;
+	protected \WP_Taxonomy $_taxonomy;
 
 	public function __construct( WP_Taxonomy $taxonomy ) {
 		$this->_taxonomy = $taxonomy;
@@ -102,11 +102,13 @@ class Clarkson_Taxonomy {
 	 * @example
 	 * Clarkson_Taxonomy->get_terms( array( 'posts_per_page' => 5 ) );
 	 */
-	public function get_terms( $args ) {
+	public function get_terms( array $args ): array {
 		$args['taxonomy'] = $this->_taxonomy->name;
 		$args['fields']   = 'all';
 
 		$terms = get_terms( $args );
+
+		/** @var Clarkson_Term[] */
 		return Objects::get_instance()->get_objects( is_array( $terms ) ? $terms : array() );
 	}
 
