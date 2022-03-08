@@ -15,7 +15,7 @@ class Clarkson_Term {
 	/**
 	 * The WordPress term object
 	 */
-	protected \WP_Term $term;
+	protected \WP_Term $_term;
 
 	/**
 	 * Clarkson_Term provides extra functions to retrieve term and taxonomy data.
@@ -23,7 +23,7 @@ class Clarkson_Term {
 	protected static string $taxonomy = '';
 
 	public function __construct( \WP_Term $term ) {
-		$this->term = $term;
+		$this->_term = $term;
 	}
 
 	/**
@@ -132,11 +132,11 @@ class Clarkson_Term {
 		global $wp_query;
 
 		foreach ( $wp_query->tax_query->queries as $query ) {
-			if ( 'slug' === $query['field'] && in_array( $this->term->slug, $query['terms'], true ) ) {
+			if ( 'slug' === $query['field'] && in_array( $this->_term->slug, $query['terms'], true ) ) {
 				return true;
 			}
 
-			if ( in_array( $this->term->term_id, $query['terms'], true ) ) {
+			if ( in_array( $this->_term->term_id, $query['terms'], true ) ) {
 				return true;
 			}
 		}
@@ -147,7 +147,7 @@ class Clarkson_Term {
 	 * Get the id of the term.
 	 */
 	public function get_id(): int {
-		return $this->term->term_id;
+		return $this->_term->term_id;
 	}
 
 	/**
@@ -155,9 +155,9 @@ class Clarkson_Term {
 	 */
 	public function get_parent(): ?Clarkson_Term {
 		$parent = null;
-		if ( $this->term->parent ) {
+		if ( $this->_term->parent ) {
 			try {
-				$parent = static::get_by_id( $this->term->parent, $this->get_taxonomy() );
+				$parent = static::get_by_id( $this->_term->parent, $this->get_taxonomy() );
 			} catch ( \Exception $e ) {
 				$parent = null;
 			}
@@ -169,14 +169,14 @@ class Clarkson_Term {
 	 * Get the taxonomy name.
 	 */
 	public function get_taxonomy(): string {
-		return $this->term->taxonomy;
+		return $this->_term->taxonomy;
 	}
 
 	/**
 	 * Get the term's taxonomy object.
 	 */
 	public function get_taxonomy_object(): ?Clarkson_Taxonomy {
-		return Clarkson_Taxonomy::get( $this->term->taxonomy );
+		return Clarkson_Taxonomy::get( $this->_term->taxonomy );
 	}
 
 	/**
@@ -231,21 +231,21 @@ class Clarkson_Term {
 	 * Get the term slug.
 	 */
 	public function get_slug(): string {
-		return $this->term->slug;
+		return $this->_term->slug;
 	}
 
 	/**
 	 * Get the term name.
 	 */
 	public function get_name(): string {
-		return $this->term->name;
+		return $this->_term->name;
 	}
 
 	/**
 	 * Get the term description.
 	 */
 	public function get_description(): string {
-		return $this->term->description;
+		return $this->_term->description;
 	}
 
 	/**
@@ -267,14 +267,14 @@ class Clarkson_Term {
 	 * @return \WP_Term
 	 */
 	public function get_term(): \WP_Term {
-		return $this->term;
+		return $this->_term;
 	}
 
 	/**
 	 * Get the taxonomy id.
 	 */
 	public function get_term_taxonomy_id(): int {
-		return $this->term->term_taxonomy_id;
+		return $this->_term->term_taxonomy_id;
 	}
 
 	/**

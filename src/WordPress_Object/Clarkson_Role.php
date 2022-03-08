@@ -14,10 +14,10 @@ class Clarkson_Role {
 	/**
 	 * The WordPress role object
 	 */
-	protected \WP_Role $role;
+	protected \WP_Role $_role;
 
 	public function __construct( \WP_Role $role ) {
-		$this->role = $role;
+		$this->_role = $role;
 	}
 
 	/**
@@ -52,6 +52,6 @@ class Clarkson_Role {
 	 * Get the WordPress WP_Role object.
 	 */
 	public function get_role(): \WP_Role {
-		return $this->role;
+		return $this->_role;
 	}
 }

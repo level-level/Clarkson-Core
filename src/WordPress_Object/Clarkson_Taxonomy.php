@@ -16,10 +16,10 @@ class Clarkson_Taxonomy {
 	/**
 	 * The WordPress taxonomy object
 	 */
-	protected \WP_Taxonomy $taxonomy;
+	protected \WP_Taxonomy $_taxonomy;
 
 	public function __construct( WP_Taxonomy $taxonomy ) {
-		$this->taxonomy = $taxonomy;
+		$this->_taxonomy = $taxonomy;
 	}
 
 	/**
@@ -61,8 +61,8 @@ class Clarkson_Taxonomy {
 	 * @throws \Exception Error message.
 	 */
 	public function __get( string $name ) {
-		if ( property_exists( $this->taxonomy, $name ) ) {
-			return $this->taxonomy->$name;
+		if ( property_exists( $this->_taxonomy, $name ) ) {
+			return $this->_taxonomy->$name;
 		}
 		throw new \Exception( 'Object property does not exist in both Clarkson_Taxonomy and WP_Taxonomy.' );
 	}
@@ -74,21 +74,21 @@ class Clarkson_Taxonomy {
 	 * @return boolean property exists
 	 */
 	public function __isset( string $name ): bool {
-		return property_exists( $this->taxonomy, $name );
+		return property_exists( $this->_taxonomy, $name );
 	}
 
 	/**
 	 * Get the taxonomy data.
 	 */
 	public function get_taxonomy(): WP_Taxonomy {
-		return $this->taxonomy;
+		return $this->_taxonomy;
 	}
 
 	/**
 	 * Get the taxonomy title.
 	 */
 	public function get_title(): string {
-		$title = $this->taxonomy->labels->singular_name;
+		$title = $this->_taxonomy->labels->singular_name;
 		return $title;
 	}
 
@@ -103,7 +103,7 @@ class Clarkson_Taxonomy {
 	 * Clarkson_Taxonomy->get_terms( array( 'posts_per_page' => 5 ) );
 	 */
 	public function get_terms( array $args ): array {
-		$args['taxonomy'] = $this->taxonomy->name;
+		$args['taxonomy'] = $this->_taxonomy->name;
 		$args['fields']   = 'all';
 
 		$terms = get_terms( $args );
@@ -119,6 +119,6 @@ class Clarkson_Taxonomy {
 	 */
 	public function get_supported_post_types(): array {
 		global $wp_taxonomies;
-		return ( is_array( $wp_taxonomies[ $this->taxonomy->name ] ) ) ? $wp_taxonomies[ $this->taxonomy->name ]->object_type : array();
+		return ( is_array( $wp_taxonomies[ $this->_taxonomy->name ] ) ) ? $wp_taxonomies[ $this->_taxonomy->name ]->object_type : array();
 	}
 }

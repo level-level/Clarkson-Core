@@ -22,7 +22,7 @@ class Clarkson_Object implements \JsonSerializable {
 	/**
 	 * The WordPress post object
 	 */
-	protected \WP_Post $post;
+	protected \WP_Post $_post;
 
 	/**
 	 * Microcache for parsed post content.
@@ -35,7 +35,7 @@ class Clarkson_Object implements \JsonSerializable {
 	protected string $excerpt = '';
 
 	public function __construct( \WP_Post $post ) {
-		$this->post = $post;
+		$this->_post = $post;
 	}
 
 	/**
@@ -55,7 +55,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Get the WordPress post object.
 	 */
 	public function get_object(): \WP_Post {
-		return $this->post;
+		return $this->_post;
 	}
 
 	/**
@@ -106,19 +106,19 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Get the id of a post.
 	 */
 	public function get_id(): int {
-		return $this->post->ID;
+		return $this->_post->ID;
 	}
 
 	public function get_template(): Clarkson_Template {
-		return Objects::get_instance()->get_template( $this->post );
+		return Objects::get_instance()->get_template( $this->_post );
 	}
 
 	/**
 	 * Get the parent of the post, if any.
 	 */
 	public function get_parent(): ?Clarkson_Object {
-		if ( $this->post->post_parent ) {
-			return self::get( $this->post->post_parent );
+		if ( $this->_post->post_parent ) {
+			return self::get( $this->_post->post_parent );
 		}
 
 		return null;
@@ -185,7 +185,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param  string $format PHP Date format. {@link https://www.php.net/manual/en/function.date.php}
 	 */
 	public function get_date( $format = 'U' ): string {
-		return gmdate( $format, strtotime( $this->post->post_date_gmt ) );
+		return gmdate( $format, strtotime( $this->_post->post_date_gmt ) );
 	}
 
 	/**
@@ -195,7 +195,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param bool   $gmt   Whether to convert to GMT for time.
 	 */
 	public function get_date_i18n( string $format = 'U', bool $gmt = false ): string {
-		return date_i18n( $format, strtotime( $this->post->post_date_gmt ), $gmt );
+		return date_i18n( $format, strtotime( $this->_post->post_date_gmt ), $gmt );
 	}
 
 	/**
@@ -204,12 +204,12 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param int $time PHP timestamp.
 	 */
 	public function set_date( int $time ): void {
-		$this->post->post_date = gmdate( 'Y-m-d H:i:s', $time );
+		$this->_post->post_date = gmdate( 'Y-m-d H:i:s', $time );
 
 		wp_update_post(
 			array(
 				'ID'        => $this->get_id(),
-				'post_date' => $this->post->post_date,
+				'post_date' => $this->_post->post_date,
 			)
 		);
 	}
@@ -220,7 +220,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param string $format Date format.
 	 */
 	public function get_local_date( string $format = 'U' ): string {
-		return gmdate( $format, strtotime( $this->post->post_date ) );
+		return gmdate( $format, strtotime( $this->_post->post_date ) );
 	}
 
 	/**
@@ -291,7 +291,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Get post name (slug) by id.
 	 */
 	public function get_post_name(): string {
-		return $this->post->post_name;
+		return $this->_post->post_name;
 	}
 
 	/**
@@ -302,11 +302,11 @@ class Clarkson_Object implements \JsonSerializable {
 	public function get_content(): string {
 		global $post;
 		if ( empty( $this->content ) ) {
-			setup_postdata( $this->post );
+			setup_postdata( $this->_post );
 
 			// Post stays empty when wp_query 404 is set, resulting in a warning from the_content.
 			if ( null === $post ) {
-				$post = $this->post;
+				$post = $this->_post;
 			}
 
 			ob_start();
@@ -323,7 +323,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Get the raw post content.
 	 */
 	public function get_raw_content(): string {
-		return $this->post->post_content;
+		return $this->_post->post_content;
 	}
 
 	/**
@@ -337,8 +337,8 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @return int|null The Author ID if it exists
 	 */
 	public function get_author_id(): ?int {
-		if ( $this->post->post_author ) {
-			return (int) $this->post->post_author;
+		if ( $this->_post->post_author ) {
+			return (int) $this->_post->post_author;
 		}
 
 		return null;
@@ -383,8 +383,8 @@ class Clarkson_Object implements \JsonSerializable {
 			} else {
 				$oldpost = null;
 			}
-			$post = $this->post; // Set post to what we are asking the excerpt for.
-			setup_postdata( $this->post );
+			$post = $this->_post; // Set post to what we are asking the excerpt for.
+			setup_postdata( $this->_post );
 			ob_start();
 			the_excerpt();
 			$this->excerpt = ob_get_clean();
@@ -398,21 +398,21 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Get the post's post type.
 	 */
 	public function get_post_type(): string {
-		return $this->post->post_type;
+		return $this->_post->post_type;
 	}
 
 	/**
 	 * Get the post's post type object.
 	 */
 	public function get_post_type_object(): ?Clarkson_Post_Type {
-		return Clarkson_Post_Type::get( $this->post->post_type );
+		return Clarkson_Post_Type::get( $this->_post->post_type );
 	}
 
 	/**
 	 * Get the post's post status.
 	 */
 	public function get_status(): string {
-		return $this->post->post_status;
+		return $this->_post->post_status;
 	}
 
 	/**
@@ -421,7 +421,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param string $status New post status.
 	 */
 	public function set_status( string $status ): void {
-		$this->post->post_status = $status;
+		$this->_post->post_status = $status;
 
 		wp_update_post(
 			array(

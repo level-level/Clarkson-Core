@@ -15,10 +15,10 @@ class Clarkson_User {
 	/**
 	 * The WordPress user object
 	 */
-	protected \WP_User $user;
+	protected \WP_User $_user;
 
 	public function __construct( \WP_User $user ) {
-		$this->user = $user;
+		$this->_user = $user;
 	}
 
 	/**
@@ -86,14 +86,14 @@ class Clarkson_User {
 	 * Get the WordPress WP_User object.
 	 */
 	public function get_user(): \WP_User {
-		return $this->user;
+		return $this->_user;
 	}
 
 	/**
 	 * Get the ID of the user.
 	 */
 	public function get_id(): int {
-		return $this->user->ID;
+		return $this->_user->ID;
 	}
 
 	/**

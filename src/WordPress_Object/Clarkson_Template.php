@@ -18,15 +18,15 @@ class Clarkson_Template {
 	/**
 	 * The WordPress post object
 	 */
-	protected \WP_Post $post;
+	protected \WP_Post $_post;
 
 	/**
 	 * The Clarkson Object passed to the template
 	 */
-	protected ?Clarkson_Object $object = null;
+	protected ?Clarkson_Object $_object = null;
 
 	public function __construct( \WP_Post $post ) {
-		$this->post = $post;
+		$this->_post = $post;
 	}
 
 	public static function get( int $id ): ?Clarkson_Template {
@@ -85,9 +85,9 @@ class Clarkson_Template {
 	 * Get the Clarkson object for this template.
 	 */
 	public function get_object(): Clarkson_Object {
-		if ( empty( $this->object ) ) {
-			$this->object = Objects::get_instance()->get_object( $this->post );
+		if ( empty( $this->_object ) ) {
+			$this->_object = Objects::get_instance()->get_object( $this->_post );
 		}
-		return $this->object;
+		return $this->_object;
 	}
 }
