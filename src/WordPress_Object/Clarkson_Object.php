@@ -21,7 +21,7 @@ class Clarkson_Object implements \JsonSerializable {
 
 	/**
 	 * Define $_post.
-	 * 
+	 *
 	 * @deprecated Use $this->get_post() instead.
 	 *
 	 * @var \WP_Post

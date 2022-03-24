@@ -14,7 +14,7 @@ class Clarkson_Term {
 
 	/**
 	 * Define $_term.
-	 * 
+	 *
 	 * @deprecated Use $this->get_term() instead.
 	 *
 	 * @var \WP_Term

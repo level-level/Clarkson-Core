@@ -15,7 +15,7 @@ class Clarkson_Taxonomy {
 
 	/**
 	 * @var WP_Taxonomy
-	 * 
+	 *
 	 * @deprecated Use $this->get_taxonomy() instead.
 	 */
 	protected $_taxonomy;

@@ -14,7 +14,7 @@ use WP_Role;
 class Clarkson_User {
 	/**
 	 * WordPress representation of this user object.
-	 * 
+	 *
 	 * @deprecated Use $this->get_user() instead.
 	 *
 	 * @var \WP_User
