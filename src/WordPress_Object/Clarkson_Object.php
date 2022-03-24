@@ -74,6 +74,13 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
+	 * @deprecated use $this->get_post()
+	 */
+	public function get_object(): \WP_Post {
+		return $this->get_post();
+	}
+
+	/**
 	 * Clarkson Object for a WP_Post by ID.
 	 *
 	 * @param  int $id Post id.
@@ -500,7 +507,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * Retrieve the terms for a post.
 	 *
 	 * @param string $taxonomy Optional. The taxonomy for which to retrieve terms. Default 'post_tag'.
-	 * @param array  $args     Optional. {@link wp_get_post_terms()} arguments. Default empty array.
+	 * @param array  $args     Optional. {@link wp_get_object_terms()} arguments. Default empty array.
 	 *
 	 * @return Clarkson_Term[]|\WP_Error List of post tags or a WP_Error.
 	 */

@@ -56,10 +56,6 @@ class Clarkson_Taxonomy {
 		return Objects::get_instance()->get_taxonomies( $taxonomy_objects );
 	}
 
-	public function get_object(): \WP_Taxonomy {
-		return $this->_taxonomy;
-	}
-
 	/**
 	 * Proxy requested properties to Taxonomy if it doesn't exist in Clarkson Taxonomy
 	 *
