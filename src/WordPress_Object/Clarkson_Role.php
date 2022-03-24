@@ -13,6 +13,8 @@ use Clarkson_Core\Objects;
 class Clarkson_Role {
 	/**
 	 * WordPress representation of this role object.
+	 * 
+	 * @deprecated Use $this->get_role() instead.
 	 *
 	 * @var \WP_Role
 	 */

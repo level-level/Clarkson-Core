@@ -18,6 +18,8 @@ class Clarkson_Template {
 	public static $type = '';
 
 	/**
+	 * @deprecated Use $this->get_post instead.
+	 *
 	 * @var \WP_Post
 	 */
 	protected $_post;
@@ -88,8 +90,15 @@ class Clarkson_Template {
 	 */
 	public function get_object():Clarkson_Object {
 		if ( empty( $this->_object ) ) {
-			$this->_object = Objects::get_instance()->get_object( $this->_post );
+			$this->_object = Objects::get_instance()->get_object( $this->get_post() );
 		}
 		return $this->_object;
+	}
+
+	/**
+	 * Returns the WP Post object.
+	 */
+	public function get_post(): \WP_Post {
+		return $this->_post;
 	}
 }

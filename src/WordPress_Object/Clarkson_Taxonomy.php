@@ -15,6 +15,8 @@ class Clarkson_Taxonomy {
 
 	/**
 	 * @var WP_Taxonomy
+	 * 
+	 * @deprecated Use $this->get_taxonomy() instead.
 	 */
 	protected $_taxonomy;
 
@@ -54,6 +56,10 @@ class Clarkson_Taxonomy {
 		return Objects::get_instance()->get_taxonomies( $taxonomy_objects );
 	}
 
+	public function get_object(): \WP_Taxonomy {
+		return $this->_taxonomy;
+	}
+
 	/**
 	 * Proxy requested properties to Taxonomy if it doesn't exist in Clarkson Taxonomy
 	 *
@@ -61,8 +67,8 @@ class Clarkson_Taxonomy {
 	 * @throws \Exception Error message.
 	 */
 	public function __get( string $name ) {
-		if ( property_exists( $this->_taxonomy, $name ) ) {
-			return $this->_taxonomy->$name;
+		if ( property_exists( $this->get_taxonomy(), $name ) ) {
+			return $this->get_taxonomy()->$name;
 		}
 		throw new \Exception( 'Object property does not exist in both Clarkson_Taxonomy and WP_Taxonomy.' );
 	}
@@ -74,7 +80,7 @@ class Clarkson_Taxonomy {
 	 * @return boolean property exists
 	 */
 	public function __isset( string $name ): bool {
-		return property_exists( $this->_taxonomy, $name );
+		return property_exists( $this->get_taxonomy(), $name );
 	}
 
 	/**
@@ -88,7 +94,7 @@ class Clarkson_Taxonomy {
 	 * Get the taxonomy title.
 	 */
 	public function get_title(): string {
-		$title = $this->_taxonomy->labels->singular_name;
+		$title = $this->get_taxonomy()->labels->singular_name;
 		return $title;
 	}
 
@@ -103,7 +109,7 @@ class Clarkson_Taxonomy {
 	 * Clarkson_Taxonomy->get_terms( array( 'posts_per_page' => 5 ) );
 	 */
 	public function get_terms( $args ) {
-		$args['taxonomy'] = $this->_taxonomy->name;
+		$args['taxonomy'] = $this->get_taxonomy()->name;
 		$args['fields']   = 'all';
 
 		$terms = get_terms( $args );
@@ -117,6 +123,6 @@ class Clarkson_Taxonomy {
 	 */
 	public function get_supported_post_types(): array {
 		global $wp_taxonomies;
-		return ( is_array( $wp_taxonomies[ $this->_taxonomy->name ] ) ) ? $wp_taxonomies[ $this->_taxonomy->name ]->object_type : array();
+		return ( is_array( $wp_taxonomies[ $this->get_taxonomy()->name ] ) ) ? $wp_taxonomies[ $this->get_taxonomy()->name ]->object_type : array();
 	}
 }

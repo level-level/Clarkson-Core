@@ -14,6 +14,8 @@ class Clarkson_Term {
 
 	/**
 	 * Define $_term.
+	 * 
+	 * @deprecated Use $this->get_term() instead.
 	 *
 	 * @var \WP_Term
 	 * @internal
@@ -142,11 +144,11 @@ class Clarkson_Term {
 		global $wp_query;
 
 		foreach ( $wp_query->tax_query->queries as $query ) {
-			if ( 'slug' === $query['field'] && in_array( $this->_term->slug, $query['terms'], true ) ) {
+			if ( 'slug' === $query['field'] && in_array( $this->get_term()->slug, $query['terms'], true ) ) {
 				return true;
 			}
 
-			if ( in_array( $this->_term->term_id, $query['terms'], true ) ) {
+			if ( in_array( $this->get_term()->term_id, $query['terms'], true ) ) {
 				return true;
 			}
 		}
@@ -159,7 +161,7 @@ class Clarkson_Term {
 	 * @return int Term id.
 	 */
 	public function get_id() {
-		return $this->_term->term_id;
+		return $this->get_term()->term_id;
 	}
 
 	/**
@@ -167,9 +169,9 @@ class Clarkson_Term {
 	 */
 	public function get_parent(): ?Clarkson_Term {
 		$parent = null;
-		if ( $this->_term->parent ) {
+		if ( $this->get_term()->parent ) {
 			try {
-				$parent = static::get_by_id( $this->_term->parent, $this->get_taxonomy() );
+				$parent = static::get_by_id( $this->get_term()->parent, $this->get_taxonomy() );
 			} catch ( \Exception $e ) {
 				$parent = null;
 			}
@@ -183,14 +185,14 @@ class Clarkson_Term {
 	 * @return string Taxonomy.
 	 */
 	public function get_taxonomy() {
-		return $this->_term->taxonomy;
+		return $this->get_term()->taxonomy;
 	}
 
 	/**
 	 * Get the term's taxonomy object.
 	 */
 	public function get_taxonomy_object(): ?Clarkson_Taxonomy {
-		return Clarkson_Taxonomy::get( $this->_term->taxonomy );
+		return Clarkson_Taxonomy::get( $this->get_term()->taxonomy );
 	}
 
 	/**
@@ -247,7 +249,7 @@ class Clarkson_Term {
 	 * @return string Term slug.
 	 */
 	public function get_slug() {
-		return $this->_term->slug;
+		return $this->get_term()->slug;
 	}
 
 	/**
@@ -256,7 +258,7 @@ class Clarkson_Term {
 	 * @return string Term name.
 	 */
 	public function get_name() {
-		return $this->_term->name;
+		return $this->get_term()->name;
 	}
 
 	/**
@@ -265,7 +267,7 @@ class Clarkson_Term {
 	 * @return string Term description.
 	 */
 	public function get_description() {
-		return $this->_term->description;
+		return $this->get_term()->description;
 	}
 
 	/**
@@ -298,7 +300,7 @@ class Clarkson_Term {
 	 * @return int Taxonomy id.
 	 */
 	public function get_term_taxonomy_id() {
-		return $this->_term->term_taxonomy_id;
+		return $this->get_term()->term_taxonomy_id;
 	}
 
 	/**
