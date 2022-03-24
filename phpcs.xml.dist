@@ -6,7 +6,8 @@
  <file>./tests</file>
  <file>./clarkson-core.php</file>
 
- <!--<arg name="report" value="summary"/>-->
+ <rule ref="PHPCompatibility"/>
+ <config name="testVersion" value="7.4-"/>
  <arg name="colors"/>
  <arg value="sp"/>
 
