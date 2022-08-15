@@ -23,7 +23,7 @@ class ClarksonObjectTest extends \WP_Mock\Tools\TestCase {
 	}
 
 	public function test_can_construct_an_object_with_id() {
-		$this->expectException( '\PHPUnit\Framework\Error\Deprecated' );
+		$this->expectDeprecation();
 		\WP_Mock::userFunction( 'get_post' )->with( self::POST_ID )->andReturn( Mockery::mock( '\WP_Post' ) );
 		$object = new \Clarkson_Object( self::POST_ID );
 	}
