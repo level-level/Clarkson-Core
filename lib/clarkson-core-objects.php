@@ -274,7 +274,7 @@ class Clarkson_Core_Objects {
 	/**
 	 * Wakeup.
 	 */
-	private function __wakeup() {
+	public function __wakeup() {
 	}
 
 }
