@@ -46,5 +46,10 @@
 		"vimeo/psalm": "^3.4",
 		"10up/wp_mock": "^0.4.2",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.1"
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true
+		}
 	}
 }

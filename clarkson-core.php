@@ -123,7 +123,7 @@ class Clarkson_Core {
 	/**
 	 * Wakeup.
 	 */
-	private function __wakeup() {
+	public function __wakeup() {
 	}
 
 }
