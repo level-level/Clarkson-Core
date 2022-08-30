@@ -350,7 +350,7 @@ class Templates {
 				 *   return __( 'Contact and location', 'textdomain' );
 				 *  }
 				 *  return $name;
-				 * } );
+				 * }, 10, 2 );
 				 */
 				$name                                = apply_filters( 'clarkson_core_template_name', $name, basename( $path ) );
 				$page_templates[ basename( $path ) ] = $name;
