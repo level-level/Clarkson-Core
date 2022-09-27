@@ -5,6 +5,7 @@
 
 namespace Clarkson_Core;
 
+use Clarkson_Core\WordPress_Object\Clarkson_Comment;
 use Clarkson_Core\WordPress_Object\Clarkson_Object;
 use Clarkson_Core\WordPress_Object\Clarkson_Post_Type;
 use Clarkson_Core\WordPress_Object\Clarkson_Role;
@@ -511,6 +512,73 @@ class Objects {
 		}
 
 		return new Clarkson_Taxonomy( $taxonomy );
+	}
+
+	/**
+	 * Convert WP_Comment objects to Clarkson Objects.
+	 *
+	 * @param \WP_Comment[] $comments array of \WP_Comment objects.
+	 *
+	 * @return Clarkson_Comment[]
+	 */
+	public function get_comments( array $comments ): array {
+		$comment_objects = array();
+
+		foreach ( $comments as $comment ) {
+			$comment_objects[] = $this->get_comment( $comment );
+		}
+
+		return $comment_objects;
+	}
+
+	/**
+	 * Convert WP_Comment object to Clarkson Object.
+	 *
+	 * @param \WP_Comment $user WP_Comment object.
+	 *
+	 * @return Clarkson_Comment
+	 */
+	public function get_comment( \WP_Comment $comment ): Clarkson_Comment {
+		$cc = Clarkson_Core::get_instance();
+
+		$class_name = 'comment_' . $comment->comment_type;
+		$class_name = self::OBJECT_CLASS_NAMESPACE . $cc->autoloader->sanitize_object_name( $class_name );
+
+		/**
+		 * Allows the theme to overwrite class that is going to be used to create a comment object.
+		 *
+		 * @hook clarkson_comment_class
+		 * @since 1.0.0
+		 * @param {null|string} $type Sanitized class name.
+		 * @param {WP_Comment} $comment The original comment object.
+		 * @return {null|string} Class name of comment to be created.
+		 *
+		 * @example
+		 * // load a different class instead of what Clarkson Core calculates.
+		 * add_filter( 'clarkson_comment_class', function( $type, $comment ) {
+		 *  if ( $comment->comment_type === 'example' ){
+		 *      $type = self::OBJECT_CLASS_NAMESPACE . 'custom_comment_class';
+		 *  }
+		 *  return $type;
+		 * }, 10, 2 );
+		 */
+		$class_name = apply_filters( 'clarkson_comment_class', $class_name, $comment );
+		if ( class_exists( $class_name ) ) {
+			$object = new $class_name( $comment );
+			if ( $object instanceof Clarkson_Comment ) {
+				return $object;
+			}
+		}
+
+		$class_name = self::OBJECT_CLASS_NAMESPACE . 'base_comment';
+		if ( class_exists( $class_name ) ) {
+			$object = new $class_name( $comment );
+			if ( $object instanceof Clarkson_Comment ) {
+				return $object;
+			}
+		}
+
+		return new Clarkson_Comment( $comment );
 	}
 
 	/**
