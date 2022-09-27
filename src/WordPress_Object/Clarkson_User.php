@@ -245,6 +245,9 @@ class Clarkson_User {
 
 	/**
 	 * Get the comments created by this user.
+	 *
+	 * Explicitly does not get comments via the Clarkson_Comment::get_many() function,
+	 * as this would result in only returning comments of type comment.
 	 */
 	public function get_comments( array $args = array() ): array {
 		$args['user_id'] = $this->get_id();

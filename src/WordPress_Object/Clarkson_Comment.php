@@ -13,6 +13,14 @@ use WP_Post;
  * Object oriented wrapper for WP_Comment objects.
  */
 class Clarkson_Comment {
+
+	/**
+	 * The type of the comment.
+	 *
+	 * @var string
+	 */
+	public static $type = 'comment';
+
 	/**
 	 * WordPress representation of this comment object.
 	 *
@@ -41,6 +49,7 @@ class Clarkson_Comment {
 	 */
 	public static function get_many( array $args = array() ): array {
 		$args['fields'] = '';
+		$args['type']   = static::$type;
 		$comments       = get_comments( $args );
 		return Objects::get_instance()->get_comments( $comments );
 	}
