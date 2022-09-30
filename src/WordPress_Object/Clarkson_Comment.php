@@ -80,60 +80,6 @@ class Clarkson_Comment {
 	}
 
 	/**
-	 * Get the ID of the comment.
-	 * Should be casted to integer, as in WordPress this is a numeric string for backward compatibility reasons.
-	 * @see
-	 */
-	public function get_id(): int {
-		return (int) $this->_comment->comment_ID;
-	}
-
-	/**
-	 * Get the parent comment
-	 */
-	public function get_parent(): ?Clarkson_Comment {
-		if ( ! $this->_comment->comment_parent ) {
-			return null;
-		}
-
-		return static::get( (int) $this->_comment->comment_parent );
-	}
-
-	/**
-	 * Get the date the comment was created.
-	 *
-	 * @param  string $format PHP Date format. {@link https://www.php.net/manual/en/function.date.php}
-
-	 * @return string
-	 */
-	public function get_date( string $format = 'U' ) {
-		return gmdate( $format, strtotime( $this->_comment->comment_date_gmt ) );
-	}
-
-	/**
-	 * Get the date in localized format.
-	 *
-	 * @param string $format Date format. {@link https://wordpress.org/support/article/formatting-date-and-time/}
-	 * @param bool   $gmt   Whether to convert to GMT for time.
-	 *
-	 * @return string
-	 */
-	public function get_date_i18n( string $format = 'U', $gmt = false ) {
-		return date_i18n( $format, strtotime( $this->_comment->comment_date_gmt ), $gmt );
-	}
-
-	/**
-	 * Get the local date the comment was created.
-	 *
-	 * @param string $format Date format.
-	 *
-	 * @return string
-	 */
-	public function get_local_date( string $format = 'U' ) {
-		return gmdate( $format, strtotime( $this->_comment->comment_date ) );
-	}
-
-	/**
 	 * Get comment meta
 	 *
 	 * @param string $key    Comment meta key.
@@ -191,52 +137,24 @@ class Clarkson_Comment {
 	}
 
 	/**
-	 * Get the comment content.
-	 *
-	 * @return string
+	 * Get the ID of the comment.
+	 * Should be casted to integer, as in WordPress this is a numeric string for backward compatibility reasons.
 	 */
-	public function get_content( array $args = array() ): string {
-		return get_comment_text( $this->_comment, $args );
-	}
-
-	/**
-	 * Get the comment author id.
-	 *
-	 * @return int
-	 */
-	public function get_author_id(): int {
-		return (int) $this->_comment->user_id;
-	}
-
-	/**
-	 * Get the comment author object.
-	 */
-	public function get_author(): ?Clarkson_User {
-		if ( ! $this->_comment->user_id ) {
-			return null;
-		}
-
-		$user = get_userdata( (int) $this->_comment->user_id );
-		if ( ! $user ) {
-			return null;
-		}
-
-		return Objects::get_instance()->get_user( $user );
+	public function get_id(): int {
+		return (int) $this->_comment->comment_ID;
 	}
 
 	/**
 	 * Get the comment post id.
-	 *
-	 * @return int
 	 */
-	public function get_object_id(): int {
+	public function get_post_id(): int {
 		return (int) $this->_comment->comment_post_ID;
 	}
 
 	/**
 	 * Get the comment post object.
 	 */
-	public function get_object(): ?Clarkson_Object {
+	public function get_post(): ?Clarkson_Object {
 		if ( ! $this->_comment->comment_post_ID ) {
 			return null;
 		}
@@ -247,5 +165,152 @@ class Clarkson_Comment {
 		}
 
 		return Objects::get_instance()->get_object( $post );
+	}
+
+	/**
+	 * Get the comment author name
+	 */
+	public function get_author(): string {
+		return $this->_comment->comment_author;
+	}
+
+	/**
+	 * Get the comment author email
+	 */
+	public function get_author_email(): string {
+		return $this->_comment->comment_author_email;
+	}
+
+	/**
+	 * Get the comment author url
+	 */
+	public function get_author_url(): string {
+		return $this->_comment->comment_author_url;
+	}
+
+	/**
+	 * Get the comment author IP
+	 */
+	public function get_author_ip(): string {
+		return $this->_comment->comment_author_ip;
+	}
+
+	/**
+	 * Get the date the comment was created.
+	 *
+	 * @param  string $format PHP Date format. {@link https://www.php.net/manual/en/function.date.php}
+	 *
+	 * @return string
+	 */
+	public function get_date( string $format = 'U' ) {
+		return gmdate( $format, strtotime( $this->_comment->comment_date_gmt ) );
+	}
+
+	/**
+	 * Get the date in localized format.
+	 *
+	 * @param string $format Date format. {@link https://wordpress.org/support/article/formatting-date-and-time/}
+	 * @param bool   $gmt   Whether to convert to GMT for time.
+	 *
+	 * @return string
+	 */
+	public function get_date_i18n( string $format = 'U', $gmt = false ) {
+		return date_i18n( $format, strtotime( $this->_comment->comment_date_gmt ), $gmt );
+	}
+
+	/**
+	 * Get the local date the comment was created.
+	 *
+	 * @param string $format Date format.
+	 *
+	 * @return string
+	 */
+	public function get_local_date( string $format = 'U' ) {
+		return gmdate( $format, strtotime( $this->_comment->comment_date ) );
+	}
+
+	/**
+	 * Get the comment content.
+	 */
+	public function get_content( array $args = array() ): string {
+		return get_comment_text( $this->_comment, $args );
+	}
+
+	/**
+	 * Get the comment karma count.
+	 */
+	public function get_karma(): int {
+		return (int) $this->_comment->comment_karma;
+	}
+
+	/**
+	 * Get the comment status.
+	 * Status might be 'trash', 'approved', 'unapproved', 'spam'. Null on failure.
+	 */
+	public function get_status(): ?string {
+		$status = wp_get_comment_status( $this->_comment );
+		if ( ! $status ) {
+			return null;
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Get the comment author HTTP user agent.
+	 */
+	public function get_agent(): string {
+		return $this->_comment->comment_agent;
+	}
+
+	/**
+	 * Get the comment type.
+	 */
+	public function get_type(): string {
+		return $this->_comment->comment_type;
+	}
+
+	/**
+	 * Get the comment parent ID.
+	 */
+	public function get_parent_id(): int {
+		return (int) $this->_comment->comment_parent;
+	}
+
+	/**
+	 * Get the comment parent.
+	 */
+	public function get_parent(): ?Clarkson_Comment {
+		$parent_id = $this->get_parent_id();
+		if ( ! $parent_id ) {
+			return null;
+		}
+
+		return static::get( $parent_id );
+	}
+
+	/**
+	 * Get the comment author user id.
+	 *
+	 * @return int
+	 */
+	public function get_user_id(): int {
+		return (int) $this->_comment->user_id;
+	}
+
+	/**
+	 * Get the comment author user object.
+	 */
+	public function get_user(): ?Clarkson_User {
+		if ( ! $this->_comment->user_id ) {
+			return null;
+		}
+
+		$user = get_userdata( (int) $this->_comment->user_id );
+		if ( ! $user ) {
+			return null;
+		}
+
+		return Objects::get_instance()->get_user( $user );
 	}
 }
