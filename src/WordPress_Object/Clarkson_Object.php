@@ -612,7 +612,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * as this would result in only returning comments of type comment.
 	 */
 	public function get_comments( array $args = array() ): array {
-		$args['user_id'] = $this->get_id();
+		$args['post_id'] = $this->get_id();
 		$args['fields']  = '';
 		$comments        = get_comments( $args );
 		return Objects::get_instance()->get_comments( $comments );
