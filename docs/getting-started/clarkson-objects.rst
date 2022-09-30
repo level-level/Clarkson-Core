@@ -1,7 +1,7 @@
 Clarkson objects
 ===
 
-Clarkson Core provides a way for theme developers to work with objects. 
+Clarkson Core provides a way for theme developers to work with objects.
 
 These objects represent different entities in your WordPress site, such as posts, users and terms.
 
@@ -10,7 +10,7 @@ With these objects, you can create custom features, reuse logic and extend the w
 How objects are created
 ---
 
-Objects are created mainly through the ``\Clarkson_Core\Objects`` class. 
+Objects are created mainly through the ``\Clarkson_Core\Objects`` class.
 
 This class takes a resource and automatically tries to determine the best fitting object for it.
 
@@ -25,7 +25,7 @@ Much like the way the WordPress template hierarchy tries to determine the most a
 
 .. warning::
 
-    It is possible to register post types and taxonomies with names that can not lead to valid PHP class names. 
+    It is possible to register post types and taxonomies with names that can not lead to valid PHP class names.
 
     Clarkson Core always normalizes an object name by making it lowercase, and replacing all non-alphanumeric characters with an ``_``.
 
@@ -82,6 +82,13 @@ Taxonomies
 2. ``\Clarkson_Core\WordPress_Object\base_taxonomy``
 3. ``\Clarkson_Core\WordPress_Object\Clarkson_Taxonomy`` (default)
 
+Comments
+***
+
+1. ``\Clarkson_Core\WordPress_Object\comment_$comment_type``
+2. ``\Clarkson_Core\WordPress_Object\base_comment``
+3. ``\Clarkson_Core\WordPress_Object\Clarkson_Comment`` (default)
+
 Blocks (Gutenberg)
 ***
 
@@ -111,12 +118,12 @@ As an example:
         }
     }
 
-As you can see in the example above, you can create an object that specifically handles event functions, for the event posttype. 
+As you can see in the example above, you can create an object that specifically handles event functions, for the event posttype.
 
 In the example, this ``event`` objects extends from ``base_object``. You can use ``base_object`` as a way to create methods that are available on **all** objects within your theme.
 
 .. code-block:: php
-    
+
     <?php
     // wp-content/themes/child-theme/app/WordPress_Objects/base_object.php
 
@@ -155,8 +162,8 @@ Every type of object has a ``get_many`` function. This allows you to perform a d
     ) );
 
     // Get 5 terms of the `venue` type.
-    $venues = \Clarkson_Core\WordPress_Object\venue::get_many( array( 
-        'number' => 5 
+    $venues = \Clarkson_Core\WordPress_Object\venue::get_many( array(
+        'number' => 5
     ) );
 
 Get a single Clarkson_Object by ID
@@ -204,6 +211,7 @@ The following filters are available to manipulate the Clarkson Core object creat
 - `clarkson_object_type <https://level-level.github.io/Clarkson-Core/hooks/clarkson_object_type.html>`_
 - `clarkson_post_type_class <https://level-level.github.io/Clarkson-Core/hooks/clarkson_post_type_class.html>`_
 - `clarkson_taxonomy_class <https://level-level.github.io/Clarkson-Core/hooks/clarkson_taxonomy_class.html>`_
+- `clarkson_comment_class <https://level-level.github.io/Clarkson-Core/hooks/clarkson_comment_class.html>`_
 - `clarkson_role_class <https://level-level.github.io/Clarkson-Core/hooks/clarkson_role_class.html>`_
 - `clarkson_template_class <https://level-level.github.io/Clarkson-Core/hooks/clarkson_template_class.html>`_
 - `clarkson_term_types <https://level-level.github.io/Clarkson-Core/hooks/clarkson_term_types.html>`_

@@ -606,6 +606,19 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
+	 * Get the comments created by this user.
+	 *
+	 * Explicitly does not get comments via the Clarkson_Comment::get_many() function,
+	 * as this would result in only returning comments of type comment.
+	 */
+	public function get_comments( array $args = array() ): array {
+		$args['post_id'] = $this->get_id();
+		$args['fields']  = '';
+		$comments        = get_comments( $args );
+		return Objects::get_instance()->get_comments( $comments );
+	}
+
+	/**
 	 * Return a set of data to use for json output.
 	 *
 	 * We can't just return $this->_post, because these values will only return raw unfiltered data.
