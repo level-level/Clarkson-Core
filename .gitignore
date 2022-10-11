@@ -6,3 +6,4 @@
 composer.lock
 .phpunit.result.cache
 /.phpdoc
+.DS_Store

@@ -207,11 +207,14 @@ class Clarkson_User {
 	 * See: https://github.com/level-level/Clarkson-Core/issues/124.
 	 *
 	 * @param string       $key    User meta key.
-	 * @param array|string $value  User meta data.
+	 * @param string|array $value  User meta data.
+	 * @param string|array $prev_value Optional. Previous value to check before updating.
+ 	 *                     If specified, only update existing metadata entries with
+ 	 *                     this value. Otherwise, update all entries. Default empty.
 	 *
 	 * @return bool|int            Meta ID if the key didn't exist.
 	 */
-	public function update_meta( $key, $value, $prev_value ) {
+	public function update_meta( $key, $value, $prev_value = '' ) {
 		return update_user_meta( $this->get_id(), $key, $value, $prev_value );
 	}
 

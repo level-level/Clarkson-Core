@@ -208,12 +208,12 @@ class Clarkson_Term {
 	/**
 	 * Update meta data.
 	 *
-	 * @param string $key   Meta key.
-	 * @param mixed  $value New meta data.
+	 * @param string 		$key   Meta key.
+	 * @param string|array  $value New meta data.
 	 *
 	 * @return int|\WP_Error|bool
 	 */
-	public function update_meta( $key, $value, $prev_value ) {
+	public function update_meta( $key, $value, $prev_value = '' ) {
 		return update_term_meta( $this->get_id(), $key, $value, $prev_value );
 	}
 
