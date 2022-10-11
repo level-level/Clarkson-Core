@@ -211,8 +211,8 @@ class Clarkson_User {
 	 *
 	 * @return bool|int            Meta ID if the key didn't exist.
 	 */
-	public function update_meta( $key, $value ) {
-		return update_user_meta( $this->get_id(), $key, $value );
+	public function update_meta( $key, $value, $prev_value ) {
+		return update_user_meta( $this->get_id(), $key, $value, $prev_value );
 	}
 
 	/**

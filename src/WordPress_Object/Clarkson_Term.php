@@ -213,8 +213,8 @@ class Clarkson_Term {
 	 *
 	 * @return int|\WP_Error|bool
 	 */
-	public function update_meta( $key, $value ) {
-		return update_term_meta( $this->get_id(), $key, $value );
+	public function update_meta( $key, $value, $prev_value ) {
+		return update_term_meta( $this->get_id(), $key, $value, $prev_value );
 	}
 
 	/**

@@ -276,8 +276,8 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @return bool|int
 	 */
-	public function update_meta( $key, $value ) {
-		return update_post_meta( $this->get_id(), $key, $value );
+	public function update_meta( $key, $value, $prev_value ) {
+		return update_post_meta( $this->get_id(), $key, $value, $prev_value );
 	}
 
 	/**

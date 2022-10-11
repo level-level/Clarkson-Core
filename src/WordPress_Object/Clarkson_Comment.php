@@ -101,8 +101,8 @@ class Clarkson_Comment {
 	 *
 	 * @return bool|int
 	 */
-	public function update_meta( string $key, $value ) {
-		return update_comment_meta( $this->get_id(), $key, $value );
+	public function update_meta( string $key, $value, $prev_value ) {
+		return update_comment_meta( $this->get_id(), $key, $value, $prev_value );
 	}
 
 	/**
