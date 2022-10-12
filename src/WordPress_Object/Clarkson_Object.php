@@ -606,7 +606,7 @@ class Clarkson_Object implements \JsonSerializable {
 	}
 
 	/**
-	 * Get the comments created by this user.
+	 * Get the comments created for this post.
 	 *
 	 * Explicitly does not get comments via the Clarkson_Comment::get_many() function,
 	 * as this would result in only returning comments of type comment.
