@@ -274,8 +274,8 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @param string       $key   Post meta key.
 	 * @param string|array $value New post meta data.
 	 * @param string|array $prev_value Optional. Previous value to check before updating.
- 	 *                     If specified, only update existing metadata entries with
- 	 *                     this value. Otherwise, update all entries. Default empty.
+	 *                     If specified, only update existing metadata entries with
+	 *                     this value. Otherwise, update all entries. Default empty.
 	 *
 	 * @return bool|int
 	 */

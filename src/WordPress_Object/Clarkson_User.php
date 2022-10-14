@@ -209,8 +209,8 @@ class Clarkson_User {
 	 * @param string       $key    User meta key.
 	 * @param string|array $value  User meta data.
 	 * @param string|array $prev_value Optional. Previous value to check before updating.
- 	 *                     If specified, only update existing metadata entries with
- 	 *                     this value. Otherwise, update all entries. Default empty.
+	 *                     If specified, only update existing metadata entries with
+	 *                     this value. Otherwise, update all entries. Default empty.
 	 *
 	 * @return bool|int            Meta ID if the key didn't exist.
 	 */
