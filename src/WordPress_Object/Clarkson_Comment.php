@@ -98,11 +98,14 @@ class Clarkson_Comment {
 	 *
 	 * @param string       $key   Comment meta key.
 	 * @param string|array $value New comment meta data.
+	 * @param string|array $prev_value Optional. Previous value to check before updating.
+ 	 *                     If specified, only update existing metadata entries with
+ 	 *                     this value. Otherwise, update all entries. Default empty.
 	 *
 	 * @return bool|int
 	 */
-	public function update_meta( string $key, $value ) {
-		return update_comment_meta( $this->get_id(), $key, $value );
+	public function update_meta( string $key, $value, $prev_value = '' ) {
+		return update_comment_meta( $this->get_id(), $key, $value, $prev_value );
 	}
 
 	/**
