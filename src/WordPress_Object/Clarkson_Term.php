@@ -208,11 +208,11 @@ class Clarkson_Term {
 	/**
 	 * Update meta data.
 	 *
-	 * @param string 	   $key   Meta key.
+	 * @param string       $key   Meta key.
 	 * @param string|array $value New meta data.
 	 * @param string|array $prev_value Optional. Previous value to check before updating.
- 	 *                     If specified, only update existing metadata entries with
- 	 *                     this value. Otherwise, update all entries. Default empty.
+	 *                     If specified, only update existing metadata entries with
+	 *                     this value. Otherwise, update all entries. Default empty.
 	 *
 	 * @return int|\WP_Error|bool
 	 */

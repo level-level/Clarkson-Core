@@ -99,8 +99,8 @@ class Clarkson_Comment {
 	 * @param string       $key   Comment meta key.
 	 * @param string|array $value New comment meta data.
 	 * @param string|array $prev_value Optional. Previous value to check before updating.
- 	 *                     If specified, only update existing metadata entries with
- 	 *                     this value. Otherwise, update all entries. Default empty.
+	 *                     If specified, only update existing metadata entries with
+	 *                     this value. Otherwise, update all entries. Default empty.
 	 *
 	 * @return bool|int
 	 */
