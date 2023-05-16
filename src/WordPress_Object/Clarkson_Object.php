@@ -224,7 +224,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @return string
 	 */
 	public function get_date_i18n( $format = 'U', $gmt = false ) {
-		return date_i18n( $format, strtotime( $this->_post->post_date_gmt ), $gmt );
+		return date_i18n( $format, strtotime( $this->_post->post_date ), $gmt );
 	}
 
 	/**
