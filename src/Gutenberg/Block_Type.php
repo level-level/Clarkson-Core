@@ -77,9 +77,10 @@ class Block_Type extends \WP_Block_Type {
 	 * exists it falls back to the original render callback.
 	 * @param array  $attributes Block attributes.
 	 * @param string $content    Block content.
+	 * @param \WP_Block|null $block
 	 * @return string Rendered block type output.
 	 */
-	public function clarkson_render_callback( $attributes, $content ) {
+	public function clarkson_render_callback( $attributes, $content, $block = null ) {
 		if ( file_exists( $this->get_twig_template_path() ) ) {
 			$cc_template              = Templates::get_instance();
 			$this->content_attributes = $attributes;
@@ -118,7 +119,7 @@ class Block_Type extends \WP_Block_Type {
 			);
 		}
 		if ( is_callable( $this->original_render_callback ) ) {
-			return (string) call_user_func( $this->original_render_callback, $attributes, $content, $this );
+			return (string) call_user_func( $this->original_render_callback, $attributes, $content, $block );
 		}
 		return $content;
 	}
