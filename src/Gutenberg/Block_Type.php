@@ -77,7 +77,7 @@ class Block_Type extends \WP_Block_Type {
 	 * exists it falls back to the original render callback.
 	 * @param array  $attributes Block attributes.
 	 * @param string $content    Block content.
-	 * @param \WP_Block|null $block
+	 * @param \WP_Block|null $block WP Block object
 	 * @return string Rendered block type output.
 	 */
 	public function clarkson_render_callback( $attributes, $content, $block = null ) {
