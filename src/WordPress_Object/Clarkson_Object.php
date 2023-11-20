@@ -627,7 +627,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * We can't just return $this->_post, because these values will only return raw unfiltered data.
 	 */
 	#[\ReturnTypeWillChange]
-	public function jsonSerialize(): mixed {
+	public function jsonSerialize() {
 		$data              = array();
 		$data['id']        = $this->get_id();
 		$data['link']      = $this->get_permalink();
