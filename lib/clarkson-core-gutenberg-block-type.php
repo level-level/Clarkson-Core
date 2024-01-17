@@ -76,7 +76,7 @@ class Clarkson_Core_Gutenberg_Block_Type extends \WP_Block_Type {
 	 * @param string $content    Block content.
 	 * @return string Rendered block type output.
 	 */
-	public function clarkson_render_callback( $attributes, $content ) {
+	public function clarkson_render_callback( $attributes, $content, $block = null, $post_id = 0 ) {
 		if ( file_exists( $this->get_twig_template_path() ) ) {
 			$cc_template              = Clarkson_Core_Templates::get_instance();
 			$this->content_attributes = $attributes;
@@ -91,7 +91,7 @@ class Clarkson_Core_Gutenberg_Block_Type extends \WP_Block_Type {
 			);
 		}
 		if ( is_callable( $this->original_render_callback ) ) {
-			return (string) call_user_func( $this->original_render_callback, $attributes, $content );
+			return (string) call_user_func( $this->original_render_callback, $attributes, $content, $block, $post_id );
 		}
 		return $content;
 	}
