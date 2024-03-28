@@ -21,7 +21,7 @@ class Clarkson_Term {
 	/**
 	 * Clarkson_Term provides extra functions to retrieve term and taxonomy data.
 	 *
-	 * @var null
+	 * @var null|string
 	 */
 	protected static $taxonomy = null;
 
