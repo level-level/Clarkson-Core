@@ -32,6 +32,13 @@ class Clarkson_Object implements \JsonSerializable {
 	protected static $posts;
 
 	/**
+	 * define $_content.
+	 *
+	 * @var string
+	 */
+	public $_content;
+
+	/**
 	 * Clarkson_Object constructor.
 	 *
 	 * @param WP_Post $post Post object.
@@ -644,6 +651,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * We can't just return $this->_post, because these values will only return raw unfiltered data.
 	 */
+	#[\ReturnTypeWillChange]
 	public function jsonSerialize() {
 		$data['id']        = $this->get_id();
 		$data['link']      = $this->get_permalink();
