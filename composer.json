@@ -36,7 +36,7 @@
 		]
 	},
 	"require" : {
-		"twig/twig":"^1.2",
+		"twig/twig":"^2.16",
 		"twig/extensions":"^1.3",
 		"php":"^7.1|^8.0"
 	},
