@@ -22,8 +22,6 @@
 class Clarkson_Core {
 
 	/**
-	 * define $autoloader.
-	 *
 	 * @var Autoloader
 	 */
 	public $autoloader;
