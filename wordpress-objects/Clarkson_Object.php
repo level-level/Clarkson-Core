@@ -32,8 +32,6 @@ class Clarkson_Object implements \JsonSerializable {
 	protected static $posts;
 
 	/**
-	 * define $_content.
-	 *
 	 * @var string
 	 */
 	public $_content;
