@@ -23,7 +23,9 @@ class Block_Type extends \WP_Block_Type {
 	 */
 	public function __construct( $block_type, $args = array() ) {
 		parent::__construct( $block_type, $args );
-		$this->original_render_callback = $this->render_callback;
+		if ( empty( $this->original_render_callback ) ) {
+			$this->original_render_callback = $this->render_callback;
+		}
 		$this->render_callback          = array( $this, 'clarkson_render_callback' );
 	}
 
