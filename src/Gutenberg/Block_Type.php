@@ -26,7 +26,7 @@ class Block_Type extends \WP_Block_Type {
 		if ( empty( $this->original_render_callback ) ) {
 			$this->original_render_callback = $this->render_callback;
 		}
-		$this->render_callback          = array( $this, 'clarkson_render_callback' );
+		$this->render_callback = array( $this, 'clarkson_render_callback' );
 	}
 
 	/**
