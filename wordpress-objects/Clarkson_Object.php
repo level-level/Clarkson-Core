@@ -32,6 +32,11 @@ class Clarkson_Object implements \JsonSerializable {
 	protected static $posts;
 
 	/**
+	 * @var string
+	 */
+	public $_content;
+
+	/**
 	 * Clarkson_Object constructor.
 	 *
 	 * @param WP_Post $post Post object.
@@ -643,8 +648,9 @@ class Clarkson_Object implements \JsonSerializable {
 	 * If you want something else, then just overwrite it in your own WordPress object.
 	 *
 	 * We can't just return $this->_post, because these values will only return raw unfiltered data.
+	 * @return array<string,mixed>
 	 */
-	public function jsonSerialize() {
+	public function jsonSerialize(): array {
 		$data['id']        = $this->get_id();
 		$data['link']      = $this->get_permalink();
 		$data['slug']      = $this->get_post_name();
