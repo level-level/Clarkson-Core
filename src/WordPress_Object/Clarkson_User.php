@@ -160,6 +160,15 @@ class Clarkson_User {
 	}
 
 	/**
+	 * Get the user's biography.
+	 *
+	 * @return string Biography.
+	 */
+	public function get_biography() {
+		return $this->get_user()->description;
+	}
+
+	/**
 	 * Get the user's roles.
 	 *
 	 * @return string[] User roles.
