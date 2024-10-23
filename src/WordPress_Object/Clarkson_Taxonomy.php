@@ -107,7 +107,7 @@ class Clarkson_Taxonomy {
 		$args['fields']   = 'all';
 
 		$terms = get_terms( $args );
-		return Objects::get_instance()->get_objects( is_array( $terms ) ? $terms : array() );
+		return Objects::get_instance()->get_terms( is_array( $terms ) ? $terms : array() );
 	}
 
 	/**
