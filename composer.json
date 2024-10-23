@@ -37,12 +37,16 @@
 	},
 	"require" : {
 		"twig/twig":"^3",
-		"php":"^7.1|^8.0"
+		"php":"^7.1|^8.0",
+		"twig/string-extra": "^3.13",
+		"twig/intl-extra": "^3.13",
+		"twig/html-extra": "^3.13",
+		"twig/markdown-extra": "^3.13"
 	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "^2.1",
 		"giacocorsiglia/wordpress-stubs": "^5.1",
-		"vimeo/psalm": "^3.4",
+		"vimeo/psalm": "^4.30",
 		"10up/wp_mock": "^0.4.2",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.1"
 	},
