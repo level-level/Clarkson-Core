@@ -80,7 +80,7 @@ class Clarkson_Term {
 		if ( empty( $term_id ) || ! $taxonomy ) {
 			throw new Exception( $term_id . ' or ' . $taxonomy . ' empty' );
 		}
-		$this->_term = get_term( (int) $term_id, $taxonomy );
+		$this->_term = get_term( $term_id, $taxonomy );
 		if ( ! $this->_term ) {
 			throw new Exception( 'Term not found' );
 		}
