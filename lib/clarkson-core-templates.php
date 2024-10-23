@@ -5,6 +5,12 @@
  * @package CLARKSON\Lib
  */
 
+use PhpParser\Node\Expr\Instanceof_;
+use Twig\Extra\Html\HtmlExtension;
+use Twig\Extra\Intl\IntlExtension;
+use Twig\Extra\Markdown\MarkdownExtension;
+use Twig\Extra\String\StringExtension;
+
 /**
  * Allows rendering of specific templates with Twig.
  */
@@ -36,7 +42,7 @@ class Clarkson_Core_Templates {
 	/**
 	 * The twig environment.
 	 *
-	 * @var null|Twig_Environment $twig The reusable twig environment object.
+	 * @param null|Twig_Environment $twig The reusable twig environment object.
 	 */
 	private $twig;
 
@@ -126,7 +132,7 @@ class Clarkson_Core_Templates {
 		return $twig->render( $template_file, $context_args );
 	}
 
-	private function get_twig_environment( array $template_dirs ):Twig_Environment {
+	private function get_twig_environment( array $template_dirs ): Twig\Environment {
 		if ( ! $this->twig ) {
 			$debug     = ( defined( 'WP_DEBUG' ) ? constant( 'WP_DEBUG' ) : false );
 			$twig_args = array(
@@ -150,17 +156,17 @@ class Clarkson_Core_Templates {
 			 * } );
 			 */
 			$twig_args = apply_filters( 'clarkson_twig_args', $twig_args );
-			$twig_fs   = new Twig_Loader_Filesystem( $template_dirs );
-			$twig      = new Twig_Environment( $twig_fs, $twig_args );
+			$twig_fs   = new Twig\Loader\FilesystemLoader( $template_dirs );
+			$twig      = new Twig\Environment( $twig_fs, $twig_args );
 
-			$twig->addExtension( new Clarkson_Core_Twig_Extension() );
-			$twig->addExtension( new Twig_Extensions_Extension_I18n() );
-			$twig->addExtension( new Twig_Extensions_Extension_Text() );
-			$twig->addExtension( new Twig_Extensions_Extension_Array() );
-			$twig->addExtension( new Twig_Extensions_Extension_Date() );
+			$twig->addExtension( new Twig_Extension() );
+			$twig->addExtension( new IntlExtension() );
+			$twig->addExtension( new StringExtension() );
+			$twig->addExtension( new HtmlExtension() );
+			$twig->addExtension( new MarkdownExtension() );
 
 			if ( $debug ) {
-				$twig->addExtension( new Twig_Extension_Debug() );
+				$twig->addExtension( new \Twig\Extension\DebugExtension() );
 			}
 
 			/**
@@ -388,7 +394,7 @@ class Clarkson_Core_Templates {
 
 		// Post Types.
 		$post_type = get_post_type();
-		if ( ! $post_type || empty( $post_type ) ) {
+		if ( ! $post_type ) {
 
 			/**
 			 * Fix for archive pages with no posts on it.
@@ -398,13 +404,13 @@ class Clarkson_Core_Templates {
 			 * We always want the main Queried Object 'name' to load that specific CPT template.
 			 */
 
-			if ( is_a( $queried_object, 'WP_Post_Type' ) && isset( $queried_object->name ) ) {
+			if ( $queried_object instanceof \WP_Post_Type && isset( $queried_object->name ) ) {
 				$post_type = $queried_object->name;
 			}
 		}
 
 		// Taxonomy Templates per Taxonomy type.
-		if ( is_a( $queried_object, 'WP_Term' ) && isset( $queried_object->taxonomy ) ) {
+		if ( $queried_object instanceof \WP_Term && isset( $queried_object->taxonomy ) ) {
 			$post_type = $queried_object->taxonomy;
 		}
 

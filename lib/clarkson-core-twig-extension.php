@@ -9,7 +9,7 @@
  * Class Clarkson_Core_Twig_Extension.
  * @internal
  */
-class Clarkson_Core_Twig_Extension extends Twig_Extension {
+class Twig_Extension extends \Twig\Extension\AbstractExtension {
 
 	/**
 	 * Twig functions.
@@ -963,7 +963,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 	/**
 	 * Get the Twig functions.
 	 *
-	 * @return array|Twig_SimpleFunction[] $twig_functions Twig functions.
+	 * @return array|Twig\TwigFunction[] $twig_functions Twig functions.
 	 * @internal
 	 */
 	public function getFunctions() {
@@ -988,7 +988,7 @@ class Clarkson_Core_Twig_Extension extends Twig_Extension {
 		$allowed_functions = apply_filters( 'clarkson_twig_functions', $this->functions );
 
 		foreach ( $allowed_functions  as $function ) {
-			$twig_functions[] = new Twig_SimpleFunction( $function, $function );
+			$twig_functions[] = new Twig\TwigFunction( $function, $function );
 		}
 
 		return $twig_functions;

@@ -22,7 +22,7 @@
 class Clarkson_Core {
 
 	/**
-	 * @var Autoloader
+	 * @param Autoloader
 	 */
 	public $autoloader;
 

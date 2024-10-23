@@ -133,7 +133,7 @@ class Clarkson_Core_Objects {
 	 * @return \Clarkson_Object Clarkson Post object.
 	 */
 	public function get_object( $post ) {
-		if ( ! $post instanceof WP_Post && is_int( (int) $post ) ) {
+		if ( ! $post instanceof WP_Post ) {
 			user_error( 'Deprecated calling of get_object with an ID. Use a `WP_Post` instead.', E_USER_DEPRECATED );
 			$post = get_post( $post );
 		}

@@ -32,9 +32,9 @@ class Clarkson_Object implements \JsonSerializable {
 	protected static $posts;
 
 	/**
-	 * @var string
+	 * @param string
 	 */
-	public $_content;
+	protected $_content;
 
 	/**
 	 * Clarkson_Object constructor.
@@ -44,7 +44,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 * @throws Exception    Error message.
 	 */
 	public function __construct( $post ) {
-		if ( is_a( $post, 'WP_Post' ) ) {
+		if ( $post instanceof \WP_Post ) {
 			$this->_post = $post;
 		} else {
 			user_error( "Deprecated __construct called with an ID. Use '::get(post)' instead.", E_USER_DEPRECATED );
@@ -567,7 +567,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param string           $taxonomy Taxonomy.
 	 * @param \Clarkson_Term[] $terms    Terms.
-	 * @var   \Clarkson_Term   $term     Term objects.
+	 * @param   \Clarkson_Term   $term     Term objects.
 	 *
 	 * @return array|WP_Error            Terms array.
 	 */
@@ -598,7 +598,7 @@ class Clarkson_Object implements \JsonSerializable {
 	 *
 	 * @param string           $taxonomy Taxonomy.
 	 * @param \Clarkson_Term[] $terms    Terms.
-	 * @var   \Clarkson_Term   $term     Term objects.
+	 * @param   \Clarkson_Term   $term     Term objects.
 	 *
 	 * @return array|WP_Error             Affected Term IDs.
 	 */

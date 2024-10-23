@@ -25,7 +25,7 @@ class Clarkson_Core_Gutenberg_Block_Manager {
 	 * Attempts to create a custom block from class from a block. Falls back
 	 * to a default Clarkson Core block type.
 	 *
-	 * @param \WP_Block_type $block_type Gutenberg block to determine class for.
+	 * @param \WP_Block_Type $block_type Gutenberg block to determine class for.
 	 * @return string
 	 */
 	public function determine_block_type_class( $block_type ) {
@@ -105,8 +105,10 @@ class Clarkson_Core_Gutenberg_Block_Manager {
 		foreach ( $block_registry->get_all_registered() as $original_block ) {
 			$block_type     = $this->determine_block_type_class( $original_block );
 			$clarkson_block = new $block_type( $original_block->name, get_object_vars( $original_block ) );
-			$block_registry->unregister( $original_block );
-			$block_registry->register( $clarkson_block );
+			if ( $clarkson_block instanceof WP_Block_Type ) {
+				$block_registry->unregister( $original_block );
+				$block_registry->register( $clarkson_block );
+			}
 		}
 		return $content;
 	}
