@@ -15,6 +15,8 @@ class Clarkson_User {
 	/**
 	 * WordPress representation of this user object.
 	 *
+	 * @deprecated Use $this->get_user() instead.
+	 *
 	 * @var \WP_User
 	 */
 	protected $_user;
@@ -104,7 +106,7 @@ class Clarkson_User {
 	 * @return int User id.
 	 */
 	public function get_id() {
-		return $this->_user->ID;
+		return $this->get_user()->ID;
 	}
 
 	/**
