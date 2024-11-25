@@ -988,6 +988,10 @@ class Twig_Extension extends \Twig\Extension\AbstractExtension {
 		$allowed_functions = apply_filters( 'clarkson_twig_functions', $this->functions );
 
 		foreach ( $allowed_functions  as $function ) {
+			if ( ! function_exists( $function ) ) {
+				continue;
+			}
+
 			$twig_functions[] = new \Twig\TwigFunction( $function, $function );
 		}
 
