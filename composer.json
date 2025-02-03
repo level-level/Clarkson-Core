@@ -37,11 +37,11 @@
 	},
 	"require" : {
 		"php":"^8.0",
-		"twig/twig": "^3.18",
-		"twig/string-extra": "^3.19",
-		"twig/intl-extra": "^3.19",
-		"twig/html-extra": "^3.19",
-		"twig/markdown-extra": "^3.18"
+		"twig/twig": "^3",
+		"twig/string-extra": "^3",
+		"twig/intl-extra": "^3",
+		"twig/html-extra": "^3",
+		"twig/markdown-extra": "^3"
 	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "^2.1",
