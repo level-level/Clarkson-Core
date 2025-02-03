@@ -90,7 +90,9 @@ class Clarkson_Core {
 			require_once $autoload_file;
 		}
 
-		add_action( 'init', array( $this, 'init' ) );
+		if ( is_callable( 'add_action' ) ) {
+			add_action( 'init', array( $this, 'init' ) );
+		}
 
 		if ( ! class_exists( 'Clarkson_Core_Autoloader' ) ) {
 			return;
@@ -116,7 +118,6 @@ class Clarkson_Core {
 			$deprecated = Clarkson_Core_Deprecated::get_instance();
 			$deprecated->auto_load_theme();
 		}
-
 	}
 
 	/**
@@ -133,4 +134,4 @@ class Clarkson_Core {
 
 }
 
-add_action( 'plugins_loaded', array( 'Clarkson_Core', 'get_instance' ) );
+Clarkson_Core::get_instance();
