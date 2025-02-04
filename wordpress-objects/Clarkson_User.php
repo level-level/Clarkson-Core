@@ -23,6 +23,9 @@ class Clarkson_User {
 	 */
 	protected static $users;
 
+	public $_id;
+	public $_user;
+
 	/**
 	 * Get the current logged in user.
 	 *
