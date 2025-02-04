@@ -37,6 +37,11 @@ class Clarkson_Object implements \JsonSerializable {
 	public $_content;
 
 	/**
+	 * @var string
+	 */
+	public $_excerpt;
+
+	/**
 	 * Clarkson_Object constructor.
 	 *
 	 * @param WP_Post $post Post object.
