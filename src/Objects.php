@@ -167,7 +167,7 @@ class Objects {
 	 *
 	 * @return Clarkson_Object Clarkson Post object.
 	 */
-	public function get_object( \WP_Post $post ): Clarkson_Object {
+	public function get_object( \WP_Post $post ): object {
 		$cc = Clarkson_Core::get_instance();
 
 		$types = array(
@@ -235,10 +235,11 @@ class Objects {
 		 * } );
 		 */
 		$object_creation_callback = apply_filters( 'clarkson_core_create_object_callback', false, $class_to_load, $post->ID );
+
 		if ( is_callable( $object_creation_callback ) ) {
-			$clarkson_object = call_user_func_array( $object_creation_callback, array( $post->ID ) );
-			if ( $clarkson_object instanceof Clarkson_Object ) {
-				return $clarkson_object;
+			$object = call_user_func_array( $object_creation_callback, array( $post->ID ) );
+			if ( is_object( $object ) ) {
+				return $object;
 			}
 		}
 
