@@ -3,6 +3,9 @@
 # Clarkson Core
 A plugin to write Object-Oriented code in combination with the Twig templating engine while keeping the WordPress Way of working in mind.
 
+## ⚠️ Maintenance Mode Only
+This project is no longer receiving new features. It will only receive maintenance releases for PHP and WordPress compatibility updates as needed. If you're looking for active development, please consider alternatives (such as [Timber](https://github.com/timber/timber)) or feel free to fork this project.
+
 ## Documentation and getting started
 Check out the [getting started with Clarkson Core guide](https://level-level.github.io/Clarkson-Core/phpdoc/guide/index.html) if you are just getting to know the project.
 
