@@ -128,6 +128,10 @@ class Templates {
 				'debug' => $debug,
 			);
 
+			if ( wp_get_environment_type() === 'production' ) {
+				$version          = wp_get_theme()->get( 'Version' ) ?: 'no-version';
+				$twig_args['cache'] = sys_get_temp_dir() . '/cache/twig/' . $version . '/';
+			}
 			/**
 			 * Allows manipulation of the twig envirionment settings.
 			 *
