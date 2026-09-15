@@ -144,7 +144,7 @@ class Clarkson_Core_Templates {
 				if ( ! $version ) {
 					$version = 'no-version';
 				}
-				
+
 				$twig_args['cache'] = sprintf(
 					'%s/%s/cache/twig/%s/',
 					sys_get_temp_dir(),
