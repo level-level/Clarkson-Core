@@ -141,7 +141,12 @@ class Clarkson_Core_Templates {
 
 			if ( wp_get_environment_type() === 'production' ) {
 				$version            = wp_get_theme()->get( 'Version' ) ?: 'no-version';
-				$twig_args['cache'] = sys_get_temp_dir() . '/cache/twig/' . $version . '/';
+				$twig_args['cache'] = sprintf(
+					'%s/%s/cache/twig/%s/',
+					sys_get_temp_dir(),
+					get_current_user(),
+					$version
+				);
 			}
 
 			/**
